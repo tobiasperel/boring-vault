@@ -35,7 +35,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     address liquidUsd = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C;
 
     function setUp() external {
-        privateKey = vm.envUint("ETHERFI_LIQUID_DEPLOYER");
+        privateKey = vm.envUint("BORING_DEVELOPER");
         vm.createSelectFork("mainnet");
     }
 

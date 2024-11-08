@@ -32,7 +32,7 @@ contract DeployBridgingTestVaultScript is DeployArcticArchitecture, MerkleTreeHe
     address internal liquidPayoutAddress;
 
     function setUp() external {
-        privateKey = vm.envUint("ETHERFI_LIQUID_DEPLOYER");
+        privateKey = vm.envUint("BORING_DEVELOPER");
         vm.createSelectFork("fraxtal");
         setSourceChainName(fraxtal);
 

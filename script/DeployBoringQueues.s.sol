@@ -41,7 +41,7 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
     uint8 public constant SUPER_ADMIN_ROLE = 34;
 
     function setUp() external {
-        privateKey = vm.envUint("ETHERFI_LIQUID_DEPLOYER");
+        privateKey = vm.envUint("BORING_DEVELOPER");
         vm.createSelectFork("mainnet");
         setSourceChainName(mainnet);
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));

@@ -33,7 +33,7 @@ contract DeployTestCCIPTellerScript is Script, OptimismAddresses, ContractNames 
     uint8 public constant BURNER_ROLE = 3;
 
     function setUp() external {
-        privateKey = vm.envUint("ETHERFI_LIQUID_DEPLOYER");
+        privateKey = vm.envUint("BORING_DEVELOPER");
         vm.createSelectFork("optimism");
         rolesAuthority = RolesAuthority(deployer.getAddress(BridgingTestVaultEthRolesAuthorityName));
         boringVault = BoringVault(payable(deployer.getAddress(BridgingTestVaultEthName)));

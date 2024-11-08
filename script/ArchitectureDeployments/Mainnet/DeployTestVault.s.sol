@@ -25,7 +25,7 @@ contract DeployTestVaultScript is DeployArcticArchitecture, MainnetAddresses {
     address public owner = dev0Address;
 
     function setUp() external {
-        privateKey = vm.envUint("ETHERFI_LIQUID_DEPLOYER");
+        privateKey = vm.envUint("BORING_DEVELOPER");
         vm.createSelectFork("mainnet");
     }
 

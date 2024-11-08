@@ -23,7 +23,7 @@ contract DeployDeployerScript is Script, ContractNames, MainnetAddresses {
     uint8 public DEPLOYER_ROLE = 1;
 
     function setUp() external {
-        privateKey = vm.envUint("ETHERFI_LIQUID_DEPLOYER");
+        privateKey = vm.envUint("BORING_DEVELOPER");
         vm.createSelectFork("bsc");
     }
 
