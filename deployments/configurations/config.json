@@ -6,7 +6,7 @@
     "saveDeploymentDetailsTo": "out.json",
     "deployContracts": true,
     "setupRoles": false,
-    "setupDepositAssets": false,
+    "setupDepositAssets": true,
     "setupWithdrawAssets": false,
     "finishSetup": false,
     "setupTestUser": false,
@@ -178,10 +178,9 @@
       },
       "isPeggedToBase": true,
       "rateProvider": "0x0000000000000000000000000000000000000000",
-      "genericRateProviderName": "WETH Rate Provider",
-      "target": "0x0000000000000000000000000000000000000000",
-      "selector": "0x",
-      "params": []
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
     }
   ],
   "withdrawAssets": [

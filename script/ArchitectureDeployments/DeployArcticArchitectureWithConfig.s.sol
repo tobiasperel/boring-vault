@@ -57,18 +57,6 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         uint96 startingExchangeRate;
     }
 
-    struct DepositAsset {
-        ERC20 asset;
-        bool isPeggedToBase;
-        address rateProvider;
-        string genericRateProviderName;
-        address target;
-        bytes4 selector;
-        bytes32[8] params;
-    }
-
-    DepositAsset[] public depositAssets;
-
     struct WithdrawAsset {
         ERC20 asset;
         uint32 withdrawDelay;
@@ -86,6 +74,15 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         address[] executors;
         uint256 minDelay;
         address[] proposers;
+    }
+
+    struct DepositAsset {
+        AddressOrName addressOrName;
+        bool allowDeposits;
+        bool allowWithdraws;
+        bool isPeggedToBase;
+        address rateProvider;
+        uint16 sharePremium;
     }
 
     WithdrawAsset[] public withdrawAssets;
@@ -158,6 +155,13 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
     bool internal allowPublicDeposits;
     bool internal allowPublicWithdrawals;
     bool internal allowPublicSelfWithdraws;
+    bool internal setupDepositAssets;
+    bool internal setupWithdrawAssets;
+    bool internal finishSetup;
+    bool internal setupTestUser;
+    bool internal saveDeploymentDetails;
+
+    address internal baseAsset;
 
     struct Tx {
         address target;
@@ -451,7 +455,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                 );
                 AccountantDeploymentParameters memory accountantDeploymentParameters =
                     abi.decode(accountantDeploymentParametersRaw, (AccountantDeploymentParameters));
-                address base = accountantDeploymentParameters.base.address_ == address(0)
+                baseAsset = accountantDeploymentParameters.base.address_ == address(0)
                     ? getAddress(sourceChain, accountantDeploymentParameters.base.name)
                     : accountantDeploymentParameters.base.address_;
                 constructorArgs = abi.encode(
@@ -494,7 +498,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                     ),
                     4
                 );
-                _log(string.concat("Base address: ", vm.toString(base)), 4);
+                _log(string.concat("Base address: ", vm.toString(baseAsset)), 4);
                 _log(
                     string.concat(
                         "Allowed exchange rate change upper: ",
@@ -949,8 +953,50 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
 
             // No roles to setup for timelock.
         }
+
+        setupDepositAssets = vm.parseJsonBool(rawJson, ".deploymentParameters.setupDepositAssets");
+        if (setupDepositAssets) {
+            // Read deposit assets from configuration file.
+            bytes memory depositAssetsRaw = vm.parseJson(rawJson, ".depositAssets");
+            DepositAsset[] memory depositAssets = abi.decode(depositAssetsRaw, (DepositAsset[]));
+            for (uint256 i; i < depositAssets.length; i++) {
+                DepositAsset memory depositAsset = depositAssets[i];
+                // See if teller already supports it.
+                ERC20 asset = depositAsset.addressOrName.address_ == address(0)
+                    ? getERC20(sourceChain, depositAsset.addressOrName.name)
+                    : ERC20(depositAsset.addressOrName.address_);
+                // TODO instead this should just auto add the asset if the teller is not deployed.
+                (bool allowDeposits,,) = teller.assetData(asset);
+                if (!allowDeposits) {
+                    // Check if the accountant supports it.
+                    (bool isPeggedToBase, IRateProvider rateProvider) = accountant.rateProviderData(asset);
+                    if (!isPeggedToBase && address(rateProvider) == address(0)) {
+                        _log(
+                            string.concat(
+                                "Asset is not pegged to base and no rate provider given for asset: ",
+                                depositAsset.addressOrName.name
+                            ),
+                            1
+                        );
+                    }
+                    _log(string.concat("Setting asset data for asset: ", depositAsset.addressOrName.name), 3);
+                    _addTx(
+                        address(teller),
+                        abi.encodeWithSelector(
+                            teller.updateAssetData.selector,
+                            asset,
+                            depositAsset.allowDeposits,
+                            depositAsset.allowWithdraws,
+                            depositAsset.sharePremium
+                        ),
+                        0
+                    );
+                }
+            }
+        }
     }
 
+    // TODO these helper functions should check if the rolesAuth is deployed, and if not, they should add the tx anyways.
     function _setPublicCapabilityIfNotPresent(address target, bytes4 selector) internal {
         if (!rolesAuthority.isCapabilityPublic(target, selector)) {
             _addTx(
