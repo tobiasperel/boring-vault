@@ -227,6 +227,17 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
     string internal pauserDeploymentName;
     string internal timelockDeploymentName;
 
+    bool internal rolesAuthorityExists;
+    bool internal lensExists;
+    bool internal boringVaultExists;
+    bool internal managerExists;
+    bool internal accountantExists;
+    bool internal tellerExists;
+    bool internal queueExists;
+    bool internal queueSolverExists;
+    bool internal pauserExists;
+    bool internal timelockExists;
+
     function _log(string memory message, uint256 level) internal view {
         if (logLevel >= level) {
             if (level == 1) {
@@ -283,14 +294,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             revert KeyNotFound(".deploymentParameters.deploymentOwnerAddressOrName");
         }
 
-        if (vm.keyExists(rawJson, ".deploymentParameters.deployContracts")) {
-            deployContracts = vm.parseJsonBool(rawJson, ".deploymentParameters.deployContracts");
-            _log("Deploy contracts found in configuration file.", 3);
-        } else {
-            // Don't error if deployContracts is not set, as it defaults to false.
-            _log("Deploy contracts not set in configuration file, defaulting to false.", 2);
-        }
-
+        // Read all names from configuration file.
         rolesAuthorityDeploymentName =
             vm.parseJsonString(rawJson, ".rolesAuthorityConfiguration.rolesAuthorityDeploymentName");
         lensDeploymentName = vm.parseJsonString(rawJson, ".lensConfiguration.lensDeploymentName");
@@ -302,453 +306,440 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         queueSolverDeploymentName = vm.parseJsonString(rawJson, ".boringQueueConfiguration.boringQueueSolverName");
         pauserDeploymentName = vm.parseJsonString(rawJson, ".pauserConfiguration.pauserDeploymentName");
         timelockDeploymentName = vm.parseJsonString(rawJson, ".timelockConfiguration.timelockDeploymentName");
-        if (deployContracts) {
-            // Get Deployer address from configuration file.
-            bytes memory addressOrNameRaw = vm.parseJson(rawJson, ".deploymentParameters.deployerContractAddressOrName");
-            AddressOrName memory addressOrName = abi.decode(addressOrNameRaw, (AddressOrName));
-            deployer = addressOrName.address_ == address(0)
-                ? Deployer(getAddress(sourceChain, addressOrName.name))
-                : Deployer(addressOrName.address_);
-            address deployedAddress;
-            bool isDeployed;
+        // Get Deployer address from configuration file.
+        deployer = Deployer(_handleAddressOrName(".deploymentParameters.deployerContractAddressOrName"));
 
-            (deployedAddress, isDeployed) = _getAddressAndIfDeployed(rolesAuthorityDeploymentName);
-            rolesAuthority = RolesAuthority(deployedAddress);
-            if (!isDeployed) {
-                creationCode = type(RolesAuthority).creationCode;
-                constructorArgs = abi.encode(deploymentOwner, Authority(address(0)));
-                _addTx(
-                    address(deployer),
-                    abi.encodeWithSelector(
-                        deployer.deployContract.selector, rolesAuthorityDeploymentName, creationCode, constructorArgs, 0
-                    ),
-                    uint256(0)
-                );
-                _log("Roles authority deployment TX added", 3);
-            }
+        address deployedAddress;
+        bool isDeployed;
 
-            (deployedAddress, isDeployed) = _getAddressAndIfDeployed(lensDeploymentName);
-            lens = ArcticArchitectureLens(deployedAddress);
-            if (!isDeployed) {
-                creationCode = type(ArcticArchitectureLens).creationCode;
-                constructorArgs = hex"";
-                _addTx(
-                    address(deployer),
-                    abi.encodeWithSelector(
-                        deployer.deployContract.selector, lensDeploymentName, creationCode, constructorArgs, 0
-                    ),
-                    uint256(0)
-                );
-                _log("Lens deployment TX added", 3);
-            }
+        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(rolesAuthorityDeploymentName);
+        rolesAuthority = RolesAuthority(deployedAddress);
+        if (!isDeployed) {
+            creationCode = type(RolesAuthority).creationCode;
+            constructorArgs = abi.encode(deploymentOwner, Authority(address(0)));
+            _addTx(
+                address(deployer),
+                abi.encodeWithSelector(
+                    deployer.deployContract.selector, rolesAuthorityDeploymentName, creationCode, constructorArgs, 0
+                ),
+                uint256(0)
+            );
+            _log("Roles authority deployment TX added", 3);
+        } else {
+            rolesAuthorityExists = true;
+        }
 
-            (deployedAddress, isDeployed) = _getAddressAndIfDeployed(boringVaultDeploymentName);
-            boringVault = BoringVault(payable(deployedAddress));
-            if (!isDeployed) {
-                creationCode = type(BoringVault).creationCode;
-                // Get boringVaultName, boringVaultSymbol, and boringVaultDecimals from configuration file.
-                string memory boringVaultName = vm.parseJsonString(rawJson, ".boringVaultConfiguration.boringVaultName");
-                string memory boringVaultSymbol =
-                    vm.parseJsonString(rawJson, ".boringVaultConfiguration.boringVaultSymbol");
-                uint256 boringVaultDecimals = vm.parseJsonUint(rawJson, ".boringVaultConfiguration.boringVaultDecimals");
-                constructorArgs = abi.encode(deploymentOwner, boringVaultName, boringVaultSymbol, boringVaultDecimals);
-                _addTx(
-                    address(deployer),
-                    abi.encodeWithSelector(
-                        deployer.deployContract.selector, boringVaultDeploymentName, creationCode, constructorArgs, 0
-                    ),
-                    uint256(0)
-                );
-                _log("Boring vault deployment TX added", 3);
-                _log(string.concat("Boring vault name: ", boringVaultName), 4);
-                _log(string.concat("Boring vault symbol: ", boringVaultSymbol), 4);
-                _log(string.concat("Boring vault decimals: ", vm.toString(boringVaultDecimals)), 4);
-            }
+        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(lensDeploymentName);
+        lens = ArcticArchitectureLens(deployedAddress);
+        if (!isDeployed) {
+            creationCode = type(ArcticArchitectureLens).creationCode;
+            constructorArgs = hex"";
+            _addTx(
+                address(deployer),
+                abi.encodeWithSelector(
+                    deployer.deployContract.selector, lensDeploymentName, creationCode, constructorArgs, 0
+                ),
+                uint256(0)
+            );
+            _log("Lens deployment TX added", 3);
+        }
 
-            (deployedAddress, isDeployed) = _getAddressAndIfDeployed(managerDeploymentName);
-            manager = ManagerWithMerkleVerification(deployedAddress);
-            if (!isDeployed) {
-                // Read balancerVault from configuration file.
-                bytes memory balancerVaultRaw =
-                    vm.parseJson(rawJson, ".managerConfiguration.balancerVaultAddressOrName");
-                AddressOrName memory balancerVault = abi.decode(balancerVaultRaw, (AddressOrName));
-                address balancerVaultAddress = balancerVault.address_ == address(0)
-                    ? getAddress(sourceChain, balancerVault.name)
-                    : balancerVault.address_;
-                creationCode = type(ManagerWithMerkleVerification).creationCode;
-                constructorArgs = abi.encode(deploymentOwner, address(boringVault), balancerVaultAddress);
-                _addTx(
-                    address(deployer),
-                    abi.encodeWithSelector(
-                        deployer.deployContract.selector, managerDeploymentName, creationCode, constructorArgs, 0
-                    ),
-                    uint256(0)
-                );
-                _log("Manager deployment TX added", 3);
-                _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
-                _log(string.concat("Balancer vault address: ", vm.toString(balancerVaultAddress)), 4);
-            }
+        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(boringVaultDeploymentName);
+        boringVault = BoringVault(payable(deployedAddress));
+        if (!isDeployed) {
+            creationCode = type(BoringVault).creationCode;
+            // Get boringVaultName, boringVaultSymbol, and boringVaultDecimals from configuration file.
+            string memory boringVaultName = vm.parseJsonString(rawJson, ".boringVaultConfiguration.boringVaultName");
+            string memory boringVaultSymbol = vm.parseJsonString(rawJson, ".boringVaultConfiguration.boringVaultSymbol");
+            uint256 boringVaultDecimals = vm.parseJsonUint(rawJson, ".boringVaultConfiguration.boringVaultDecimals");
+            constructorArgs = abi.encode(deploymentOwner, boringVaultName, boringVaultSymbol, boringVaultDecimals);
+            _addTx(
+                address(deployer),
+                abi.encodeWithSelector(
+                    deployer.deployContract.selector, boringVaultDeploymentName, creationCode, constructorArgs, 0
+                ),
+                uint256(0)
+            );
+            _log("Boring vault deployment TX added", 3);
+            _log(string.concat("Boring vault name: ", boringVaultName), 4);
+            _log(string.concat("Boring vault symbol: ", boringVaultSymbol), 4);
+            _log(string.concat("Boring vault decimals: ", vm.toString(boringVaultDecimals)), 4);
+        } else {
+            boringVaultExists = true;
+        }
 
-            (deployedAddress, isDeployed) = _getAddressAndIfDeployed(accountantDeploymentName);
-            accountant = AccountantWithRateProviders(deployedAddress);
-            if (!isDeployed) {
-                // Figure out the payout address.
-                address payoutAddress = vm.parseJsonAddress(
-                    rawJson, ".accountantConfiguration.accountantParameters.payoutConfiguration.payoutTo"
+        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(managerDeploymentName);
+        manager = ManagerWithMerkleVerification(deployedAddress);
+        if (!isDeployed) {
+            // Read balancerVault from configuration file.
+            bytes memory balancerVaultRaw = vm.parseJson(rawJson, ".managerConfiguration.balancerVaultAddressOrName");
+            AddressOrName memory balancerVault = abi.decode(balancerVaultRaw, (AddressOrName));
+            address balancerVaultAddress = balancerVault.address_ == address(0)
+                ? getAddress(sourceChain, balancerVault.name)
+                : balancerVault.address_;
+            creationCode = type(ManagerWithMerkleVerification).creationCode;
+            constructorArgs = abi.encode(deploymentOwner, address(boringVault), balancerVaultAddress);
+            _addTx(
+                address(deployer),
+                abi.encodeWithSelector(
+                    deployer.deployContract.selector, managerDeploymentName, creationCode, constructorArgs, 0
+                ),
+                uint256(0)
+            );
+            _log("Manager deployment TX added", 3);
+            _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
+            _log(string.concat("Balancer vault address: ", vm.toString(balancerVaultAddress)), 4);
+        } else {
+            managerExists = true;
+        }
+
+        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(accountantDeploymentName);
+        accountant = AccountantWithRateProviders(deployedAddress);
+        if (!isDeployed) {
+            // Figure out the payout address.
+            address payoutAddress = vm.parseJsonAddress(
+                rawJson, ".accountantConfiguration.accountantParameters.payoutConfiguration.payoutTo"
+            );
+            if (payoutAddress == address(0)) {
+                // Need to deploy a payment splitter.
+                string memory paymentSplitterDeploymentName = vm.parseJsonString(
+                    rawJson,
+                    ".accountantConfiguration.accountantParameters.payoutConfiguration.optionalPaymentSplitterName"
                 );
-                if (payoutAddress == address(0)) {
-                    // Need to deploy a payment splitter.
-                    string memory paymentSplitterDeploymentName = vm.parseJsonString(
-                        rawJson,
-                        ".accountantConfiguration.accountantParameters.payoutConfiguration.optionalPaymentSplitterName"
+                (payoutAddress, isDeployed) = _getAddressAndIfDeployed(paymentSplitterDeploymentName);
+                paymentSplitter = PaymentSplitter(payoutAddress);
+                if (!isDeployed) {
+                    creationCode = type(PaymentSplitter).creationCode;
+                    // Read the splits from the configuration file.
+                    bytes memory splitsRaw = vm.parseJson(
+                        rawJson, ".accountantConfiguration.accountantParameters.payoutConfiguration.splits"
                     );
-                    (payoutAddress, isDeployed) = _getAddressAndIfDeployed(paymentSplitterDeploymentName);
-                    paymentSplitter = PaymentSplitter(payoutAddress);
-                    if (!isDeployed) {
-                        creationCode = type(PaymentSplitter).creationCode;
-                        // Read the splits from the configuration file.
-                        bytes memory splitsRaw = vm.parseJson(
-                            rawJson, ".accountantConfiguration.accountantParameters.payoutConfiguration.splits"
-                        );
-                        _log("Payment splitter deployment TX added", 3);
-                        PaymentSplitterSplit[] memory splits = abi.decode(splitsRaw, (PaymentSplitterSplit[]));
-                        uint256 totalPercent = 0;
-                        for (uint256 i = 0; i < splits.length; i++) {
-                            totalPercent += splits[i].percent;
-                            _log(
-                                string.concat(
-                                    "Split: {to: ",
-                                    vm.toString(splits[i].to),
-                                    " percent: ",
-                                    vm.toString(splits[i].percent),
-                                    "}"
-                                ),
-                                4
-                            );
-                        }
-                        _log(string.concat("Total percent: ", vm.toString(totalPercent)), 4);
-                        constructorArgs = abi.encode(deploymentOwner, totalPercent, splits);
-                        _addTx(
-                            address(deployer),
-                            abi.encodeWithSelector(
-                                deployer.deployContract.selector,
-                                paymentSplitterDeploymentName,
-                                creationCode,
-                                constructorArgs,
-                                0
+                    _log("Payment splitter deployment TX added", 3);
+                    PaymentSplitterSplit[] memory splits = abi.decode(splitsRaw, (PaymentSplitterSplit[]));
+                    uint256 totalPercent = 0;
+                    for (uint256 i = 0; i < splits.length; i++) {
+                        totalPercent += splits[i].percent;
+                        _log(
+                            string.concat(
+                                "Split: {to: ",
+                                vm.toString(splits[i].to),
+                                " percent: ",
+                                vm.toString(splits[i].percent),
+                                "}"
                             ),
-                            uint256(0)
+                            4
                         );
                     }
+                    _log(string.concat("Total percent: ", vm.toString(totalPercent)), 4);
+                    constructorArgs = abi.encode(deploymentOwner, totalPercent, splits);
+                    _addTx(
+                        address(deployer),
+                        abi.encodeWithSelector(
+                            deployer.deployContract.selector,
+                            paymentSplitterDeploymentName,
+                            creationCode,
+                            constructorArgs,
+                            0
+                        ),
+                        uint256(0)
+                    );
                 }
-                // Figure out what kind of accountant to deploy.
-                bool variableRate =
-                    vm.parseJsonBool(rawJson, ".accountantConfiguration.accountantParameters.kind.variableRate");
-                bool fixedRate =
-                    vm.parseJsonBool(rawJson, ".accountantConfiguration.accountantParameters.kind.fixedRate");
-                if (variableRate && fixedRate) {
-                    _log("Invalid accountant kind", 1);
+            }
+            // Figure out what kind of accountant to deploy.
+            bool variableRate =
+                vm.parseJsonBool(rawJson, ".accountantConfiguration.accountantParameters.kind.variableRate");
+            bool fixedRate = vm.parseJsonBool(rawJson, ".accountantConfiguration.accountantParameters.kind.fixedRate");
+            if (variableRate && fixedRate) {
+                _log("Invalid accountant kind", 1);
+            }
+            // Get AccountantDeploymentParameters from configuration file.
+            bytes memory accountantDeploymentParametersRaw =
+                vm.parseJson(rawJson, ".accountantConfiguration.accountantParameters.accountantDeploymentParameters");
+            AccountantDeploymentParameters memory accountantDeploymentParameters =
+                abi.decode(accountantDeploymentParametersRaw, (AccountantDeploymentParameters));
+            baseAsset = accountantDeploymentParameters.base.address_ == address(0)
+                ? getAddress(sourceChain, accountantDeploymentParameters.base.name)
+                : accountantDeploymentParameters.base.address_;
+            constructorArgs = abi.encode(
+                deploymentOwner,
+                address(boringVault),
+                payoutAddress,
+                accountantDeploymentParameters.startingExchangeRate,
+                base,
+                accountantDeploymentParameters.allowedExchangeRateChangeUpper,
+                accountantDeploymentParameters.allowedExchangeRateChangeLower,
+                accountantDeploymentParameters.minimumUpateDelayInSeconds,
+                accountantDeploymentParameters.platformFee,
+                accountantDeploymentParameters.performanceFee
+            );
+            if (variableRate) {
+                // Deploy VariableRateAccountant.
+                creationCode = type(AccountantWithRateProviders).creationCode;
+                accountantKind = AccountantKind.VariableRate;
+                _log("Accountant with rate providers deployment TX added", 3);
+            } else if (fixedRate) {
+                // Deploy FixedRateAccountant.
+                creationCode = type(AccountantWithFixedRate).creationCode;
+                accountantKind = AccountantKind.FixedRate;
+                _log("Fixed rate accountant deployment TX added", 3);
+            } else {
+                _log("Accountant kind not set in configuration file", 1);
+            }
+            _addTx(
+                address(deployer),
+                abi.encodeWithSelector(
+                    deployer.deployContract.selector, accountantDeploymentName, creationCode, constructorArgs, 0
+                ),
+                uint256(0)
+            );
+            _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
+            _log(string.concat("Payout address: ", vm.toString(payoutAddress)), 4);
+            _log(
+                string.concat(
+                    "Starting exchange rate: ", vm.toString(accountantDeploymentParameters.startingExchangeRate)
+                ),
+                4
+            );
+            _log(string.concat("Base address: ", vm.toString(baseAsset)), 4);
+            _log(
+                string.concat(
+                    "Allowed exchange rate change upper: ",
+                    vm.toString(accountantDeploymentParameters.allowedExchangeRateChangeUpper)
+                ),
+                4
+            );
+            _log(
+                string.concat(
+                    "Allowed exchange rate change lower: ",
+                    vm.toString(accountantDeploymentParameters.allowedExchangeRateChangeLower)
+                ),
+                4
+            );
+            _log(
+                string.concat(
+                    "Minimum update delay in seconds: ",
+                    vm.toString(accountantDeploymentParameters.minimumUpateDelayInSeconds)
+                ),
+                4
+            );
+            _log(string.concat("Platform fee: ", vm.toString(accountantDeploymentParameters.platformFee)), 4);
+            _log(string.concat("Performance fee: ", vm.toString(accountantDeploymentParameters.performanceFee)), 4);
+        } else {
+            accountantExists = true;
+        }
+
+        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(tellerDeploymentName);
+        teller = TellerWithMultiAssetSupport(deployedAddress);
+        if (!isDeployed) {
+            // Get native wrapper address from configuration file.
+            address nativeWrapperAddress = _handleAddressOrName(".deploymentParameters.nativeWrapperAddressOrName");
+            // Figure out what kind of teller to deploy.
+            bool tellerKindSet;
+            bool normalTeller = vm.parseJsonBool(rawJson, ".tellerConfiguration.tellerParameters.kind.teller");
+            if (normalTeller) {
+                creationCode = type(TellerWithMultiAssetSupport).creationCode;
+                tellerKind = TellerKind.Teller;
+                constructorArgs =
+                    abi.encode(deploymentOwner, address(boringVault), address(accountant), nativeWrapperAddress);
+                tellerKindSet = true;
+                _log("Normal Teller deployment TX added", 3);
+                _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
+                _log(string.concat("Accountant address: ", vm.toString(address(accountant))), 4);
+                _log(string.concat("Native wrapper address: ", vm.toString(nativeWrapperAddress)), 4);
+            }
+            bool tellerWithRemediation =
+                vm.parseJsonBool(rawJson, ".tellerConfiguration.tellerParameters.kind.tellerWithRemediation");
+            if (tellerWithRemediation) {
+                if (tellerKindSet) {
+                    _log("Teller kind already set", 1);
                 }
-                // Get AccountantDeploymentParameters from configuration file.
-                bytes memory accountantDeploymentParametersRaw = vm.parseJson(
-                    rawJson, ".accountantConfiguration.accountantParameters.accountantDeploymentParameters"
-                );
-                AccountantDeploymentParameters memory accountantDeploymentParameters =
-                    abi.decode(accountantDeploymentParametersRaw, (AccountantDeploymentParameters));
-                baseAsset = accountantDeploymentParameters.base.address_ == address(0)
-                    ? getAddress(sourceChain, accountantDeploymentParameters.base.name)
-                    : accountantDeploymentParameters.base.address_;
+                creationCode = type(TellerWithRemediation).creationCode;
+                tellerKind = TellerKind.TellerWithRemediation;
+                constructorArgs =
+                    abi.encode(deploymentOwner, address(boringVault), address(accountant), nativeWrapperAddress);
+                tellerKindSet = true;
+                _log("Teller with remediation deployment TX added", 3);
+                _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
+                _log(string.concat("Accountant address: ", vm.toString(address(accountant))), 4);
+                _log(string.concat("Native wrapper address: ", vm.toString(nativeWrapperAddress)), 4);
+            }
+            bool tellerWithCcip = vm.parseJsonBool(rawJson, ".tellerConfiguration.tellerParameters.kind.tellerWithCcip");
+            if (tellerWithCcip) {
+                if (tellerKindSet) {
+                    _log("Teller kind already set", 1);
+                }
+                creationCode = type(ChainlinkCCIPTeller).creationCode;
+                tellerKind = TellerKind.TellerWithCcip;
+                // Get other config params from configuration file.
+                address tellerWithCcipRouterAddress =
+                    _handleAddressOrName(".tellerConfiguration.tellerParameters.ccip.routerAddressOrName");
+
                 constructorArgs = abi.encode(
                     deploymentOwner,
                     address(boringVault),
-                    payoutAddress,
-                    accountantDeploymentParameters.startingExchangeRate,
-                    base,
-                    accountantDeploymentParameters.allowedExchangeRateChangeUpper,
-                    accountantDeploymentParameters.allowedExchangeRateChangeLower,
-                    accountantDeploymentParameters.minimumUpateDelayInSeconds,
-                    accountantDeploymentParameters.platformFee,
-                    accountantDeploymentParameters.performanceFee
+                    address(accountant),
+                    nativeWrapperAddress,
+                    tellerWithCcipRouterAddress
                 );
-                if (variableRate) {
-                    // Deploy VariableRateAccountant.
-                    creationCode = type(AccountantWithRateProviders).creationCode;
-                    accountantKind = AccountantKind.VariableRate;
-                    _log("Accountant with rate providers deployment TX added", 3);
-                } else if (fixedRate) {
-                    // Deploy FixedRateAccountant.
-                    creationCode = type(AccountantWithFixedRate).creationCode;
-                    accountantKind = AccountantKind.FixedRate;
-                    _log("Fixed rate accountant deployment TX added", 3);
-                } else {
-                    _log("Accountant kind not set in configuration file", 1);
-                }
-                _addTx(
-                    address(deployer),
-                    abi.encodeWithSelector(
-                        deployer.deployContract.selector, accountantDeploymentName, creationCode, constructorArgs, 0
-                    ),
-                    uint256(0)
-                );
-                _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
-                _log(string.concat("Payout address: ", vm.toString(payoutAddress)), 4);
-                _log(
-                    string.concat(
-                        "Starting exchange rate: ", vm.toString(accountantDeploymentParameters.startingExchangeRate)
-                    ),
-                    4
-                );
-                _log(string.concat("Base address: ", vm.toString(baseAsset)), 4);
-                _log(
-                    string.concat(
-                        "Allowed exchange rate change upper: ",
-                        vm.toString(accountantDeploymentParameters.allowedExchangeRateChangeUpper)
-                    ),
-                    4
-                );
-                _log(
-                    string.concat(
-                        "Allowed exchange rate change lower: ",
-                        vm.toString(accountantDeploymentParameters.allowedExchangeRateChangeLower)
-                    ),
-                    4
-                );
-                _log(
-                    string.concat(
-                        "Minimum update delay in seconds: ",
-                        vm.toString(accountantDeploymentParameters.minimumUpateDelayInSeconds)
-                    ),
-                    4
-                );
-                _log(string.concat("Platform fee: ", vm.toString(accountantDeploymentParameters.platformFee)), 4);
-                _log(string.concat("Performance fee: ", vm.toString(accountantDeploymentParameters.performanceFee)), 4);
-            }
-
-            (deployedAddress, isDeployed) = _getAddressAndIfDeployed(tellerDeploymentName);
-            teller = TellerWithMultiAssetSupport(deployedAddress);
-            if (!isDeployed) {
-                // Get native wrapper address from configuration file.
-                address nativeWrapperAddress = _handleAddressOrName(".deploymentParameters.nativeWrapperAddressOrName");
-                // Figure out what kind of teller to deploy.
-                bool tellerKindSet;
-                bool normalTeller = vm.parseJsonBool(rawJson, ".tellerConfiguration.tellerParameters.kind.teller");
-                if (normalTeller) {
-                    creationCode = type(TellerWithMultiAssetSupport).creationCode;
-                    tellerKind = TellerKind.Teller;
-                    constructorArgs =
-                        abi.encode(deploymentOwner, address(boringVault), address(accountant), nativeWrapperAddress);
-                    tellerKindSet = true;
-                    _log("Normal Teller deployment TX added", 3);
-                    _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
-                    _log(string.concat("Accountant address: ", vm.toString(address(accountant))), 4);
-                    _log(string.concat("Native wrapper address: ", vm.toString(nativeWrapperAddress)), 4);
-                }
-                bool tellerWithRemediation =
-                    vm.parseJsonBool(rawJson, ".tellerConfiguration.tellerParameters.kind.tellerWithRemediation");
-                if (tellerWithRemediation) {
-                    if (tellerKindSet) {
-                        _log("Teller kind already set", 1);
-                    }
-                    creationCode = type(TellerWithRemediation).creationCode;
-                    tellerKind = TellerKind.TellerWithRemediation;
-                    constructorArgs =
-                        abi.encode(deploymentOwner, address(boringVault), address(accountant), nativeWrapperAddress);
-                    tellerKindSet = true;
-                    _log("Teller with remediation deployment TX added", 3);
-                    _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
-                    _log(string.concat("Accountant address: ", vm.toString(address(accountant))), 4);
-                    _log(string.concat("Native wrapper address: ", vm.toString(nativeWrapperAddress)), 4);
-                }
-                bool tellerWithCcip =
-                    vm.parseJsonBool(rawJson, ".tellerConfiguration.tellerParameters.kind.tellerWithCcip");
-                if (tellerWithCcip) {
-                    if (tellerKindSet) {
-                        _log("Teller kind already set", 1);
-                    }
-                    creationCode = type(ChainlinkCCIPTeller).creationCode;
-                    tellerKind = TellerKind.TellerWithCcip;
-                    // Get other config params from configuration file.
-                    address tellerWithCcipRouterAddress =
-                        _handleAddressOrName(".tellerConfiguration.tellerParameters.ccip.routerAddressOrName");
-
-                    constructorArgs = abi.encode(
-                        deploymentOwner,
-                        address(boringVault),
-                        address(accountant),
-                        nativeWrapperAddress,
-                        tellerWithCcipRouterAddress
-                    );
-                    tellerKindSet = true;
-                    _log("Teller with CCIP deployment TX added", 3);
-                    _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
-                    _log(string.concat("Accountant address: ", vm.toString(address(accountant))), 4);
-                    _log(string.concat("Native wrapper address: ", vm.toString(nativeWrapperAddress)), 4);
-                    _log(string.concat("CCIP router address: ", vm.toString(tellerWithCcipRouterAddress)), 4);
-                }
-                bool tellerWithLayerZero =
-                    vm.parseJsonBool(rawJson, ".tellerConfiguration.tellerParameters.kind.tellerWithLayerZero");
-                if (tellerWithLayerZero) {
-                    if (tellerKindSet) {
-                        _log("Teller kind already set", 1);
-                    }
-                    creationCode = type(LayerZeroTeller).creationCode;
-                    tellerKind = TellerKind.TellerWithLayerZero;
-                    // Read the endpoint and lztoken from the configuration file.
-                    address layerZeroEndpointAddress =
-                        _handleAddressOrName(".tellerConfiguration.tellerParameters.layerZero.endpointAddressOrName");
-                    address layerZeroTokenAddress =
-                        _handleAddressOrName(".tellerConfiguration.tellerParameters.layerZero.lzTokenAddressOrName");
-                    constructorArgs = abi.encode(
-                        deploymentOwner,
-                        address(boringVault),
-                        address(accountant),
-                        nativeWrapperAddress,
-                        layerZeroEndpointAddress,
-                        deploymentOwner,
-                        layerZeroTokenAddress
-                    );
-                    tellerKindSet = true;
-                    _log("Teller with LayerZero deployment TX added", 3);
-                    _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
-                    _log(string.concat("Accountant address: ", vm.toString(address(accountant))), 4);
-                    _log(string.concat("Native wrapper address: ", vm.toString(nativeWrapperAddress)), 4);
-                    _log(string.concat("LayerZero endpoint address: ", vm.toString(layerZeroEndpointAddress)), 4);
-                    _log(string.concat("LayerZero token address: ", vm.toString(layerZeroTokenAddress)), 4);
-                }
-
-                _addTx(
-                    address(deployer),
-                    abi.encodeWithSelector(
-                        deployer.deployContract.selector, tellerDeploymentName, creationCode, constructorArgs, 0
-                    ),
-                    uint256(0)
-                );
-            }
-
-            (deployedAddress, isDeployed) = _getAddressAndIfDeployed(queueDeploymentName);
-            queue = BoringOnChainQueue(deployedAddress);
-            if (!isDeployed) {
-                // Read configuration to determine kind.
-                bool boringQueue =
-                    vm.parseJsonBool(rawJson, ".boringQueueConfiguration.queueParameters.kind.boringQueue");
-                bool boringQueueWithTracking =
-                    vm.parseJsonBool(rawJson, ".boringQueueConfiguration.queueParameters.kind.boringQueueWithTracking");
-                if (boringQueue && boringQueueWithTracking) {
-                    _log("Invalid boring queue kind", 1);
-                } else if (boringQueue) {
-                    constructorArgs = abi.encode(deploymentOwner, address(0), address(boringVault), address(accountant));
-                    creationCode = type(BoringOnChainQueue).creationCode;
-                    _log("Boring on chain queue deployment TX added", 3);
-                } else if (boringQueueWithTracking) {
-                    constructorArgs =
-                        abi.encode(deploymentOwner, address(0), address(boringVault), address(accountant), false);
-                    creationCode = type(BoringOnChainQueueWithTracking).creationCode;
-                    _log("Boring on chain queue with tracking deployment TX added", 3);
-                }
+                tellerKindSet = true;
+                _log("Teller with CCIP deployment TX added", 3);
                 _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
                 _log(string.concat("Accountant address: ", vm.toString(address(accountant))), 4);
-                _addTx(
-                    address(deployer),
-                    abi.encodeWithSelector(
-                        deployer.deployContract.selector, queueDeploymentName, creationCode, constructorArgs, 0
-                    ),
-                    uint256(0)
-                );
+                _log(string.concat("Native wrapper address: ", vm.toString(nativeWrapperAddress)), 4);
+                _log(string.concat("CCIP router address: ", vm.toString(tellerWithCcipRouterAddress)), 4);
             }
-
-            (deployedAddress, isDeployed) = _getAddressAndIfDeployed(queueSolverDeploymentName);
-            queueSolver = BoringSolver(deployedAddress);
-            if (!isDeployed) {
-                creationCode = type(BoringSolver).creationCode;
-                constructorArgs = abi.encode(deploymentOwner, address(0), address(queue));
-                _log("Boring solver deployment TX added", 3);
-                _log(string.concat("Boring queue address: ", vm.toString(address(queue))), 4);
-                _addTx(
-                    address(deployer),
-                    abi.encodeWithSelector(
-                        deployer.deployContract.selector, queueSolverDeploymentName, creationCode, constructorArgs, 0
-                    ),
-                    uint256(0)
-                );
-            }
-
-            (deployedAddress, isDeployed) = _getAddressAndIfDeployed(pauserDeploymentName);
-            // Read config to determine if pauser should be deployed.
-            bool shouldDeployPauser = vm.parseJsonBool(rawJson, ".pauserConfiguration.shouldDeploy");
-            if (shouldDeployPauser) {
-                pauser = Pauser(deployedAddress);
-                if (!isDeployed) {
-                    // Create pausables array.
-                    address[] memory pausables = new address[](4);
-                    pausables[0] = address(teller);
-                    pausables[1] = address(queue);
-                    pausables[2] = address(accountant);
-                    pausables[3] = address(manager);
-                    creationCode = type(Pauser).creationCode;
-                    constructorArgs = abi.encode(deploymentOwner, address(0), pausables);
-
-                    _log("Pauser deployment TX added", 3);
-                    _addTx(
-                        address(deployer),
-                        abi.encodeWithSelector(
-                            deployer.deployContract.selector, pauserDeploymentName, creationCode, constructorArgs, 0
-                        ),
-                        uint256(0)
-                    );
+            bool tellerWithLayerZero =
+                vm.parseJsonBool(rawJson, ".tellerConfiguration.tellerParameters.kind.tellerWithLayerZero");
+            if (tellerWithLayerZero) {
+                if (tellerKindSet) {
+                    _log("Teller kind already set", 1);
                 }
+                creationCode = type(LayerZeroTeller).creationCode;
+                tellerKind = TellerKind.TellerWithLayerZero;
+                // Read the endpoint and lztoken from the configuration file.
+                address layerZeroEndpointAddress =
+                    _handleAddressOrName(".tellerConfiguration.tellerParameters.layerZero.endpointAddressOrName");
+                address layerZeroTokenAddress =
+                    _handleAddressOrName(".tellerConfiguration.tellerParameters.layerZero.lzTokenAddressOrName");
+                constructorArgs = abi.encode(
+                    deploymentOwner,
+                    address(boringVault),
+                    address(accountant),
+                    nativeWrapperAddress,
+                    layerZeroEndpointAddress,
+                    deploymentOwner,
+                    layerZeroTokenAddress
+                );
+                tellerKindSet = true;
+                _log("Teller with LayerZero deployment TX added", 3);
+                _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
+                _log(string.concat("Accountant address: ", vm.toString(address(accountant))), 4);
+                _log(string.concat("Native wrapper address: ", vm.toString(nativeWrapperAddress)), 4);
+                _log(string.concat("LayerZero endpoint address: ", vm.toString(layerZeroEndpointAddress)), 4);
+                _log(string.concat("LayerZero token address: ", vm.toString(layerZeroTokenAddress)), 4);
             }
 
-            (deployedAddress, isDeployed) = _getAddressAndIfDeployed(timelockDeploymentName);
-            // Read config to determine if timelock should be deployed.
-            bool shouldDeployTimelock = vm.parseJsonBool(rawJson, ".timelockConfiguration.shouldDeploy");
-            if (shouldDeployTimelock) {
-                timelock = TimelockController(payable(deployedAddress));
-                if (!isDeployed) {
-                    creationCode = type(TimelockController).creationCode;
-                    // Read timelock parameters from configuration file.
-                    bytes memory timelockParametersRaw =
-                        vm.parseJson(rawJson, ".timelockConfiguration.timelockParameters");
-                    TimelockParameters memory timelockParameters =
-                        abi.decode(timelockParametersRaw, (TimelockParameters));
-                    constructorArgs = abi.encode(
-                        deploymentOwner,
-                        timelockParameters.minDelay,
-                        timelockParameters.proposers,
-                        timelockParameters.executors
-                    );
-                    _log("Timelock deployment TX added", 3);
-                    _log(string.concat("Min delay: ", vm.toString(timelockParameters.minDelay)), 4);
-                    // TODO log the proposers and executors.
-                    _addTx(
-                        address(deployer),
-                        abi.encodeWithSelector(
-                            deployer.deployContract.selector, timelockDeploymentName, creationCode, constructorArgs, 0
-                        ),
-                        uint256(0)
-                    );
-                }
-            }
-
-            // TODO handle drone deployment.
+            _addTx(
+                address(deployer),
+                abi.encodeWithSelector(
+                    deployer.deployContract.selector, tellerDeploymentName, creationCode, constructorArgs, 0
+                ),
+                uint256(0)
+            );
         } else {
-            rolesAuthority = RolesAuthority(_getAddressIfDeployed(rolesAuthorityDeploymentName));
-            lens = ArcticArchitectureLens(_getAddressIfDeployed(lensDeploymentName));
-            boringVault = BoringVault(payable(_getAddressIfDeployed(boringVaultDeploymentName)));
-            manager = ManagerWithMerkleVerification(_getAddressIfDeployed(managerDeploymentName));
-            accountant = AccountantWithRateProviders(_getAddressIfDeployed(accountantDeploymentName));
-            teller = TellerWithMultiAssetSupport(payable(_getAddressIfDeployed(tellerDeploymentName)));
-            queue = BoringOnChainQueue(_getAddressIfDeployed(queueDeploymentName));
-            queueSolver = BoringSolver(_getAddressIfDeployed(queueSolverDeploymentName));
-            // Check if pauser should be deployed.
-            bool shouldDeployPauser = vm.parseJsonBool(rawJson, ".pauserConfiguration.shouldDeploy");
-            if (shouldDeployPauser) {
-                pauser = Pauser(_getAddressIfDeployed(pauserDeploymentName));
+            tellerExists = true;
+        }
+
+        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(queueDeploymentName);
+        queue = BoringOnChainQueue(deployedAddress);
+        if (!isDeployed) {
+            // Read configuration to determine kind.
+            bool boringQueue = vm.parseJsonBool(rawJson, ".boringQueueConfiguration.queueParameters.kind.boringQueue");
+            bool boringQueueWithTracking =
+                vm.parseJsonBool(rawJson, ".boringQueueConfiguration.queueParameters.kind.boringQueueWithTracking");
+            if (boringQueue && boringQueueWithTracking) {
+                _log("Invalid boring queue kind", 1);
+            } else if (boringQueue) {
+                constructorArgs = abi.encode(deploymentOwner, address(0), address(boringVault), address(accountant));
+                creationCode = type(BoringOnChainQueue).creationCode;
+                _log("Boring on chain queue deployment TX added", 3);
+            } else if (boringQueueWithTracking) {
+                constructorArgs =
+                    abi.encode(deploymentOwner, address(0), address(boringVault), address(accountant), false);
+                creationCode = type(BoringOnChainQueueWithTracking).creationCode;
+                _log("Boring on chain queue with tracking deployment TX added", 3);
             }
-            bool shouldDeployTimelock = vm.parseJsonBool(rawJson, ".timelockConfiguration.shouldDeploy");
-            if (shouldDeployTimelock) {
-                timelock = TimelockController(payable(_getAddressIfDeployed(timelockDeploymentName)));
+            _log(string.concat("Boring vault address: ", vm.toString(address(boringVault))), 4);
+            _log(string.concat("Accountant address: ", vm.toString(address(accountant))), 4);
+            _addTx(
+                address(deployer),
+                abi.encodeWithSelector(
+                    deployer.deployContract.selector, queueDeploymentName, creationCode, constructorArgs, 0
+                ),
+                uint256(0)
+            );
+        } else {
+            queueExists = true;
+        }
+
+        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(queueSolverDeploymentName);
+        queueSolver = BoringSolver(deployedAddress);
+        if (!isDeployed) {
+            creationCode = type(BoringSolver).creationCode;
+            constructorArgs = abi.encode(deploymentOwner, address(0), address(queue));
+            _log("Boring solver deployment TX added", 3);
+            _log(string.concat("Boring queue address: ", vm.toString(address(queue))), 4);
+            _addTx(
+                address(deployer),
+                abi.encodeWithSelector(
+                    deployer.deployContract.selector, queueSolverDeploymentName, creationCode, constructorArgs, 0
+                ),
+                uint256(0)
+            );
+        } else {
+            queueSolverExists = true;
+        }
+
+        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(pauserDeploymentName);
+        // Read config to determine if pauser should be deployed.
+        bool shouldDeployPauser = vm.parseJsonBool(rawJson, ".pauserConfiguration.shouldDeploy");
+        if (shouldDeployPauser) {
+            pauser = Pauser(deployedAddress);
+            if (!isDeployed) {
+                // Create pausables array.
+                address[] memory pausables = new address[](4);
+                pausables[0] = address(teller);
+                pausables[1] = address(queue);
+                pausables[2] = address(accountant);
+                pausables[3] = address(manager);
+                creationCode = type(Pauser).creationCode;
+                constructorArgs = abi.encode(deploymentOwner, address(0), pausables);
+
+                _log("Pauser deployment TX added", 3);
+                _addTx(
+                    address(deployer),
+                    abi.encodeWithSelector(
+                        deployer.deployContract.selector, pauserDeploymentName, creationCode, constructorArgs, 0
+                    ),
+                    uint256(0)
+                );
+            } else {
+                pauserExists = true;
             }
         }
+
+        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(timelockDeploymentName);
+        // Read config to determine if timelock should be deployed.
+        bool shouldDeployTimelock = vm.parseJsonBool(rawJson, ".timelockConfiguration.shouldDeploy");
+        if (shouldDeployTimelock) {
+            timelock = TimelockController(payable(deployedAddress));
+            if (!isDeployed) {
+                creationCode = type(TimelockController).creationCode;
+                // Read timelock parameters from configuration file.
+                bytes memory timelockParametersRaw = vm.parseJson(rawJson, ".timelockConfiguration.timelockParameters");
+                TimelockParameters memory timelockParameters = abi.decode(timelockParametersRaw, (TimelockParameters));
+                constructorArgs = abi.encode(
+                    deploymentOwner,
+                    timelockParameters.minDelay,
+                    timelockParameters.proposers,
+                    timelockParameters.executors
+                );
+                _log("Timelock deployment TX added", 3);
+                _log(string.concat("Min delay: ", vm.toString(timelockParameters.minDelay)), 4);
+                // TODO log the proposers and executors.
+                _addTx(
+                    address(deployer),
+                    abi.encodeWithSelector(
+                        deployer.deployContract.selector, timelockDeploymentName, creationCode, constructorArgs, 0
+                    ),
+                    uint256(0)
+                );
+            } else {
+                timelockExists = true;
+            }
+        }
+
+        // TODO handle drone deployment.
 
         // Check if we are setting up roles.
         bool setupRoles = vm.parseJsonBool(rawJson, ".deploymentParameters.setupRoles");
@@ -935,7 +926,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             }
 
             allowPublicSelfWithdraws =
-                vm.parseJsonBool(rawJson, ".boringQueueConfiguration.queueParameters.allowPublicSelfWithdraws");
+                vm.parseJsonBool(rawJson, ".boringQueueConfiguration.queueParameters.allowPublicSelfWithdrawals");
             if (allowPublicSelfWithdraws) {
                 _setPublicCapabilityIfNotPresent(address(queueSolver), BoringSolver.boringRedeemSelfSolve.selector);
                 _setPublicCapabilityIfNotPresent(address(queueSolver), BoringSolver.boringRedeemMintSelfSolve.selector);
@@ -965,12 +956,18 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                 ERC20 asset = depositAsset.addressOrName.address_ == address(0)
                     ? getERC20(sourceChain, depositAsset.addressOrName.name)
                     : ERC20(depositAsset.addressOrName.address_);
-                // TODO instead this should just auto add the asset if the teller is not deployed.
-                (bool allowDeposits,,) = teller.assetData(asset);
-                if (!allowDeposits) {
-                    // Check if the accountant supports it.
+                if (tellerExists) {
+                    (bool allowDeposits,,) = teller.assetData(asset);
+                    if (allowDeposits) continue;
+                }
+                // Check if the accountant supports it.
+                if (accountantExists) {
                     (bool isPeggedToBase, IRateProvider rateProvider) = accountant.rateProviderData(asset);
-                    if (!isPeggedToBase && address(rateProvider) == address(0)) {
+                    if (isPeggedToBase || address(rateProvider) != address(0)) continue; // Already set
+                } else {
+                    // We need to set the rate provider.
+                    // Make sure either the asset is pegged to base or a rate provider is given.
+                    if (!depositAsset.isPeggedToBase && depositAsset.rateProvider == address(0)) {
                         _log(
                             string.concat(
                                 "Asset is not pegged to base and no rate provider given for asset: ",
@@ -978,43 +975,62 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                             ),
                             1
                         );
+                    } else {
+                        // Add tx to set the rate provider.
+                        _log(string.concat("Setting rate provider for asset: ", depositAsset.addressOrName.name), 3);
+                        _addTx(
+                            address(accountant),
+                            abi.encodeWithSelector(
+                                accountant.setRateProviderData.selector, asset, depositAsset.rateProvider
+                            ),
+                            0
+                        );
                     }
-                    _log(string.concat("Setting asset data for asset: ", depositAsset.addressOrName.name), 3);
-                    _addTx(
-                        address(teller),
-                        abi.encodeWithSelector(
-                            teller.updateAssetData.selector,
-                            asset,
-                            depositAsset.allowDeposits,
-                            depositAsset.allowWithdraws,
-                            depositAsset.sharePremium
-                        ),
-                        0
-                    );
                 }
+
+                _log(string.concat("Setting asset data for asset: ", depositAsset.addressOrName.name), 3);
+                _addTx(
+                    address(teller),
+                    abi.encodeWithSelector(
+                        teller.updateAssetData.selector,
+                        asset,
+                        depositAsset.allowDeposits,
+                        depositAsset.allowWithdraws,
+                        depositAsset.sharePremium
+                    ),
+                    0
+                );
             }
         }
+
+        // TODO setup withdraw assets now, by adding them to the queue.
+        // TODO run finish setup code
+        // TODO setup test user code
+        // TODO save deployment details
+        // TODO this script should be functionized more.
+        // TODO add in section for taking the txs array and sending it. Will probs need some new config logic to dictate how many txs are needed
     }
 
-    // TODO these helper functions should check if the rolesAuth is deployed, and if not, they should add the tx anyways.
     function _setPublicCapabilityIfNotPresent(address target, bytes4 selector) internal {
-        if (!rolesAuthority.isCapabilityPublic(target, selector)) {
-            _addTx(
-                address(rolesAuthority),
-                abi.encodeWithSelector(rolesAuthority.setPublicCapability.selector, target, selector, true),
-                0
-            );
+        if (rolesAuthorityExists) {
+            if (rolesAuthority.isCapabilityPublic(target, selector)) return;
         }
+        _addTx(
+            address(rolesAuthority),
+            abi.encodeWithSelector(rolesAuthority.setPublicCapability.selector, target, selector, true),
+            0
+        );
     }
 
     function _addRoleCapabilityIfNotPresent(uint8 role, address target, bytes4 selector) internal {
-        if (!rolesAuthority.doesRoleHaveCapability(role, target, selector)) {
-            _addTx(
-                address(rolesAuthority),
-                abi.encodeWithSelector(rolesAuthority.setRoleCapability.selector, role, target, selector, true),
-                0
-            );
+        if (rolesAuthorityExists) {
+            if (rolesAuthority.doesRoleHaveCapability(role, target, selector)) return;
         }
+        _addTx(
+            address(rolesAuthority),
+            abi.encodeWithSelector(rolesAuthority.setRoleCapability.selector, role, target, selector, true),
+            0
+        );
     }
 
     function _handleAddressOrName(string memory key) internal view returns (address) {

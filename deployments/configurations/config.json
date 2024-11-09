@@ -4,8 +4,7 @@
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "mainnet",
     "saveDeploymentDetailsTo": "out.json",
-    "deployContracts": true,
-    "setupRoles": false,
+    "setupRoles": true,
     "setupDepositAssets": true,
     "setupWithdrawAssets": false,
     "finishSetup": false,
@@ -135,8 +134,8 @@
     "boringQueueDeploymentName": "BoringOnChainQueue",
     "boringQueueSolverName": "BoringSolver",
     "queueParameters": {
-      "allowPublicWithdraws": false,
-      "allowPublicSelfWithdraws": false,
+      "allowPublicWithdrawals": false,
+      "allowPublicSelfWithdrawals": false,
       "kind": {
         "boringQueue": true,
         "boringQueueWithTracking": false
