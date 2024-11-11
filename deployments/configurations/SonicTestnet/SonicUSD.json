@@ -84,7 +84,7 @@
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "teller",
+    "tellerDeploymentName": "Sonic USD Teller V0.0",
     "tellerParameters": {
       "allowPublicDeposits": false,
       "shareLockPeriod": 60,

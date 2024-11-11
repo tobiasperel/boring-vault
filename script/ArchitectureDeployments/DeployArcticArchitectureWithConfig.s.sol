@@ -565,6 +565,13 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             _log(string.concat("Platform fee: ", vm.toString(accountantDeploymentParameters.platformFee)), 4);
             _log(string.concat("Performance fee: ", vm.toString(accountantDeploymentParameters.performanceFee)), 4);
         } else {
+            bytes memory accountantDeploymentParametersRaw =
+                vm.parseJson(rawJson, ".accountantConfiguration.accountantParameters.accountantDeploymentParameters");
+            AccountantDeploymentParameters memory accountantDeploymentParameters =
+                abi.decode(accountantDeploymentParametersRaw, (AccountantDeploymentParameters));
+            baseAsset = accountantDeploymentParameters.base.address_ == address(0)
+                ? getAddress(sourceChain, accountantDeploymentParameters.base.name)
+                : accountantDeploymentParameters.base.address_;
             accountantExists = true;
         }
     }
@@ -1141,9 +1148,9 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
 
     function _finalizeSetup() internal {
         _log("Finalizing setup...", 3);
+        uint256 shareLockPeriod = vm.parseJsonUint(rawJson, ".tellerConfiguration.tellerParameters.shareLockPeriod");
         if (tellerExists) {
             // Get sharelock period from configuration file.
-            uint256 shareLockPeriod = vm.parseJsonUint(rawJson, ".tellerConfiguration.tellerParameters.shareLockPeriod");
             if (teller.shareLockPeriod() != shareLockPeriod) {
                 _addTx(
                     address(teller),
@@ -1157,6 +1164,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             if (teller.owner() != address(0)) {
                 _addTx(address(teller), abi.encodeWithSelector(teller.transferOwnership.selector, address(0)), 0);
             }
+        } else {
+            _addTx(
+                address(teller), abi.encodeWithSelector(teller.setShareLockPeriod.selector, uint64(shareLockPeriod)), 0
+            );
+            _addTx(address(teller), abi.encodeWithSelector(teller.setAuthority.selector, rolesAuthority), 0);
+            _addTx(address(teller), abi.encodeWithSelector(teller.transferOwnership.selector, address(0)), 0);
         }
 
         if (boringVaultExists) {
@@ -1177,6 +1190,14 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                     address(boringVault), abi.encodeWithSelector(boringVault.transferOwnership.selector, address(0)), 0
                 );
             }
+        } else {
+            _addTx(address(boringVault), abi.encodeWithSelector(boringVault.setAuthority.selector, rolesAuthority), 0);
+            _addTx(
+                address(boringVault),
+                abi.encodeWithSelector(boringVault.setBeforeTransferHook.selector, rolesAuthority),
+                0
+            );
+            _addTx(address(boringVault), abi.encodeWithSelector(boringVault.transferOwnership.selector, address(0)), 0);
         }
 
         if (managerExists) {
@@ -1186,6 +1207,9 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             if (manager.owner() != address(0)) {
                 _addTx(address(manager), abi.encodeWithSelector(manager.transferOwnership.selector, address(0)), 0);
             }
+        } else {
+            _addTx(address(manager), abi.encodeWithSelector(manager.setAuthority.selector, rolesAuthority), 0);
+            _addTx(address(manager), abi.encodeWithSelector(manager.transferOwnership.selector, address(0)), 0);
         }
 
         if (accountantExists) {
@@ -1197,6 +1221,9 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                     address(accountant), abi.encodeWithSelector(accountant.transferOwnership.selector, address(0)), 0
                 );
             }
+        } else {
+            _addTx(address(accountant), abi.encodeWithSelector(accountant.setAuthority.selector, rolesAuthority), 0);
+            _addTx(address(accountant), abi.encodeWithSelector(accountant.transferOwnership.selector, address(0)), 0);
         }
 
         if (queueExists) {
@@ -1206,6 +1233,9 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             if (queue.owner() != address(0)) {
                 _addTx(address(queue), abi.encodeWithSelector(queue.transferOwnership.selector, address(0)), 0);
             }
+        } else {
+            _addTx(address(queue), abi.encodeWithSelector(queue.setAuthority.selector, rolesAuthority), 0);
+            _addTx(address(queue), abi.encodeWithSelector(queue.transferOwnership.selector, address(0)), 0);
         }
 
         if (queueSolverExists) {
@@ -1219,6 +1249,9 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                     address(queueSolver), abi.encodeWithSelector(queueSolver.transferOwnership.selector, address(0)), 0
                 );
             }
+        } else {
+            _addTx(address(queueSolver), abi.encodeWithSelector(queueSolver.setAuthority.selector, rolesAuthority), 0);
+            _addTx(address(queueSolver), abi.encodeWithSelector(queueSolver.transferOwnership.selector, address(0)), 0);
         }
 
         // Setup roles.
@@ -1237,13 +1270,18 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         _grantRoleIfNotGranted(OWNER_ROLE, testUser);
         _grantRoleIfNotGranted(STRATEGIST_ROLE, testUser);
         if (rolesAuthorityExists) {
-            if (deploymentOwner != testUser) {
+            address currentOwner = rolesAuthority.owner();
+            if (currentOwner != testUser) {
                 _addTx(
                     address(rolesAuthority),
                     abi.encodeWithSelector(rolesAuthority.transferOwnership.selector, testUser),
                     0
                 );
             }
+        } else {
+            _addTx(
+                address(rolesAuthority), abi.encodeWithSelector(rolesAuthority.transferOwnership.selector, testUser), 0
+            );
         }
     }
 
@@ -1300,11 +1338,16 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
 
     function _bundleTxs() internal {
         Deployer.Tx[] memory txsToSend = getTxs();
+        uint256 txsLength = txsToSend.length;
+
+        if (txsLength == 0) {
+            _log("No txs to bundle", 3);
+            return;
+        }
 
         // Determine how many txs to send
         uint256 desiredNumberOfDeploymentTxs =
             vm.parseJsonUint(rawJson, ".deploymentParameters.desiredNumberOfDeploymentTxs");
-        uint256 txsLength = txsToSend.length;
         if (desiredNumberOfDeploymentTxs == 0) {
             _log("Desired number of deployment txs is 0", 1);
         }
