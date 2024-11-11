@@ -5,11 +5,12 @@
     "chainName": "mainnet",
     "saveDeploymentDetailsTo": "out.json",
     "setupRoles": true,
-    "setupDepositAssets": true,
-    "setupWithdrawAssets": false,
-    "finishSetup": false,
     "setupTestUser": false,
     "saveDeploymentDetails": true,
+    "testUserAddressOrName": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "dev1Address"
+    },
     "deployerContractAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "deployerAddress"
@@ -21,7 +22,8 @@
     "deploymentOwnerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "dev0Address"
-    }
+    },
+    "deploymentFileName": "deployment.json"
   },
   "rolesAuthorityConfiguration": {
     "rolesAuthorityDeploymentName": "rolesAuthority"
@@ -169,14 +171,22 @@
       "executors": ["0x0000000000000000000000000000000000000000"]
     }
   },
-  "depositAssets": [
+  "accountantAssets": [
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
         "name": "WETH"
       },
       "isPeggedToBase": true,
-      "rateProvider": "0x0000000000000000000000000000000000000000",
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    }
+  ],
+  "depositAssets": [
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "WETH"
+      },
       "allowDeposits": true,
       "allowWithdraws": true,
       "sharePremium": 0
@@ -186,7 +196,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "ETH"
+        "name": "WETH"
       },
       "maxDiscount": 100,
       "minDiscount": 0,

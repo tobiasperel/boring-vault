@@ -37,7 +37,7 @@ import "forge-std/StdJson.sol";
 import {console} from "@forge-std/Test.sol";
 
 /**
- *  source .env && forge script script/DeployArcticArchitectureWithConfig.s.sol:DeployArcticArchitectureWithConfigScript --sig "run(string)" config.json --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
+ *  source .env && forge script script/ArchitectureDeployments/DeployArcticArchitectureWithConfig.s.sol:DeployArcticArchitectureWithConfigScript --sig "run(string)" config.json --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  *  source .env && forge script script/ArchitectureDeployments/DeployArcticArchitectureWithConfig.s.sol:DeployArcticArchitectureWithConfigScript --sig "run(string)" "config.json"
  */
@@ -57,12 +57,19 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         uint96 startingExchangeRate;
     }
 
+    struct AccountantAsset {
+        AddressOrName addressOrName;
+        bool isPeggedToBase;
+        address rateProvider;
+    }
+
     struct WithdrawAsset {
-        ERC20 asset;
-        uint32 withdrawDelay;
-        uint32 completionWindow;
-        uint16 withdrawFee;
-        uint16 maxLoss;
+        AddressOrName addressOrName;
+        uint16 maxDiscount;
+        uint16 minDiscount;
+        uint24 minimumSecondsToDeadline;
+        uint96 minimumShares;
+        uint24 secondsToMaturity;
     }
 
     struct PaymentSplitterSplit {
@@ -84,8 +91,6 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         address rateProvider;
         uint16 sharePremium;
     }
-
-    WithdrawAsset[] public withdrawAssets;
 
     // Contracts to deploy
     ArcticArchitectureLens public lens;
@@ -170,6 +175,8 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
     }
 
     Tx[] internal txs;
+
+    mapping(ERC20 => bool) internal isAccountantAsset;
 
     function getTxs() public view returns (Tx[] memory) {
         return txs;
@@ -945,8 +952,32 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             // No roles to setup for timelock.
         }
 
-        setupDepositAssets = vm.parseJsonBool(rawJson, ".deploymentParameters.setupDepositAssets");
-        if (setupDepositAssets) {
+        {
+            bytes memory accountantAssetsRaw = vm.parseJson(rawJson, ".accountantAssets");
+            AccountantAsset[] memory accountantAssets = abi.decode(accountantAssetsRaw, (AccountantAsset[]));
+            for (uint256 i; i < accountantAssets.length; i++) {
+                AccountantAsset memory accountantAsset = accountantAssets[i];
+                ERC20 asset = accountantAsset.addressOrName.address_ == address(0)
+                    ? getERC20(sourceChain, accountantAsset.addressOrName.name)
+                    : ERC20(accountantAsset.addressOrName.address_);
+                isAccountantAsset[asset] = true;
+                // Check if the accountant supports it.
+                if (accountantExists) {
+                    (bool isPeggedToBase, IRateProvider rateProvider) = accountant.rateProviderData(asset);
+                    if (isPeggedToBase || address(rateProvider) != address(0)) {
+                        continue;
+                    }
+                }
+                _log(string.concat("Adding asset to accountant: ", accountantAsset.addressOrName.name), 3);
+                _addTx(
+                    address(accountant),
+                    abi.encodeWithSelector(accountant.setRateProviderData.selector, asset, accountantAsset.rateProvider),
+                    0
+                );
+            }
+        }
+
+        {
             // Read deposit assets from configuration file.
             bytes memory depositAssetsRaw = vm.parseJson(rawJson, ".depositAssets");
             DepositAsset[] memory depositAssets = abi.decode(depositAssetsRaw, (DepositAsset[]));
@@ -960,35 +991,18 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                     (bool allowDeposits,,) = teller.assetData(asset);
                     if (allowDeposits) continue;
                 }
-                // Check if the accountant supports it.
-                if (accountantExists) {
-                    (bool isPeggedToBase, IRateProvider rateProvider) = accountant.rateProviderData(asset);
-                    if (isPeggedToBase || address(rateProvider) != address(0)) continue; // Already set
-                } else {
-                    // We need to set the rate provider.
-                    // Make sure either the asset is pegged to base or a rate provider is given.
-                    if (!depositAsset.isPeggedToBase && depositAsset.rateProvider == address(0)) {
-                        _log(
-                            string.concat(
-                                "Asset is not pegged to base and no rate provider given for asset: ",
-                                depositAsset.addressOrName.name
-                            ),
-                            1
-                        );
-                    } else {
-                        // Add tx to set the rate provider.
-                        _log(string.concat("Setting rate provider for asset: ", depositAsset.addressOrName.name), 3);
-                        _addTx(
-                            address(accountant),
-                            abi.encodeWithSelector(
-                                accountant.setRateProviderData.selector, asset, depositAsset.rateProvider
-                            ),
-                            0
-                        );
-                    }
+                if (!isAccountantAsset[asset]) {
+                    // We are missing rate provider data so revert.
+                    _log(
+                        string.concat(
+                            "Asset is not supported but attempting to add it to teller: ",
+                            depositAsset.addressOrName.name
+                        ),
+                        1
+                    );
                 }
 
-                _log(string.concat("Setting asset data for asset: ", depositAsset.addressOrName.name), 3);
+                _log(string.concat("Adding asset to teller: ", depositAsset.addressOrName.name), 3);
                 _addTx(
                     address(teller),
                     abi.encodeWithSelector(
@@ -1003,12 +1017,145 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             }
         }
 
-        // TODO setup withdraw assets now, by adding them to the queue.
-        // TODO run finish setup code
-        // TODO setup test user code
-        // TODO save deployment details
+        {
+            // Read withdraw assets from configuration file.
+            bytes memory withdrawAssetsRaw = vm.parseJson(rawJson, ".withdrawAssets");
+            WithdrawAsset[] memory withdrawAssets = abi.decode(withdrawAssetsRaw, (WithdrawAsset[]));
+            for (uint256 i; i < withdrawAssets.length; i++) {
+                WithdrawAsset memory withdrawAsset = withdrawAssets[i];
+                // See if teller already supports it.
+                ERC20 asset = withdrawAsset.addressOrName.address_ == address(0)
+                    ? getERC20(sourceChain, withdrawAsset.addressOrName.name)
+                    : ERC20(withdrawAsset.addressOrName.address_);
+                // Check if the asset is already supported by the queue.
+                if (queueExists) {
+                    (bool allowWithdraws,,,,,) = queue.withdrawAssets(address(asset));
+                    if (allowWithdraws) continue;
+                }
+
+                if (!isAccountantAsset[asset]) {
+                    // We are missing rate provider data so revert.
+                    _log(
+                        string.concat(
+                            "Asset is not supported by accountant but attempting to add it to queue: ",
+                            withdrawAsset.addressOrName.name
+                        ),
+                        1
+                    );
+                }
+
+                _log(string.concat("Adding asset to queue: ", withdrawAsset.addressOrName.name), 3);
+                _addTx(address(queue), abi.encodeWithSelector(queue.updateWithdrawAsset.selector, asset), 0);
+            }
+        }
+
+        {
+            _log("Finalizing setup...", 3);
+            if (tellerExists) {
+                // Get sharelock period from configuration file.
+                uint256 shareLockPeriod =
+                    vm.parseJsonUint(rawJson, ".tellerConfiguration.tellerParameters.shareLockPeriod");
+                if (teller.shareLockPeriod() != shareLockPeriod) teller.setShareLockPeriod(uint64(shareLockPeriod));
+                if (teller.authority() != rolesAuthority) teller.setAuthority(rolesAuthority);
+                if (teller.owner() != address(0)) teller.transferOwnership(address(0));
+            }
+
+            if (boringVaultExists) {
+                if (boringVault.authority() != rolesAuthority) boringVault.setAuthority(rolesAuthority);
+                if (boringVault.owner() != address(0)) boringVault.transferOwnership(address(0));
+                if (address(boringVault.hook()) != address(teller)) boringVault.setBeforeTransferHook(address(teller));
+            }
+
+            if (managerExists) {
+                if (manager.authority() != rolesAuthority) manager.setAuthority(rolesAuthority);
+                if (manager.owner() != address(0)) manager.transferOwnership(address(0));
+            }
+
+            if (accountantExists) {
+                if (accountant.authority() != rolesAuthority) accountant.setAuthority(rolesAuthority);
+                if (accountant.owner() != address(0)) accountant.transferOwnership(address(0));
+            }
+
+            if (queueExists) {
+                if (queue.authority() != rolesAuthority) queue.setAuthority(rolesAuthority);
+                if (queue.owner() != address(0)) queue.transferOwnership(address(0));
+            }
+
+            if (queueSolverExists) {
+                if (queueSolver.authority() != rolesAuthority) queueSolver.setAuthority(rolesAuthority);
+                if (queueSolver.owner() != address(0)) queueSolver.transferOwnership(address(0));
+            }
+
+            // Setup roles.
+            _grantRoleIfNotGranted(MANAGER_ROLE, address(manager));
+            _grantRoleIfNotGranted(MANAGER_INTERNAL_ROLE, address(manager));
+            _grantRoleIfNotGranted(MINTER_ROLE, address(teller));
+            _grantRoleIfNotGranted(BURNER_ROLE, address(teller));
+            _grantRoleIfNotGranted(SOLVER_ROLE, address(queueSolver));
+            _grantRoleIfNotGranted(CAN_SOLVE_ROLE, address(queueSolver));
+        }
+
+        {
+            // Setup test user.
+            _log("Setting up test user...", 3);
+            address testUser = _handleAddressOrName(".deploymentParameters.testUserAddressOrName");
+            _grantRoleIfNotGranted(OWNER_ROLE, testUser);
+            _grantRoleIfNotGranted(STRATEGIST_ROLE, testUser);
+            if (rolesAuthorityExists) {
+                if (deploymentOwner != testUser) rolesAuthority.transferOwnership(testUser);
+            }
+        }
+
+        {
+            // Save deployment details.
+            _log("Saving deployment details...", 3);
+            // Read deployment file name from configuration file.
+            string memory deploymentFileName = vm.parseJsonString(rawJson, ".deploymentParameters.deploymentFileName");
+            string memory filePath = string.concat("./deployments/", deploymentFileName);
+            if (vm.exists(filePath)) {
+                // Need to delete it
+                vm.removeFile(filePath);
+            }
+
+            {
+                string memory coreContracts = "core contracts key";
+                vm.serializeAddress(coreContracts, "RolesAuthority", address(rolesAuthority));
+                vm.serializeAddress(coreContracts, "Lens", address(lens));
+                vm.serializeAddress(coreContracts, "BoringVault", address(boringVault));
+                vm.serializeAddress(coreContracts, "ManagerWithMerkleVerification", address(manager));
+                if (accountantKind == AccountantKind.VariableRate) {
+                    vm.serializeAddress(coreContracts, "AccountantWithRateProviders", address(accountant));
+                } else if (accountantKind == AccountantKind.FixedRate) {
+                    vm.serializeAddress(coreContracts, "AccountantWithFixedRate", address(accountant));
+                }
+                if (tellerKind == TellerKind.Teller) {
+                    vm.serializeAddress(coreContracts, "TellerWithMultiAssetSupport", address(teller));
+                } else if (tellerKind == TellerKind.TellerWithRemediation) {
+                    vm.serializeAddress(coreContracts, "TellerWithRemediation", address(teller));
+                } else if (tellerKind == TellerKind.TellerWithCcip) {
+                    vm.serializeAddress(coreContracts, "TellerWithCcip", address(teller));
+                } else if (tellerKind == TellerKind.TellerWithLayerZero) {
+                    vm.serializeAddress(coreContracts, "TellerWithLayerZero", address(teller));
+                }
+                vm.serializeAddress(coreContracts, "BoringOnChainQueue", address(queue));
+                coreOutput = vm.serializeAddress(coreContracts, "QueueSolver", address(queueSolver));
+
+                finalJson = vm.serializeString(finalJson, "contractAddresses", coreOutput);
+
+                vm.writeJson(finalJson, filePath);
+            }
+        }
         // TODO this script should be functionized more.
         // TODO add in section for taking the txs array and sending it. Will probs need some new config logic to dictate how many txs are needed
+    }
+
+    function _grantRoleIfNotGranted(uint8 role, address user) internal {
+        if (rolesAuthorityExists) {
+            if (rolesAuthority.doesUserHaveRole(user, role)) return;
+        }
+        _addTx(
+            address(rolesAuthority), abi.encodeWithSelector(rolesAuthority.setUserRole.selector, user, role, true), 0
+        );
     }
 
     function _setPublicCapabilityIfNotPresent(address target, bytes4 selector) internal {
