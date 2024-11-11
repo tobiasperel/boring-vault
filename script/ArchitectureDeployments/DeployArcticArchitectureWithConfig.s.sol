@@ -128,8 +128,9 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
     uint8 public constant CAN_SOLVE_ROLE = 31;
     uint8 public constant ONLY_QUEUE_ROLE = 32;
 
-    uint8 public droneCount;
-    address[] public droneAddresses;
+    uint256 public droneCount;
+    uint256 public safeGasToForwardNative;
+    address[] internal droneAddresses;
 
     bytes public boringCreationCode;
 
@@ -168,22 +169,16 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
 
     address internal baseAsset;
 
-    struct Tx {
-        address target;
-        bytes data;
-        uint256 value;
-    }
-
-    Tx[] internal txs;
+    Deployer.Tx[] internal txs;
 
     mapping(ERC20 => bool) internal isAccountantAsset;
 
-    function getTxs() public view returns (Tx[] memory) {
+    function getTxs() public view returns (Deployer.Tx[] memory) {
         return txs;
     }
 
     function _addTx(address target, bytes memory data, uint256 value) internal {
-        txs.push(Tx(target, data, value));
+        txs.push(Deployer.Tx(target, data, value));
     }
 
     function _getAddressAndIfDeployed(string memory name) internal view returns (address, bool) {
@@ -261,8 +256,6 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
     }
 
     function run(string memory configurationFileName) external {
-        bytes memory creationCode;
-        bytes memory constructorArgs;
         {
             string memory root = vm.projectRoot();
             string memory configurationPath = string.concat(root, "/deployments/configurations/", configurationFileName);
@@ -311,15 +304,39 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         tellerDeploymentName = vm.parseJsonString(rawJson, ".tellerConfiguration.tellerDeploymentName");
         queueDeploymentName = vm.parseJsonString(rawJson, ".boringQueueConfiguration.boringQueueDeploymentName");
         queueSolverDeploymentName = vm.parseJsonString(rawJson, ".boringQueueConfiguration.boringQueueSolverName");
+        droneBaseDeploymentName = vm.parseJsonString(rawJson, ".droneConfiguration.droneDeploymentBaseName");
         pauserDeploymentName = vm.parseJsonString(rawJson, ".pauserConfiguration.pauserDeploymentName");
         timelockDeploymentName = vm.parseJsonString(rawJson, ".timelockConfiguration.timelockDeploymentName");
+
         // Get Deployer address from configuration file.
         deployer = Deployer(_handleAddressOrName(".deploymentParameters.deployerContractAddressOrName"));
 
-        address deployedAddress;
-        bool isDeployed;
+        _deployRolesAuthority();
+        _deployLens();
+        _deployBoringVault();
+        _deployManager();
+        _deployAccountant();
+        _deployTeller();
+        _deployBoringOnChainQueue();
+        _deployQueueSolver();
+        _deployPauser();
+        _deployTimelock();
+        _deployDrones();
+        _setupRoles();
+        _setupAccountantAssets();
+        _setupDepositAssets();
+        _setupWithdrawAssets();
+        // TODO if crosschain teller is used, then add the logic to add the ccip and lz chains.
+        _finalizeSetup();
+        _setupTestUser();
+        _saveContractAddresses();
+        _bundleTxs();
+    }
 
-        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(rolesAuthorityDeploymentName);
+    function _deployRolesAuthority() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(rolesAuthorityDeploymentName);
         rolesAuthority = RolesAuthority(deployedAddress);
         if (!isDeployed) {
             creationCode = type(RolesAuthority).creationCode;
@@ -335,8 +352,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         } else {
             rolesAuthorityExists = true;
         }
+    }
 
-        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(lensDeploymentName);
+    function _deployLens() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(lensDeploymentName);
         lens = ArcticArchitectureLens(deployedAddress);
         if (!isDeployed) {
             creationCode = type(ArcticArchitectureLens).creationCode;
@@ -350,8 +371,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             );
             _log("Lens deployment TX added", 3);
         }
+    }
 
-        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(boringVaultDeploymentName);
+    function _deployBoringVault() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(boringVaultDeploymentName);
         boringVault = BoringVault(payable(deployedAddress));
         if (!isDeployed) {
             creationCode = type(BoringVault).creationCode;
@@ -374,8 +399,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         } else {
             boringVaultExists = true;
         }
+    }
 
-        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(managerDeploymentName);
+    function _deployManager() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(managerDeploymentName);
         manager = ManagerWithMerkleVerification(deployedAddress);
         if (!isDeployed) {
             // Read balancerVault from configuration file.
@@ -399,8 +428,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         } else {
             managerExists = true;
         }
+    }
 
-        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(accountantDeploymentName);
+    function _deployAccountant() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(accountantDeploymentName);
         accountant = AccountantWithRateProviders(deployedAddress);
         if (!isDeployed) {
             // Figure out the payout address.
@@ -472,7 +505,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                 address(boringVault),
                 payoutAddress,
                 accountantDeploymentParameters.startingExchangeRate,
-                base,
+                baseAsset,
                 accountantDeploymentParameters.allowedExchangeRateChangeUpper,
                 accountantDeploymentParameters.allowedExchangeRateChangeLower,
                 accountantDeploymentParameters.minimumUpateDelayInSeconds,
@@ -534,8 +567,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         } else {
             accountantExists = true;
         }
+    }
 
-        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(tellerDeploymentName);
+    function _deployTeller() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(tellerDeploymentName);
         teller = TellerWithMultiAssetSupport(deployedAddress);
         if (!isDeployed) {
             // Get native wrapper address from configuration file.
@@ -636,8 +673,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         } else {
             tellerExists = true;
         }
+    }
 
-        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(queueDeploymentName);
+    function _deployBoringOnChainQueue() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(queueDeploymentName);
         queue = BoringOnChainQueue(deployedAddress);
         if (!isDeployed) {
             // Read configuration to determine kind.
@@ -668,8 +709,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         } else {
             queueExists = true;
         }
+    }
 
-        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(queueSolverDeploymentName);
+    function _deployQueueSolver() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(queueSolverDeploymentName);
         queueSolver = BoringSolver(deployedAddress);
         if (!isDeployed) {
             creationCode = type(BoringSolver).creationCode;
@@ -686,8 +731,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         } else {
             queueSolverExists = true;
         }
+    }
 
-        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(pauserDeploymentName);
+    function _deployPauser() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(pauserDeploymentName);
         // Read config to determine if pauser should be deployed.
         bool shouldDeployPauser = vm.parseJsonBool(rawJson, ".pauserConfiguration.shouldDeploy");
         if (shouldDeployPauser) {
@@ -714,8 +763,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                 pauserExists = true;
             }
         }
+    }
 
-        (deployedAddress, isDeployed) = _getAddressAndIfDeployed(timelockDeploymentName);
+    function _deployTimelock() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(timelockDeploymentName);
         // Read config to determine if timelock should be deployed.
         bool shouldDeployTimelock = vm.parseJsonBool(rawJson, ".timelockConfiguration.shouldDeploy");
         if (shouldDeployTimelock) {
@@ -745,9 +798,33 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                 timelockExists = true;
             }
         }
+    }
 
-        // TODO handle drone deployment.
+    function _deployDrones() internal {
+        bytes memory constructorArgs;
+        bytes memory creationCode;
+        droneCount = vm.parseJsonUint(rawJson, ".droneConfiguration.droneCount");
+        safeGasToForwardNative = vm.parseJsonUint(rawJson, ".droneConfiguration.safeGasToForwardNative");
+        for (uint256 i; i < droneCount; ++i) {
+            string memory droneName = string.concat(droneBaseDeploymentName, "-", vm.toString(i));
+            (address deployedAddress, bool isDeployed) = _getAddressAndIfDeployed(droneName);
+            droneAddresses.push(deployedAddress);
+            if (!isDeployed) {
+                creationCode = type(BoringDrone).creationCode;
+                constructorArgs = abi.encode(address(boringVault), safeGasToForwardNative);
+                _addTx(
+                    address(deployer),
+                    abi.encodeWithSelector(
+                        deployer.deployContract.selector, droneName, creationCode, constructorArgs, 0
+                    ),
+                    uint256(0)
+                );
+                _log(string.concat("Boring drone deployment TX added: ", droneName), 3);
+            }
+        }
+    }
 
+    function _setupRoles() internal {
         // Check if we are setting up roles.
         bool setupRoles = vm.parseJsonBool(rawJson, ".deploymentParameters.setupRoles");
         if (setupRoles) {
@@ -951,172 +1028,185 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
 
             // No roles to setup for timelock.
         }
+    }
 
-        {
-            bytes memory accountantAssetsRaw = vm.parseJson(rawJson, ".accountantAssets");
-            AccountantAsset[] memory accountantAssets = abi.decode(accountantAssetsRaw, (AccountantAsset[]));
-            for (uint256 i; i < accountantAssets.length; i++) {
-                AccountantAsset memory accountantAsset = accountantAssets[i];
-                ERC20 asset = accountantAsset.addressOrName.address_ == address(0)
-                    ? getERC20(sourceChain, accountantAsset.addressOrName.name)
-                    : ERC20(accountantAsset.addressOrName.address_);
-                isAccountantAsset[asset] = true;
-                // Check if the accountant supports it.
-                if (accountantExists) {
-                    (bool isPeggedToBase, IRateProvider rateProvider) = accountant.rateProviderData(asset);
-                    if (isPeggedToBase || address(rateProvider) != address(0)) {
-                        continue;
-                    }
-                }
-                _log(string.concat("Adding asset to accountant: ", accountantAsset.addressOrName.name), 3);
-                _addTx(
-                    address(accountant),
-                    abi.encodeWithSelector(accountant.setRateProviderData.selector, asset, accountantAsset.rateProvider),
-                    0
-                );
-            }
-        }
-
-        {
-            // Read deposit assets from configuration file.
-            bytes memory depositAssetsRaw = vm.parseJson(rawJson, ".depositAssets");
-            DepositAsset[] memory depositAssets = abi.decode(depositAssetsRaw, (DepositAsset[]));
-            for (uint256 i; i < depositAssets.length; i++) {
-                DepositAsset memory depositAsset = depositAssets[i];
-                // See if teller already supports it.
-                ERC20 asset = depositAsset.addressOrName.address_ == address(0)
-                    ? getERC20(sourceChain, depositAsset.addressOrName.name)
-                    : ERC20(depositAsset.addressOrName.address_);
-                if (tellerExists) {
-                    (bool allowDeposits,,) = teller.assetData(asset);
-                    if (allowDeposits) continue;
-                }
-                if (!isAccountantAsset[asset]) {
-                    // We are missing rate provider data so revert.
-                    _log(
-                        string.concat(
-                            "Asset is not supported but attempting to add it to teller: ",
-                            depositAsset.addressOrName.name
-                        ),
-                        1
-                    );
-                }
-
-                _log(string.concat("Adding asset to teller: ", depositAsset.addressOrName.name), 3);
-                _addTx(
-                    address(teller),
-                    abi.encodeWithSelector(
-                        teller.updateAssetData.selector,
-                        asset,
-                        depositAsset.allowDeposits,
-                        depositAsset.allowWithdraws,
-                        depositAsset.sharePremium
-                    ),
-                    0
-                );
-            }
-        }
-
-        {
-            // Read withdraw assets from configuration file.
-            bytes memory withdrawAssetsRaw = vm.parseJson(rawJson, ".withdrawAssets");
-            WithdrawAsset[] memory withdrawAssets = abi.decode(withdrawAssetsRaw, (WithdrawAsset[]));
-            for (uint256 i; i < withdrawAssets.length; i++) {
-                WithdrawAsset memory withdrawAsset = withdrawAssets[i];
-                // See if teller already supports it.
-                ERC20 asset = withdrawAsset.addressOrName.address_ == address(0)
-                    ? getERC20(sourceChain, withdrawAsset.addressOrName.name)
-                    : ERC20(withdrawAsset.addressOrName.address_);
-                // Check if the asset is already supported by the queue.
-                if (queueExists) {
-                    (bool allowWithdraws,,,,,) = queue.withdrawAssets(address(asset));
-                    if (allowWithdraws) continue;
-                }
-
-                if (!isAccountantAsset[asset]) {
-                    // We are missing rate provider data so revert.
-                    _log(
-                        string.concat(
-                            "Asset is not supported by accountant but attempting to add it to queue: ",
-                            withdrawAsset.addressOrName.name
-                        ),
-                        1
-                    );
-                }
-
-                _log(string.concat("Adding asset to queue: ", withdrawAsset.addressOrName.name), 3);
-                _addTx(address(queue), abi.encodeWithSelector(queue.updateWithdrawAsset.selector, asset), 0);
-            }
-        }
-
-        {
-            _log("Finalizing setup...", 3);
-            if (tellerExists) {
-                // Get sharelock period from configuration file.
-                uint256 shareLockPeriod =
-                    vm.parseJsonUint(rawJson, ".tellerConfiguration.tellerParameters.shareLockPeriod");
-                if (teller.shareLockPeriod() != shareLockPeriod) teller.setShareLockPeriod(uint64(shareLockPeriod));
-                if (teller.authority() != rolesAuthority) teller.setAuthority(rolesAuthority);
-                if (teller.owner() != address(0)) teller.transferOwnership(address(0));
-            }
-
-            if (boringVaultExists) {
-                if (boringVault.authority() != rolesAuthority) boringVault.setAuthority(rolesAuthority);
-                if (boringVault.owner() != address(0)) boringVault.transferOwnership(address(0));
-                if (address(boringVault.hook()) != address(teller)) boringVault.setBeforeTransferHook(address(teller));
-            }
-
-            if (managerExists) {
-                if (manager.authority() != rolesAuthority) manager.setAuthority(rolesAuthority);
-                if (manager.owner() != address(0)) manager.transferOwnership(address(0));
-            }
-
+    function _setupAccountantAssets() internal {
+        isAccountantAsset[ERC20(baseAsset)] = true;
+        bytes memory accountantAssetsRaw = vm.parseJson(rawJson, ".accountantAssets");
+        AccountantAsset[] memory accountantAssets = abi.decode(accountantAssetsRaw, (AccountantAsset[]));
+        for (uint256 i; i < accountantAssets.length; i++) {
+            AccountantAsset memory accountantAsset = accountantAssets[i];
+            ERC20 asset = accountantAsset.addressOrName.address_ == address(0)
+                ? getERC20(sourceChain, accountantAsset.addressOrName.name)
+                : ERC20(accountantAsset.addressOrName.address_);
+            isAccountantAsset[asset] = true;
+            // Check if the accountant supports it.
             if (accountantExists) {
-                if (accountant.authority() != rolesAuthority) accountant.setAuthority(rolesAuthority);
-                if (accountant.owner() != address(0)) accountant.transferOwnership(address(0));
+                (bool isPeggedToBase, IRateProvider rateProvider) = accountant.rateProviderData(asset);
+                if (isPeggedToBase || address(rateProvider) != address(0)) {
+                    continue;
+                }
+            }
+            _log(string.concat("Adding asset to accountant: ", accountantAsset.addressOrName.name), 3);
+            _addTx(
+                address(accountant),
+                abi.encodeWithSelector(accountant.setRateProviderData.selector, asset, accountantAsset.rateProvider),
+                0
+            );
+        }
+    }
+
+    function _setupDepositAssets() internal {
+        // Read deposit assets from configuration file.
+        bytes memory depositAssetsRaw = vm.parseJson(rawJson, ".depositAssets");
+        DepositAsset[] memory depositAssets = abi.decode(depositAssetsRaw, (DepositAsset[]));
+        for (uint256 i; i < depositAssets.length; i++) {
+            DepositAsset memory depositAsset = depositAssets[i];
+            // See if teller already supports it.
+            ERC20 asset = depositAsset.addressOrName.address_ == address(0)
+                ? getERC20(sourceChain, depositAsset.addressOrName.name)
+                : ERC20(depositAsset.addressOrName.address_);
+            if (tellerExists) {
+                (bool allowDeposits,,) = teller.assetData(asset);
+                if (allowDeposits) continue;
+            }
+            if (!isAccountantAsset[asset]) {
+                // We are missing rate provider data so revert.
+                _log(
+                    string.concat(
+                        "Asset is not supported but attempting to add it to teller: ", depositAsset.addressOrName.name
+                    ),
+                    1
+                );
             }
 
+            _log(string.concat("Adding asset to teller: ", depositAsset.addressOrName.name), 3);
+            _addTx(
+                address(teller),
+                abi.encodeWithSelector(
+                    teller.updateAssetData.selector,
+                    asset,
+                    depositAsset.allowDeposits,
+                    depositAsset.allowWithdraws,
+                    depositAsset.sharePremium
+                ),
+                0
+            );
+        }
+    }
+
+    function _setupWithdrawAssets() internal {
+        // Read withdraw assets from configuration file.
+        bytes memory withdrawAssetsRaw = vm.parseJson(rawJson, ".withdrawAssets");
+        WithdrawAsset[] memory withdrawAssets = abi.decode(withdrawAssetsRaw, (WithdrawAsset[]));
+        for (uint256 i; i < withdrawAssets.length; i++) {
+            WithdrawAsset memory withdrawAsset = withdrawAssets[i];
+            // See if teller already supports it.
+            ERC20 asset = withdrawAsset.addressOrName.address_ == address(0)
+                ? getERC20(sourceChain, withdrawAsset.addressOrName.name)
+                : ERC20(withdrawAsset.addressOrName.address_);
+            // Check if the asset is already supported by the queue.
             if (queueExists) {
-                if (queue.authority() != rolesAuthority) queue.setAuthority(rolesAuthority);
-                if (queue.owner() != address(0)) queue.transferOwnership(address(0));
+                (bool allowWithdraws,,,,,) = queue.withdrawAssets(address(asset));
+                if (allowWithdraws) continue;
             }
 
-            if (queueSolverExists) {
-                if (queueSolver.authority() != rolesAuthority) queueSolver.setAuthority(rolesAuthority);
-                if (queueSolver.owner() != address(0)) queueSolver.transferOwnership(address(0));
+            if (!isAccountantAsset[asset]) {
+                // We are missing rate provider data so revert.
+                _log(
+                    string.concat(
+                        "Asset is not supported by accountant but attempting to add it to queue: ",
+                        withdrawAsset.addressOrName.name
+                    ),
+                    1
+                );
             }
 
-            // Setup roles.
-            _grantRoleIfNotGranted(MANAGER_ROLE, address(manager));
-            _grantRoleIfNotGranted(MANAGER_INTERNAL_ROLE, address(manager));
-            _grantRoleIfNotGranted(MINTER_ROLE, address(teller));
-            _grantRoleIfNotGranted(BURNER_ROLE, address(teller));
-            _grantRoleIfNotGranted(SOLVER_ROLE, address(queueSolver));
-            _grantRoleIfNotGranted(CAN_SOLVE_ROLE, address(queueSolver));
+            _log(string.concat("Adding asset to queue: ", withdrawAsset.addressOrName.name), 3);
+            _addTx(
+                address(queue),
+                abi.encodeWithSelector(
+                    queue.updateWithdrawAsset.selector,
+                    asset,
+                    withdrawAsset.secondsToMaturity,
+                    withdrawAsset.minimumSecondsToDeadline,
+                    withdrawAsset.minDiscount,
+                    withdrawAsset.maxDiscount,
+                    withdrawAsset.minimumShares
+                ),
+                0
+            );
+        }
+    }
+
+    function _finalizeSetup() internal {
+        _log("Finalizing setup...", 3);
+        if (tellerExists) {
+            // Get sharelock period from configuration file.
+            uint256 shareLockPeriod = vm.parseJsonUint(rawJson, ".tellerConfiguration.tellerParameters.shareLockPeriod");
+            if (teller.shareLockPeriod() != shareLockPeriod) teller.setShareLockPeriod(uint64(shareLockPeriod));
+            if (teller.authority() != rolesAuthority) teller.setAuthority(rolesAuthority);
+            if (teller.owner() != address(0)) teller.transferOwnership(address(0));
+        }
+
+        if (boringVaultExists) {
+            if (boringVault.authority() != rolesAuthority) boringVault.setAuthority(rolesAuthority);
+            if (boringVault.owner() != address(0)) boringVault.transferOwnership(address(0));
+            if (address(boringVault.hook()) != address(teller)) boringVault.setBeforeTransferHook(address(teller));
+        }
+
+        if (managerExists) {
+            if (manager.authority() != rolesAuthority) manager.setAuthority(rolesAuthority);
+            if (manager.owner() != address(0)) manager.transferOwnership(address(0));
+        }
+
+        if (accountantExists) {
+            if (accountant.authority() != rolesAuthority) accountant.setAuthority(rolesAuthority);
+            if (accountant.owner() != address(0)) accountant.transferOwnership(address(0));
+        }
+
+        if (queueExists) {
+            if (queue.authority() != rolesAuthority) queue.setAuthority(rolesAuthority);
+            if (queue.owner() != address(0)) queue.transferOwnership(address(0));
+        }
+
+        if (queueSolverExists) {
+            if (queueSolver.authority() != rolesAuthority) queueSolver.setAuthority(rolesAuthority);
+            if (queueSolver.owner() != address(0)) queueSolver.transferOwnership(address(0));
+        }
+
+        // Setup roles.
+        _grantRoleIfNotGranted(MANAGER_ROLE, address(manager));
+        _grantRoleIfNotGranted(MANAGER_INTERNAL_ROLE, address(manager));
+        _grantRoleIfNotGranted(MINTER_ROLE, address(teller));
+        _grantRoleIfNotGranted(BURNER_ROLE, address(teller));
+        _grantRoleIfNotGranted(SOLVER_ROLE, address(queueSolver));
+        _grantRoleIfNotGranted(CAN_SOLVE_ROLE, address(queueSolver));
+    }
+
+    function _setupTestUser() internal {
+        // Setup test user.
+        _log("Setting up test user...", 3);
+        address testUser = _handleAddressOrName(".deploymentParameters.testUserAddressOrName");
+        _grantRoleIfNotGranted(OWNER_ROLE, testUser);
+        _grantRoleIfNotGranted(STRATEGIST_ROLE, testUser);
+        if (rolesAuthorityExists) {
+            if (deploymentOwner != testUser) rolesAuthority.transferOwnership(testUser);
+        }
+    }
+
+    function _saveContractAddresses() internal {
+        // Save deployment details.
+        _log("Saving deployment details...", 3);
+        // Read deployment file name from configuration file.
+        string memory deploymentFileName = vm.parseJsonString(rawJson, ".deploymentParameters.deploymentFileName");
+        string memory filePath = string.concat("./deployments/", deploymentFileName);
+        if (vm.exists(filePath)) {
+            // Need to delete it
+            vm.removeFile(filePath);
         }
 
         {
-            // Setup test user.
-            _log("Setting up test user...", 3);
-            address testUser = _handleAddressOrName(".deploymentParameters.testUserAddressOrName");
-            _grantRoleIfNotGranted(OWNER_ROLE, testUser);
-            _grantRoleIfNotGranted(STRATEGIST_ROLE, testUser);
-            if (rolesAuthorityExists) {
-                if (deploymentOwner != testUser) rolesAuthority.transferOwnership(testUser);
-            }
-        }
-
-        {
-            // Save deployment details.
-            _log("Saving deployment details...", 3);
-            // Read deployment file name from configuration file.
-            string memory deploymentFileName = vm.parseJsonString(rawJson, ".deploymentParameters.deploymentFileName");
-            string memory filePath = string.concat("./deployments/", deploymentFileName);
-            if (vm.exists(filePath)) {
-                // Need to delete it
-                vm.removeFile(filePath);
-            }
-
             {
                 string memory coreContracts = "core contracts key";
                 vm.serializeAddress(coreContracts, "RolesAuthority", address(rolesAuthority));
@@ -1139,14 +1229,65 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                 }
                 vm.serializeAddress(coreContracts, "BoringOnChainQueue", address(queue));
                 coreOutput = vm.serializeAddress(coreContracts, "QueueSolver", address(queueSolver));
-
-                finalJson = vm.serializeString(finalJson, "contractAddresses", coreOutput);
-
-                vm.writeJson(finalJson, filePath);
             }
+
+            {
+                string memory drones = "drone key";
+                for (uint256 i; i < droneAddresses.length; i++) {
+                    droneOutput =
+                        vm.serializeAddress(drones, string.concat("drone-", vm.toString(i)), droneAddresses[i]);
+                }
+            }
+
+            vm.serializeString(finalJson, "contractAddresses", coreOutput);
+            finalJson = vm.serializeString(finalJson, "Drones", droneOutput);
+
+            vm.writeJson(finalJson, filePath);
         }
-        // TODO this script should be functionized more.
-        // TODO add in section for taking the txs array and sending it. Will probs need some new config logic to dictate how many txs are needed
+    }
+
+    function _bundleTxs() internal {
+        Deployer.Tx[] memory txsToSend = getTxs();
+
+        // Determine how many txs to send
+        uint256 desiredNumberOfDeploymentTxs =
+            vm.parseJsonUint(rawJson, ".deploymentParameters.desiredNumberOfDeploymentTxs");
+        uint256 txsLength = txsToSend.length;
+        if (desiredNumberOfDeploymentTxs == 0) {
+            _log("Desired number of deployment txs is 0", 1);
+        }
+        desiredNumberOfDeploymentTxs =
+            desiredNumberOfDeploymentTxs > txsLength ? txsLength : desiredNumberOfDeploymentTxs;
+        uint256 txsPerBundle = txsLength / desiredNumberOfDeploymentTxs;
+        uint256 lastIndexDeployed;
+        Deployer.Tx[][] memory txBundles = new Deployer.Tx[][](desiredNumberOfDeploymentTxs);
+
+        _log(string.concat("Tx bundles to send: ", vm.toString(desiredNumberOfDeploymentTxs)), 4);
+        _log(string.concat("Total txs: ", vm.toString(txsLength)), 4);
+
+        for (uint256 i; i < desiredNumberOfDeploymentTxs; i++) {
+            uint256 txsInBundle;
+            if (i == desiredNumberOfDeploymentTxs - 1 && txsLength % txsPerBundle != 0) {
+                txsInBundle = txsLength - lastIndexDeployed;
+            } else {
+                txsInBundle = txsPerBundle;
+            }
+            txBundles[i] = new Deployer.Tx[](txsInBundle);
+            for (uint256 j; j < txBundles[i].length; j++) {
+                txBundles[i][j] = txsToSend[lastIndexDeployed + j];
+            }
+            lastIndexDeployed += txsInBundle;
+        }
+
+        // Read tx bundler address from configuration file.
+        address txBundler = _handleAddressOrName(".deploymentParameters.txBundlerAddressOrName");
+
+        vm.startBroadcast(privateKey);
+        for (uint256 i; i < desiredNumberOfDeploymentTxs; i++) {
+            _log(string.concat("Sending bundle: ", vm.toString(i)), 4);
+            Deployer(txBundler).bundleTxs(txBundles[i]);
+        }
+        vm.stopBroadcast();
     }
 
     function _grantRoleIfNotGranted(uint8 role, address user) internal {
