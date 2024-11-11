@@ -1144,35 +1144,81 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         if (tellerExists) {
             // Get sharelock period from configuration file.
             uint256 shareLockPeriod = vm.parseJsonUint(rawJson, ".tellerConfiguration.tellerParameters.shareLockPeriod");
-            if (teller.shareLockPeriod() != shareLockPeriod) teller.setShareLockPeriod(uint64(shareLockPeriod));
-            if (teller.authority() != rolesAuthority) teller.setAuthority(rolesAuthority);
-            if (teller.owner() != address(0)) teller.transferOwnership(address(0));
+            if (teller.shareLockPeriod() != shareLockPeriod) {
+                _addTx(
+                    address(teller),
+                    abi.encodeWithSelector(teller.setShareLockPeriod.selector, uint64(shareLockPeriod)),
+                    0
+                );
+            }
+            if (teller.authority() != rolesAuthority) {
+                _addTx(address(teller), abi.encodeWithSelector(teller.setAuthority.selector, rolesAuthority), 0);
+            }
+            if (teller.owner() != address(0)) {
+                _addTx(address(teller), abi.encodeWithSelector(teller.transferOwnership.selector, address(0)), 0);
+            }
         }
 
         if (boringVaultExists) {
-            if (boringVault.authority() != rolesAuthority) boringVault.setAuthority(rolesAuthority);
-            if (boringVault.owner() != address(0)) boringVault.transferOwnership(address(0));
-            if (address(boringVault.hook()) != address(teller)) boringVault.setBeforeTransferHook(address(teller));
+            if (boringVault.authority() != rolesAuthority) {
+                _addTx(
+                    address(boringVault), abi.encodeWithSelector(boringVault.setAuthority.selector, rolesAuthority), 0
+                );
+            }
+            if (address(boringVault.hook()) != address(teller)) {
+                _addTx(
+                    address(boringVault),
+                    abi.encodeWithSelector(boringVault.setBeforeTransferHook.selector, address(teller)),
+                    0
+                );
+            }
+            if (boringVault.owner() != address(0)) {
+                _addTx(
+                    address(boringVault), abi.encodeWithSelector(boringVault.transferOwnership.selector, address(0)), 0
+                );
+            }
         }
 
         if (managerExists) {
-            if (manager.authority() != rolesAuthority) manager.setAuthority(rolesAuthority);
-            if (manager.owner() != address(0)) manager.transferOwnership(address(0));
+            if (manager.authority() != rolesAuthority) {
+                _addTx(address(manager), abi.encodeWithSelector(manager.setAuthority.selector, rolesAuthority), 0);
+            }
+            if (manager.owner() != address(0)) {
+                _addTx(address(manager), abi.encodeWithSelector(manager.transferOwnership.selector, address(0)), 0);
+            }
         }
 
         if (accountantExists) {
-            if (accountant.authority() != rolesAuthority) accountant.setAuthority(rolesAuthority);
-            if (accountant.owner() != address(0)) accountant.transferOwnership(address(0));
+            if (accountant.authority() != rolesAuthority) {
+                _addTx(address(accountant), abi.encodeWithSelector(accountant.setAuthority.selector, rolesAuthority), 0);
+            }
+            if (accountant.owner() != address(0)) {
+                _addTx(
+                    address(accountant), abi.encodeWithSelector(accountant.transferOwnership.selector, address(0)), 0
+                );
+            }
         }
 
         if (queueExists) {
-            if (queue.authority() != rolesAuthority) queue.setAuthority(rolesAuthority);
-            if (queue.owner() != address(0)) queue.transferOwnership(address(0));
+            if (queue.authority() != rolesAuthority) {
+                _addTx(address(queue), abi.encodeWithSelector(queue.setAuthority.selector, rolesAuthority), 0);
+            }
+            if (queue.owner() != address(0)) {
+                _addTx(address(queue), abi.encodeWithSelector(queue.transferOwnership.selector, address(0)), 0);
+            }
         }
 
         if (queueSolverExists) {
-            if (queueSolver.authority() != rolesAuthority) queueSolver.setAuthority(rolesAuthority);
-            if (queueSolver.owner() != address(0)) queueSolver.transferOwnership(address(0));
+            if (queueSolver.authority() != rolesAuthority) {
+                _addTx(
+                    address(queueSolver), abi.encodeWithSelector(queueSolver.setAuthority.selector, rolesAuthority), 0
+                );
+            }
+            if (queueSolver.owner() != address(0)) {
+                _addTx(
+                    address(queueSolver), abi.encodeWithSelector(queueSolver.transferOwnership.selector, address(0)), 0
+                );
+            }
         }
 
         // Setup roles.
@@ -1191,7 +1237,13 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         _grantRoleIfNotGranted(OWNER_ROLE, testUser);
         _grantRoleIfNotGranted(STRATEGIST_ROLE, testUser);
         if (rolesAuthorityExists) {
-            if (deploymentOwner != testUser) rolesAuthority.transferOwnership(testUser);
+            if (deploymentOwner != testUser) {
+                _addTx(
+                    address(rolesAuthority),
+                    abi.encodeWithSelector(rolesAuthority.transferOwnership.selector, testUser),
+                    0
+                );
+            }
         }
     }
 

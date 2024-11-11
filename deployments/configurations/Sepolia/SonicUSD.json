@@ -3,7 +3,7 @@
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "sepolia",
-    "desiredNumberOfDeploymentTxs": 2,
+    "desiredNumberOfDeploymentTxs": 1,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -27,7 +27,7 @@
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "deployment.json"
+    "deploymentFileName": "addresses/Sepolia/SonicUSD.json"
   },
   "rolesAuthorityConfiguration": {
     "rolesAuthorityDeploymentName": "Sonic USD Roles Authority V0.0"
