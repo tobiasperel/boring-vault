@@ -22,7 +22,7 @@ contract ChainValues {
     string public constant fraxtal = "fraxtal";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
-    string public constant sonic_testnet = "sonic_testnet";
+    string public constant sonicTestnet = "sonicTestnet";
 
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
@@ -1243,16 +1243,17 @@ contract ChainValues {
     }
 
     function _addSonicTestnetValues() private {
-        values[sonic_testnet]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
-        values[sonic_testnet]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
-        values[sonic_testnet]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
-        values[sonic_testnet]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[sonicTestnet]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[sonicTestnet]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+        values[sonicTestnet]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[sonicTestnet]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
 
-        values[sonic_testnet]["CrispyUSD"] = 0x867F14Da2EcD4B582812d76D94c4B10cB00b507C.toBytes32();
-        values[sonic_testnet]["ZRO"] = address(1).toBytes32();
+        values[sonicTestnet]["WETH"] = address(1).toBytes32();
+        values[sonicTestnet]["CrispyUSD"] = 0x867F14Da2EcD4B582812d76D94c4B10cB00b507C.toBytes32();
+        values[sonicTestnet]["ZRO"] = address(1).toBytes32();
 
-        values[sonic_testnet]["balancerVault"] = address(1).toBytes32();
+        values[sonicTestnet]["balancerVault"] = address(1).toBytes32();
 
-        values[sonic_testnet]["LayerZeroEndPoint"] = 0x6EDCE65403992e310A62460808c4b910D972f10f.toBytes32();
+        values[sonicTestnet]["LayerZeroEndPoint"] = 0x6EDCE65403992e310A62460808c4b910D972f10f.toBytes32();
     }
 }
