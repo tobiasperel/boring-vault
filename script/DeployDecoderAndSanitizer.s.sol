@@ -15,6 +15,7 @@ import {Deployer} from "src/helper/Deployer.sol";
 import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
 import {ContractNames} from "resources/ContractNames.sol";
 import {PointFarmingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PointFarmingDecoderAndSanitizer.sol";
+import {OnlyHyperlaneDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/OnlyHyperlaneDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -57,18 +58,22 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // constructorArgs = abi.encode(boringVault, pancakeSwapV3NonFungiblePositionManager, pancakeSwapV3MasterChefV3);
         // deployer.deployContract(LombardPancakeSwapDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
-        creationCode = type(ITBPositionDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(eEigen);
-        deployer.deployContract(
-            "ITB Eigen Position Manager Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0
-        );
+        // creationCode = type(ITBPositionDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode(eEigen);
+        // deployer.deployContract(
+        //     "ITB Eigen Position Manager Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0
+        // );
         // creationCode = type(ITBPositionDecoderAndSanitizer).creationCode;
         // constructorArgs = abi.encode(liquidUsd);
         // deployer.deployContract(ItbPositionDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
-        creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(liquidUsd, uniswapV3NonFungiblePositionManager);
-        deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
+        // creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode(liquidUsd, uniswapV3NonFungiblePositionManager);
+        // deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
+
+        creationCode = type(OnlyHyperlaneDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(address(0));
+        deployer.deployContract("Hyperlane Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }

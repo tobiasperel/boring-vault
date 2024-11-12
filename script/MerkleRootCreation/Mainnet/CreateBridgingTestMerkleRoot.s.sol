@@ -21,6 +21,7 @@ contract CreateBridgingTestMerkleRootScript is Script, MerkleTreeHelper {
     address public rawDataDecoderAndSanitizer = 0xD9023495256B23D7b4FA32A5Fd724140F179F51b;
     address public drone = 0x80aA0E6c933316464D66A4CFd2A4F1C04677da73;
     address public zircuitDrone = 0xFdC94b15819cc12a010c65A713563B65cDc060E4;
+    address public hyperlaneDecoderAndSanitizer = 0xfC823909C7D2Cb8701FE7d6EE74508C57Df1D6dE;
 
     function setUp() external {}
 
@@ -29,7 +30,30 @@ contract CreateBridgingTestMerkleRootScript is Script, MerkleTreeHelper {
      */
     function run() external {
         /// NOTE Only have 1 function run at a time, otherwise the merkle root created will be wrong.
-        generateAdminStrategistMerkleRoot();
+        // generateAdminStrategistMerkleRoot();
+        generateHyperlaneMerkleRoot();
+    }
+
+    function generateHyperlaneMerkleRoot() public {
+        setSourceChainName(mainnet);
+        setAddress(false, mainnet, "boringVault", boringVault);
+        setAddress(false, mainnet, "managerAddress", managerAddress);
+        setAddress(false, mainnet, "accountantAddress", accountantAddress);
+        setAddress(false, mainnet, "rawDataDecoderAndSanitizer", hyperlaneDecoderAndSanitizer);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](2);
+
+        uint32 destinationDomain = 1408864445;
+        bytes32 recipient = 0x87559103e75eab777571ffabebe0f4f48e729b2a621877aab97084cad3303cbf;
+        ERC20 asset = ERC20(0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88);
+        address hyperlaneWeETHsRouter = 0xef899e92DA472E014bE795Ecce948308958E25A2;
+        _addLeafsForHyperlane(leafs, destinationDomain, recipient, asset, hyperlaneWeETHsRouter);
+
+        string memory filePath = "./leafs/Mainnet/HyperlaneStrategistLeafs.json";
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
     }
 
     function generateAdminStrategistMerkleRoot() public {
