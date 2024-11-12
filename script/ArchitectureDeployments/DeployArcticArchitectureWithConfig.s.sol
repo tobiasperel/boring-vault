@@ -1377,6 +1377,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         // Read tx bundler address from configuration file.
         address txBundler = _handleAddressOrName(".deploymentParameters.txBundlerAddressOrName");
 
+        // TODO maybe I could have this save the txs to a json if it fails?
         vm.startBroadcast(privateKey);
         for (uint256 i; i < desiredNumberOfDeploymentTxs; i++) {
             _log(string.concat("Sending bundle: ", vm.toString(i)), 4);
