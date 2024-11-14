@@ -1057,7 +1057,12 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             _log(string.concat("Adding asset to accountant: ", accountantAsset.addressOrName.name), 3);
             _addTx(
                 address(accountant),
-                abi.encodeWithSelector(accountant.setRateProviderData.selector, asset, accountantAsset.rateProvider),
+                abi.encodeWithSelector(
+                    accountant.setRateProviderData.selector,
+                    asset,
+                    accountantAsset.isPeggedToBase,
+                    accountantAsset.rateProvider
+                ),
                 0
             );
         }
@@ -1378,6 +1383,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         address txBundler = _handleAddressOrName(".deploymentParameters.txBundlerAddressOrName");
 
         // TODO maybe I could have this save the txs to a json if it fails?
+        // vm.startBroadcast();
         vm.startBroadcast(privateKey);
         for (uint256 i; i < desiredNumberOfDeploymentTxs; i++) {
             _log(string.concat("Sending bundle: ", vm.toString(i)), 4);
