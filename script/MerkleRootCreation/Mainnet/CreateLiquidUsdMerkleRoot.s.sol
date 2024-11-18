@@ -114,6 +114,16 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         borrowAssets[2] = getERC20(sourceChain, "DAI");
         _addSparkLendLeafs(leafs, supplyAssets, borrowAssets);
 
+        // ========================== Aave V3 Lido ==========================
+        supplyAssets = new ERC20[](3);
+        supplyAssets[0] = getERC20(sourceChain, "USDC");
+        supplyAssets[1] = getERC20(sourceChain, "SUSDE");
+        supplyAssets[2] = getERC20(sourceChain, "USDS");
+        borrowAssets = new ERC20[](2);
+        borrowAssets[0] = getERC20(sourceChain, "USDC");
+        borrowAssets[1] = getERC20(sourceChain, "USDS");
+        _addAaveV3LidoLeafs(leafs, supplyAssets, borrowAssets);
+
         // ========================== MakerDAO ==========================
         /**
          * deposit, withdraw
@@ -175,6 +185,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_karak_01_29_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USDe_karak_01_29_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USDe_03_26_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_05_28_25"), true);
 
         // ========================== Ethena ==========================
         /**
@@ -192,7 +203,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         /**
          * Full position platform for USDC, USDT, DAI, USDe, sUSDe.
          */
-        address[] memory token0 = new address[](13);
+        address[] memory token0 = new address[](16);
         token0[0] = getAddress(sourceChain, "USDC");
         token0[1] = getAddress(sourceChain, "USDC");
         token0[2] = getAddress(sourceChain, "USDC");
@@ -206,8 +217,11 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         token0[10] = getAddress(sourceChain, "USDS");
         token0[11] = getAddress(sourceChain, "USDS");
         token0[12] = getAddress(sourceChain, "USDS");
+        token0[13] = getAddress(sourceChain, "deUSD");
+        token0[14] = getAddress(sourceChain, "deUSD");
+        token0[15] = getAddress(sourceChain, "deUSD");
 
-        address[] memory token1 = new address[](13);
+        address[] memory token1 = new address[](16);
         token1[0] = getAddress(sourceChain, "USDT");
         token1[1] = getAddress(sourceChain, "DAI");
         token1[2] = getAddress(sourceChain, "USDE");
@@ -221,6 +235,9 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         token1[10] = getAddress(sourceChain, "USDC");
         token1[11] = getAddress(sourceChain, "USDT");
         token1[12] = getAddress(sourceChain, "DAI");
+        token1[13] = getAddress(sourceChain, "sdeUSD");
+        token1[14] = getAddress(sourceChain, "USDC");
+        token1[15] = getAddress(sourceChain, "USDT");
 
         _addUniswapV3Leafs(leafs, token0, token1);
 
