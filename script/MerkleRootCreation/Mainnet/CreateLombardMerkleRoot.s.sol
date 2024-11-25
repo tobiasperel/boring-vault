@@ -88,8 +88,8 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         _addLeafsForFeeClaiming(leafs, feeAssets);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](11);
-        SwapKind[] memory kind = new SwapKind[](11);
+        address[] memory assets = new address[](12);
+        SwapKind[] memory kind = new SwapKind[](12);
         assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
@@ -112,6 +112,8 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         kind[9] = SwapKind.Sell;
         assets[10] = getAddress(sourceChain, "cbBTC");
         kind[10] = SwapKind.BuyAndSell;
+        assets[11] = getAddress(sourceChain, "eBTC");
+        kind[11] = SwapKind.BuyAndSell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         // ========================== Flashloans ==========================
