@@ -20,6 +20,7 @@ contract ChainValues {
     string public constant linea = "linea";
     string public constant scroll = "scroll";
     string public constant fraxtal = "fraxtal";
+    string public constant corn = "corn";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
@@ -85,6 +86,7 @@ contract ChainValues {
         _addScrollValues();
         _addFraxtalValues();
         _addBscValues();
+        _addCornValues();
 
         // Add testnet values
         _addHoleskyValues();
@@ -1225,6 +1227,12 @@ contract ChainValues {
         values[bsc]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
         values[bsc]["WBTC"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32();
         values[bsc]["WBNB"] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.toBytes32();
+    }
+
+    function _addCornValues() private {
+        values[corn]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[corn]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[corn]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
     }
 
     function _addSepoliaValues() private {

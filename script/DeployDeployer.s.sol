@@ -10,7 +10,8 @@ import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 
 /**
- *  source .env && forge script script/DeployDeployer.s.sol:DeployDeployerScript --evm-version london --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
+ *  source .env && forge script script/DeployDeployer.s.sol:DeployDeployerScript --evm-version london --broadcast --verify --verifier-url 'https://api.routescan.io/v2/network/mainnet/evm/21000000/etherscan' --etherscan-api-key $CORNSCAN_KEY
+ *
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
 contract DeployDeployerScript is Script, ContractNames, MainnetAddresses {
@@ -24,7 +25,7 @@ contract DeployDeployerScript is Script, ContractNames, MainnetAddresses {
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("sepolia");
+        vm.createSelectFork("corn");
     }
 
     function run() external {
@@ -50,7 +51,7 @@ contract DeployDeployerScript is Script, ContractNames, MainnetAddresses {
 
         constructorArgs = abi.encode("Crispy USD", "CUSD", 6);
         creationCode = type(MockERC20).creationCode;
-        MockERC20(deployer.deployContract("CrispyUSD V0.0", creationCode, constructorArgs, 0));
+        MockERC20(deployer.deployContract("CrispyUSD V0.2", creationCode, constructorArgs, 0));
 
         vm.stopBroadcast();
     }

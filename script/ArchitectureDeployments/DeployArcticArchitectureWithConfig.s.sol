@@ -1194,7 +1194,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             _addTx(address(boringVault), abi.encodeWithSelector(boringVault.setAuthority.selector, rolesAuthority), 0);
             _addTx(
                 address(boringVault),
-                abi.encodeWithSelector(boringVault.setBeforeTransferHook.selector, rolesAuthority),
+                abi.encodeWithSelector(boringVault.setBeforeTransferHook.selector, address(teller)),
                 0
             );
             _addTx(address(boringVault), abi.encodeWithSelector(boringVault.transferOwnership.selector, address(0)), 0);
