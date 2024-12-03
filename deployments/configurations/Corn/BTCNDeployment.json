@@ -4,7 +4,7 @@
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "corn",
     "evmVersion": "london",
-    "desiredNumberOfDeploymentTxs": 3,
+    "desiredNumberOfDeploymentTxs": 10,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "deployerAddress"
