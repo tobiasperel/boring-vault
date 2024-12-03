@@ -3,7 +3,8 @@
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "corn",
-    "desiredNumberOfDeploymentTxs": 1,
+    "evmVersion": "london",
+    "desiredNumberOfDeploymentTxs": 3,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "deployerAddress"
@@ -21,11 +22,11 @@
     },
     "nativeWrapperAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
-      "name": "BTCN"
+      "name": "WBTCN"
     },
     "deploymentOwnerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
-      "name": "txBundlerAddress"
+      "name": "deployerAddress"
     },
     "deploymentFileName": "addresses/Corn/BTCNDeployment.json"
   },
@@ -44,7 +45,7 @@
   "managerConfiguration": {
     "managerDeploymentName": "Staked BTCN Manager V0.0",
     "balancerVaultAddressOrName": {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x0000000000000000000000000000000000000001",
       "name": "balancerVault"
     }
   },
@@ -62,7 +63,7 @@
           {
             "to": "0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b",
             "percent": 10000
-          },
+          }
         ]
       },
       "accountantDeploymentParameters": {
@@ -85,10 +86,10 @@
       "allowPublicDeposits": true,
       "shareLockPeriod": 60,
       "kind": {
-        "teller": false,
+        "teller": true,
         "tellerWithRemediation": false,
         "tellerWithCcip": false,
-        "tellerWithLayerZero": true
+        "tellerWithLayerZero": false
       },
       "ccip": {
         "routerAddressOrName": {
