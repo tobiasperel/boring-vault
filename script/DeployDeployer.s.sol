@@ -29,8 +29,6 @@ contract DeployDeployerScript is Script, ContractNames, MainnetAddresses {
     }
 
     function run() external {
-        string memory evmVersion = getFoundryEvmVersion();
-        require(keccak256(abi.encode(evmVersion)) == keccak256(abi.encode("cancun")), "Unsupported EVM version");
         bytes memory constructorArgs;
         bytes memory creationCode;
         vm.startBroadcast(privateKey);
