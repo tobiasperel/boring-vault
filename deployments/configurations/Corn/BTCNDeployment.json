@@ -52,8 +52,8 @@
     "accountantDeploymentName": "Staked BTCN Accountant V0.0",
     "accountantParameters": {
       "kind": {
-        "variableRate": false,
-        "fixedRate": true
+        "variableRate": true,
+        "fixedRate": false
       },
       "payoutConfiguration": {
         "payoutTo": "0x0000000000000000000000000000000000000000",
@@ -61,12 +61,8 @@
         "splits": [
           {
             "to": "0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b",
-            "percent": 5000
+            "percent": 10000
           },
-          {
-            "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
-            "percent": 5000
-          }
         ]
       },
       "accountantDeploymentParameters": {
@@ -76,17 +72,17 @@
           "address": "0x0000000000000000000000000000000000000000",
           "name": "WBTCN"
         },
-        "minimumUpateDelayInSeconds": 86400,
+        "minimumUpateDelayInSeconds": 21600,
         "performanceFee": 100,
         "platformFee": 100,
-        "startingExchangeRate": 1000000
+        "startingExchangeRate": 1000000000000000000
       }
     }
   },
   "tellerConfiguration": {
     "tellerDeploymentName": "Staked BTCN Teller V0.0",
     "tellerParameters": {
-      "allowPublicDeposits": false,
+      "allowPublicDeposits": true,
       "shareLockPeriod": 60,
       "kind": {
         "teller": false,
@@ -150,11 +146,11 @@
   },
   "droneConfiguration": {
     "droneDeploymentBaseName": "Staked BTCN Drone V0.0",
-    "droneCount": 1,
+    "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
-    "shouldDeploy": false,
+    "shouldDeploy": true,
     "pauserDeploymentName": "pauser",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
