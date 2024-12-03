@@ -3,9 +3,9 @@
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "arbitrum",
-    "desiredNumberOfDeploymentTxs": 100,
+    "desiredNumberOfDeploymentTxs": 2,
     "txBundlerAddressOrName": {
-      "address": "0x87D51666Da1b56332b216D456D1C2ba3Aed6089c",
+      "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
     "setupRoles": true,
@@ -24,32 +24,32 @@
       "name": "WETH"
     },
     "deploymentOwnerAddressOrName": {
-      "address": "0x47Cec90FACc9364D7C21A8ab5e2aD9F1f75D740C",
+      "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
     "deploymentFileName": "addresses/Arbitrum/eBTC.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "test ether.fi BTC Roles Authority Version 0.0"
+    "rolesAuthorityDeploymentName": "test ether.fi BTC Roles Authority Version 0.1"
   },
   "lensConfiguration": {
-    "lensDeploymentName": "Arctic Architecture Lens V0.0"
+    "lensDeploymentName": "Arctic Architecture Lens V0.1"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "test ether.fi BTC V0.0",
-    "boringVaultName": "test ether.fi BTC",
+    "boringVaultDeploymentName": "test ether.fi BTC V0.1",
+    "boringVaultName": "ether.fi BTC",
     "boringVaultSymbol": "eBTC",
     "boringVaultDecimals": 8
   },
   "managerConfiguration": {
-    "managerDeploymentName": "test ether.fi BTC Manager V0.0",
+    "managerDeploymentName": "test ether.fi BTC Manager V0.1",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "test ether.fi BTC Accountant V0.0",
+    "accountantDeploymentName": "test ether.fi BTC Accountant V0.1",
     "accountantParameters": {
       "kind": {
         "variableRate": true,
@@ -57,7 +57,7 @@
       },
       "payoutConfiguration": {
         "payoutTo": "0x0000000000000000000000000000000000000001",
-        "optionalPaymentSplitterName": "test ether.fi BTC Payment Splitter V0.0",
+        "optionalPaymentSplitterName": "test ether.fi BTC Payment Splitter V0.1",
         "splits": [
           {
             "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
@@ -80,7 +80,7 @@
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "test ether.fi BTC Teller V0.0",
+    "tellerDeploymentName": "test ether.fi BTC Teller V0.1",
     "tellerParameters": {
       "allowPublicDeposits": true,
       "shareLockPeriod": 60,
@@ -133,8 +133,8 @@
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "test ether.fi BTC Boring Queue V0.0",
-    "boringQueueSolverName": "test ether.fi BTC Boring Solver V0.0",
+    "boringQueueDeploymentName": "test ether.fi BTC Boring Queue V0.1",
+    "boringQueueSolverName": "test ether.fi BTC Boring Solver V0.1",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -145,7 +145,7 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "test ether.fi BTC Drone V0.0",
+    "droneDeploymentBaseName": "test ether.fi BTC Drone V0.1",
     "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
