@@ -1,0 +1,233 @@
+{
+  "deploymentParameters": {
+    "logLevel": 4,
+    "privateKeyEnvName": "BORING_DEVELOPER",
+    "chainName": "arbitrum",
+    "evmVersion": "london",
+    "desiredNumberOfDeploymentTxs": 4,
+    "txBundlerAddressOrName": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "txBundlerAddress"
+    },
+    "setupRoles": true,
+    "setupTestUser": true,
+    "saveDeploymentDetails": true,
+    "testUserAddressOrName": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "dev1Address"
+    },
+    "deployerContractAddressOrName": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "deployerAddress"
+    },
+    "nativeWrapperAddressOrName": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "WETH"
+    },
+    "deploymentOwnerAddressOrName": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "txBundlerAddress"
+    },
+    "deploymentFileName": "addresses/Arbitrum/eBTC.json"
+  },
+  "rolesAuthorityConfiguration": {
+    "rolesAuthorityDeploymentName": "test ether.fi BTC Roles Authority Version 0.6"
+  },
+  "lensConfiguration": {
+    "lensDeploymentName": "Arctic Architecture Lens V0.6"
+  },
+  "boringVaultConfiguration": {
+    "boringVaultDeploymentName": "test ether.fi BTC V0.6",
+    "boringVaultName": "ether.fi BTC",
+    "boringVaultSymbol": "eBTC",
+    "boringVaultDecimals": 8
+  },
+  "managerConfiguration": {
+    "managerDeploymentName": "test ether.fi BTC Manager V0.6",
+    "balancerVaultAddressOrName": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "balancerVault"
+    }
+  },
+  "accountantConfiguration": {
+    "accountantDeploymentName": "test ether.fi BTC Accountant V0.6",
+    "accountantParameters": {
+      "kind": {
+        "variableRate": true,
+        "fixedRate": false
+      },
+      "payoutConfiguration": {
+        "payoutTo": "0x0000000000000000000000000000000000000001",
+        "optionalPaymentSplitterName": "test ether.fi BTC Payment Splitter V0.6",
+        "splits": [
+          {
+            "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
+            "percent": 10000
+          }
+        ]
+      },
+      "accountantDeploymentParameters": {
+        "allowedExchangeRateChangeLower": 9900,
+        "allowedExchangeRateChangeUpper": 10000,
+        "baseAddressOrName": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "name": "WBTC"
+        },
+        "minimumUpateDelayInSeconds": 21600,
+        "performanceFee": 0,
+        "platformFee": 200,
+        "startingExchangeRate": 100000000
+      }
+    }
+  },
+  "tellerConfiguration": {
+    "tellerDeploymentName": "test ether.fi BTC Teller V0.6",
+    "tellerParameters": {
+      "allowPublicDeposits": true,
+      "shareLockPeriod": 60,
+      "kind": {
+        "teller": true,
+        "tellerWithRemediation": false,
+        "tellerWithCcip": false,
+        "tellerWithLayerZero": false
+      },
+      "ccip": {
+        "routerAddressOrName": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "name": "ccipRouter"
+        },
+        "ccipChains": [
+          {
+            "chainSelector": 1,
+            "allowMessagesFrom": true,
+            "allowMessagesTo": true,
+            "targetTellerOrSelf": {
+              "address": "0x0000000000000000000000000000000000000000",
+              "self": true
+            },
+            "messageGasLimit": 100000
+          }
+        ]
+      },
+      "layerZero": {
+        "endpointAddressOrName": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "name": "LayerZeroEndPoint"
+        },
+        "lzTokenAddressOrName": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "name": "ZRO"
+        },
+        "lzChains": [
+          {
+            "chainId": 1,
+            "allowMessagesFrom": true,
+            "allowMessagesTo": true,
+            "targetTellerOrSelf": {
+              "address": "0x0000000000000000000000000000000000000000",
+              "self": true
+            },
+            "messageGasLimit": 100000
+          }
+        ]
+      }
+    }
+  },
+  "boringQueueConfiguration": {
+    "boringQueueDeploymentName": "test ether.fi BTC Boring Queue V0.6",
+    "boringQueueSolverName": "test ether.fi BTC Boring Solver V0.6",
+    "queueParameters": {
+      "allowPublicWithdrawals": true,
+      "allowPublicSelfWithdrawals": true,
+      "kind": {
+        "boringQueue": true,
+        "boringQueueWithTracking": false
+      }
+    }
+  },
+  "droneConfiguration": {
+    "droneDeploymentBaseName": "test ether.fi BTC Drone V0.6",
+    "droneCount": 0,
+    "safeGasToForwardNative": 21000
+  },
+  "pauserConfiguration": {
+    "shouldDeploy": true,
+    "pauserDeploymentName": "test ether.fi BTC Pauser V0.6",
+    "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
+    "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
+    "makePauseAll": ["0x0000000000000000000000000000000000000000"],
+    "makeUnpauseAll": ["0x0000000000000000000000000000000000000000"],
+    "senderToPausable": [
+      {
+        "sender": "0x0000000000000000000000000000000000000000",
+        "pausable": "0x0000000000000000000000000000000000000000"
+      }
+    ]
+  },
+  "timelockConfiguration": {
+    "shouldDeploy": true,
+    "timelockDeploymentName": "test ether.fi BTC Timelock V0.6",
+    "timelockParameters": {
+      "minDelay": 60,
+      "proposers": [
+        "0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b",
+        "0xf8553c8552f906C19286F21711721E206EE4909E"
+      ],
+      "executors": ["0x183fE88858AAB892cc796662200374e3dF6927E3"]
+    }
+  },
+  "accountantAssets": [
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "cbBTC"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    }
+  ],
+  "depositAssets": [
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "WBTC"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 10
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "cbBTC"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 40
+    }
+  ],
+  "withdrawAssets": [
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "WBTC"
+      },
+      "maxDiscount": 10,
+      "minDiscount": 1,
+      "minimumSecondsToDeadline": 259200,
+      "minimumShares": 0,
+      "secondsToMaturity": 172800
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "cbBTC"
+      },
+      "maxDiscount": 10,
+      "minDiscount": 1,
+      "minimumSecondsToDeadline": 259200,
+      "minimumShares": 0,
+      "secondsToMaturity": 172800
+    }
+  ]
+}
