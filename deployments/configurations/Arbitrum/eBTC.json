@@ -3,7 +3,8 @@
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "arbitrum",
-    "desiredNumberOfDeploymentTxs": 2,
+    "evmVersion": "london",
+    "desiredNumberOfDeploymentTxs": 4,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -30,26 +31,26 @@
     "deploymentFileName": "addresses/Arbitrum/eBTC.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "test ether.fi BTC Roles Authority Version 0.1"
+    "rolesAuthorityDeploymentName": "test ether.fi BTC Roles Authority Version 0.6"
   },
   "lensConfiguration": {
-    "lensDeploymentName": "Arctic Architecture Lens V0.1"
+    "lensDeploymentName": "Arctic Architecture Lens V0.6"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "test ether.fi BTC V0.1",
+    "boringVaultDeploymentName": "test ether.fi BTC V0.6",
     "boringVaultName": "ether.fi BTC",
     "boringVaultSymbol": "eBTC",
     "boringVaultDecimals": 8
   },
   "managerConfiguration": {
-    "managerDeploymentName": "test ether.fi BTC Manager V0.1",
+    "managerDeploymentName": "test ether.fi BTC Manager V0.6",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "test ether.fi BTC Accountant V0.1",
+    "accountantDeploymentName": "test ether.fi BTC Accountant V0.6",
     "accountantParameters": {
       "kind": {
         "variableRate": true,
@@ -57,7 +58,7 @@
       },
       "payoutConfiguration": {
         "payoutTo": "0x0000000000000000000000000000000000000001",
-        "optionalPaymentSplitterName": "test ether.fi BTC Payment Splitter V0.1",
+        "optionalPaymentSplitterName": "test ether.fi BTC Payment Splitter V0.6",
         "splits": [
           {
             "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
@@ -80,7 +81,7 @@
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "test ether.fi BTC Teller V0.1",
+    "tellerDeploymentName": "test ether.fi BTC Teller V0.6",
     "tellerParameters": {
       "allowPublicDeposits": true,
       "shareLockPeriod": 60,
@@ -133,8 +134,8 @@
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "test ether.fi BTC Boring Queue V0.1",
-    "boringQueueSolverName": "test ether.fi BTC Boring Solver V0.1",
+    "boringQueueDeploymentName": "test ether.fi BTC Boring Queue V0.6",
+    "boringQueueSolverName": "test ether.fi BTC Boring Solver V0.6",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -145,13 +146,13 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "test ether.fi BTC Drone V0.1",
+    "droneDeploymentBaseName": "test ether.fi BTC Drone V0.6",
     "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
-    "shouldDeploy": false,
-    "pauserDeploymentName": "pauser",
+    "shouldDeploy": true,
+    "pauserDeploymentName": "test ether.fi BTC Pauser V0.6",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
     "makePauseAll": ["0x0000000000000000000000000000000000000000"],
@@ -164,12 +165,15 @@
     ]
   },
   "timelockConfiguration": {
-    "shouldDeploy": false,
-    "timelockDeploymentName": "timelock",
+    "shouldDeploy": true,
+    "timelockDeploymentName": "test ether.fi BTC Timelock V0.6",
     "timelockParameters": {
-      "minDelay": 86400,
-      "proposers": ["0x0000000000000000000000000000000000000000"],
-      "executors": ["0x0000000000000000000000000000000000000000"]
+      "minDelay": 60,
+      "proposers": [
+        "0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b",
+        "0xf8553c8552f906C19286F21711721E206EE4909E"
+      ],
+      "executors": ["0x183fE88858AAB892cc796662200374e3dF6927E3"]
     }
   },
   "accountantAssets": [
@@ -190,7 +194,7 @@
       },
       "allowDeposits": true,
       "allowWithdraws": true,
-      "sharePremium": 0
+      "sharePremium": 10
     },
     {
       "addressOrName": {
@@ -199,7 +203,7 @@
       },
       "allowDeposits": true,
       "allowWithdraws": true,
-      "sharePremium": 0
+      "sharePremium": 40
     }
   ],
   "withdrawAssets": [
