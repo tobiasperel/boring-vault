@@ -24,6 +24,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
     address public itbReserveProtocolPositionManager = 0x778aC5d0EE062502fADaa2d300a51dE0869f7995;
     address public itbAaveLidoPositionManager = 0xC4F5Ee078a1C4DA280330546C29840d45ab32753;
     address public itbAaveLidoPositionManager2 = 0x572F323Aa330B467C356c5a30Bf9A20480F4fD52;
+    address public hyperlaneDecoderAndSanitizer = 0xfC823909C7D2Cb8701FE7d6EE74508C57Df1D6dE;
 
     function setUp() external {}
 
@@ -320,12 +321,14 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         _addArbitrumNativeBridgeLeafs(leafs, bridgeAssets);
 
         // ========================== CCIP Bridge Leafs ==========================
-        ERC20[] memory ccipBridgeAssets = new ERC20[](1);
-        ccipBridgeAssets[0] = getERC20(sourceChain, "WETH");
-        ERC20[] memory ccipBridgeFeeAssets = new ERC20[](2);
-        ccipBridgeFeeAssets[0] = getERC20(sourceChain, "WETH");
-        ccipBridgeFeeAssets[1] = getERC20(sourceChain, "LINK");
-        _addCcipBridgeLeafs(leafs, ccipArbitrumChainSelector, ccipBridgeAssets, ccipBridgeFeeAssets);
+        {
+            ERC20[] memory ccipBridgeAssets = new ERC20[](1);
+            ccipBridgeAssets[0] = getERC20(sourceChain, "WETH");
+            ERC20[] memory ccipBridgeFeeAssets = new ERC20[](2);
+            ccipBridgeFeeAssets[0] = getERC20(sourceChain, "WETH");
+            ccipBridgeFeeAssets[1] = getERC20(sourceChain, "LINK");
+            _addCcipBridgeLeafs(leafs, ccipArbitrumChainSelector, ccipBridgeAssets, ccipBridgeFeeAssets);
+        }
 
         // ========================== Standard Bridge ==========================
         {
@@ -437,6 +440,17 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             _addReclamationLeafs(leafs, target, reclamationDecoder);
             target = 0x572F323Aa330B467C356c5a30Bf9A20480F4fD52;
             _addReclamationLeafs(leafs, target, reclamationDecoder);
+        }
+
+        // ========================== Hyperlane ==========================
+        {
+            setAddress(true, mainnet, "rawDataDecoderAndSanitizer", hyperlaneDecoderAndSanitizer);
+
+            uint32 destinationDomain = 1408864445;
+            bytes32 recipient = 0x87559103e75eab777571ffabebe0f4f48e729b2a621877aab97084cad3303cbf;
+            ERC20 asset = ERC20(0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88);
+            address hyperlaneWeETHsRouter = 0xef899e92DA472E014bE795Ecce948308958E25A2;
+            _addLeafsForHyperlane(leafs, destinationDomain, recipient, asset, hyperlaneWeETHsRouter);
         }
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
