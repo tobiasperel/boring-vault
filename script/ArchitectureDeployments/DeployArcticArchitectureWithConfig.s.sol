@@ -37,7 +37,7 @@ import "forge-std/StdJson.sol";
 import {console} from "@forge-std/Test.sol";
 
 /**
- *  source .env && forge script script/ArchitectureDeployments/DeployArcticArchitectureWithConfig.s.sol:DeployArcticArchitectureWithConfigScript --sig "run(string)" config.json --with-gas-price 3000000000 --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
+ *  source .env && forge script script/ArchitectureDeployments/DeployArcticArchitectureWithConfig.s.sol:DeployArcticArchitectureWithConfigScript --sig "run(string)" config.json --evm-version london --with-gas-price 3000000000 --broadcast --verify
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  *  source .env && forge script script/ArchitectureDeployments/DeployArcticArchitectureWithConfig.s.sol:DeployArcticArchitectureWithConfigScript --sig "run(string)" "config.json" --with-gas-price 3000000000
  */
