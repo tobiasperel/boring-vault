@@ -13,12 +13,12 @@ contract PaymentSplitter is Auth {
 
     /**
      * @dev Represents a split of fee payments.
-     * @param to The address to send the split to.
      * @param percent The percentage of the total fee to send to this address.
+     * @param to The address to send the split to.
      */
     struct SplitInformation {
-        address to;
         uint96 percent;
+        address to;
     }
 
     //============================== STATE ===============================
