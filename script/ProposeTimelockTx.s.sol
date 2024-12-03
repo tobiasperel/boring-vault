@@ -28,21 +28,25 @@ contract ProposeTimelockTxScript is Script, ContractNames, MainnetAddresses {
     function run() external {
         vm.startBroadcast(privateKey);
 
-        address[] memory targets = new address[](4);
+        address[] memory targets = new address[](6);
         targets[0] = address(timelock);
         targets[1] = address(timelock);
         targets[2] = address(timelock);
         targets[3] = address(timelock);
+        targets[4] = address(timelock);
+        targets[5] = address(timelock);
 
-        uint256[] memory values = new uint256[](4);
+        uint256[] memory values = new uint256[](6);
 
-        bytes[] memory payloads = new bytes[](4);
+        bytes[] memory payloads = new bytes[](6);
         payloads[0] = abi.encodeWithSelector(AccessControl.grantRole.selector, timelock.CANCELLER_ROLE(), multisig);
         payloads[1] = abi.encodeWithSelector(AccessControl.grantRole.selector, timelock.PROPOSER_ROLE(), multisig);
         payloads[2] = abi.encodeWithSelector(AccessControl.revokeRole.selector, timelock.CANCELLER_ROLE(), dev0Address);
         payloads[3] = abi.encodeWithSelector(AccessControl.revokeRole.selector, timelock.CANCELLER_ROLE(), dev1Address);
+        payloads[4] = abi.encodeWithSelector(AccessControl.revokeRole.selector, timelock.PROPOSER_ROLE(), dev0Address);
+        payloads[5] = abi.encodeWithSelector(AccessControl.revokeRole.selector, timelock.PROPOSER_ROLE(), dev1Address);
 
-        timelock.scheduleBatch(targets, values, payloads, bytes32(0), bytes32(0), 1 days);
+        timelock.scheduleBatch(targets, values, payloads, bytes32(0), bytes32(0), 300);
 
         vm.stopBroadcast();
     }
