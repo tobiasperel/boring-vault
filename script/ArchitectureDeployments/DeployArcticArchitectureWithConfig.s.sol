@@ -37,7 +37,7 @@ import "forge-std/StdJson.sol";
 import {console} from "@forge-std/Test.sol";
 
 /**
- *  source .env && forge script script/ArchitectureDeployments/DeployArcticArchitectureWithConfig.s.sol:DeployArcticArchitectureWithConfigScript --sig "run(string)" config.json --with-gas-price 3000000000 --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
+ *  source .env && forge script script/ArchitectureDeployments/DeployArcticArchitectureWithConfig.s.sol:DeployArcticArchitectureWithConfigScript --sig "run(string)" config.json --with-gas-price 3000000000 --broadcast --slow --verify
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  *  source .env && forge script script/ArchitectureDeployments/DeployArcticArchitectureWithConfig.s.sol:DeployArcticArchitectureWithConfigScript --sig "run(string)" "config.json" --with-gas-price 3000000000
  */
@@ -87,8 +87,6 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         AddressOrName addressOrName;
         bool allowDeposits;
         bool allowWithdraws;
-        bool isPeggedToBase;
-        address rateProvider;
         uint16 sharePremium;
     }
 
@@ -127,6 +125,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
     uint8 public constant SENDER_UNPAUSER_ROLE = 19;
     uint8 public constant CAN_SOLVE_ROLE = 31;
     uint8 public constant ONLY_QUEUE_ROLE = 32;
+    uint8 public constant SOLVER_ORIGIN_ROLE = 33;
 
     uint256 public droneCount;
     uint256 public safeGasToForwardNative;
@@ -214,6 +213,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
     string internal sourceChain;
     // 0 - off, 1 - error, 2 - warn, 3 - info, 4 - debug
     uint256 internal logLevel;
+    string internal evmVersion;
 
     address internal deploymentOwner;
 
@@ -261,6 +261,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             string memory configurationPath = string.concat(root, "/deployments/configurations/", configurationFileName);
             rawJson = vm.readFile(configurationPath);
         }
+
         if (vm.keyExists(rawJson, ".deploymentParameters.logLevel")) {
             logLevel = vm.parseJsonUint(rawJson, ".deploymentParameters.logLevel");
             _log("Log level found in configuration file.", 3);
@@ -281,6 +282,23 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             _log(string.concat("Forked to chain: ", chainName), 3);
         } else {
             revert KeyNotFound(".deploymentParameters.chainName");
+        }
+
+        if (vm.keyExists(rawJson, ".deploymentParameters.evmVersion")) {
+            evmVersion = vm.parseJsonString(rawJson, ".deploymentParameters.evmVersion");
+            _log(string.concat("evm version found in configuration file: ", evmVersion), 3);
+            // Read the foundry.toml file
+            string memory toml = vm.readFile("foundry.toml");
+
+            // Get the evm_version from foundry.toml
+            string memory foundryEVMVersion = vm.parseTomlString(toml, ".profile.default.evm_version");
+
+            // Check if the evm version in the configuration file is the same as the one in the foundry.toml file
+            if (keccak256(abi.encode(evmVersion)) != keccak256(abi.encode(foundryEVMVersion))) {
+                _log(string.concat("evm version mismatch: ", evmVersion, " vs ", foundryEVMVersion), 1);
+            }
+        } else {
+            revert KeyNotFound(".deploymentParameters.evmVersion");
         }
 
         if (vm.keyExists(rawJson, ".deploymentParameters.deploymentOwnerAddressOrName")) {
@@ -328,6 +346,7 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
         _setupWithdrawAssets();
         // TODO if crosschain teller is used, then add the logic to add the ccip and lz chains.
         _finalizeSetup();
+        // TODO setup pausers
         _setupTestUser();
         _saveContractAddresses();
         _bundleTxs();
@@ -786,14 +805,19 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                 bytes memory timelockParametersRaw = vm.parseJson(rawJson, ".timelockConfiguration.timelockParameters");
                 TimelockParameters memory timelockParameters = abi.decode(timelockParametersRaw, (TimelockParameters));
                 constructorArgs = abi.encode(
-                    deploymentOwner,
                     timelockParameters.minDelay,
                     timelockParameters.proposers,
-                    timelockParameters.executors
+                    timelockParameters.executors,
+                    address(0) // Default super admin to zero address for timelock self management
                 );
                 _log("Timelock deployment TX added", 3);
                 _log(string.concat("Min delay: ", vm.toString(timelockParameters.minDelay)), 4);
-                // TODO log the proposers and executors.
+                for (uint256 i; i < timelockParameters.proposers.length; ++i) {
+                    _log(string.concat("Proposer: ", vm.toString(timelockParameters.proposers[i])), 4);
+                }
+                for (uint256 i; i < timelockParameters.executors.length; ++i) {
+                    _log(string.concat("Executor: ", vm.toString(timelockParameters.executors[i])), 4);
+                }
                 _addTx(
                     address(deployer),
                     abi.encodeWithSelector(
@@ -847,11 +871,15 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             _addRoleCapabilityIfNotPresent(MINTER_ROLE, address(boringVault), BoringVault.enter.selector);
             _addRoleCapabilityIfNotPresent(BURNER_ROLE, address(boringVault), BoringVault.exit.selector);
             _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(boringVault), BoringVault.setBeforeTransferHook.selector);
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(boringVault), Auth.setAuthority.selector);
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(boringVault), Auth.transferOwnership.selector);
 
             // Setup roles for manager.
             _addRoleCapabilityIfNotPresent(
                 OWNER_ROLE, address(manager), ManagerWithMerkleVerification.setManageRoot.selector
             );
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(manager), Auth.setAuthority.selector);
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(manager), Auth.transferOwnership.selector);
             _addRoleCapabilityIfNotPresent(
                 MANAGER_INTERNAL_ROLE,
                 address(manager),
@@ -889,6 +917,8 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             _addRoleCapabilityIfNotPresent(
                 OWNER_ROLE, address(accountant), AccountantWithRateProviders.updatePayoutAddress.selector
             );
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(accountant), Auth.setAuthority.selector);
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(accountant), Auth.transferOwnership.selector);
             if (accountantKind == AccountantKind.VariableRate) {
                 _addRoleCapabilityIfNotPresent(
                     OWNER_ROLE, address(accountant), AccountantWithRateProviders.resetHighwaterMark.selector
@@ -927,6 +957,8 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             _addRoleCapabilityIfNotPresent(
                 STRATEGIST_MULTISIG_ROLE, address(teller), TellerWithMultiAssetSupport.refundDeposit.selector
             );
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(teller), Auth.setAuthority.selector);
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(teller), Auth.transferOwnership.selector);
             allowPublicDeposits = vm.parseJsonBool(rawJson, ".tellerConfiguration.tellerParameters.allowPublicDeposits");
             if (tellerKind == TellerKind.TellerWithCcip) {
                 _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(teller), ChainlinkCCIPTeller.addChain.selector);
@@ -982,6 +1014,8 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
 
             // Setup roles for queue.
             _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(queue), BoringOnChainQueue.rescueTokens.selector);
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(queue), Auth.setAuthority.selector);
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(queue), Auth.transferOwnership.selector);
             _addRoleCapabilityIfNotPresent(
                 MULTISIG_ROLE, address(queue), BoringOnChainQueue.updateWithdrawAsset.selector
             );
@@ -997,13 +1031,10 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             _addRoleCapabilityIfNotPresent(
                 CAN_SOLVE_ROLE, address(queue), BoringOnChainQueue.solveOnChainWithdraws.selector
             );
+            _addRoleCapabilityIfNotPresent(
+                SOLVER_ORIGIN_ROLE, address(queue), BoringOnChainQueue.solveOnChainWithdraws.selector
+            );
             _addRoleCapabilityIfNotPresent(ONLY_QUEUE_ROLE, address(queueSolver), BoringSolver.boringSolve.selector);
-            _addRoleCapabilityIfNotPresent(
-                CAN_SOLVE_ROLE, address(queueSolver), BoringSolver.boringRedeemSolve.selector
-            );
-            _addRoleCapabilityIfNotPresent(
-                CAN_SOLVE_ROLE, address(queueSolver), BoringSolver.boringRedeemMintSolve.selector
-            );
 
             allowPublicWithdrawals =
                 vm.parseJsonBool(rawJson, ".boringQueueConfiguration.queueParameters.allowPublicWithdrawals");
@@ -1015,6 +1046,16 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                 _setPublicCapabilityIfNotPresent(address(queue), BoringOnChainQueue.cancelOnChainWithdraw.selector);
                 _setPublicCapabilityIfNotPresent(address(queue), BoringOnChainQueue.replaceOnChainWithdraw.selector);
             }
+
+            // Setup roles for Queue Solver.
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(queueSolver), Auth.setAuthority.selector);
+            _addRoleCapabilityIfNotPresent(OWNER_ROLE, address(queueSolver), Auth.transferOwnership.selector);
+            _addRoleCapabilityIfNotPresent(
+                SOLVER_ORIGIN_ROLE, address(queueSolver), BoringSolver.boringRedeemSolve.selector
+            );
+            _addRoleCapabilityIfNotPresent(
+                SOLVER_ORIGIN_ROLE, address(queueSolver), BoringSolver.boringRedeemMintSolve.selector
+            );
 
             allowPublicSelfWithdraws =
                 vm.parseJsonBool(rawJson, ".boringQueueConfiguration.queueParameters.allowPublicSelfWithdrawals");
@@ -1093,6 +1134,9 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             }
 
             _log(string.concat("Adding asset to teller: ", depositAsset.addressOrName.name), 3);
+            _log(string.concat("allowDeposits: ", vm.toString(depositAsset.allowDeposits)), 3);
+            _log(string.concat("allowWithdraws: ", vm.toString(depositAsset.allowWithdraws)), 3);
+            _log(string.concat("sharePremium: ", vm.toString(depositAsset.sharePremium)), 3);
             _addTx(
                 address(teller),
                 abi.encodeWithSelector(
@@ -1259,6 +1303,18 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
             _addTx(address(queueSolver), abi.encodeWithSelector(queueSolver.transferOwnership.selector, address(0)), 0);
         }
 
+        if (pauserExists) {
+            if (pauser.authority() != rolesAuthority) {
+                _addTx(address(pauser), abi.encodeWithSelector(pauser.setAuthority.selector, rolesAuthority), 0);
+            }
+            if (pauser.owner() != address(0)) {
+                _addTx(address(pauser), abi.encodeWithSelector(pauser.transferOwnership.selector, address(0)), 0);
+            }
+        } else {
+            _addTx(address(pauser), abi.encodeWithSelector(pauser.setAuthority.selector, rolesAuthority), 0);
+            _addTx(address(pauser), abi.encodeWithSelector(pauser.transferOwnership.selector, address(0)), 0);
+        }
+
         // Setup roles.
         _grantRoleIfNotGranted(MANAGER_ROLE, address(manager));
         _grantRoleIfNotGranted(MANAGER_INTERNAL_ROLE, address(manager));
@@ -1308,6 +1364,8 @@ contract DeployArcticArchitectureWithConfigScript is Script, ChainValues {
                 vm.serializeAddress(coreContracts, "Lens", address(lens));
                 vm.serializeAddress(coreContracts, "BoringVault", address(boringVault));
                 vm.serializeAddress(coreContracts, "ManagerWithMerkleVerification", address(manager));
+                vm.serializeAddress(coreContracts, "Pauser", address(pauser));
+                vm.serializeAddress(coreContracts, "Timelock", address(timelock));
                 if (accountantKind == AccountantKind.VariableRate) {
                     vm.serializeAddress(coreContracts, "AccountantWithRateProviders", address(accountant));
                 } else if (accountantKind == AccountantKind.FixedRate) {

@@ -943,6 +943,7 @@ contract ChainValues {
         values[arbitrum]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
         values[arbitrum]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
         values[arbitrum]["liquidPayoutAddress"] = 0xA9962a5BfBea6918E958DeE0647E99fD7863b95A.toBytes32();
+        values[arbitrum]["txBundlerAddress"] = 0x87D51666Da1b56332b216D456D1C2ba3Aed6089c.toBytes32();
 
         // DeFi Ecosystem
         values[arbitrum]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
@@ -981,6 +982,7 @@ contract ChainValues {
         values[arbitrum]["OSETH"] = 0xf7d4e7273E5015C96728A6b02f31C505eE184603.toBytes32();
         values[arbitrum]["RSETH"] = 0x4186BFC76E2E237523CBC30FD220FE055156b41F.toBytes32();
         values[arbitrum]["GRAIL"] = 0x3d9907F9a368ad0a51Be60f7Da3b97cf940982D8.toBytes32();
+        values[arbitrum]["cbBTC"] = 0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf.toBytes32();
 
         // Aave V3
         values[arbitrum]["v3Pool"] = 0x794a61358D6845594F94dc1DB02A252b5b4814aD.toBytes32();
