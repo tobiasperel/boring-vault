@@ -208,7 +208,7 @@ contract AccountantWithRateProvidersTest is Test, MerkleTreeHelper {
         assertEq(payout, new_payout_address, "Payout address should be the same");
     }
 
-    function testUpdateRateProvider() external {
+    function testUpdateRateProvider() external view {
         (bool is_pegged_to_base, IRateProvider rate_provider) = accountant.rateProviderData(WEETH);
         assertTrue(is_pegged_to_base == false, "WEETH should not be pegged to base");
         assertEq(address(rate_provider), WEETH_RATE_PROVIDER, "WEETH rate provider should be set");
@@ -432,7 +432,7 @@ contract AccountantWithRateProvidersTest is Test, MerkleTreeHelper {
         vm.stopPrank();
     }
 
-    function testRates() external {
+    function testRates() external view {
         // getRate and getRate in quote should work.
         uint256 rate = accountant.getRate();
         uint256 expected_rate = 1e18;

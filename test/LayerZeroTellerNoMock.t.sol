@@ -241,7 +241,7 @@ contract LayerZeroTellerNoMockTest is Test, MerkleTreeHelper {
         vm.stopPrank();
     }
 
-    function testPreviewFee() external {
+    function testPreviewFee() external view {
         uint256 previewedFee =
             sourceTeller.previewFee(1e18, address(0), abi.encode(layerZeroArbitrumEndpointId), NATIVE_ERC20);
 

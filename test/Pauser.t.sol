@@ -76,7 +76,7 @@ contract PauserTest is Test {
         }
     }
 
-    function testGetPausables() external {
+    function testGetPausables() external view {
         IPausable[] memory _pausables = pauser.getPausables();
 
         for (uint256 i = 0; i < pausables.length; ++i) {
