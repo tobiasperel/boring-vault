@@ -4,7 +4,7 @@
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "corn",
     "evmVersion": "london",
-    "desiredNumberOfDeploymentTxs": 10,
+    "desiredNumberOfDeploymentTxs": 15,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "deployerAddress"
@@ -74,8 +74,8 @@
           "name": "WBTCN"
         },
         "minimumUpateDelayInSeconds": 21600,
-        "performanceFee": 100,
-        "platformFee": 100,
+        "performanceFee": 0,
+        "platformFee": 0,
         "startingExchangeRate": 1000000000000000000
       }
     }
@@ -120,7 +120,7 @@
         },
         "lzChains": [
           {
-            "chainId": 1,
+            "chainId": 30101,
             "allowMessagesFrom": true,
             "allowMessagesTo": true,
             "targetTellerOrSelf": {
@@ -191,8 +191,8 @@
         "address": "0x0000000000000000000000000000000000000000",
         "name": "WBTCN"
       },
-      "maxDiscount": 100,
-      "minDiscount": 0,
+      "maxDiscount": 10,
+      "minDiscount": 1,
       "minimumSecondsToDeadline": 3600,
       "minimumShares": 0,
       "secondsToMaturity": 60
