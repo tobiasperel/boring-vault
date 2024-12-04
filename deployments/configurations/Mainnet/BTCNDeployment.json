@@ -86,10 +86,10 @@
       "allowPublicDeposits": true,
       "shareLockPeriod": 60,
       "kind": {
-        "teller": true,
+        "teller": false,
         "tellerWithRemediation": false,
         "tellerWithCcip": false,
-        "tellerWithLayerZero": false
+        "tellerWithLayerZero": true
       },
       "ccip": {
         "routerAddressOrName": {
@@ -120,7 +120,7 @@
         },
         "lzChains": [
           {
-            "chainId": 1,
+            "chainId": 30331,
             "allowMessagesFrom": true,
             "allowMessagesTo": true,
             "targetTellerOrSelf": {
@@ -152,7 +152,7 @@
   },
   "pauserConfiguration": {
     "shouldDeploy": true,
-    "pauserDeploymentName": "pauser",
+    "pauserDeploymentName": "Staked BTCN Pauser V0.0",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
     "makePauseAll": ["0x0000000000000000000000000000000000000000"],
@@ -166,7 +166,7 @@
   },
   "timelockConfiguration": {
     "shouldDeploy": false,
-    "timelockDeploymentName": "timelock",
+    "timelockDeploymentName": "Staked BTCN Timelock V0.0",
     "timelockParameters": {
       "minDelay": 86400,
       "proposers": ["0x0000000000000000000000000000000000000000"],
@@ -226,8 +226,8 @@
         "address": "0x0000000000000000000000000000000000000000",
         "name": "cbBTC"
       },
-      "maxDiscount": 100,
-      "minDiscount": 0,
+      "maxDiscount": 10,
+      "minDiscount": 1,
       "minimumSecondsToDeadline": 3600,
       "minimumShares": 0,
       "secondsToMaturity": 60
@@ -237,8 +237,8 @@
         "address": "0x0000000000000000000000000000000000000000",
         "name": "WBTC"
       },
-      "maxDiscount": 100,
-      "minDiscount": 0,
+      "maxDiscount": 10,
+      "minDiscount": 1,
       "minimumSecondsToDeadline": 3600,
       "minimumShares": 0,
       "secondsToMaturity": 60
@@ -248,8 +248,8 @@
         "address": "0x0000000000000000000000000000000000000000",
         "name": "BTCN"
       },
-      "maxDiscount": 100,
-      "minDiscount": 0,
+      "maxDiscount": 10,
+      "minDiscount": 1,
       "minimumSecondsToDeadline": 3600,
       "minimumShares": 0,
       "secondsToMaturity": 60
