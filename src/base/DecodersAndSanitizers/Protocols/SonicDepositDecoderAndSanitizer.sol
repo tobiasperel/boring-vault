@@ -7,7 +7,7 @@ abstract contract SonicDepositDecoderAndSanitizer is BaseDecoderAndSanitizer {
     
     constructor (address _boringVault) BaseDecoderAndSanitizer(_boringVault) {}
 
-    function depositBudget(/*uint256*/) external pure virtual returns (bytes memory addressesFound) {
+    function depositBudget(uint256 /*amount*/) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound;         
     }
 }
