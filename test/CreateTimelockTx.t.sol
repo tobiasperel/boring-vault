@@ -378,6 +378,11 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
         payloads[52] =
             abi.encodeWithSelector(RolesAuthority.setPublicCapability.selector, oldTeller, bytes4(0x3d935d9e), false);
 
+        // TODO change teller hook
+        // Add Layer Zero chains
+        // Add Teller assets cbBTC, wBTC(40 bps premium), LBTC
+        // Add rate limits
+
         bytes32 predecessor = bytes32(0);
         bytes32 salt = bytes32(0);
         uint256 delay = 300;
