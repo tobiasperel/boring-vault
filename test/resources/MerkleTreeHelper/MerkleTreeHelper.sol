@@ -5576,6 +5576,57 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
         }
     }
+    // ========================================= Euler Finance =========================================
+    
+    function _addEulerEVKLeafs(ManageLeaf[] memory leafs, ERC20 asset, ERC4626 evk) internal {
+        //approval leaf is handled by ERC4626
+        _addERC4626Leafs(leafs, evk);
+        
+        //repay
+        //repayWithShares
+
+        unchecked {
+            leafIndex++; 
+        } 
+        
+        leafs[leafIndex] = ManageLeaf(
+            address(evk),
+            false, 
+            "borrow(uint256,address)",
+            new address[](1),
+            string.concat("Borrow ", asset.name(), " from Euler Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        ); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++; 
+        } 
+
+        leafs[leafIndex] = ManageLeaf(
+            address(evk),
+            false, 
+            "repay(uint256,address)",
+            new address[](1),
+            string.concat("Repay ", asset.name(), " to Euler Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        ); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");  
+
+        unchecked {
+            leafIndex++; 
+        } 
+
+        leafs[leafIndex] = ManageLeaf(
+            address(evk),
+            false, 
+            "repayWithShares(uint256,address)",
+            new address[](1),
+            string.concat("Repay ", asset.name(), " with shares to Euler Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        ); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+    }
 
     // ========================================= BoringVault Teller =========================================
 
@@ -5599,7 +5650,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
 
             // BulkDeposit asset.
             unchecked {
-                leafIndex++;
+               leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
                 teller,
