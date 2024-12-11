@@ -136,7 +136,7 @@
   },
   "droneConfiguration": {
     "droneDeploymentBaseName": "Ultra Yield Stablecoin Vault Drone V0.0",
-    "droneCount": 0,
+    "droneCount": 1,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {

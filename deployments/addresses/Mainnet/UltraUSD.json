@@ -1,5 +1,7 @@
 {
-  "Drones": "",
+  "Drones": {
+    "drone-0": "0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De"
+  },
   "contractAddresses": {
     "AccountantWithRateProviders": "0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe",
     "BoringOnChainQueue": "0x83fc67984DEA64Af56b37b77fB03E1fEb10b92Bb",
