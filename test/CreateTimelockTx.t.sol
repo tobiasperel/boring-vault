@@ -7,9 +7,11 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 import {
     LayerZeroTellerWithRateLimiting,
-    CrossChainTellerWithGenericBridge
+    CrossChainTellerWithGenericBridge,
+    PairwiseRateLimiter
 } from "src/base/Roles/CrossChain/Bridges/LayerZero/LayerZeroTellerWithRateLimiting.sol";
 import {TellerWithMultiAssetSupport} from "src/base/Roles/TellerWithMultiAssetSupport.sol";
+import {BoringVault} from "src/base/BoringVault.sol";
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
@@ -21,6 +23,7 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
     LayerZeroTellerWithRateLimiting public teller =
         LayerZeroTellerWithRateLimiting(0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268);
     address public safe = 0xCEA8039076E35a825854c5C2f85659430b06ec96;
+    address public eBTC = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642;
     address public LBTCv = 0x5401b8620E5FB570064CA9114fd1e135fd77D57c;
     address public solver = 0x989468982b08AEfA46E37CD0086142A86fa466D7;
     address public oldTeller = 0xe19a43B1b8af6CeE71749Af2332627338B3242D1;
@@ -33,16 +36,24 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
     uint8 public constant STRATEGIST_MULTISIG_ROLE = 10;
     uint8 public constant SOLVER_ROLE = 12;
 
+    ERC20 public LBTC;
+    ERC20 public wBTC;
+    ERC20 public cbBTC;
+
     function setUp() external {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
         uint256 blockNumber = 21374350;
         _startFork(rpcKey, blockNumber);
+
+        LBTC = getERC20("mainnet", "LBTC");
+        wBTC = getERC20("mainnet", "WBTC");
+        cbBTC = getERC20("mainnet", "cbBTC");
     }
 
     function testProposeAndExecuteTimelock() external {
-        uint256 actionCount = 53;
+        uint256 actionCount = 64;
         address[] memory targets = new address[](actionCount);
         targets[0] = address(rolesAuthority);
         targets[1] = address(rolesAuthority);
@@ -97,109 +108,120 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
         targets[50] = address(rolesAuthority);
         targets[51] = address(rolesAuthority);
         targets[52] = address(rolesAuthority);
-
+        targets[53] = address(rolesAuthority);
+        targets[54] = address(eBTC);
+        targets[55] = address(teller);
+        targets[56] = address(teller);
+        targets[57] = address(teller);
+        targets[58] = address(teller);
+        targets[59] = address(teller);
+        targets[60] = address(teller);
+        targets[61] = address(teller);
+        targets[62] = address(teller);
+        targets[63] = address(rolesAuthority);
         uint256[] memory values = new uint256[](actionCount);
         bytes[] memory payloads = new bytes[](actionCount);
+        uint256 i = 0;
         // Set role capabilities to true
-        payloads[0] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             OWNER_ROLE,
             teller,
             LayerZeroTellerWithRateLimiting.addChain.selector,
             true
         );
-        payloads[0] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             MULTISIG_ROLE,
             teller,
             LayerZeroTellerWithRateLimiting.removeChain.selector,
             true
         );
-        payloads[1] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             OWNER_ROLE,
             teller,
             LayerZeroTellerWithRateLimiting.allowMessagesFromChain.selector,
             true
         );
-        payloads[2] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             OWNER_ROLE,
             teller,
             LayerZeroTellerWithRateLimiting.allowMessagesToChain.selector,
             true
         );
-        payloads[3] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             MULTISIG_ROLE,
             teller,
             LayerZeroTellerWithRateLimiting.stopMessagesFromChain.selector,
             true
         );
-        payloads[4] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             MULTISIG_ROLE,
             teller,
             LayerZeroTellerWithRateLimiting.stopMessagesToChain.selector,
             true
         );
-        payloads[5] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             OWNER_ROLE,
             teller,
             LayerZeroTellerWithRateLimiting.setOutboundRateLimits.selector,
             true
         );
-        payloads[6] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             OWNER_ROLE,
             teller,
             LayerZeroTellerWithRateLimiting.setInboundRateLimits.selector,
             true
         );
-        payloads[7] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             OWNER_ROLE,
             teller,
             LayerZeroTellerWithRateLimiting.setChainGasLimit.selector,
             true
         );
-        payloads[8] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             MULTISIG_ROLE,
             teller,
             TellerWithMultiAssetSupport.pause.selector,
             true
         );
-        payloads[9] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             OWNER_ROLE,
             teller,
             TellerWithMultiAssetSupport.unpause.selector,
             true
         );
-        payloads[10] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             OWNER_ROLE,
             teller,
             TellerWithMultiAssetSupport.updateAssetData.selector,
             true
         );
-        payloads[11] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             OWNER_ROLE,
             teller,
             TellerWithMultiAssetSupport.setShareLockPeriod.selector,
             true
         );
-        payloads[12] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             SOLVER_ROLE,
             teller,
             TellerWithMultiAssetSupport.bulkDeposit.selector,
             true
         );
-        payloads[13] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             SOLVER_ROLE,
             teller,
@@ -208,35 +230,35 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
         );
 
         // Add public functions
-        payloads[14] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setPublicCapability.selector,
             OWNER_ROLE,
             teller,
             TellerWithMultiAssetSupport.deposit.selector,
             true
         );
-        payloads[15] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setPublicCapability.selector,
             OWNER_ROLE,
             teller,
             TellerWithMultiAssetSupport.depositWithPermit.selector,
             true
         );
-        payloads[16] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setPublicCapability.selector,
             OWNER_ROLE,
             teller,
             CrossChainTellerWithGenericBridge.depositAndBridge.selector,
             true
         );
-        payloads[17] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setPublicCapability.selector,
             OWNER_ROLE,
             teller,
             CrossChainTellerWithGenericBridge.depositAndBridgeWithPermit.selector,
             true
         );
-        payloads[18] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setPublicCapability.selector,
             OWNER_ROLE,
             teller,
@@ -245,34 +267,34 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
         );
 
         // Grant roles
-        payloads[19] = abi.encodeWithSelector(RolesAuthority.setUserRole.selector, LBTCv, SOLVER_ROLE, true);
-        payloads[20] = abi.encodeWithSelector(RolesAuthority.setUserRole.selector, teller, MINTER_ROLE, true);
-        payloads[21] = abi.encodeWithSelector(RolesAuthority.setUserRole.selector, teller, BURNER_ROLE, true);
-        payloads[22] = abi.encodeWithSelector(RolesAuthority.setUserRole.selector, solver, SOLVER_ROLE, true);
+        payloads[i++] = abi.encodeWithSelector(RolesAuthority.setUserRole.selector, LBTCv, SOLVER_ROLE, true); // TODO this is technically already done
+        payloads[i++] = abi.encodeWithSelector(RolesAuthority.setUserRole.selector, teller, MINTER_ROLE, true);
+        payloads[i++] = abi.encodeWithSelector(RolesAuthority.setUserRole.selector, teller, BURNER_ROLE, true);
+        payloads[i++] = abi.encodeWithSelector(RolesAuthority.setUserRole.selector, solver, SOLVER_ROLE, true);
 
         // Set role capabilities to false
-        payloads[23] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, OWNER_ROLE, oldTeller, Auth.setAuthority.selector, false
         );
-        payloads[24] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, OWNER_ROLE, oldTeller, Auth.transferOwnership.selector, false
         );
         // Remove addAsset
-        payloads[25] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, OWNER_ROLE, oldTeller, bytes4(0x298410e5), false
         );
         // Remove removeAsset
-        payloads[26] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, OWNER_ROLE, oldTeller, bytes4(0x4a5e42b1), false
         );
         // Remove setShareLockPeriod
-        payloads[27] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, OWNER_ROLE, oldTeller, bytes4(0x12056e2d), false
         );
-        payloads[28] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, OWNER_ROLE, delayedWithdrawer, Auth.setAuthority.selector, false
         );
-        payloads[29] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             OWNER_ROLE,
             delayedWithdrawer,
@@ -280,59 +302,59 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
             false
         );
         // Remove changeWithdrawFee
-        payloads[30] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, OWNER_ROLE, delayedWithdrawer, bytes4(0x13cc759e), false
         );
         // Remove setupWithdrawAsset
-        payloads[31] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, OWNER_ROLE, delayedWithdrawer, bytes4(0x582f2eb6), false
         );
         // Remove changeMaxLoss
-        payloads[32] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, OWNER_ROLE, delayedWithdrawer, bytes4(0xb16944de), false
         );
         // Remove pause
-        payloads[33] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, MULTISIG_ROLE, oldTeller, bytes4(0x8456cb59), false
         );
         // Remove unpause
-        payloads[34] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, MULTISIG_ROLE, oldTeller, bytes4(0x3f4ba83a), false
         );
         // Remove pause
-        payloads[35] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, MULTISIG_ROLE, delayedWithdrawer, bytes4(0x8456cb59), false
         );
         // Remove unpause
-        payloads[36] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, MULTISIG_ROLE, delayedWithdrawer, bytes4(0x3f4ba83a), false
         );
         // Remove stopWithdrawsInAsset
-        payloads[37] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, MULTISIG_ROLE, delayedWithdrawer, bytes4(0x692be6f1), false
         );
         // Remove changeWithdrawDelay
-        payloads[38] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, MULTISIG_ROLE, delayedWithdrawer, bytes4(0xd82bf6d6), false
         );
         // Remove changeCompletionWindow
-        payloads[39] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, MULTISIG_ROLE, delayedWithdrawer, bytes4(0xbafc3dd6), false
         );
         // Remove cancelUserWithdraw
-        payloads[40] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, MULTISIG_ROLE, delayedWithdrawer, bytes4(0x2f13a2f1), false
         );
         // Remove completeUserWithdraw
-        payloads[41] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, MULTISIG_ROLE, delayedWithdrawer, bytes4(0x7e6bf61f), false
         );
         // Remove refundDeposit
-        payloads[42] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, STRATEGIST_MULTISIG_ROLE, oldTeller, bytes4(0x46b563f4), false
         );
         // Remove completeUserWithdraw
-        payloads[43] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             STRATEGIST_MULTISIG_ROLE,
             delayedWithdrawer,
@@ -340,7 +362,7 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
             false
         );
         // Remove cancelUserWithdraw
-        payloads[44] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             STRATEGIST_MULTISIG_ROLE,
             delayedWithdrawer,
@@ -348,7 +370,7 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
             false
         );
         // Remove setFeeAddress
-        payloads[45] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
             STRATEGIST_MULTISIG_ROLE,
             delayedWithdrawer,
@@ -356,32 +378,70 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
             false
         );
         // Remove bulkDeposit
-        payloads[46] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, SOLVER_ROLE, oldTeller, bytes4(0x9d574420), false
         );
         // Remove bulkWithdraw
-        payloads[47] = abi.encodeWithSelector(
+        payloads[i++] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector, SOLVER_ROLE, oldTeller, bytes4(0x3e64ce99), false
         );
         // Remove addAsset
-        payloads[48] =
+        payloads[i++] =
             abi.encodeWithSelector(RolesAuthority.setRoleCapability.selector, 14, oldTeller, bytes4(0x298410e5), false);
         // Remove removeAsset
-        payloads[49] =
+        payloads[i++] =
             abi.encodeWithSelector(RolesAuthority.setRoleCapability.selector, 15, oldTeller, bytes4(0x4a5e42b1), false);
         // Remove bulkDeposit
-        payloads[50] =
+        payloads[i++] =
             abi.encodeWithSelector(RolesAuthority.setRoleCapability.selector, 100, oldTeller, bytes4(0x9d574420), false);
         // Remove public capabilities, deposit and depositWithPermit
-        payloads[51] =
+        payloads[i++] =
             abi.encodeWithSelector(RolesAuthority.setPublicCapability.selector, oldTeller, bytes4(0x0efe6a8b), false);
-        payloads[52] =
+        payloads[i++] =
             abi.encodeWithSelector(RolesAuthority.setPublicCapability.selector, oldTeller, bytes4(0x3d935d9e), false);
 
-        // TODO change teller hook
+        // Set before transfer hook
+        payloads[i++] = abi.encodeWithSelector(BoringVault.setBeforeTransferHook.selector, teller);
+
         // Add Layer Zero chains
+        payloads[i++] = abi.encodeWithSelector(
+            LayerZeroTellerWithRateLimiting.addChain.selector, layerZeroBaseEndpointId, true, true, teller, 1_000_000
+        );
+        payloads[i++] = abi.encodeWithSelector(
+            LayerZeroTellerWithRateLimiting.addChain.selector,
+            layerZeroArbitrumEndpointId,
+            true,
+            true,
+            teller,
+            1_000_000
+        );
+        payloads[i++] = abi.encodeWithSelector(
+            LayerZeroTellerWithRateLimiting.addChain.selector, layerZeroCornEndpointId, true, true, teller, 1_000_000
+        );
         // Add Teller assets cbBTC, wBTC(40 bps premium), LBTC
+        payloads[i++] =
+            abi.encodeWithSelector(TellerWithMultiAssetSupport.updateAssetData.selector, address(cbBTC), true, true, 0);
+        payloads[i++] =
+            abi.encodeWithSelector(TellerWithMultiAssetSupport.updateAssetData.selector, address(wBTC), true, true, 40);
+        payloads[i++] =
+            abi.encodeWithSelector(TellerWithMultiAssetSupport.updateAssetData.selector, address(LBTC), true, true, 0);
+
         // Add rate limits
+        PairwiseRateLimiter.RateLimitConfig[] memory rateLimitConfigs = new PairwiseRateLimiter.RateLimitConfig[](3);
+        rateLimitConfigs[0] =
+            PairwiseRateLimiter.RateLimitConfig({peerEid: layerZeroBaseEndpointId, limit: 20e8, window: 4 hours});
+        rateLimitConfigs[1] =
+            PairwiseRateLimiter.RateLimitConfig({peerEid: layerZeroArbitrumEndpointId, limit: 20e8, window: 4 hours});
+        rateLimitConfigs[2] =
+            PairwiseRateLimiter.RateLimitConfig({peerEid: layerZeroCornEndpointId, limit: 20e8, window: 4 hours});
+        payloads[i++] =
+            abi.encodeWithSelector(LayerZeroTellerWithRateLimiting.setOutboundRateLimits.selector, rateLimitConfigs);
+        payloads[i++] =
+            abi.encodeWithSelector(LayerZeroTellerWithRateLimiting.setInboundRateLimits.selector, rateLimitConfigs);
+
+        // Revoke burner role from delayed withdrawer
+        payloads[i++] =
+            abi.encodeWithSelector(RolesAuthority.setUserRole.selector, BURNER_ROLE, delayedWithdrawer, false);
 
         bytes32 predecessor = bytes32(0);
         bytes32 salt = bytes32(0);
