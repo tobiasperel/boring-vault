@@ -10,12 +10,12 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateCbBTCMerkleRoot.s.sol:CreateCbBTCMerkleRootScript --rpc-url $MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateUniBTCMerkleRoot.s.sol:CreateUniBTCMerkleRootScript --rpc-url $MAINNET_RPC_URL
  */
 contract CreateUniBTCMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
-    address public boringVault = ;0xf6d71c15657A7f2B9aeDf561615feF9E05fE2cb3; 
+    address public boringVault = 0xf6d71c15657A7f2B9aeDf561615feF9E05fE2cb3; 
     address public managerAddress = 0xaded360316287F1d0A0E7Bc416AB8112F295e893;
     address public accountantAddress = 0x37e6e4526483D05711b8D6F92c27F2f3a16FC45b;
     address public rawDataDecoderAndSanitizer = 0xa8df6E7ec5063fb0691bb53814BE7A8F2E1cE943;
