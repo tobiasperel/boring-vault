@@ -7,6 +7,14 @@ import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoco
 abstract contract EulerEVKDecoderAndSanitizer is BaseDecoderAndSanitizer, ERC4626DecoderAndSanitizer {
 
     constructor (address _boringVault) BaseDecoderAndSanitizer(_boringVault) {}
+
+    function enableController(address account, address vault) external pure virtual returns (bytes memory addressesFound) {
+        return abi.encodePacked(account, vault); 
+    }
+
+    function enableCollateral(address account, address vault) external pure virtual returns (bytes memory addressesFound) {
+        return abi.encodePacked(account, vault); 
+    }
    
     function borrow(uint256 /*amount*/, address receiver) external pure virtual returns (bytes memory addressesFound) {
         return abi.encodePacked(receiver); 

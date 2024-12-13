@@ -39,10 +39,11 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
     function setUp() external {
         setSourceChainName("mainnet");
         // Setup forked environment.
-        string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 21380493;
+        //string memory rpcKey = "MAINNET_RPC_URL";
+        //uint256 blockNumber = block.number;
 
-        _startFork(rpcKey, blockNumber);
+
+        //_startFork(rpcKey, blockNumber);
 
         boringVault = new BoringVault(address(this), "Boring Vault", "BV", 18);
 
@@ -125,7 +126,7 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](9);
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](10);
         manageLeafs[0] = leafs[0];
         manageLeafs[1] = leafs[1];
         manageLeafs[2] = leafs[2];
@@ -135,52 +136,56 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         manageLeafs[6] = leafs[6];
         manageLeafs[7] = leafs[7];
         manageLeafs[8] = leafs[8];
+        manageLeafs[9] = leafs[9];
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](9);
+        address[] memory targets = new address[](10);
         targets[0] = getAddress(sourceChain, "WEETH"); 
-        targets[1] = getAddress(sourceChain, "ethereumVaultConnector"); 
+        targets[1] = getAddress(sourceChain, "evkWEETH"); 
         targets[2] = getAddress(sourceChain, "evkWEETH"); 
         targets[3] = getAddress(sourceChain, "evkWEETH"); 
         targets[4] = getAddress(sourceChain, "evkWEETH"); 
-        targets[5] = getAddress(sourceChain, "evkWEETH"); 
-        targets[6] = getAddress(sourceChain, "evkWEETH"); 
+        targets[5] = getAddress(sourceChain, "ethereumVaultConnector"); 
+        targets[6] = getAddress(sourceChain, "ethereumVaultConnector"); 
         targets[7] = getAddress(sourceChain, "evkWEETH"); 
         targets[8] = getAddress(sourceChain, "evkWEETH"); 
+        targets[9] = getAddress(sourceChain, "evkWEETH"); 
 
-        bytes[] memory targetData = new bytes[](9);
-        targetData[0] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "evkWEETH"), type(uint256).max
+        bytes[] memory targetData = new bytes[](10);
+        targetData[0] = abi.encodeWithSignature( "approve(address,uint256)", getAddress(sourceChain, "evkWEETH"), type(uint256).max
         ); 
         targetData[1] = abi.encodeWithSignature(
-            "enableCollateral(address,address)", address(boringVault), getAddress(sourceChain, "evkWEETH")  
+            "deposit(uint256,address)", 1000e18, address(boringVault)
         ); 
         targetData[2] = abi.encodeWithSignature(
-            "deposit(uint256,address)", 100e18, address(boringVault)
-        ); 
-        targetData[3] = abi.encodeWithSignature(
             "withdraw(uint256,address,address)", 1e18, address(boringVault), address(boringVault) 
         );
-        targetData[4] = abi.encodeWithSignature(
-            "mint(uint256,address)", 2e18, address(boringVault)
+        targetData[3] = abi.encodeWithSignature(
+            "mint(uint256,address)", 1e18, address(boringVault)
         ); 
-        targetData[5] = abi.encodeWithSignature(
+        targetData[4] = abi.encodeWithSignature(
             "redeem(uint256,address,address)", 1e18, address(boringVault), address(boringVault)
         ); 
+        targetData[5] = abi.encodeWithSignature(
+            "enableController(address,address)", address(boringVault), getAddress(sourceChain, "evkWEETH")  
+        ); 
         targetData[6] = abi.encodeWithSignature(
-            "borrow(uint256,address)", 0.1e18, address(boringVault)
+            "enableCollateral(address,address)", address(boringVault), getAddress(sourceChain, "evkWEETH")  
         ); 
         targetData[7] = abi.encodeWithSignature(
-            "repay(uint256,address)", 0.05e18, address(boringVault)
+            "borrow(uint256,address)", 1, address(boringVault)
         ); 
         targetData[8] = abi.encodeWithSignature(
+            "repay(uint256,address)", 0.05e18, address(boringVault)
+        ); 
+        targetData[9] = abi.encodeWithSignature(
             "repayWithShares(uint256,address)", 0.1e18, address(boringVault)
         ); 
             
-        uint256[] memory values = new uint256[](9); 
+        uint256[] memory values = new uint256[](10); 
 
-        address[] memory decodersAndSanitizers = new address[](9);
+        address[] memory decodersAndSanitizers = new address[](10);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
@@ -190,6 +195,7 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[7] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[8] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[9] = rawDataDecoderAndSanitizer;
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
@@ -197,10 +203,10 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
 
     // ========================================= HELPER FUNCTIONS =========================================
 
-    function _startFork(string memory rpcKey, uint256 blockNumber) internal returns (uint256 forkId) {
-        forkId = vm.createFork(vm.envString(rpcKey), blockNumber);
-        vm.selectFork(forkId);
-    }
+    //function _startFork(string memory rpcKey, uint256 blockNumber) internal returns (uint256 forkId) {
+    //    forkId = vm.createFork(vm.envString(rpcKey), blockNumber);
+    //    vm.selectFork(forkId);
+    //}
 }
 
 interface IEVK {

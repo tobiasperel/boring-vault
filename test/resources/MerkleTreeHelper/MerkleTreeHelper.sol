@@ -5578,15 +5578,28 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
     }
     // ========================================= Euler Finance =========================================
     
-    function _addEulerEVKLeafs(ManageLeaf[] memory leafs, ERC20 asset, address evc, ERC4626 evk) internal {
+    function _addEulerEVKLeafs(ManageLeaf[] memory leafs, ERC20 asset, address ethereumVaultConnector, ERC4626 evk) internal {
         //approval leaf is handled by ERC4626
         _addERC4626Leafs(leafs, evk);
+        unchecked {
+            leafIndex++; 
+        } 
+        leafs[leafIndex] = ManageLeaf(
+            ethereumVaultConnector,
+            false, 
+            "enableController(address,address)",
+            new address[](2),
+            string.concat("Enable Controller for Boring Vault"),   
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        ); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = address(evk); 
         
         unchecked {
             leafIndex++; 
         } 
         leafs[leafIndex] = ManageLeaf(
-            evc,
+            ethereumVaultConnector,
             false, 
             "enableCollateral(address,address)",
             new address[](2),
