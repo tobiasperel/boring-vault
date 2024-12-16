@@ -353,16 +353,20 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
 
         // ========================== SparkLend ==========================
-        supplyAssets = new ERC20[](4);
+        supplyAssets = new ERC20[](7);
         supplyAssets[0] = getERC20(sourceChain, "USDC");
         supplyAssets[1] = getERC20(sourceChain, "USDT");
         supplyAssets[2] = getERC20(sourceChain, "DAI");
         supplyAssets[3] = getERC20(sourceChain, "sUSDs");
-        borrowAssets = new ERC20[](4);
+        supplyAssets[4] = getERC20(sourceChain, "WETH");
+        supplyAssets[5] = getERC20(sourceChain, "WSTETH");
+        supplyAssets[6] = getERC20(sourceChain, "WEETH");
+        borrowAssets = new ERC20[](5);
         borrowAssets[0] = getERC20(sourceChain, "USDC");
         borrowAssets[1] = getERC20(sourceChain, "USDT");
         borrowAssets[2] = getERC20(sourceChain, "DAI");
         borrowAssets[3] = getERC20(sourceChain, "WETH");
+        borrowAssets[4] = getERC20(sourceChain, "WSTETH");
 
         _addSparkLendLeafs(leafs, supplyAssets, borrowAssets);
 
