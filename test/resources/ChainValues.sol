@@ -664,7 +664,8 @@ contract ChainValues {
         values[mainnet]["pendle_pumpBTC_market_03_26_25"] = 0x8098B48a1c4e4080b30A43a7eBc0c87b52F17222.toBytes32();
         values[mainnet]["pendle_corn_pumpBTC_market_12_25_24"] = 0xf8208fB52BA80075aF09840A683143C22DC5B4dd.toBytes32();
 
-        values[mainnet]["pendle_uniBTC_market_03_26_25"] = 0x380C751BD0412f47Ca560B6AFeB566d88dc18630.toBytes32(); 
+        values[mainnet]["pendle_uniBTC_market_03_26_25"] = 0x380C751BD0412f47Ca560B6AFeB566d88dc18630.toBytes32();
+        values[mainnet]["pendle_corn_uniBTC_market_12_26_24"] = 0x40dEAE18c3CE932Fdd5Df1f44b54D8Cf3902787B.toBytes32();
 
         // Aave V3
         values[mainnet]["v3Pool"] = 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2.toBytes32();
