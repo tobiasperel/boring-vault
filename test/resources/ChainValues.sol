@@ -1247,7 +1247,15 @@ contract ChainValues {
 
         // Tokens
         values[corn]["WBTCN"] = 0xda5dDd7270381A7C2717aD10D1c0ecB19e3CDFb2.toBytes32();
+        values[corn]["ZRO"] = address(69).toBytes32(); 
         values[corn]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
+
+        // Layer Zero 
+        values[corn]["LayerZeroEndPoint"] = 0xcb566e3B6934Fa77258d68ea18E931fa75e1aaAa.toBytes32();
+
+
+        
+
     }
 
     function _addSepoliaValues() private {
