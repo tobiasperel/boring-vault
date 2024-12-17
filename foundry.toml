@@ -46,6 +46,7 @@ avalanche = { key = "${SNOWTRACE_KEY}" }
 optimism = { key = "${OPTIMISMSCAN_KEY}" }
 base = { key = "${BASESCAN_KEY}" }
 
+
 [fmt]
 FOUNDRY_FMT_LINE_LENGTH = 120
 FOUNDRY_FMT_TAB_WIDTH = 4
