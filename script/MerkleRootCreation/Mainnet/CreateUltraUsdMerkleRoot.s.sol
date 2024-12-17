@@ -352,6 +352,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Drone Leafs ==========================
 
         uint256 startIndex = leafIndex + 1;
+        setAddress(true, sourceChain, "boringVault", drone);
 
         // ========================== Aave V3 ==========================
         supplyAssets = new ERC20[](5);
