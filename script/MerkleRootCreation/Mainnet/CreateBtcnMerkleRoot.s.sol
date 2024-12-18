@@ -16,9 +16,9 @@ contract CreateBtcnMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0x62a474C3d8C20876FfBc6df95e76C29B62cC07b8;
-    address public managerAddress = 0xF1cdeCf0cA06bf18feDFb3F71f2b4628967097B7; 
+    address public managerAddress = 0xF1cdeCf0cA06bf18feDFb3F71f2b4628967097B7;
     address public accountantAddress = 0x63Ef0a95488eB43b337cF1aA5E7b25e40698c648;
-    
+
     //TODO
     address public rawDataDecoderAndSanitizer = address(0);
 
@@ -52,7 +52,7 @@ contract CreateBtcnMerkleRootScript is Script, MerkleTreeHelper {
         token1[1] = getAddress(sourceChain, "LBTC");
         token1[2] = getAddress(sourceChain, "BTCN");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](4);
@@ -68,8 +68,8 @@ contract CreateBtcnMerkleRootScript is Script, MerkleTreeHelper {
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         // ========================== Corn ==========================
-        //_addBTCNLeafs(//TODO)  
-        
+        //_addBTCNLeafs(//TODO)
+
         // ======================== LayerZero =======================
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);

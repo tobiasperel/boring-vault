@@ -119,7 +119,7 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         token1[5] = getAddress(sourceChain, "RETH");
         token1[6] = getAddress(sourceChain, "SFRXETH");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**

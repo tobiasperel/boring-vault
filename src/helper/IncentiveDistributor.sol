@@ -5,8 +5,9 @@ import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {Owned} from "@solmate/auth/Owned.sol";
+import {Auth, Authority} from "@solmate/auth/Auth.sol";
 
-contract IncentiveDistributor is Owned {
+contract IncentiveDistributor is Auth {
     using SafeERC20 for IERC20;
 
     // merkleroot -> bool
@@ -19,9 +20,9 @@ contract IncentiveDistributor is Owned {
     event UnRegisteredMerkleTree(bytes32 rootHash);
     event Claimed(bytes32 rootHash, address user, address token, uint256 balance);
 
-    constructor(address _owner) Owned(_owner) {}
+    constructor(address _owner, Authority _authority) Auth(_owner, _authority) {}
 
-    function registerMerkleTree(bytes32 _rootHash) external onlyOwner {
+    function registerMerkleTree(bytes32 _rootHash) external requiresAuth {
         require(!merkleAvailable[_rootHash], "Already registered");
 
         merkleAvailable[_rootHash] = true;
@@ -29,7 +30,7 @@ contract IncentiveDistributor is Owned {
         emit RegisteredMerkleTree(_rootHash);
     }
 
-    function unregisterMerkleTree(bytes32 _rootHash) external onlyOwner {
+    function unregisterMerkleTree(bytes32 _rootHash) external requiresAuth {
         require(merkleAvailable[_rootHash], "Not registered");
 
         merkleAvailable[_rootHash] = false;
@@ -43,7 +44,7 @@ contract IncentiveDistributor is Owned {
         address[] calldata _tokens,
         uint256[] calldata _balances,
         bytes32[][] calldata _merkleProofs
-    ) external {
+    ) external requiresAuth {
         uint256 length = _rootHashes.length;
         require(_tokens.length == length, "Incorrect array length");
         require(_balances.length == length, "Incorrect array length");
@@ -67,7 +68,7 @@ contract IncentiveDistributor is Owned {
         return _verifyClaim(_to, _token, _balance, _rootHash, _merkleProof);
     }
 
-    function withdraw(address _to, address _token, uint256 _balance) external onlyOwner {
+    function withdraw(address _to, address _token, uint256 _balance) external requiresAuth {
         uint256 tokenAmount = _balance;
 
         if (_balance == 0) {

@@ -56,7 +56,7 @@ contract CreateBtcFiMerkleRootScript is Script, MerkleTreeHelper {
         token1[4] = getAddress(sourceChain, "cbBTC");
         token1[5] = getAddress(sourceChain, "cbBTC");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](5);

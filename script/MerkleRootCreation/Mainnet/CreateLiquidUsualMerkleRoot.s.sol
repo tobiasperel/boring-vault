@@ -108,7 +108,7 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         token1[8] = getAddress(sourceChain, "USD0_plus");
         token1[9] = getAddress(sourceChain, "USD0_plus");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**

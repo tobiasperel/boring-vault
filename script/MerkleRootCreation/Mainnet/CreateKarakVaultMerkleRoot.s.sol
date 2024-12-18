@@ -263,7 +263,7 @@ contract CreateKarakVaultMerkleRootScript is Script, MerkleTreeHelper {
         token1[54] = getAddress(sourceChain, "SFRXETH");
         token1[55] = getAddress(sourceChain, "RSETH");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](13);

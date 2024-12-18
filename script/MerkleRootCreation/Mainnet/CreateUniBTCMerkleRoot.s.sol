@@ -64,7 +64,7 @@ contract CreateUniBTCMerkleRootScript is Script, MerkleTreeHelper {
         token1[4] = getAddress(sourceChain, "fBTC");
         token1[5] = getAddress(sourceChain, "fBTC");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](5);

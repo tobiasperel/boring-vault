@@ -68,7 +68,7 @@ contract CreateLiquidElixirMerkleRootScript is Script, MerkleTreeHelper {
         token1[8] = getAddress(sourceChain, "sdeUSD");
         token1[9] = getAddress(sourceChain, "sdeUSD");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**
