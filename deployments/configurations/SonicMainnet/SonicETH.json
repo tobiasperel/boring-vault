@@ -2,9 +2,9 @@
   "deploymentParameters": {
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
-    "chainName": "mainnet",
-    "evmVersion": "cancun",
-    "desiredNumberOfDeploymentTxs": 5,
+    "chainName": "sonicMainnet",
+    "evmVersion": "shanghai",
+    "desiredNumberOfDeploymentTxs": 10,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -22,13 +22,13 @@
     },
     "nativeWrapperAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
-      "name": "WETH"
+      "name": "wS"
     },
     "deploymentOwnerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "addresses/Mainnet/SonicETH.json"
+    "deploymentFileName": "addresses/SonicMainnet/SonicETH.json"
   },
   "rolesAuthorityConfiguration": {
     "rolesAuthorityDeploymentName": "Sonic ETH Roles Authority V0.1"
@@ -106,7 +106,7 @@
         },
         "lzChains": [
           {
-            "chainId": 30332,
+            "chainId": 30101,
             "allowMessagesFrom": true,
             "allowMessagesTo": true,
             "targetTellerOrSelf": {
@@ -139,18 +139,10 @@
   "pauserConfiguration": {
     "shouldDeploy": true,
     "pauserDeploymentName": "Sonic ETH Pauser V0.1",
-    "makeGenericPauser": [
-      "0x0000000000000000000000000000000000000000"
-    ],
-    "makeGenericUnpauser": [
-      "0x0000000000000000000000000000000000000000"
-    ],
-    "makePauseAll": [
-      "0x0000000000000000000000000000000000000000"
-    ],
-    "makeUnpauseAll": [
-      "0x0000000000000000000000000000000000000000"
-    ],
+    "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
+    "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
+    "makePauseAll": ["0x0000000000000000000000000000000000000000"],
+    "makeUnpauseAll": ["0x0000000000000000000000000000000000000000"],
     "senderToPausable": [
       {
         "sender": "0x0000000000000000000000000000000000000000",
@@ -163,89 +155,16 @@
     "timelockDeploymentName": "Sonic ETH Timelock V0.1",
     "timelockParameters": {
       "minDelay": 300,
-      "proposers": [
-        "0x0000000000000000000000000000000000000000"
-      ],
-      "executors": [
-        "0x0000000000000000000000000000000000000000"
-      ]
+      "proposers": ["0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b"],
+      "executors": ["0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b"]
     }
   },
-  "accountantAssets": [
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "EETH"
-      },
-      "isPeggedToBase": true,
-      "rateProvider": "0x0000000000000000000000000000000000000000"
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "WEETH"
-      },
-      "isPeggedToBase": false,
-      "rateProvider": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee"
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "STETH"
-      },
-      "isPeggedToBase": true,
-      "rateProvider": "0x0000000000000000000000000000000000000000"
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "WSTETH"
-      },
-      "isPeggedToBase": false,
-      "rateProvider": "0x8A4207Bfc6fc475F172F929468aCDD4A2c4C3C19"
-    }
-  ],
+  "accountantAssets": [],
   "depositAssets": [
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
         "name": "WETH"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 0
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "WEETH"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 0
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "EETH"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 0
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "STETH"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 0
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "WSTETH"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -257,50 +176,6 @@
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
         "name": "WETH"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
-      "minimumShares": 0,
-      "secondsToMaturity": 60
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "EETH"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
-      "minimumShares": 0,
-      "secondsToMaturity": 60
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "WEETH"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
-      "minimumShares": 0,
-      "secondsToMaturity": 60
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "STETH"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
-      "minimumShares": 0,
-      "secondsToMaturity": 60
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "WSTETH"
       },
       "maxDiscount": 10,
       "minDiscount": 1,
