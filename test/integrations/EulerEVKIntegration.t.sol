@@ -39,11 +39,11 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
     function setUp() external {
         setSourceChainName("mainnet");
         // Setup forked environment.
-        //string memory rpcKey = "MAINNET_RPC_URL";
-        //uint256 blockNumber = block.number;
+        string memory rpcKey = "MAINNET_RPC_URL";
+        uint256 blockNumber = 21431088;
 
 
-        //_startFork(rpcKey, blockNumber);
+        _startFork(rpcKey, blockNumber);
 
         boringVault = new BoringVault(address(this), "Boring Vault", "BV", 18);
 
@@ -174,7 +174,7 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
             "enableCollateral(address,address)", address(boringVault), getAddress(sourceChain, "evkWEETH")  
         ); 
         targetData[7] = abi.encodeWithSignature(
-            "borrow(uint256,address)", 1, address(boringVault)
+            "borrow(uint256,address)", 1e18, address(boringVault)
         ); 
         targetData[8] = abi.encodeWithSignature(
             "repay(uint256,address)", 0.05e18, address(boringVault)
@@ -203,10 +203,10 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
 
     // ========================================= HELPER FUNCTIONS =========================================
 
-    //function _startFork(string memory rpcKey, uint256 blockNumber) internal returns (uint256 forkId) {
-    //    forkId = vm.createFork(vm.envString(rpcKey), blockNumber);
-    //    vm.selectFork(forkId);
-    //}
+    function _startFork(string memory rpcKey, uint256 blockNumber) internal returns (uint256 forkId) {
+        forkId = vm.createFork(vm.envString(rpcKey), blockNumber);
+        vm.selectFork(forkId);
+    }
 }
 
 interface IEVK {
