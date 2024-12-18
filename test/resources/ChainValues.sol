@@ -1262,12 +1262,16 @@ contract ChainValues {
         values[corn]["WBTCN"] = 0xda5dDd7270381A7C2717aD10D1c0ecB19e3CDFb2.toBytes32();
         values[corn]["ZRO"] = address(69).toBytes32(); 
         values[corn]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
+        
 
         // Layer Zero 
         values[corn]["LayerZeroEndPoint"] = 0xcb566e3B6934Fa77258d68ea18E931fa75e1aaAa.toBytes32();
+        values[corn]["WBTCN_OFT"] = 0x386E7A3a0c0919c9d53c3b04FF67E73Ff9e45Fb6.toBytes32(); 
+        values[corn]["LBTC_OFT"] = 0xfc7B20D9B59A8A466f4fC3d34aA69a7D98e71d7A.toBytes32(); 
 
-
-        
+        // Curve
+        values[corn]["curve_pool_LBTC_WBTCN"] = 0xAB3291b73a1087265E126E330cEDe0cFd4B8A693.toBytes32(); 
+        values[corn]["curve_gauge_LBTC_WBTCN"] = 0xaE8f74c9eD7F72CA3Ea16955369f13D3d4b78Cd6.toBytes32(); 
 
     }
 
