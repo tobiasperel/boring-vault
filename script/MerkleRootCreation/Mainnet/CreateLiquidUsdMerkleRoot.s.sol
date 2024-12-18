@@ -239,7 +239,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         token1[14] = getAddress(sourceChain, "USDC");
         token1[15] = getAddress(sourceChain, "USDT");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**

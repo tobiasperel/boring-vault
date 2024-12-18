@@ -212,7 +212,7 @@ contract CreateSuperSymbioticLRTMerkleRootScript is Script, MerkleTreeHelper {
         token1[53] = getAddress(sourceChain, "SFRXETH");
         token1[54] = getAddress(sourceChain, "SFRXETH");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](13);

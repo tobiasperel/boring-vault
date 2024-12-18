@@ -120,7 +120,7 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
         address[] memory token1 = new address[](2);
         token1[0] = getAddress(sourceChain, "RETH");
         token1[1] = getAddress(sourceChain, "WEETH");
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -232,7 +232,7 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
         address[] memory token1 = new address[](2);
         token1[0] = getAddress(sourceChain, "RETH");
         token1[1] = getAddress(sourceChain, "WEETH");
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
