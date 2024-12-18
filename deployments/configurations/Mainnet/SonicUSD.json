@@ -2,9 +2,9 @@
   "deploymentParameters": {
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
-    "chainName": "sepolia",
-    "evmVersion": "london",
-    "desiredNumberOfDeploymentTxs": 20,
+    "chainName": "mainnet",
+    "evmVersion": "cancun",
+    "desiredNumberOfDeploymentTxs": 10,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -28,7 +28,7 @@
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "addresses/Sepolia/SonicUSD.json"
+    "deploymentFileName": "addresses/Mainnet/SonicUSD.json"
   },
   "rolesAuthorityConfiguration": {
     "rolesAuthorityDeploymentName": "Sonic USD Roles Authority V0.1"
@@ -39,7 +39,7 @@
   "boringVaultConfiguration": {
     "boringVaultDeploymentName": "Sonic USD Boring Vault V0.1",
     "boringVaultName": "Sonic USD",
-    "boringVaultSymbol": "sUSD",
+    "boringVaultSymbol": "scUSD",
     "boringVaultDecimals": 6
   },
   "managerConfiguration": {
@@ -75,11 +75,11 @@
         "allowedExchangeRateChangeUpper": 10000,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "CrispyUSD"
+          "name": "USDC"
         },
-        "minimumUpateDelayInSeconds": 86400,
-        "performanceFee": 100,
-        "platformFee": 100,
+        "minimumUpateDelayInSeconds": 21600,
+        "performanceFee": 1000,
+        "platformFee": 0,
         "startingExchangeRate": 1000000
       }
     }
@@ -87,8 +87,8 @@
   "tellerConfiguration": {
     "tellerDeploymentName": "Sonic USD Teller V0.1",
     "tellerParameters": {
-      "allowPublicDeposits": false,
-      "shareLockPeriod": 60,
+      "allowPublicDeposits": true,
+      "shareLockPeriod": 0,
       "kind": {
         "teller": false,
         "tellerWithRemediation": false,
@@ -106,7 +106,7 @@
         },
         "lzChains": [
           {
-            "chainId": 40349,
+            "chainId": 30332,
             "allowMessagesFrom": true,
             "allowMessagesTo": true,
             "targetTellerOrSelf": {
@@ -137,12 +137,20 @@
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
-    "shouldDeploy": false,
+    "shouldDeploy": true,
     "pauserDeploymentName": "Sonic USD Pauser V0.1",
-    "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
-    "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
-    "makePauseAll": ["0x0000000000000000000000000000000000000000"],
-    "makeUnpauseAll": ["0x0000000000000000000000000000000000000000"],
+    "makeGenericPauser": [
+      "0x0000000000000000000000000000000000000000"
+    ],
+    "makeGenericUnpauser": [
+      "0x0000000000000000000000000000000000000000"
+    ],
+    "makePauseAll": [
+      "0x0000000000000000000000000000000000000000"
+    ],
+    "makeUnpauseAll": [
+      "0x0000000000000000000000000000000000000000"
+    ],
     "senderToPausable": [
       {
         "sender": "0x0000000000000000000000000000000000000000",
@@ -151,20 +159,59 @@
     ]
   },
   "timelockConfiguration": {
-    "shouldDeploy": false,
+    "shouldDeploy": true,
     "timelockDeploymentName": "Sonic USD Timelock V0.1",
     "timelockParameters": {
-      "minDelay": 86400,
-      "proposers": ["0x0000000000000000000000000000000000000000"],
-      "executors": ["0x0000000000000000000000000000000000000000"]
+      "minDelay": 300,
+      "proposers": [
+        "0x0000000000000000000000000000000000000000"
+      ],
+      "executors": [
+        "0x0000000000000000000000000000000000000000"
+      ]
     }
   },
-  "accountantAssets": [],
+  "accountantAssets": [
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USDT"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "DAI"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    }
+  ],
   "depositAssets": [
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "CrispyUSD"
+        "name": "USDC"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USDT"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "DAI"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -175,10 +222,32 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "CrispyUSD"
+        "name": "USDC"
       },
-      "maxDiscount": 100,
-      "minDiscount": 0,
+      "maxDiscount": 10,
+      "minDiscount": 1,
+      "minimumSecondsToDeadline": 3600,
+      "minimumShares": 0,
+      "secondsToMaturity": 60
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USDT"
+      },
+      "maxDiscount": 10,
+      "minDiscount": 1,
+      "minimumSecondsToDeadline": 3600,
+      "minimumShares": 0,
+      "secondsToMaturity": 60
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "DAI"
+      },
+      "maxDiscount": 10,
+      "minDiscount": 1,
       "minimumSecondsToDeadline": 3600,
       "minimumShares": 0,
       "secondsToMaturity": 60

@@ -12,13 +12,15 @@ import "forge-std/Script.sol";
 /**
  *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateBtcFiMerkleRoot.s.sol:CreateBtcFiMerkleRootScript --rpc-url $MAINNET_RPC_URL
  */
-contract CreateBtcFiMerkleRootScript is Script, MerkleTreeHelper {
+contract CreateBtcnMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
-    address public boringVault = 0xFE0C961A49E1aEe2AE2d842fE40157365C6d978f;
-    address public managerAddress = 0xaE4b4cfBB7A0B90e9455761ed6D93d6Dc1759710;
-    address public accountantAddress = 0xf1ecf4802C2b5Cf9c830A4AF297842Daa6D0f986;
-    address public rawDataDecoderAndSanitizer = 0xc4149959d8eA6F118A0755029C9a71E1FcDF6477;
+    address public boringVault = 0x62a474C3d8C20876FfBc6df95e76C29B62cC07b8;
+    address public managerAddress = 0xF1cdeCf0cA06bf18feDFb3F71f2b4628967097B7; 
+    address public accountantAddress = 0x63Ef0a95488eB43b337cF1aA5E7b25e40698c648;
+    
+    //TODO
+    address public rawDataDecoderAndSanitizer = address(0);
 
     function setUp() external {}
 
@@ -40,58 +42,39 @@ contract CreateBtcFiMerkleRootScript is Script, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](256);
 
         // ========================== UniswapV3 ==========================
-        address[] memory token0 = new address[](6);
+        address[] memory token0 = new address[](3);
         token0[0] = getAddress(sourceChain, "WBTC");
         token0[1] = getAddress(sourceChain, "WBTC");
         token0[2] = getAddress(sourceChain, "WBTC");
-        token0[3] = getAddress(sourceChain, "pumpBTC");
-        token0[4] = getAddress(sourceChain, "pumpBTC");
-        token0[5] = getAddress(sourceChain, "fBTC");
 
-        address[] memory token1 = new address[](6);
-        token1[0] = getAddress(sourceChain, "fBTC");
-        token1[1] = getAddress(sourceChain, "pumpBTC");
-        token1[2] = getAddress(sourceChain, "cbBTC");
-        token1[3] = getAddress(sourceChain, "fBTC");
-        token1[4] = getAddress(sourceChain, "cbBTC");
-        token1[5] = getAddress(sourceChain, "cbBTC");
+        address[] memory token1 = new address[](3);
+        token1[0] = getAddress(sourceChain, "cbBTC");
+        token1[1] = getAddress(sourceChain, "LBTC");
+        token1[2] = getAddress(sourceChain, "BTCN");
 
         _addUniswapV3Leafs(leafs, token0, token1);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](5);
-        SwapKind[] memory kind = new SwapKind[](5);
+        address[] memory assets = new address[](4);
+        SwapKind[] memory kind = new SwapKind[](4);
         assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
-        assets[1] = getAddress(sourceChain, "pumpBTC");
+        assets[1] = getAddress(sourceChain, "BTCN");
         kind[1] = SwapKind.BuyAndSell;
-        assets[2] = getAddress(sourceChain, "fBTC");
+        assets[2] = getAddress(sourceChain, "LBTC");
         kind[2] = SwapKind.BuyAndSell;
         assets[3] = getAddress(sourceChain, "cbBTC");
         kind[3] = SwapKind.BuyAndSell;
-        assets[4] = getAddress(sourceChain, "PENDLE");
-        kind[4] = SwapKind.Sell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
-        // ========================== Pendle ==========================
-        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_pumpBTC_market_03_26_25"), true);
-        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_corn_pumpBTC_market_12_25_24"), true);
-
         // ========================== Corn ==========================
-        ERC20[] memory cornTokens = new ERC20[](4);
-        cornTokens[0] = ERC20(getAddress(sourceChain, "WBTC"));
-        cornTokens[1] = ERC20(getAddress(sourceChain, "pumpBTC"));
-        cornTokens[2] = ERC20(getAddress(sourceChain, "fBTC"));
-        cornTokens[3] = ERC20(getAddress(sourceChain, "cbBTC"));
-        _addLeafsForCornStaking(leafs, cornTokens);
-
-        // ========================== Pump ==========================
-        _addLeafsForPumpStaking(leafs, getAddress(sourceChain, "pumpStaking"), getERC20(sourceChain, "WBTC"));
-        _addLeafsForPumpStaking(leafs, getAddress(sourceChain, "pumpStaking"), getERC20(sourceChain, "fBTC"));
+        //_addBTCNLeafs(//TODO)  
+        
+        // ======================== LayerZero =======================
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
-        string memory filePath = "./leafs/Mainnet/BtcFiStrategistLeafs.json";
+        string memory filePath = "./leafs/Mainnet/BtcnMerkleRoot.json";
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 

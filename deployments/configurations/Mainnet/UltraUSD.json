@@ -2,9 +2,9 @@
   "deploymentParameters": {
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
-    "chainName": "sepolia",
-    "evmVersion": "london",
-    "desiredNumberOfDeploymentTxs": 20,
+    "chainName": "mainnet",
+    "evmVersion": "cancun",
+    "desiredNumberOfDeploymentTxs": 5,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -28,45 +28,41 @@
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "addresses/Sepolia/SonicUSD.json"
+    "deploymentFileName": "addresses/Mainnet/UltraUSD.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "Sonic USD Roles Authority V0.1"
+    "rolesAuthorityDeploymentName": "Ultra Yield Stablecoin Vault Roles Authority V0.0"
   },
   "lensConfiguration": {
-    "lensDeploymentName": "Arctic Architecture Lens V0.1"
+    "lensDeploymentName": "Arctic Architecture Lens V0.0"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "Sonic USD Boring Vault V0.1",
-    "boringVaultName": "Sonic USD",
-    "boringVaultSymbol": "sUSD",
+    "boringVaultDeploymentName": "Ultra Yield Stablecoin Vault Boring Vault V0.0",
+    "boringVaultName": "Ultra Yield Stablecoin Vault",
+    "boringVaultSymbol": "UltraUSD",
     "boringVaultDecimals": 6
   },
   "managerConfiguration": {
-    "managerDeploymentName": "Sonic USD Manager V0.1",
+    "managerDeploymentName": "Ultra Yield Stablecoin Vault Manager V0.0",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "Sonic USD Accountant V0.1",
+    "accountantDeploymentName": "Ultra Yield Stablecoin Vault Accountant V0.0",
     "accountantParameters": {
       "kind": {
-        "variableRate": false,
-        "fixedRate": true
+        "variableRate": true,
+        "fixedRate": false
       },
       "payoutConfiguration": {
         "payoutTo": "0x0000000000000000000000000000000000000000",
-        "optionalPaymentSplitterName": "Sonic USD Payment Splitter V0.1",
+        "optionalPaymentSplitterName": "Ultra Yield Stablecoin Vault Payment Splitter V0.0",
         "splits": [
           {
             "to": "0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b",
-            "percent": 5000
-          },
-          {
-            "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
-            "percent": 5000
+            "percent": 10000
           }
         ]
       },
@@ -75,25 +71,43 @@
         "allowedExchangeRateChangeUpper": 10000,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "CrispyUSD"
+          "name": "USDC"
         },
-        "minimumUpateDelayInSeconds": 86400,
-        "performanceFee": 100,
-        "platformFee": 100,
+        "minimumUpateDelayInSeconds": 21600,
+        "performanceFee": 2000,
+        "platformFee": 200,
         "startingExchangeRate": 1000000
       }
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "Sonic USD Teller V0.1",
+    "tellerDeploymentName": "Ultra Yield Stablecoin Vault Teller V0.0",
     "tellerParameters": {
-      "allowPublicDeposits": false,
+      "allowPublicDeposits": true,
       "shareLockPeriod": 60,
       "kind": {
-        "teller": false,
+        "teller": true,
         "tellerWithRemediation": false,
         "tellerWithCcip": false,
-        "tellerWithLayerZero": true
+        "tellerWithLayerZero": false
+      },
+      "ccip": {
+        "routerAddressOrName": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "name": "ccipRouter"
+        },
+        "ccipChains": [
+          {
+            "chainSelector": 1,
+            "allowMessagesFrom": true,
+            "allowMessagesTo": true,
+            "targetTellerOrSelf": {
+              "address": "0x0000000000000000000000000000000000000000",
+              "self": true
+            },
+            "messageGasLimit": 100000
+          }
+        ]
       },
       "layerZero": {
         "endpointAddressOrName": {
@@ -104,24 +118,13 @@
           "address": "0x0000000000000000000000000000000000000000",
           "name": "ZRO"
         },
-        "lzChains": [
-          {
-            "chainId": 40349,
-            "allowMessagesFrom": true,
-            "allowMessagesTo": true,
-            "targetTellerOrSelf": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "self": true
-            },
-            "messageGasLimit": 100000
-          }
-        ]
+        "lzChains": []
       }
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "Sonic USD Boring Queue V0.1",
-    "boringQueueSolverName": "Sonic USD Boring Solver V0.1",
+    "boringQueueDeploymentName": "Ultra Yield Stablecoin Vault Boring Queue V0.0",
+    "boringQueueSolverName": "Ultra Yield Stablecoin Vault Boring Solver V0.0",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -132,13 +135,13 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "Sonic USD Drone V0.1",
-    "droneCount": 0,
+    "droneDeploymentBaseName": "Ultra Yield Stablecoin Vault Drone V0.0",
+    "droneCount": 1,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
-    "shouldDeploy": false,
-    "pauserDeploymentName": "Sonic USD Pauser V0.1",
+    "shouldDeploy": true,
+    "pauserDeploymentName": "Ultra Yield Stablecoin Vault Pauser V0.0",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
     "makePauseAll": ["0x0000000000000000000000000000000000000000"],
@@ -151,20 +154,55 @@
     ]
   },
   "timelockConfiguration": {
-    "shouldDeploy": false,
-    "timelockDeploymentName": "Sonic USD Timelock V0.1",
+    "shouldDeploy": true,
+    "timelockDeploymentName": "Ultra Yield Stablecoin Vault Timelock V0.0",
     "timelockParameters": {
-      "minDelay": 86400,
+      "minDelay": 300,
       "proposers": ["0x0000000000000000000000000000000000000000"],
       "executors": ["0x0000000000000000000000000000000000000000"]
     }
   },
-  "accountantAssets": [],
+  "accountantAssets": [
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USDT"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "DAI"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    }
+  ],
   "depositAssets": [
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "CrispyUSD"
+        "name": "USDC"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "DAI"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USDT"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -175,10 +213,32 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "CrispyUSD"
+        "name": "USDC"
       },
-      "maxDiscount": 100,
-      "minDiscount": 0,
+      "maxDiscount": 10,
+      "minDiscount": 1,
+      "minimumSecondsToDeadline": 3600,
+      "minimumShares": 0,
+      "secondsToMaturity": 60
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "DAI"
+      },
+      "maxDiscount": 10,
+      "minDiscount": 1,
+      "minimumSecondsToDeadline": 3600,
+      "minimumShares": 0,
+      "secondsToMaturity": 60
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USDC"
+      },
+      "maxDiscount": 10,
+      "minDiscount": 1,
       "minimumSecondsToDeadline": 3600,
       "minimumShares": 0,
       "secondsToMaturity": 60
