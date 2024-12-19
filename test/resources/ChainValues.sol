@@ -182,6 +182,7 @@ contract ChainValues {
         values[mainnet]["USD0_plus"] = 0x35D8949372D46B7a3D5A56006AE77B215fc69bC0.toBytes32();
         values[mainnet]["deUSD"] = 0x15700B564Ca08D9439C58cA5053166E8317aa138.toBytes32();
         values[mainnet]["sdeUSD"] = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326.toBytes32();
+        values[mainnet][
         values[mainnet]["pumpBTC"] = 0xF469fBD2abcd6B9de8E169d128226C0Fc90a012e.toBytes32();
         values[mainnet]["CAKE"] = 0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898.toBytes32();
         values[mainnet]["cbBTC"] = 0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf.toBytes32();

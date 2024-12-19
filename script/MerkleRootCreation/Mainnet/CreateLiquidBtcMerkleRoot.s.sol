@@ -37,30 +37,78 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](128);
+        ManageLeaf[] memory leafs = new ManageLeaf[](512);
 
         // ========================== UniswapV3 ==========================
-        address[] memory token0 = new address[](3);
+        address[] memory token0 = new address[](15);
         token0[0] = getAddress(sourceChain, "WBTC");
         token0[1] = getAddress(sourceChain, "WBTC");
         token0[2] = getAddress(sourceChain, "LBTC");
 
-        address[] memory token1 = new address[](3);
+        token0[3] = getAddress(sourceChain, "USDC"); 
+        token0[4] = getAddress(sourceChain, "USDT"); 
+
+        token0[5] = getAddress(sourceChain, "WBTC"); 
+        token0[6] = getAddress(sourceChain, "cbBTC"); 
+        token0[7] = getAddress(sourceChain, "LBTC"); 
+
+        token0[8] = getAddress(sourceChain, "WBTC"); 
+        token0[9] = getAddress(sourceChain, "cbBTC"); 
+        token0[10] = getAddress(sourceChain, "LBTC"); 
+
+        token0[11] = getAddress(sourceChain, "USD0"); 
+        token0[12] = getAddress(sourceChain, "SUSDE"); 
+        token0[13] = getAddress(sourceChain, "USDE"); 
+
+        token0[14] = getAddress(sourceChain, "WBTC"); 
+
+        address[] memory token1 = new address[](15);
         token1[0] = getAddress(sourceChain, "LBTC");
         token1[1] = getAddress(sourceChain, "cbBTC");
         token1[2] = getAddress(sourceChain, "cbBTC");
 
+        token1[3] = getAddress(sourceChain, "USDT"); 
+        token1[4] = getAddress(sourceChain, "USD0_plus"); 
+
+        token1[5] = getAddress(sourceChain, "USDC"); 
+        token1[6] = getAddress(sourceChain, "USDC"); 
+        token1[7] = getAddress(sourceChain, "USDC"); 
+
+        token1[8] = getAddress(sourceChain, "USDT"); 
+        token1[9] = getAddress(sourceChain, "USDT"); 
+        token1[10] = getAddress(sourceChain, "USDT"); 
+
+        token1[11] = getAddress(sourceChain, "USDT"); 
+        token1[12] = getAddress(sourceChain, "USDT"); 
+        token1[13] = getAddress(sourceChain, "USDT"); 
+
+        token1[14] = getAddress(sourceChain, "eBTC"); 
+
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](3);
-        SwapKind[] memory kind = new SwapKind[](3);
+        address[] memory assets = new address[](10);
+        SwapKind[] memory kind = new SwapKind[](10);
         assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
         kind[1] = SwapKind.BuyAndSell;
         assets[2] = getAddress(sourceChain, "cbBTC");
         kind[2] = SwapKind.BuyAndSell;
+        assets[3] = getAddress(sourceChain, "USDC");
+        kind[3] = SwapKind.BuyAndSell;
+        assets[4] = getAddress(sourceChain, "USDT");
+        kind[4] = SwapKind.BuyAndSell;
+        assets[5] = getAddress(sourceChain, "USD0");
+        kind[5] = SwapKind.BuyAndSell;
+        assets[6] = getAddress(sourceChain, "USD0_plus");
+        kind[6] = SwapKind.BuyAndSell;
+        assets[7] = getAddress(sourceChain, "SUSDE");
+        kind[7] = SwapKind.BuyAndSell;
+        assets[8] = getAddress(sourceChain, "USDE");
+        kind[8] = SwapKind.BuyAndSell;
+        assets[9] = getAddress(sourceChain, "eBTC");
+        kind[9] = SwapKind.BuyAndSell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
         
         // ========================== Aave ==========================
