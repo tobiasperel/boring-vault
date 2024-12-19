@@ -87,8 +87,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](10);
-        SwapKind[] memory kind = new SwapKind[](10);
+        address[] memory assets = new address[](11);
+        SwapKind[] memory kind = new SwapKind[](11);
         assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
@@ -109,6 +109,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         kind[8] = SwapKind.BuyAndSell;
         assets[9] = getAddress(sourceChain, "eBTC");
         kind[9] = SwapKind.BuyAndSell;
+        assets[10] = getAddress(sourceChain, "PENDLE");
+        kind[10] = SwapKind.Sell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
         
         // ========================== Aave ==========================
@@ -130,6 +132,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Pendle ==========================
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0++_market_01_29_25"), true); 
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0++_market_06_25_25"), true); 
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_corn_market_3_26_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_market_12_26_24"), true);
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
