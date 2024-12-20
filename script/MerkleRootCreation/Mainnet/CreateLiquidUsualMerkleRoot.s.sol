@@ -84,7 +84,7 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         /**
          * Full position platform for USDC, USDT, DAI, USDe, sUSDe.
          */
-        address[] memory token0 = new address[](11);
+        address[] memory token0 = new address[](10);
         token0[0] = getAddress(sourceChain, "USDC");
         token0[1] = getAddress(sourceChain, "USDC");
         token0[2] = getAddress(sourceChain, "USDC");
@@ -95,9 +95,8 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         token0[7] = getAddress(sourceChain, "DAI");
         token0[8] = getAddress(sourceChain, "DAI");
         token0[9] = getAddress(sourceChain, "USD0");
-        token0[10] = getAddress(sourceChain, "USUAL"); 
 
-        address[] memory token1 = new address[](11);
+        address[] memory token1 = new address[](10);
         token1[0] = getAddress(sourceChain, "USDT");
         token1[1] = getAddress(sourceChain, "DAI");
         token1[2] = getAddress(sourceChain, "USD0");
@@ -108,7 +107,6 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         token1[7] = getAddress(sourceChain, "USD0");
         token1[8] = getAddress(sourceChain, "USD0_plus");
         token1[9] = getAddress(sourceChain, "USD0_plus");
-        token1[10] = getAddress(sourceChain, "WETH"); 
 
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
