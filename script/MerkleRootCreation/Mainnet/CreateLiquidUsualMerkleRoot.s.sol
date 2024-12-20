@@ -84,7 +84,7 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         /**
          * Full position platform for USDC, USDT, DAI, USDe, sUSDe.
          */
-        address[] memory token0 = new address[](10);
+        address[] memory token0 = new address[](11);
         token0[0] = getAddress(sourceChain, "USDC");
         token0[1] = getAddress(sourceChain, "USDC");
         token0[2] = getAddress(sourceChain, "USDC");
@@ -95,8 +95,9 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         token0[7] = getAddress(sourceChain, "DAI");
         token0[8] = getAddress(sourceChain, "DAI");
         token0[9] = getAddress(sourceChain, "USD0");
+        token0[10] = getAddress(sourceChain, "USUAL"); 
 
-        address[] memory token1 = new address[](10);
+        address[] memory token1 = new address[](11);
         token1[0] = getAddress(sourceChain, "USDT");
         token1[1] = getAddress(sourceChain, "DAI");
         token1[2] = getAddress(sourceChain, "USD0");
@@ -107,6 +108,7 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         token1[7] = getAddress(sourceChain, "USD0");
         token1[8] = getAddress(sourceChain, "USD0_plus");
         token1[9] = getAddress(sourceChain, "USD0_plus");
+        token1[10] = getAddress(sourceChain, "WETH"); 
 
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
@@ -154,8 +156,8 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
          * Swap PYUSD <-> FRAX
          * Swap PYUSD <-> crvUSD
          */
-        address[] memory assets = new address[](13);
-        SwapKind[] memory kind = new SwapKind[](13);
+        address[] memory assets = new address[](14);
+        SwapKind[] memory kind = new SwapKind[](14);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -182,6 +184,8 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         kind[11] = SwapKind.Sell;
         assets[12] = getAddress(sourceChain, "PENDLE");
         kind[12] = SwapKind.Sell;
+        assets[13] = getAddress(sourceChain, "USUAL");
+        kind[13] = SwapKind.Sell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         // ========================== 1inch Uniswap V3 ==========================
