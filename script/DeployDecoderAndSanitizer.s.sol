@@ -16,6 +16,7 @@ import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
 import {ContractNames} from "resources/ContractNames.sol";
 import {PointFarmingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PointFarmingDecoderAndSanitizer.sol";
 import {OnlyHyperlaneDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/OnlyHyperlaneDecoderAndSanitizer.sol";
+import {SwellEtherFiLiquidEthDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SwellEtherFiLiquidEthDecoderAndSanitizer.sol"; 
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -29,15 +30,12 @@ import "forge-std/StdJson.sol";
 contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddresses {
     uint256 public privateKey;
     Deployer public deployer = Deployer(deployerAddress);
-
-    address boringVault = 0x5401b8620E5FB570064CA9114fd1e135fd77D57c;
-    address eEigen = 0xE77076518A813616315EaAba6cA8e595E845EeE9;
-
-    address liquidUsd = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C;
+    
+    address boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C; 
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("mainnet");
+        vm.createSelectFork("swell");
     }
 
     function run() external {
@@ -71,9 +69,13 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // constructorArgs = abi.encode(liquidUsd, uniswapV3NonFungiblePositionManager);
         // deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
-        creationCode = type(OnlyHyperlaneDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(address(0));
-        deployer.deployContract("Hyperlane Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
+        //creationCode = type(OnlyHyperlaneDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(address(0));
+        //deployer.deployContract("Hyperlane Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
+
+        creationCode = type(SwellEtherFiLiquidEthDecoderAndSanitizer).creationCode; 
+        constructorArgs = abi.encode(boringVault); 
+        deployer.deployContract("EtherFi Liquid ETH Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }

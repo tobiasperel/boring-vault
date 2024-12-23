@@ -1284,5 +1284,8 @@ contract ChainValues {
 
         values[swell]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
         values[swell]["balancerVault"] = address(1).toBytes32();
+
+        // ERC20s
+        values[swell]["WEETH"] = 0xA6cB988942610f6731e664379D15fFcfBf282b44.toBytes32();  //also OFT
     }
 }
