@@ -29,13 +29,10 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
     address public oldTeller = 0xe19a43B1b8af6CeE71749Af2332627338B3242D1;
     address public delayedWithdrawer = 0x75E3f26Ceff44258CE8cB451D7d2cC8966Ef3554;
 
-    uint8 public constant MINTER_ROLE = 2;
-    uint8 public constant BURNER_ROLE = 3;
-    uint8 public constant PAUSER_ROLE = 5;
-    uint8 public constant OWNER_ROLE = 8;
-    uint8 public constant MULTISIG_ROLE = 9;
-    uint8 public constant STRATEGIST_MULTISIG_ROLE = 10;
-    uint8 public constant SOLVER_ROLE = 12;
+    address public hyperNativePauser = 0x9AF1298993DC1f397973C62A5D47a284CF76844D;
+    address public etherfiPauser = 0x523455838764e0ECf9adD7eAB8c1DAB86B0c6D7b;
+
+    uint8 public constant STOP_MESSAGES_FROM_CHAIN_ROLE = 20;
 
     ERC20 public LBTC;
     ERC20 public wBTC;
@@ -54,213 +51,29 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
     }
 
     function testProposeAndExecuteTimelock() external {
-        uint256 actionCount = 29;
+        uint256 actionCount = 4;
         address[] memory targets = new address[](actionCount);
         targets[0] = address(rolesAuthority);
         targets[1] = address(rolesAuthority);
         targets[2] = address(rolesAuthority);
-        targets[3] = address(rolesAuthority);
-        targets[4] = address(rolesAuthority);
-        targets[5] = address(rolesAuthority);
-        targets[6] = address(rolesAuthority);
-        targets[7] = address(rolesAuthority);
-        targets[8] = address(rolesAuthority);
-        targets[9] = address(rolesAuthority);
-        targets[10] = address(rolesAuthority);
-        targets[11] = address(rolesAuthority);
-        targets[12] = address(rolesAuthority);
-        targets[13] = address(rolesAuthority);
-        targets[14] = address(rolesAuthority);
-        targets[15] = address(rolesAuthority);
-        targets[16] = address(rolesAuthority);
-        targets[17] = address(rolesAuthority);
-        targets[18] = address(rolesAuthority);
-        targets[19] = address(rolesAuthority);
-        targets[20] = address(rolesAuthority);
-        targets[21] = address(rolesAuthority);
-        targets[22] = address(rolesAuthority);
-        targets[23] = address(rolesAuthority);
-        targets[24] = address(eBTC);
-        targets[25] = address(rolesAuthority);
-        targets[26] = address(rolesAuthority);
-        targets[27] = address(rolesAuthority);
-        targets[28] = address(rolesAuthority);
+        targets[3] = address(timelock);
         uint256[] memory values = new uint256[](actionCount);
         bytes[] memory payloads = new bytes[](actionCount);
         // Set role capabilities to true
         payloads[0] = abi.encodeWithSelector(
             RolesAuthority.setRoleCapability.selector,
-            OWNER_ROLE,
-            teller,
-            LayerZeroTellerWithRateLimiting.addChain.selector,
-            true
-        );
-        payloads[1] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            MULTISIG_ROLE,
-            teller,
-            LayerZeroTellerWithRateLimiting.removeChain.selector,
-            true
-        );
-        payloads[2] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            OWNER_ROLE,
-            teller,
-            LayerZeroTellerWithRateLimiting.allowMessagesFromChain.selector,
-            true
-        );
-        payloads[3] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            OWNER_ROLE,
-            teller,
-            LayerZeroTellerWithRateLimiting.allowMessagesToChain.selector,
-            true
-        );
-        payloads[4] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            MULTISIG_ROLE,
+            STOP_MESSAGES_FROM_CHAIN_ROLE,
             teller,
             LayerZeroTellerWithRateLimiting.stopMessagesFromChain.selector,
             true
         );
-        payloads[5] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            MULTISIG_ROLE,
-            teller,
-            LayerZeroTellerWithRateLimiting.stopMessagesToChain.selector,
-            true
+        payloads[1] = abi.encodeWithSelector(
+            RolesAuthority.setUserRole.selector, hyperNativePauser, STOP_MESSAGES_FROM_CHAIN_ROLE, true
         );
-        payloads[6] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            MULTISIG_ROLE,
-            teller,
-            LayerZeroTellerWithRateLimiting.setOutboundRateLimits.selector,
-            true
+        payloads[2] = abi.encodeWithSelector(
+            RolesAuthority.setUserRole.selector, etherfiPauser, STOP_MESSAGES_FROM_CHAIN_ROLE, true
         );
-        payloads[7] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            MULTISIG_ROLE,
-            teller,
-            LayerZeroTellerWithRateLimiting.setInboundRateLimits.selector,
-            true
-        );
-        payloads[8] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            OWNER_ROLE,
-            teller,
-            LayerZeroTellerWithRateLimiting.setChainGasLimit.selector,
-            true
-        );
-        payloads[9] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            MULTISIG_ROLE,
-            teller,
-            TellerWithMultiAssetSupport.pause.selector,
-            true
-        );
-        payloads[10] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            MULTISIG_ROLE,
-            teller,
-            TellerWithMultiAssetSupport.unpause.selector,
-            true
-        );
-        payloads[11] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            PAUSER_ROLE,
-            teller,
-            TellerWithMultiAssetSupport.pause.selector,
-            true
-        );
-        payloads[12] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            PAUSER_ROLE,
-            teller,
-            TellerWithMultiAssetSupport.unpause.selector,
-            true
-        );
-        payloads[13] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            OWNER_ROLE,
-            teller,
-            TellerWithMultiAssetSupport.updateAssetData.selector,
-            true
-        );
-        payloads[14] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            OWNER_ROLE,
-            teller,
-            TellerWithMultiAssetSupport.setShareLockPeriod.selector,
-            true
-        );
-        payloads[15] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            SOLVER_ROLE,
-            teller,
-            TellerWithMultiAssetSupport.bulkDeposit.selector,
-            true
-        );
-        payloads[16] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            SOLVER_ROLE,
-            teller,
-            TellerWithMultiAssetSupport.bulkWithdraw.selector,
-            true
-        );
-
-        // Add public functions
-        payloads[17] = abi.encodeWithSelector(
-            RolesAuthority.setPublicCapability.selector, teller, TellerWithMultiAssetSupport.deposit.selector, true
-        );
-        payloads[18] = abi.encodeWithSelector(
-            RolesAuthority.setPublicCapability.selector,
-            teller,
-            TellerWithMultiAssetSupport.depositWithPermit.selector,
-            true
-        );
-        payloads[19] = abi.encodeWithSelector(
-            RolesAuthority.setPublicCapability.selector,
-            teller,
-            CrossChainTellerWithGenericBridge.depositAndBridge.selector,
-            true
-        );
-        payloads[20] = abi.encodeWithSelector(
-            RolesAuthority.setPublicCapability.selector,
-            teller,
-            CrossChainTellerWithGenericBridge.depositAndBridgeWithPermit.selector,
-            true
-        );
-        payloads[21] = abi.encodeWithSelector(
-            RolesAuthority.setPublicCapability.selector, teller, CrossChainTellerWithGenericBridge.bridge.selector, true
-        );
-
-        // Grant roles
-        payloads[22] = abi.encodeWithSelector(RolesAuthority.setUserRole.selector, teller, MINTER_ROLE, true);
-        payloads[23] = abi.encodeWithSelector(RolesAuthority.setUserRole.selector, teller, BURNER_ROLE, true);
-
-        // Set before transfer hook
-        payloads[24] = abi.encodeWithSelector(BoringVault.setBeforeTransferHook.selector, teller);
-
-        payloads[25] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            STRATEGIST_MULTISIG_ROLE,
-            teller,
-            TellerWithMultiAssetSupport.updateAssetData.selector,
-            true
-        );
-        payloads[26] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector, OWNER_ROLE, teller, Auth.setAuthority.selector, true
-        );
-        payloads[27] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector, OWNER_ROLE, teller, Auth.transferOwnership.selector, true
-        );
-        payloads[28] = abi.encodeWithSelector(
-            RolesAuthority.setRoleCapability.selector,
-            STRATEGIST_MULTISIG_ROLE,
-            teller,
-            TellerWithMultiAssetSupport.refundDeposit.selector,
-            true
-        );
+        payloads[3] = abi.encodeWithSelector(TimelockController.updateDelay.selector, 1 days);
 
         bytes32 predecessor = bytes32(0);
         bytes32 salt = bytes32(0);
@@ -275,7 +88,7 @@ contract CreateTimelockTxTest is Test, MerkleTreeHelper {
         // vm.prank(safe);
         // timelock.executeBatch(targets, values, payloads, predecessor, salt);
 
-        _saveTimelockTx("ebtc-timelock-tx-1.json", targets, values, payloads, predecessor, salt, delay);
+        _saveTimelockTx("ebtc-timelock-tx-2.json", targets, values, payloads, predecessor, salt, delay);
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
