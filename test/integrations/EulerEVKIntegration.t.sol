@@ -110,23 +110,25 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
     }
 
     function testEulerEVKIntegration() external {
-        deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
-        ERC4626 evkWEETH = ERC4626(getAddress(sourceChain, "evkWEETH")); 
+        deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18);
+        ERC4626 evkWEETH = ERC4626(getAddress(sourceChain, "evkWETH")); 
+        ERC4626 evkUSDC = ERC4626(getAddress(sourceChain, "evkUSDC")); 
         
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
         _addEulerEVKLeafs(
             leafs,
-            getERC20(sourceChain, "WEETH"),
+            getERC20(sourceChain, "USDC"), //asset we're borrowing
             getAddress(sourceChain, "ethereumVaultConnector"),
-            evkWEETH
+            evkWEETH, //vault we want to deposit into
+            evkUSDC //vaut we want to borrow from
         ); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](10);
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](11);
         manageLeafs[0] = leafs[0];
         manageLeafs[1] = leafs[1];
         manageLeafs[2] = leafs[2];
@@ -137,23 +139,25 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         manageLeafs[7] = leafs[7];
         manageLeafs[8] = leafs[8];
         manageLeafs[9] = leafs[9];
+        manageLeafs[10] = leafs[10];
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](10);
-        targets[0] = getAddress(sourceChain, "WEETH"); 
-        targets[1] = getAddress(sourceChain, "evkWEETH"); 
-        targets[2] = getAddress(sourceChain, "evkWEETH"); 
-        targets[3] = getAddress(sourceChain, "evkWEETH"); 
-        targets[4] = getAddress(sourceChain, "evkWEETH"); 
-        targets[5] = getAddress(sourceChain, "ethereumVaultConnector"); 
+        address[] memory targets = new address[](11);
+        targets[0] = getAddress(sourceChain, "WETH"); 
+        targets[1] = getAddress(sourceChain, "evkWETH"); 
+        targets[2] = getAddress(sourceChain, "evkWETH"); 
+        targets[3] = getAddress(sourceChain, "evkWETH"); 
+        targets[4] = getAddress(sourceChain, "evkWETH"); 
+        targets[5] = getAddress(sourceChain, "USDC");  
         targets[6] = getAddress(sourceChain, "ethereumVaultConnector"); 
-        targets[7] = getAddress(sourceChain, "evkWEETH"); 
-        targets[8] = getAddress(sourceChain, "evkWEETH"); 
-        targets[9] = getAddress(sourceChain, "evkWEETH"); 
+        targets[7] = getAddress(sourceChain, "ethereumVaultConnector"); 
+        targets[8] = getAddress(sourceChain, "evkUSDC"); 
+        targets[9] = getAddress(sourceChain, "evkUSDC"); 
+        targets[10] = getAddress(sourceChain, "evkUSDC"); 
 
-        bytes[] memory targetData = new bytes[](10);
-        targetData[0] = abi.encodeWithSignature( "approve(address,uint256)", getAddress(sourceChain, "evkWEETH"), type(uint256).max
+        bytes[] memory targetData = new bytes[](11);
+        targetData[0] = abi.encodeWithSignature( "approve(address,uint256)", getAddress(sourceChain, "evkWETH"), type(uint256).max
         ); 
         targetData[1] = abi.encodeWithSignature(
             "deposit(uint256,address)", 1000e18, address(boringVault)
@@ -162,30 +166,33 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
             "withdraw(uint256,address,address)", 1e18, address(boringVault), address(boringVault) 
         );
         targetData[3] = abi.encodeWithSignature(
-            "mint(uint256,address)", 1e18, address(boringVault)
+            "mint(uint256,address)", 100, address(boringVault)
         ); 
         targetData[4] = abi.encodeWithSignature(
-            "redeem(uint256,address,address)", 1e18, address(boringVault), address(boringVault)
+            "redeem(uint256,address,address)", 100, address(boringVault), address(boringVault)
         ); 
         targetData[5] = abi.encodeWithSignature(
-            "enableController(address,address)", address(boringVault), getAddress(sourceChain, "evkWEETH")  
+            "approve(address,uint256)", getAddress(sourceChain, "evkUSDC"), type(uint256).max
         ); 
         targetData[6] = abi.encodeWithSignature(
-            "enableCollateral(address,address)", address(boringVault), getAddress(sourceChain, "evkWEETH")  
+            "enableController(address,address)", address(boringVault), getAddress(sourceChain, "evkUSDC")  
         ); 
         targetData[7] = abi.encodeWithSignature(
-            "borrow(uint256,address)", 1e18, address(boringVault)
+            "enableCollateral(address,address)", address(boringVault), getAddress(sourceChain, "evkWETH")  
         ); 
         targetData[8] = abi.encodeWithSignature(
-            "repay(uint256,address)", 0.05e18, address(boringVault)
+            "borrow(uint256,address)", 1e6, address(boringVault)
         ); 
         targetData[9] = abi.encodeWithSignature(
-            "repayWithShares(uint256,address)", 0.1e18, address(boringVault)
+            "repay(uint256,address)", 1e4, address(boringVault)
+        ); 
+        targetData[10] = abi.encodeWithSignature(
+            "repayWithShares(uint256,address)", type(uint256).max, address(boringVault)
         ); 
             
-        uint256[] memory values = new uint256[](10); 
+        uint256[] memory values = new uint256[](11); 
 
-        address[] memory decodersAndSanitizers = new address[](10);
+        address[] memory decodersAndSanitizers = new address[](11);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
@@ -196,6 +203,7 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         decodersAndSanitizers[7] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[8] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[9] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[10] = rawDataDecoderAndSanitizer;
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 

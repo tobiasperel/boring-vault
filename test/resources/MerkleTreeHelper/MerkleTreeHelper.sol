@@ -5578,9 +5578,28 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
     }
     // ========================================= Euler Finance =========================================
     
-    function _addEulerEVKLeafs(ManageLeaf[] memory leafs, ERC20 asset, address ethereumVaultConnector, ERC4626 evk) internal {
-        //approval leaf is handled by ERC4626
-        _addERC4626Leafs(leafs, evk);
+    function _addEulerEVKLeafs(
+        ManageLeaf[] memory leafs, 
+        ERC20 borrowAsset, 
+        address ethereumVaultConnector, 
+        ERC4626 depositVault, 
+        ERC4626 borrowVault
+    ) internal {
+        //approval leaf is handled by ERC4626, including for ERC20 deposit asset
+        _addERC4626Leafs(leafs, depositVault);
+        unchecked {
+            leafIndex++; 
+        } 
+        leafs[leafIndex] = ManageLeaf(
+            address(borrowAsset),
+            false, 
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve ", borrowAsset.name(), " to be repaid."),   
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        ); 
+        leafs[leafIndex].argumentAddresses[0] = address(borrowVault); 
+
         unchecked {
             leafIndex++; 
         } 
@@ -5593,7 +5612,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         ); 
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
-        leafs[leafIndex].argumentAddresses[1] = address(evk); 
+        leafs[leafIndex].argumentAddresses[1] = address(borrowVault); 
         
         unchecked {
             leafIndex++; 
@@ -5607,18 +5626,18 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         ); 
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
-        leafs[leafIndex].argumentAddresses[1] = address(evk); 
+        leafs[leafIndex].argumentAddresses[1] = address(depositVault); 
 
         unchecked {
             leafIndex++; 
         } 
         
         leafs[leafIndex] = ManageLeaf(
-            address(evk),
+            address(borrowVault),
             false, 
             "borrow(uint256,address)",
             new address[](1),
-            string.concat("Borrow ", asset.name(), " from Euler Vault"),
+            string.concat("Borrow ", borrowAsset.name(), " from Euler Vault"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         ); 
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
@@ -5628,11 +5647,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         } 
 
         leafs[leafIndex] = ManageLeaf(
-            address(evk),
+            address(borrowVault),
             false, 
             "repay(uint256,address)",
             new address[](1),
-            string.concat("Repay ", asset.name(), " to Euler Vault"),
+            string.concat("Repay ", borrowAsset.name(), " to Euler Vault"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         ); 
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");  
@@ -5642,11 +5661,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         } 
 
         leafs[leafIndex] = ManageLeaf(
-            address(evk),
+            address(borrowVault),
             false, 
             "repayWithShares(uint256,address)",
             new address[](1),
-            string.concat("Repay ", asset.name(), " with shares to Euler Vault"),
+            string.concat("Repay ", borrowAsset.name(), " with shares to Euler Vault"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         ); 
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
