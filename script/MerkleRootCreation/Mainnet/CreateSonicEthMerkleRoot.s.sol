@@ -19,7 +19,6 @@ contract CreateSonicEthMerkleRoot is Script, MerkleTreeHelper {
     address public accountantAddress = 0x3a592F9Ea2463379c4154d03461A73c484993668;
     address public rawDataDecoderAndSanitizer = 0x215dAfCAD04C59a9d8F48a8Ae1ea8f5a053309FD;
 
-
     function setUp() external {}
 
     /**
@@ -38,19 +37,27 @@ contract CreateSonicEthMerkleRoot is Script, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](128);
 
+        // ========================== Fee Claiming ==========================
+        ERC20[] memory feeAssets = new ERC20[](3);
+        feeAssets[0] = getERC20(sourceChain, "WETH");
+        feeAssets[1] = getERC20(sourceChain, "WEETH");
+        feeAssets[2] = getERC20(sourceChain, "WSTETH");
+        _addLeafsForFeeClaiming(leafs, feeAssets);
+
         // ========================== UniswapV3 ==========================
-        // WETH, stWETH, WEETH, wstETH, eETH
+        // WETH, WEETH, wstETH
         address[] memory token0 = new address[](3);
         token0[0] = getAddress(sourceChain, "WETH");
         token0[1] = getAddress(sourceChain, "WETH");
-        token0[2] = getAddress(sourceChain, "WETH");
+        token0[2] = getAddress(sourceChain, "WEETH");
 
         address[] memory token1 = new address[](3);
         token1[0] = getAddress(sourceChain, "WEETH");
         token1[1] = getAddress(sourceChain, "WSTETH");
-        token1[2] = getAddress(sourceChain, "WEETH");
+        token1[2] = getAddress(sourceChain, "WSTETH");
 
-        
+        _addUniswapV3Leafs(leafs, token0, token1, true);
+
         // ========================== 1inch ==========================
         address[] memory assets = new address[](3);
         SwapKind[] memory kind = new SwapKind[](3);
@@ -68,25 +75,27 @@ contract CreateSonicEthMerkleRoot is Script, MerkleTreeHelper {
         supplyAssets[0] = getERC20(sourceChain, "WETH");
         supplyAssets[1] = getERC20(sourceChain, "WEETH");
         supplyAssets[2] = getERC20(sourceChain, "WSTETH");
-        ERC20[] memory borrowAssets = new ERC20[](3);
-        borrowAssets[0] = getERC20(sourceChain, "WETH");
-        borrowAssets[1] = getERC20(sourceChain, "WEETH");
-        borrowAssets[2] = getERC20(sourceChain, "WSTETH");
+        ERC20[] memory borrowAssets = new ERC20[](0);
 
-        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets); 
         // Prime
-        _addAaveV3PrimeLeafs(leafs, supplyAssets, borrowAssets); 
-        
+        ERC20[] memory supplyAssetsPrime = new ERC20[](2);
+        supplyAssetsPrime[0] = getERC20(sourceChain, "WETH");
+        supplyAssetsPrime[1] = getERC20(sourceChain, "WSTETH");
+        ERC20[] memory borrowAssetsPrime = new ERC20[](0);
+
+        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
+        _addAaveV3PrimeLeafs(leafs, supplyAssetsPrime, borrowAssetsPrime);
+
         // ========================== MetaMorho  ==========================
-         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHPrime")));
-         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHCore")));
-         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "mevCapitalwWeth")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHPrime")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHCore")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "mevCapitalwWeth")));
 
         // ========================== Lido (stETH, wstETH) ==========================
-        _addLidoLeafs(leafs); 
-        
+        _addLidoLeafs(leafs);
+
         // ========================== Etherfi (eETh, weETH) ==========================
-        _addEtherFiLeafs(leafs);  
+        _addEtherFiLeafs(leafs);
 
         // ========================== Verify & Generate ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
@@ -96,8 +105,5 @@ contract CreateSonicEthMerkleRoot is Script, MerkleTreeHelper {
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
         _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
-        
     }
-
 }
-
