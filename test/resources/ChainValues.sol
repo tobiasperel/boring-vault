@@ -584,7 +584,7 @@ contract ChainValues {
 
         // 1Inch
         values[mainnet]["aggregationRouterV5"] = 0x1111111254EEB25477B68fb85Ed929f73A960582.toBytes32();
-        values[mainnet]["oneInchExecutor"] = 0x5141b82f5ffda4c6fe1e372978f1c5427640a190.toBytes32();
+        values[mainnet]["oneInchExecutor"] = 0x5141B82f5fFDa4c6fE1E372978F1C5427640a190.toBytes32();
         values[mainnet]["wETHweETH5bps"] = 0x7A415B19932c0105c82FDB6b720bb01B0CC2CAe3.toBytes32();
 
         // Gearbox
@@ -877,6 +877,9 @@ contract ChainValues {
         // Hyperlane
         values[mainnet]["hyperlaneUsdcRouter"] = 0xe1De9910fe71cC216490AC7FCF019e13a34481D7.toBytes32();
         values[mainnet]["hyperlaneTestRecipient"] = 0xfb53392bf4a0590a317ca716c28c29ace7c448bc132d7f8188ca234f595aa121;
+
+        // Usual
+        values[mainnet]["usualSwapperEngine"] = 0xB969B0d14F7682bAF37ba7c364b351B830a812B2.toBytes32(); 
     }
 
     function _addBaseValues() private {

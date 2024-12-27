@@ -8,16 +8,10 @@ import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
-import {
-    EtherFiLiquidUsdDecoderAndSanitizer,
-    UsualMoneyDecoderAndSanitizer
-} from "src/base/DecodersAndSanitizers/EtherFiLiquidUsdDecoderAndSanitizer.sol";
+import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol"; 
+import {UsualMoneyDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/UsualMoneyDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
-import {
-    PointFarmingDecoderAndSanitizer,
-    EigenLayerLSTStakingDecoderAndSanitizer
-} from "src/base/DecodersAndSanitizers/PointFarmingDecoderAndSanitizer.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
@@ -43,7 +37,7 @@ contract UsualMoneyIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 20971947;
+        uint256 blockNumber = 21495090;
 
         _startFork(rpcKey, blockNumber);
 
@@ -53,9 +47,7 @@ contract UsualMoneyIntegrationTest is Test, MerkleTreeHelper {
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
         rawDataDecoderAndSanitizer = address(
-            new EtherFiLiquidUsdDecoderAndSanitizer(
-                address(boringVault), getAddress(sourceChain, "uniswapV3NonFungiblePositionManager")
-            )
+            new FullUsualMoneyDecoderAndSanitizer(address(boringVault))
         );
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
@@ -116,37 +108,73 @@ contract UsualMoneyIntegrationTest is Test, MerkleTreeHelper {
         rolesAuthority.setPublicCapability(address(boringVault), bytes4(0), true);
     }
 
-    function testUsualMoneyIntegration(uint256 mintAmount) external {
-        mintAmount = bound(mintAmount, 1e18, 1_000_000e18);
+    function testUsualMoneyIntegration() external {
+        uint256 mintAmount = 10000000000000e18; 
+        //mintAmount = bound(mintAmount, 1e18, 1_000_000e18);
         deal(getAddress(sourceChain, "USD0"), address(boringVault), mintAmount);
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1000e8);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](4);
+        
+        uint256 usdcBalance = getERC20(sourceChain, "USDC").balanceOf(address(boringVault)); 
+        console.log("USDC balance", usdcBalance); 
+        assertGt(usdcBalance, 0); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
         _addUsualMoneyLeafs(leafs);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
-        manageLeafs[0] = leafs[0]; // approve
-        manageLeafs[1] = leafs[1]; // mint
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](8);
+        manageLeafs[0] = leafs[0]; //approve 
+        manageLeafs[1] = leafs[1]; //approve
+        manageLeafs[2] = leafs[2]; //wrap
+        manageLeafs[3] = leafs[3]; //unlock@floor  
+        //manageLeafs[4] = leafs[4]; //unwrap -> skip 
+        manageLeafs[4] = leafs[5]; //deposit
+        manageLeafs[5] = leafs[6]; //provide 
+        manageLeafs[6] = leafs[7]; //swap 
+        manageLeafs[7] = leafs[8]; //withdraw 
 
         (bytes32[][] memory manageProofs) = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](2);
-        targets[0] = getAddress(sourceChain, "USD0");
-        targets[1] = getAddress(sourceChain, "USD0_plus");
+        address[] memory targets = new address[](8);
+        targets[0] = getAddress(sourceChain, "USD0"); //approve
+        targets[1] = getAddress(sourceChain, "USDC"); //approve 
+        targets[2] = getAddress(sourceChain, "USD0_plus"); //wrap
+        targets[3] = getAddress(sourceChain, "USD0_plus");  //unlock@floor
+        targets[4] = getAddress(sourceChain, "usualSwapperEngine");  //depositUSDC
+        targets[5] = getAddress(sourceChain, "usualSwapperEngine");  //provideUsd0
+        targets[6] = getAddress(sourceChain, "usualSwapperEngine");  //swapUsd0
+        targets[7] = getAddress(sourceChain, "usualSwapperEngine");  //withdrawUSDC
+        
+        uint256[] memory orderIds = new uint256[](1);  
+        orderIds[0] = 100; 
 
-        bytes[] memory targetData = new bytes[](2);
+        bytes[] memory targetData = new bytes[](8);
         targetData[0] =
             abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "USD0_plus"), type(uint256).max);
-        targetData[1] = abi.encodeWithSignature("mint(uint256)", mintAmount);
+        targetData[1] = 
+            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "usualSwapperEngine"), type(uint256).max); 
+        targetData[2] = abi.encodeWithSignature("mint(uint256)", 100e18);
+        targetData[3] = abi.encodeWithSignature("unlockUsd0ppFloorPrice(uint256)", 10e18);
+        targetData[4] = abi.encodeWithSignature("depositUSDC(uint256)", 100_000e6);
+        targetData[5] = abi.encodeWithSignature("provideUsd0ReceiveUSDC(address,uint256,uint256[],bool)", address(boringVault), 10_000e6, orderIds, false);
+        targetData[6] = abi.encodeWithSignature("swapUsd0(address,uint256,uint256[],bool)", address(boringVault), orderIds, false);
+        targetData[7] = abi.encodeWithSignature("withdrawUSDC(address,uint256,uint256[],bool)", address(boringVault), 100e6);
 
-        uint256[] memory values = new uint256[](2);
+        uint256[] memory values = new uint256[](8);
 
-        address[] memory decodersAndSanitizers = new address[](2);
+        address[] memory decodersAndSanitizers = new address[](8);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[7] = rawDataDecoderAndSanitizer;
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
@@ -192,4 +220,8 @@ contract UsualMoneyIntegrationTest is Test, MerkleTreeHelper {
         forkId = vm.createFork(vm.envString(rpcKey), blockNumber);
         vm.selectFork(forkId);
     }
+}
+
+contract FullUsualMoneyDecoderAndSanitizer is UsualMoneyDecoderAndSanitizer {
+    constructor(address _boringVault) BaseDecoderAndSanitizer(_boringVault) {}
 }
