@@ -51,7 +51,7 @@ contract CurveAndConvexIntegrationTest is Test, MerkleTreeHelper {
 
         rawDataDecoderAndSanitizer = address(
             new EtherFiLiquidDecoderAndSanitizer(
-                address(boringVault), getAddress(sourceChain, "uniswapV3NonFungiblePositionManager")
+                getAddress(sourceChain, "uniswapV3NonFungiblePositionManager")
             )
         );
 

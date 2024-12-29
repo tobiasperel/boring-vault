@@ -42,7 +42,8 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
         uint256 blockNumber = 20400959;
 
         _startFork(rpcKey, blockNumber);
-
+        
+        //TODO fixme, most likely broken
         liquidEth = BoringVault(payable(getAddress(sourceChain, "liquidEth")));
         liquidEthManager = ManagerWithMerkleVerification(getAddress(sourceChain, "liquidEthManager"));
         superSymbiotic = BoringVault(payable(getAddress(sourceChain, "superSymbiotic")));
@@ -50,7 +51,7 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
 
         rawDataDecoderAndSanitizer = address(
             new EtherFiLiquidEthDecoderAndSanitizer(
-                getAddress(sourceChain, "liquidEth"), getAddress(sourceChain, "uniswapV3NonFungiblePositionManager")
+                getAddress(sourceChain, "uniswapV3NonFungiblePositionManager")
             )
         );
 

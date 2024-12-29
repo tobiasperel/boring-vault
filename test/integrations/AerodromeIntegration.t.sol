@@ -50,7 +50,7 @@ contract AerodromeIntegrationTest is Test, MerkleTreeHelper {
 
         rawDataDecoderAndSanitizer = address(
             new AerodromeDecoderAndSanitizer(
-                address(boringVault), getAddress(sourceChain, "aerodromeNonFungiblePositionManager")
+                getAddress(sourceChain, "aerodromeNonFungiblePositionManager")
             )
         );
 
@@ -447,7 +447,9 @@ contract AerodromeIntegrationTest is Test, MerkleTreeHelper {
 
         vm.expectRevert(
             bytes(
-                abi.encodeWithSelector(VelodromeDecoderAndSanitizer.VelodromeDecoderAndSanitizer__BadTokenId.selector)
+                abi.encodeWithSelector(ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector, 
+                                        targets[3], targetData[3], 0
+                                      )
             )
         );
         manager.manageVaultWithMerkleVerification(
@@ -551,7 +553,9 @@ contract AerodromeIntegrationTest is Test, MerkleTreeHelper {
 
         vm.expectRevert(
             bytes(
-                abi.encodeWithSelector(VelodromeDecoderAndSanitizer.VelodromeDecoderAndSanitizer__BadTokenId.selector)
+                abi.encodeWithSelector(ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                                        targets[2], targetData[2], 0
+                                      )
             )
         );
         manager.manageVaultWithMerkleVerification(
@@ -570,7 +574,8 @@ contract AerodromeIntegrationTest is Test, MerkleTreeHelper {
 
         vm.expectRevert(
             bytes(
-                abi.encodeWithSelector(VelodromeDecoderAndSanitizer.VelodromeDecoderAndSanitizer__BadTokenId.selector)
+                abi.encodeWithSelector(ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                                        targets[3], targetData[3], 0)
             )
         );
         manager.manageVaultWithMerkleVerification(
