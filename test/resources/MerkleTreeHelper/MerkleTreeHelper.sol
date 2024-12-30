@@ -482,6 +482,20 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         );
         leafs[leafIndex].argumentAddresses[0] = address(Usd0PP);
 
+        // Approve Usd0 to be swapped in swapper engine. 
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            address(Usd0),
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Swapper Engine to spend ", Usd0.symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(swapperEngine);
+
         unchecked {
             leafIndex++;
         }
@@ -580,7 +594,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             false,
             "withdrawUSDC(uint256)",
             new address[](0),
-            string.concat("Swap USD0 for USDC"),
+            string.concat("Cancel order for USDC swap"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
     }
