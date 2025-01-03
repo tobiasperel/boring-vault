@@ -3,6 +3,7 @@
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "mainnet",
+    "evmVersion": "cancun",
     "desiredNumberOfDeploymentTxs": 1,
     "txBundlerAddressOrName": {
       "address": "0x47Cec90FACc9364D7C21A8ab5e2aD9F1f75D740C",
@@ -27,7 +28,7 @@
       "address": "0x47Cec90FACc9364D7C21A8ab5e2aD9F1f75D740C",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "address/Mainnet/HourglassBTC.json"
+    "deploymentFileName": "addresses/Mainnet/HourglassBTC.json"
   },
   "rolesAuthorityConfiguration": {
     "rolesAuthorityDeploymentName": "HourglassBTC Roles Authority V0.0"
@@ -66,8 +67,8 @@
         ]
       },
       "accountantDeploymentParameters": {
-        "allowedExchangeRateChangeLower": 9900,
-        "allowedExchangeRateChangeUpper": 10000,
+        "allowedExchangeRateChangeLower": 9500,
+        "allowedExchangeRateChangeUpper": 10500,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
           "name": "WBTC"
@@ -190,7 +191,7 @@
       },
       "allowDeposits": true,
       "allowWithdraws": true,
-      "sharePremium": 0
+      "sharePremium": 30
     },
     {
       "addressOrName": {
@@ -200,7 +201,7 @@
       "allowDeposits": true,
       "allowWithdraws": true,
       "sharePremium": 0
-    },
+    }
   ],
   "withdrawAssets": [
     {
