@@ -17,6 +17,10 @@ import {ContractNames} from "resources/ContractNames.sol";
 import {PointFarmingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PointFarmingDecoderAndSanitizer.sol";
 import {OnlyHyperlaneDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/OnlyHyperlaneDecoderAndSanitizer.sol";
 import {SwellEtherFiLiquidEthDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SwellEtherFiLiquidEthDecoderAndSanitizer.sol"; 
+import {sBTCNMaizenetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/sBTCNMaizenetDecoderAndSanitizer.sol";
+import {UniBTCDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/UniBTCDecoderAndSanitizer.sol";
+import {EdgeCapitalDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EdgeCapitalDecoderAndSanitizer.sol";
+
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -39,8 +43,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     }
 
     function run() external {
-        bytes memory creationCode;
-        bytes memory constructorArgs;
+        // bytes memory creationCode;
+        // bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
 
         // creationCode = type(AerodromeDecoderAndSanitizer).creationCode;
@@ -73,9 +77,23 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(address(0));
         //deployer.deployContract("Hyperlane Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
 
-        creationCode = type(SwellEtherFiLiquidEthDecoderAndSanitizer).creationCode; 
-        constructorArgs = abi.encode(boringVault); 
-        deployer.deployContract("EtherFi Liquid ETH Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
+        //creationCode = type(SwellEtherFiLiquidEthDecoderAndSanitizer).creationCode; 
+        //constructorArgs = abi.encode(boringVault); 
+        //deployer.deployContract("EtherFi Liquid ETH Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
+        
+        //creationCode = type(sBTCNMaizenetDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(boringVault);
+        //version is synced w/ current deployed version
+        //deployer.deployContract("Staked BTCN Decoder and Sanitizer V0.2", creationCode, constructorArgs, 0);
+
+        //creationCode = type(UniBTCDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
+        //deployer.deployContract("Bedrock BTC DeFi Vault Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+
+        //creationCode = type(EdgeCapitalDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(ultraUSDBoringVault, uniswapV3NonFungiblePositionManager);
+        //deployer.deployContract("Ultra Yield Stablecoin Vault Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+
 
         vm.stopBroadcast();
     }

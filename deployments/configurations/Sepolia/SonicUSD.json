@@ -3,7 +3,8 @@
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "sepolia",
-    "desiredNumberOfDeploymentTxs": 1,
+    "evmVersion": "london",
+    "desiredNumberOfDeploymentTxs": 20,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -30,26 +31,26 @@
     "deploymentFileName": "addresses/Sepolia/SonicUSD.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "Sonic USD Roles Authority V0.0"
+    "rolesAuthorityDeploymentName": "Sonic USD Roles Authority V0.1"
   },
   "lensConfiguration": {
-    "lensDeploymentName": "Arctic Architecture Lens V0.0"
+    "lensDeploymentName": "Arctic Architecture Lens V0.1"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "Sonic USD Boring Vault V0.0",
+    "boringVaultDeploymentName": "Sonic USD Boring Vault V0.1",
     "boringVaultName": "Sonic USD",
     "boringVaultSymbol": "sUSD",
     "boringVaultDecimals": 6
   },
   "managerConfiguration": {
-    "managerDeploymentName": "Sonic USD Manager V0.0",
+    "managerDeploymentName": "Sonic USD Manager V0.1",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "Sonic USD Accountant V0.0",
+    "accountantDeploymentName": "Sonic USD Accountant V0.1",
     "accountantParameters": {
       "kind": {
         "variableRate": false,
@@ -57,7 +58,7 @@
       },
       "payoutConfiguration": {
         "payoutTo": "0x0000000000000000000000000000000000000000",
-        "optionalPaymentSplitterName": "Sonic USD Payment Splitter V0.0",
+        "optionalPaymentSplitterName": "Sonic USD Payment Splitter V0.1",
         "splits": [
           {
             "to": "0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b",
@@ -84,7 +85,7 @@
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "Sonic USD Teller V0.0",
+    "tellerDeploymentName": "Sonic USD Teller V0.1",
     "tellerParameters": {
       "allowPublicDeposits": false,
       "shareLockPeriod": 60,
@@ -93,24 +94,6 @@
         "tellerWithRemediation": false,
         "tellerWithCcip": false,
         "tellerWithLayerZero": true
-      },
-      "ccip": {
-        "routerAddressOrName": {
-          "address": "0x0000000000000000000000000000000000000000",
-          "name": "ccipRouter"
-        },
-        "ccipChains": [
-          {
-            "chainSelector": 1,
-            "allowMessagesFrom": true,
-            "allowMessagesTo": true,
-            "targetTellerOrSelf": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "self": true
-            },
-            "messageGasLimit": 100000
-          }
-        ]
       },
       "layerZero": {
         "endpointAddressOrName": {
@@ -123,7 +106,7 @@
         },
         "lzChains": [
           {
-            "chainId": 1,
+            "chainId": 40349,
             "allowMessagesFrom": true,
             "allowMessagesTo": true,
             "targetTellerOrSelf": {
@@ -137,8 +120,8 @@
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "Sonic USD Boring Queue V0.0",
-    "boringQueueSolverName": "Sonic USD Boring Solver V0.0",
+    "boringQueueDeploymentName": "Sonic USD Boring Queue V0.1",
+    "boringQueueSolverName": "Sonic USD Boring Solver V0.1",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -149,13 +132,13 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "Sonic USD Drone V0.0",
-    "droneCount": 1,
+    "droneDeploymentBaseName": "Sonic USD Drone V0.1",
+    "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
     "shouldDeploy": false,
-    "pauserDeploymentName": "pauser",
+    "pauserDeploymentName": "Sonic USD Pauser V0.1",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
     "makePauseAll": ["0x0000000000000000000000000000000000000000"],
@@ -169,7 +152,7 @@
   },
   "timelockConfiguration": {
     "shouldDeploy": false,
-    "timelockDeploymentName": "timelock",
+    "timelockDeploymentName": "Sonic USD Timelock V0.1",
     "timelockParameters": {
       "minDelay": 86400,
       "proposers": ["0x0000000000000000000000000000000000000000"],

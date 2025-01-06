@@ -85,7 +85,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         token1[3] = getAddress(sourceChain, "WEETH_OFT");
         token1[4] = getAddress(sourceChain, "WEETH_OFT");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**
