@@ -21,6 +21,7 @@ contract ChainValues {
     string public constant scroll = "scroll";
     string public constant fraxtal = "fraxtal";
     string public constant corn = "corn";
+    string public constant swell = "swell";
     string public constant sonicMainnet = "sonicMainnet";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
@@ -92,6 +93,7 @@ contract ChainValues {
         _addFraxtalValues();
         _addBscValues();
         _addCornValues();
+        _addSwellValues();
         _addSonicMainnetValues();
         // Add testnet values
         _addHoleskyValues();
@@ -1343,5 +1345,18 @@ contract ChainValues {
         values[sonicBlaze]["balancerVault"] = address(1).toBytes32();
 
         values[sonicBlaze]["LayerZeroEndPoint"] = 0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff.toBytes32();
+    }
+
+    function _addSwellValues() private {
+        values[swell]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[swell]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[swell]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[swell]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        values[swell]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
+        values[swell]["balancerVault"] = address(1).toBytes32();
+
+        // ERC20s
+        values[swell]["WEETH"] = 0xA6cB988942610f6731e664379D15fFcfBf282b44.toBytes32();  //also OFT
     }
 }

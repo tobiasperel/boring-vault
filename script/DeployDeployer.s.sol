@@ -10,22 +10,27 @@ import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 
 /**
- *  source .env && forge script script/DeployDeployer.s.sol:DeployDeployerScript --broadcast --verify
+ *  forge script script/DeployDeployer.s.sol:DeployDeployerScript --broadcast --verify
  *
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
-contract DeployDeployerScript is Script, ContractNames, MainnetAddresses {
+contract DeployDeployerScript is Script, ContractNames {
     uint256 public privateKey;
 
     // Contracts to deploy
     RolesAuthority public rolesAuthority;
     Deployer public deployer;
 
+    address public deployerAddress = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d;
+    address public dev0Address = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b;
+    address public dev1Address = 0xf8553c8552f906C19286F21711721E206EE4909E;
+
     uint8 public DEPLOYER_ROLE = 1;
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("sonicBlaze");
+        vm.createSelectFork("swell");
+
     }
 
     function run() external {
@@ -34,6 +39,14 @@ contract DeployDeployerScript is Script, ContractNames, MainnetAddresses {
         vm.startBroadcast(privateKey);
 
         // deployer = new Deployer(dev0Address, Authority(address(0)));
+        // swell changes
+        // require(address(deployer) == deployerAddress, "Deployer address mismatch");
+        // creationCode = type(RolesAuthority).creationCode;
+        // constructorArgs = abi.encode(dev0Address, address(0));
+        // rolesAuthority = RolesAuthority(
+        //     deployer.deployContract("Seven Seas RolesAuthority Version 0.0", creationCode, constructorArgs, 0)
+        // );
+
         // require(address(deployer) == 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d, "Wrong deployer address");
         // creationCode = type(RolesAuthority).creationCode;
         // constructorArgs = abi.encode(dev0Address, Authority(address(0)));
