@@ -102,6 +102,20 @@ contract EtherFiLiquidEthDecoderAndSanitizer is
     }
 
     /**
+     * @notice Karak, Teller all specify a `deposit(address,uint256,uint256)`,
+     *         all cases are handled the same way.
+     * @dev In Karak, this will be the vault address, in the Teller, this will be the deposit asset
+     */
+    function deposit(address vaultOrAsset, uint256, uint256)
+        external
+        pure
+        override(KarakDecoderAndSanitizer, TellerDecoderAndSanitizer)
+        returns (bytes memory addressesFound)
+    {
+        addressesFound = abi.encodePacked(vaultOrAsset); 
+    }
+
+    /**
      * @notice BalancerV2, NativeWrapper, Curve, and Gearbox all specify a `withdraw(uint256)`,
      *         all cases are handled the same way.
      */

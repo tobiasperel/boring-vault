@@ -5607,7 +5607,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
 
     function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets) internal {
         ERC20 boringVault = TellerWithMultiAssetSupport(teller).vault();
-
         for (uint256 i; i < assets.length; ++i) {
             // Approve BoringVault to spend all assets.
             unchecked {
@@ -5652,8 +5651,65 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             );
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
             leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                teller,
+                false,
+                "deposit(address,uint256,uint256)",
+                new address[](1),
+                string.concat("Deposit ", assets[i].symbol(), " into ", boringVault.name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                teller,
+                true, //can send value
+                "deposit(address,uint256,uint256)",
+                new address[](1),
+                string.concat("Deposit ETH into ", boringVault.name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "ETH"); 
         }
     }
+
+    // ========================================= BoringVault WithdrawQueue =========================================
+    function _addWithdrawQueueLeafs(ManageLeaf[] memory leafs, address withdrawQueue, ERC20[] memory assets) internal {
+        for (uint256 i = 0; i < assets.length; i++) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                address(assets[i]),
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve ", string(abi.encodePacked(withdrawQueue)), ", to spend ", assets[i].symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = withdrawQueue;  
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                withdrawQueue,
+                false,
+                "requestWithdraw(address,uint96,uint16,bool)",
+                new address[](1),
+                string.concat("Request Withdraw of ", assets[i].symbol(), ", from queue"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = address(assets[i]); 
+        } 
+    } 
 
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
