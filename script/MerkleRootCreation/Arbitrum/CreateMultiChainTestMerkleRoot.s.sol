@@ -87,7 +87,7 @@ contract CreateMultiChainTestMerkleRootScript is Script, MerkleTreeHelper {
         token1[8] = getAddress(sourceChain, "OSETH");
         token1[9] = getAddress(sourceChain, "RSETH");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**
