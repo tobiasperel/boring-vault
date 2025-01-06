@@ -563,6 +563,8 @@ contract ChainValues {
         values[mainnet]["ezEthIrm"] = 0x870aC11D48B15DB9a138Cf899d20F13F79Ba00BC.toBytes32();
         values[mainnet]["weETH_wETH_86_market"] = 0x698fe98247a40c5771537b5786b2f3f9d78eb487b4ce4d75533cd0e94d88a115;
         values[mainnet]["LBTC_WBTC_945"] = 0xf6a056627a51e511ec7f48332421432ea6971fc148d8f3c451e14ea108026549;
+        values[mainnet]["sUSDePT03_USDC_915"] = 0x346afa2b6d528222a2f9721ded6e7e2c40ac94877a598f5dae5013c651d2a462;
+        values[mainnet]["USD0_plusPT03_USDC_915"] = 0x8411eeb07c8e32de0b3784b6b967346a45593bfd8baeb291cc209dc195c7b3ad;
 
         // MetaMorpho
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();
@@ -668,7 +670,11 @@ contract ChainValues {
 
         values[mainnet]["pendle_weETHs_market_12_25_24"] = 0x40789E8536C668c6A249aF61c81b9dfaC3EB8F32.toBytes32();
         values[mainnet]["pendleUSD0PlusMarketOctober"] = 0x00b321D89A8C36B3929f20B7955080baeD706D1B.toBytes32();
+        values[mainnet]["pendle_USD0Plus_market_01_29_2025"] = 0x64506968E80C9ed07bFF60C8D9d57474EFfFF2c9.toBytes32();
+        values[mainnet]["pendle_USD0Plus_market_02_26_2025"] = 0x22a72B0C504cBb7f8245208f84D8f035c311aDec.toBytes32();
         values[mainnet]["pendle_USD0Plus_market_03_26_2025"] = 0xaFDC922d0059147486cC1F0f32e3A2354b0d35CC.toBytes32();
+        values[mainnet]["pendle_USD0Plus_market_04_23_2025"] = 0x81f3a11dB1DE16f4F9ba8Bf46B71D2B168c64899.toBytes32();
+        values[mainnet]["pendle_USD0Plus_market_06_25_2025"] = 0x048680F64d6DFf1748ba6D9a01F578433787e24B.toBytes32();
 
         values[mainnet]["pendle_eBTC_market_12_26_24"] = 0x36d3ca43ae7939645C306E26603ce16e39A89192.toBytes32();
         values[mainnet]["pendle_LBTC_corn_market_12_26_24"] = 0xCaE62858DB831272A03768f5844cbe1B40bB381f.toBytes32();
