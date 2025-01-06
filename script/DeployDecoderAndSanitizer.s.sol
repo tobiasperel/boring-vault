@@ -43,8 +43,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     }
 
     function run() external {
-        // bytes memory creationCode;
-        // bytes memory constructorArgs;
+        bytes memory creationCode;
+        bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
 
         // creationCode = type(AerodromeDecoderAndSanitizer).creationCode;
@@ -77,6 +77,11 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(address(0));
         //deployer.deployContract("Hyperlane Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
 
+        //creationCode = type(sBTCNMaizenetDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(boringVault);
+        //version is not synced w/ current deployed version anymore
+        //deployer.deployContract("Staked BTCN Decoder and Sanitizer V0.4", creationCode, constructorArgs, 0);
+
         //creationCode = type(SwellEtherFiLiquidEthDecoderAndSanitizer).creationCode; 
         //constructorArgs = abi.encode(boringVault); 
         //deployer.deployContract("EtherFi Liquid ETH Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
@@ -85,6 +90,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(boringVault);
         //version is synced w/ current deployed version
         //deployer.deployContract("Staked BTCN Decoder and Sanitizer V0.2", creationCode, constructorArgs, 0);
+
 
         //creationCode = type(UniBTCDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
