@@ -11,8 +11,9 @@ import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {
     EtherFiLiquidEthDecoderAndSanitizer,
-    TellerDecoderAndSanitizer
+    TellerDecoderAndSanitizer,
 } from "src/base/DecodersAndSanitizers/EtherFiLiquidEthDecoderAndSanitizer.sol";
+import {EtherFiBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiBtcDecoderAndSanitizer.sol"; 
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
@@ -299,6 +300,79 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
             manageProofs, decodersAndSanitizers, targets, targetData, values
         );
 
+    }
+
+    function testWithdrawQueue() external {
+        BoringVault eBTCVault = BoringVault(payable(getAddress(sourceChain, "eBTC")));
+        ManagerWithMerkleVerification eBTCManager = ManagerWithMerkleVerification(getAddress(sourceChain, "liquidEthManager"));
+        TellerWithMultiAssetSupport eBTCTeller= TellerWithMultiAssetSupport(getAddress(sourceChain, "superSymbioticTeller"));
+
+        rawDataDecoderAndSanitizer = address(
+            new EtherFiBtcDecoderAndSanitizer(
+                getAddress(sourceChain, "eBTCVault"), getAddress(sourceChain, "uniswapV3NonFungiblePositionManager")
+            )
+        );
+
+        setAddress(false, sourceChain, "boringVault", address(eBTCVault));
+        setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        setAddress(false, sourceChain, "manager", address(eBTCTeller));
+        setAddress(false, sourceChain, "managerAddress", address(eBTCTeller));
+        setAddress(false, sourceChain, "accountantAddress", address(1));
+
+        rolesAuthority = RolesAuthority(address(liquidEth.authority()));
+
+        address eBTCOwner = rolesAuthority.owner();
+
+        //BEGIN TEST
+
+        deal(getAddress(sourceChain, "eBTC"), address(eBTCVault), 1_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        ERC20[] memory assets = new ERC20[](1);
+        assets[0] = ERC20(getAddress(sourceChain, "eBTC"));
+        _addTellerLeafs(leafs, address(eBTC), assets);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        vm.prank(eBTCOwner);
+        eBTCManager.setManageRoot(
+            getAddress(sourceChain, "liquidEthStrategist"), manageTree[manageTree.length - 1][0]
+        );
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
+        manageLeafs[0] = leafs[0]; //approve withdrawQueue
+        manageLeafs[1] = leafs[1]; //requestWithdraw
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](2);
+        targets[0] = getAddress(sourceChain, "eBTC");
+        targets[1] = getAddress(sourceChain, "eBTCDelayedWithdraw"); 
+
+        bytes[] memory targetData = new bytes[](4);
+        targetData[0] = abi.encodeWithSignature("approve(address,uint256)", address(superSymbiotic), type(uint256).max);
+        targetData[1] = abi.encodeWithSignature(
+            "requestWithdraw(address,uint256,uint256,address)",
+            getAddress(sourceChain, "WETH"),
+            1_000e18,
+            0,
+            address(liquidEth)
+        );
+        uint256[] memory values = new uint256[](4);
+        address[] memory decodersAndSanitizers = new address[](4);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+
+        // Deposit into Super Symbiotic.
+        vm.prank(getAddress(sourceChain, "liquidEthStrategist"));
+        liquidEthManager.manageVaultWithMerkleVerification(
+            manageProofs, decodersAndSanitizers, targets, targetData, values
+        );
+                
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
