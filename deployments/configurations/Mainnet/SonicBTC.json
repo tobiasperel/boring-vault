@@ -64,6 +64,7 @@
             "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
             "percent": 10000
           }
+        ]
       },
       "accountantDeploymentParameters": {
         "allowedExchangeRateChangeLower": 9900,
