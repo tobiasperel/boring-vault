@@ -2,9 +2,9 @@
   "deploymentParameters": {
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
-    "chainName": "arbitrum",
-    "evmVersion": "london",
-    "desiredNumberOfDeploymentTxs": 4,
+    "chainName": "swell",
+    "evmVersion": "shanghai",
+    "desiredNumberOfDeploymentTxs": 3,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -28,37 +28,37 @@
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "addresses/Arbitrum/eBTC.json"
+    "deploymentFileName": "addresses/SwellChain/EtherFiLiquidEth.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "ether.fi BTC RolesAuthority Version 0.0"
+    "rolesAuthorityDeploymentName": "EtherFi Liquid ETH RolesAuthority Version 0.1"
   },
   "lensConfiguration": {
     "lensDeploymentName": "Arctic Architecture Lens V0.0"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "ether.fi BTC V0.0",
-    "boringVaultName": "ether.fi BTC",
-    "boringVaultSymbol": "eBTC",
-    "boringVaultDecimals": 8
+    "boringVaultDeploymentName": "EtherFi Liquid ETH V0.1",
+    "boringVaultName": "Ether.Fi Liquid ETH",
+    "boringVaultSymbol": "liquidETH",
+    "boringVaultDecimals": 18
   },
   "managerConfiguration": {
-    "managerDeploymentName": "ether.fi BTC Manager With Merkle Verification V0.0",
+    "managerDeploymentName": "EtherFi Liquid ETH Manager V0.1",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "ether.fi BTC Accountant With Rate Providers V0.0",
+    "accountantDeploymentName": "EtherFi Liquid ETH Accountant With Rate Providers V0.1",
     "accountantParameters": {
       "kind": {
         "variableRate": true,
         "fixedRate": false
       },
       "payoutConfiguration": {
-        "payoutTo": "0x0000000000000000000000000000000000000001",
-        "optionalPaymentSplitterName": "ether.fi BTC Payment Splitter V0.0",
+        "payoutTo": "0x0000000000000000000000000000000000000000",
+        "optionalPaymentSplitterName": "EtherFi Liquid ETH Payment Splitter V0.1",
         "splits": [
           {
             "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
@@ -67,23 +67,23 @@
         ]
       },
       "accountantDeploymentParameters": {
-        "allowedExchangeRateChangeLower": 9900,
-        "allowedExchangeRateChangeUpper": 10000,
+        "allowedExchangeRateChangeLower": 9950,
+        "allowedExchangeRateChangeUpper": 10050,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "WBTC"
+          "name": "WETH"
         },
         "minimumUpateDelayInSeconds": 21600,
         "performanceFee": 0,
-        "platformFee": 200,
-        "startingExchangeRate": 100000000
+        "platformFee": 100,
+        "startingExchangeRate": 1041716490686123255
       }
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "ether.fi BTC Teller With Multi Asset Support V0.0",
+    "tellerDeploymentName": "EtherFi Liquid ETH Teller With Multi Asset Support V0.1",
     "tellerParameters": {
-      "allowPublicDeposits": true,
+      "allowPublicDeposits": false,
       "shareLockPeriod": 60,
       "kind": {
         "teller": true,
@@ -94,11 +94,11 @@
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "ether.fi BTC Boring Queue V0.0",
-    "boringQueueSolverName": "ether.fi BTC Boring Solver V0.0",
+    "boringQueueDeploymentName": "EtherFi Liquid ETH Boring Queue V0.1",
+    "boringQueueSolverName": "EtherFi Liquid ETH Boring Solver V0.1",
     "queueParameters": {
-      "allowPublicWithdrawals": true,
-      "allowPublicSelfWithdrawals": true,
+      "allowPublicWithdrawals": false,
+      "allowPublicSelfWithdrawals": false,
       "kind": {
         "boringQueue": true,
         "boringQueueWithTracking": false
@@ -106,13 +106,13 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "ether.fi BTC Drone V0.0",
+    "droneDeploymentBaseName": "EtherFi Liquid ETH Drone V0.1",
     "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
     "shouldDeploy": true,
-    "pauserDeploymentName": "ether.fi BTC Pauser V0.0",
+    "pauserDeploymentName": "EtherFi Liquid ETH Pauser V0.1",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
     "makePauseAll": ["0x0000000000000000000000000000000000000000"],
@@ -125,41 +125,20 @@
     ]
   },
   "timelockConfiguration": {
-    "shouldDeploy": true,
-    "timelockDeploymentName": "ether.fi BTC Timelock V0.0",
+    "shouldDeploy": false,
+    "timelockDeploymentName": "EtherFi Liquid ETH Timelock V0.1",
     "timelockParameters": {
-      "minDelay": 60,
-      "proposers": [
-        "0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b",
-        "0xf8553c8552f906C19286F21711721E206EE4909E"
-      ],
-      "executors": ["0x183fE88858AAB892cc796662200374e3dF6927E3"]
+      "minDelay": 86400,
+      "proposers": ["0x0000000000000000000000000000000000000000"],
+      "executors": ["0x0000000000000000000000000000000000000000"]
     }
   },
-  "accountantAssets": [
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
-      },
-      "isPeggedToBase": true,
-      "rateProvider": "0x0000000000000000000000000000000000000000"
-    }
-  ],
+  "accountantAssets": [],
   "depositAssets": [
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "WBTC"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 40
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
+        "name": "WETH"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -170,18 +149,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "WBTC"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 259200,
-      "minimumShares": 0,
-      "secondsToMaturity": 172800
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
+        "name": "WETH"
       },
       "maxDiscount": 10,
       "minDiscount": 1,

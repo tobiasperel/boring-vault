@@ -2,9 +2,9 @@
   "deploymentParameters": {
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
-    "chainName": "arbitrum",
+    "chainName": "corn",
     "evmVersion": "london",
-    "desiredNumberOfDeploymentTxs": 4,
+    "desiredNumberOfDeploymentTxs": 10,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -22,13 +22,13 @@
     },
     "nativeWrapperAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
-      "name": "WETH"
+      "name": "WBTCN"
     },
     "deploymentOwnerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "addresses/Arbitrum/eBTC.json"
+    "deploymentFileName": "addresses/Corn/eBTC.json"
   },
   "rolesAuthorityConfiguration": {
     "rolesAuthorityDeploymentName": "ether.fi BTC RolesAuthority Version 0.0"
@@ -71,7 +71,7 @@
         "allowedExchangeRateChangeUpper": 10000,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "WBTC"
+          "name": "LBTC"
         },
         "minimumUpateDelayInSeconds": 21600,
         "performanceFee": 0,
@@ -140,7 +140,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
+        "name": "WBTCN"
       },
       "isPeggedToBase": true,
       "rateProvider": "0x0000000000000000000000000000000000000000"
@@ -150,16 +150,16 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "WBTC"
+        "name": "WBTCN"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
-      "sharePremium": 40
+      "sharePremium": 0
     },
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
+        "name": "LBTC"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -170,7 +170,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "WBTC"
+        "name": "WBTCN"
       },
       "maxDiscount": 10,
       "minDiscount": 1,
@@ -181,7 +181,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
+        "name": "LBTC"
       },
       "maxDiscount": 10,
       "minDiscount": 1,
