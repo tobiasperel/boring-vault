@@ -5658,6 +5658,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]); 
+
         }
     } 
     

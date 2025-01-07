@@ -110,7 +110,7 @@ contract SonicGatewayIntegration is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 21536549;
+        uint256 blockNumber = 21572390;
 
         _startFork(rpcKey, blockNumber);
 
@@ -269,50 +269,72 @@ contract SonicGatewayIntegration is Test, MerkleTreeHelper {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
-    //function testSonicGatewayDepositCancel() external {
-    //    deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
+    function testSonicGatewayDepositCancel() external {
+        setUpMainnet(); 
 
-    //    ManageLeaf[] memory leafs = new ManageLeaf[](4);
-    //    ERC20[] memory bridgeAssets = new ERC20[](1); 
-    //    bridgeAssets[0] = getERC20(sourceChain, "USDC"); 
-    //    _addSonicGatewayLeafs(leafs, bridgeAssets); 
+        MockProofVerifier mockVerifier = new MockProofVerifier();
+        vm.store(
+            getAddress(sourceChain, "sonicGateway"),
+            bytes32(uint256(9)), // proofVerifier slot
+            bytes32(uint256(uint160(address(mockVerifier))))
+        );
+         bytes memory proof = "";
+        
+        uint256 depositId = 917551056842671309452305380979543736893630245704; 
+        bytes32 mappingSlot = bytes32(uint256(7));
+        bytes32 depositSlot = keccak256(abi.encode(depositId, mappingSlot));
+        // Calculate the hash that should be stored
+        bytes32 depositHash = keccak256(abi.encode(address(boringVault), getAddress(sourceChain, "USDC"), 100e6)); 
+         // Store the hash directly in the mapping
+        vm.store(getAddress(sourceChain, "sonicGateway"), depositSlot, depositHash);
+ 
 
-    //    bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+        // Set deadState directly
+        bytes32 slot = bytes32(uint256(11)); // deadState is declared after several other state variables
+        vm.store(
+            getAddress(sourceChain, "sonicGateway"),
+            slot,
+            bytes32(uint256(1)) // Any non-zero value will work
+        );
 
-    //    manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
 
-    //    ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
-    //    manageLeafs[0] = leafs[0]; //approve
-    //    manageLeafs[1] = leafs[1]; //deposit
-    //    manageLeafs[2] = leafs[3]; //cancel
+        ManageLeaf[] memory leafs = new ManageLeaf[](4);
+        ERC20[] memory bridgeAssets = new ERC20[](1); 
+        bridgeAssets[0] = getERC20(sourceChain, "USDC"); 
+        _addSonicGatewayLeafsEth(leafs, bridgeAssets); 
 
-    //    bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-    //    address[] memory targets = new address[](3);
-    //    targets[0] = getAddress(sourceChain, "USDC");
-    //    targets[1] = getAddress(sourceChain, "sonicGateway");
-    //    targets[2] = getAddress(sourceChain, "sonicGateway");
-    //    
-    //    //uid can be any number of the depositors choosing? I believe in their SDK they might simply pick a random number, these don't appear to be incrementing with any kind of pattern afaict 
-    //    //the only condition is that it hasn't been used before
-    //    bytes[] memory targetData = new bytes[](3);
-    //    targetData[0] =
-    //        abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "sonicGateway"), type(uint256).max);
-    //    targetData[1] =
-    //        abi.encodeWithSignature("deposit(uint96,address,uint256)", 1234123412342314556, getAddress(sourceChain, "USDC"), 100e6);
-    //    //id needs to be L2 id, we're going from deposit to 
-    //    targetData[2] =
-    //        abi.encodeWithSignature("cancelDepositWhileDead(uint256,address,uint256)", 1234123412342314556, getAddress(sourceChain, "USDC"), 100e6);
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-    //    address[] memory decodersAndSanitizers = new address[](3);
-    //    decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
-    //    decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
-    //    decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
+        manageLeafs[0] = leafs[0]; //approve
+        manageLeafs[1] = leafs[3]; //cancel
 
-    //    uint256[] memory values = new uint256[](3);
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-    //    manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-    //}
+        address[] memory targets = new address[](2);
+        targets[0] = getAddress(sourceChain, "USDC");
+        targets[1] = getAddress(sourceChain, "sonicGateway");
+        
+        //uid can be any number of the depositors choosing? I believe in their SDK they might simply pick a random number, these don't appear to be incrementing with any kind of pattern afaict 
+        //the only condition is that it hasn't been used before
+        bytes[] memory targetData = new bytes[](2);
+        targetData[0] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "sonicGateway"), type(uint256).max);
+        //id needs to be L2 id, we're going from deposit to 
+        targetData[1] =
+            abi.encodeWithSignature("cancelDepositWhileDead(uint256,address,uint256,bytes)", depositId, getAddress(sourceChain, "USDC"), 100e6, proof);
+
+        address[] memory decodersAndSanitizers = new address[](2);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](2);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
 
     // ========================================= HELPER FUNCTIONS =========================================
 
@@ -324,4 +346,18 @@ contract SonicGatewayIntegration is Test, MerkleTreeHelper {
 
 contract FullSonicGatewayDecoderAndSanitizer is SonicGatewayDecoderAndSanitizer {
     constructor(address _boringVault) BaseDecoderAndSanitizer(_boringVault){}
+}
+
+contract MockProofVerifier {
+    function verifyProof(
+        address target,
+        bytes32 slot,
+        bytes32 value,
+        bytes32 stateRoot,
+        bytes calldata proof
+    ) external pure {
+        // Always verify for testing
+        target; slot; value; stateRoot; proof; 
+        return;
+    }
 }
