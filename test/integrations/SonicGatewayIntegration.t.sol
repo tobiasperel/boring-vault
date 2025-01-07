@@ -336,6 +336,98 @@ contract SonicGatewayIntegration is Test, MerkleTreeHelper {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
+    function testClaimSonicToEth() external {
+        setUpMainnet(); 
+
+        MockProofVerifier mockVerifier = new MockProofVerifier();
+        vm.store(
+            getAddress(sourceChain, "sonicGateway"),
+            bytes32(uint256(9)), // proofVerifier slot
+            bytes32(uint256(uint160(address(mockVerifier))))
+        );
+        bytes memory proof = "";
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](4);
+        ERC20[] memory bridgeAssets = new ERC20[](1); 
+        bridgeAssets[0] = getERC20(sourceChain, "USDC"); 
+        _addSonicGatewayLeafsEth(leafs, bridgeAssets); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](1);
+        manageLeafs[0] = leafs[2]; //claim
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](1);
+        targets[0] = getAddress(sourceChain, "sonicGateway");
+        
+        uint256 depositId = 10169420;  
+        bytes[] memory targetData = new bytes[](1);
+        targetData[0] =
+            abi.encodeWithSignature("claim(uint256,address,uint256,bytes)", depositId, getAddress(sourceChain, "USDC"), 100e6, proof);
+
+        address[] memory decodersAndSanitizers = new address[](1);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](1);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+        uint256 bal = getERC20(sourceChain, "USDC").balanceOf(address(boringVault)); 
+        assertEq(bal, 100e6);  
+    }
+
+    function testClaimETHToSonic() external {
+        setUpSonic();         
+
+        MockProofVerifier mockVerifier = new MockProofVerifier();
+        vm.store(
+            getAddress(sourceChain, "sonicGateway"),
+            bytes32(uint256(3)), // proofVerifier slot
+            bytes32(uint256(uint160(address(mockVerifier))))
+        );
+         bytes memory proof = "";
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](4);
+        address[] memory mainnetAssets= new address[](1); 
+        address[] memory sonicAssets = new address[](1); 
+        mainnetAssets[0] = getAddress(mainnet, "USDC"); //NOTE: this needs to be mainnet USDC
+        sonicAssets[0] = getAddress(sonicMainnet, "USDC"); 
+        _addSonicGatewayLeafsSonic(leafs, mainnetAssets, sonicAssets); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](1);
+        manageLeafs[0] = leafs[3]; //claim
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](1);
+        targets[0] = getAddress(sourceChain, "sonicGateway");
+        
+        //uid can be any number of the depositors choosing? I believe in their SDK they might simply pick a random number, these don't appear to be incrementing with any kind of pattern afaict 
+        //the only condition is that it hasn't been used before
+        //NOTE: address of token here is mainnet address
+        bytes[] memory targetData = new bytes[](1);
+        targetData[0] =
+            abi.encodeWithSignature("claim(uint256,address,uint256,bytes)", 1234123412342314556, getAddress(mainnet, "USDC"), 100e6, proof);
+
+        address[] memory decodersAndSanitizers = new address[](1);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](1);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+        
+        uint256 bal = getERC20(sourceChain, "USDC").balanceOf(address(boringVault)); 
+        assertEq(bal, 100e6);  
+    }
+
     // ========================================= HELPER FUNCTIONS =========================================
 
     function _startFork(string memory rpcKey, uint256 blockNumber) internal returns (uint256 forkId) {
