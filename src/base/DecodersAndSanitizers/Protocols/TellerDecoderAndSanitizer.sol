@@ -30,4 +30,13 @@ abstract contract TellerDecoderAndSanitizer is BaseDecoderAndSanitizer {
     {
         addressesFound = abi.encodePacked(depositAsset);
     }
+    
+    // BoringOnChainQueue.sol
+    function requestOnChainWithdraw(address assetOut, uint128 /*shares*/, uint16 /*discount*/, uint24 /*secondsToDeadline*/ )
+        external
+        pure
+        returns (bytes memory addressesFound)
+    {
+        addressesFound = abi.encodePacked(assetOut);
+    }
 }

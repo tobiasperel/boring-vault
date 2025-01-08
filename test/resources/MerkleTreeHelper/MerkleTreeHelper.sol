@@ -5607,6 +5607,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
 
     function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets) internal {
         ERC20 boringVault = TellerWithMultiAssetSupport(teller).vault();
+
         for (uint256 i; i < assets.length; ++i) {
             // Approve BoringVault to spend all assets.
             unchecked {
@@ -5691,7 +5692,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Approve ", string(abi.encodePacked(withdrawQueue)), ", to spend ", assets[i].symbol()),
+                string.concat("Approve Delayed Withdraw to spend ", assets[i].symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = withdrawQueue;  
