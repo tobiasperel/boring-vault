@@ -197,7 +197,8 @@ contract ChainValues {
         values[mainnet]["uniBTC"] = 0x004E9C3EF86bc1ca1f0bB5C7662861Ee93350568.toBytes32();
         values[mainnet]["BTCN"] = 0x386E7A3a0c0919c9d53c3b04FF67E73Ff9e45Fb6.toBytes32();
         values[mainnet]["sUSDs"] = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD.toBytes32();
-        values[mainnet]["USUAL"] = 0xC4441c2BE5d8fA8126822B9929CA0b81Ea0DE38E.toBytes32(); 
+        values[mainnet]["USUAL"] = 0xC4441c2BE5d8fA8126822B9929CA0b81Ea0DE38E.toBytes32();
+        values[mainnet]["MORPHO"] = 0x58D97B57BB95320F9a05dC918Aef65434969c2B2.toBytes32(); 
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -575,6 +576,8 @@ contract ChainValues {
         values[mainnet]["gauntletUSDCcore"] = 0x8eB67A509616cd6A7c1B3c8C21D48FF57df3d458.toBytes32();
         values[mainnet]["gauntletUSDCprime"] = 0xdd0f28e19C1780eb6396170735D45153D261490d.toBytes32();
         values[mainnet]["steakhouseUSDC"] = 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB.toBytes32();
+        values[mainnet]["smokehouseUSDC"] = 0xBEeFFF209270748ddd194831b3fa287a5386f5bC.toBytes32();
+        values[mainnet]["steakhouseUSDCRWA"] = 0x6D4e530B8431a52FFDA4516BA4Aadc0951897F8C.toBytes32(); 
         values[mainnet]["gauntletWBTCcore"] = 0x443df5eEE3196e9b2Dd77CaBd3eA76C3dee8f9b2.toBytes32();
         values[mainnet]["Re7WBTC"] = 0xE0C98605f279e4D7946d25B75869c69802823763.toBytes32();
         values[mainnet]["MCwBTC"] = 0x1c530D6de70c05A81bF1670157b9d928e9699089.toBytes32();
@@ -678,11 +681,11 @@ contract ChainValues {
         values[mainnet]["pendle_USD0Plus_market_01_29_2025"] = 0x64506968E80C9ed07bFF60C8D9d57474EFfFF2c9.toBytes32();
         values[mainnet]["pendle_USD0Plus_market_02_26_2025"] = 0x22a72B0C504cBb7f8245208f84D8f035c311aDec.toBytes32();
         values[mainnet]["pendle_USD0Plus_market_03_26_2025"] = 0xaFDC922d0059147486cC1F0f32e3A2354b0d35CC.toBytes32();
-        values[mainnet]["pendle_USD0++_market_01_29_25"] = 0x64506968E80C9ed07bFF60C8D9d57474EFfFF2c9.toBytes32(); 
-        values[mainnet]["pendle_USD0++_market_06_25_25"] = 0x048680F64d6DFf1748ba6D9a01F578433787e24B.toBytes32(); 
+        values[mainnet]["pendle_USD0++_market_01_29_25"] = 0x64506968E80C9ed07bFF60C8D9d57474EFfFF2c9.toBytes32();
+        values[mainnet]["pendle_USD0++_market_06_25_25"] = 0x048680F64d6DFf1748ba6D9a01F578433787e24B.toBytes32();
         values[mainnet]["pendle_USD0Plus_market_04_23_2025"] = 0x81f3a11dB1DE16f4F9ba8Bf46B71D2B168c64899.toBytes32();
         values[mainnet]["pendle_USD0Plus_market_06_25_2025"] = 0x048680F64d6DFf1748ba6D9a01F578433787e24B.toBytes32();
-        
+
         values[mainnet]["pendle_eBTC_market_12_26_24"] = 0x36d3ca43ae7939645C306E26603ce16e39A89192.toBytes32();
         values[mainnet]["pendle_LBTC_corn_market_12_26_24"] = 0xCaE62858DB831272A03768f5844cbe1B40bB381f.toBytes32();
         values[mainnet]["pendle_LBTC_market_03_26_25"] = 0x70B70Ac0445C3eF04E314DFdA6caafd825428221.toBytes32();
@@ -697,6 +700,7 @@ contract ChainValues {
 
         // Aave V3 Core
         values[mainnet]["v3Pool"] = 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2.toBytes32();
+        values[mainnet]["v3RewardsController"] = 0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb.toBytes32();
 
         //Aave v3 Prime
         values[mainnet]["v3PrimePool"] = 0x4e033931ad43597d96D6bcc25c280717730B58B1.toBytes32();
@@ -1370,6 +1374,6 @@ contract ChainValues {
         values[swell]["balancerVault"] = address(1).toBytes32();
 
         // ERC20s
-        values[swell]["WEETH"] = 0xA6cB988942610f6731e664379D15fFcfBf282b44.toBytes32();  //also OFT
+        values[swell]["WEETH"] = 0xA6cB988942610f6731e664379D15fFcfBf282b44.toBytes32(); //also OFT
     }
 }
