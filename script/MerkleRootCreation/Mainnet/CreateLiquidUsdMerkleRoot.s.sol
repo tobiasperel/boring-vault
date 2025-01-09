@@ -19,7 +19,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
     address public rawDataDecoderAndSanitizer = 0xF8e9517e7e98D7134E306aD3747A50AC8dC1dbc9;
     address public symbioticDecoderAndSanitizer = 0xdaEfE2146908BAd73A1C45f75eB2B8E46935c781;
     address public pancakeSwapDataDecoderAndSanitizer = 0x47F62174e7A8EF939d8525C9670025d19DeFd821;
-    address public aaveV3DecoderAndSanitizer = 0x159Af850c18a83B67aeEB9597409f6C4Aa07ACb3; 
+    address public aaveV3DecoderAndSanitizer = 0x159Af850c18a83B67aeEB9597409f6C4Aa07ACb3;
     address public managerAddress = 0xcFF411d5C54FE0583A984beE1eF43a4776854B9A;
     address public accountantAddress = 0xc315D6e14DDCDC7407784e2Caf815d131Bc1D3E7;
 
@@ -173,11 +173,11 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addMorphoBlueSupplyLeafs(leafs, 0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc);
 
         // ========================== MetaMorpho ==========================
-        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseUSDCRWA"))); 
-        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseUSDC"))); 
-        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "smokehouseUSDC"))); 
-        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "usualBoostedUSDC")));  
-        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCcore")));  
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseUSDCRWA")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseUSDC")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "smokehouseUSDC")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "usualBoostedUSDC")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCcore")));
 
         // ========================== Pendle ==========================
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleUSDeMarket"), true);
@@ -213,7 +213,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         /**
          * Full position platform for USDC, USDT, DAI, USDe, sUSDe.
          */
-        address[] memory token0 = new address[](17);
+        address[] memory token0 = new address[](16);
         token0[0] = getAddress(sourceChain, "USDC");
         token0[1] = getAddress(sourceChain, "USDC");
         token0[2] = getAddress(sourceChain, "USDC");
@@ -230,9 +230,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         token0[13] = getAddress(sourceChain, "deUSD");
         token0[14] = getAddress(sourceChain, "deUSD");
         token0[15] = getAddress(sourceChain, "deUSD");
-        token0[16] = getAddress(sourceChain, "deUSD");
 
-        address[] memory token1 = new address[](17);
+        address[] memory token1 = new address[](16);
         token1[0] = getAddress(sourceChain, "USDT");
         token1[1] = getAddress(sourceChain, "DAI");
         token1[2] = getAddress(sourceChain, "USDE");
@@ -249,7 +248,6 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         token1[13] = getAddress(sourceChain, "sdeUSD");
         token1[14] = getAddress(sourceChain, "USDC");
         token1[15] = getAddress(sourceChain, "USDT");
-        token1[16] = getAddress(sourceChain, "USDT");
 
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
@@ -341,10 +339,10 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         kind[19] = SwapKind.BuyAndSell;
         assets[20] = getAddress(sourceChain, "SUSDE");
         kind[20] = SwapKind.BuyAndSell;
-        assets[21] = getAddress(sourceChain, "MORPHO"); 
-        kind[21] = SwapKind.Sell; 
-        assets[22] = getAddress(sourceChain, "USUAL"); 
-        kind[22] = SwapKind.Sell; 
+        assets[21] = getAddress(sourceChain, "MORPHO");
+        kind[21] = SwapKind.Sell;
+        assets[22] = getAddress(sourceChain, "USUAL");
+        kind[22] = SwapKind.Sell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "PENDLE_wETH_30"));
