@@ -10,7 +10,7 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateStakedSonicUSDMerkleRoot.s.sol:CreateStakedSonicUSDMerkleRoot --rpc-url $MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Sonic/CreateStakedSonicUSDMerkleRoot.s.sol:CreateStakedSonicUSDMerkleRoot --rpc-url $SONIC_MAINNET_RPC_URL
  */
 contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
@@ -18,7 +18,7 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba;
     address public managerAddress = 0x5F7f5205A3E7c63c3bd287EecBe7879687D4c698;
     address public accountantAddress = 0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034;
-    address public rawDataDecoderAndSanitizer = ; 
+    address public rawDataDecoderAndSanitizer = 0xb667e8951668364360109012Ed7809592bbEB57D; 
     
     function setUp() external {}
 
@@ -31,11 +31,11 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     }
     
     function generateAdminStrategistMerkleRoot() public {
-        setSourceChainName(mainnet);
-        setAddress(false, mainnet, "boringVault", boringVault);
-        setAddress(false, mainnet, "managerAddress", managerAddress);
-        setAddress(false, mainnet, "accountantAddress", accountantAddress);
-        setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        setSourceChainName(sonicMainnet);
+        setAddress(false, sonicMainnet, "boringVault", boringVault);
+        setAddress(false, sonicMainnet, "managerAddress", managerAddress);
+        setAddress(false, sonicMainnet, "accountantAddress", accountantAddress);
+        setAddress(false, sonicMainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
 
@@ -44,9 +44,8 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1); 
-        tellerAssets[0] = getAddress(sourceChain, "USDC"); 
-        _addTellerLeafs(
-
+        tellerAssets[0] = getERC20(sourceChain, "USDC"); 
+        _addTellerLeafs(leafs, getAddress(sourceChain, "scUSDTeller"), tellerAssets); 
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
