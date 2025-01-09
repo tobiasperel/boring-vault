@@ -18,7 +18,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
     address public managerAddress = 0xaFa8c08bedB2eC1bbEb64A7fFa44c604e7cca68d;
     address public accountantAddress = 0xEa23aC6D7D11f6b181d6B98174D334478ADAe6b0;
-    address public rawDataDecoderAndSanitizer = 0x0e9fa7311b5EEb6466cd8eb524Dbd96ab4289213; 
+    address public rawDataDecoderAndSanitizer = 0xBA137e5ae4214bd65451De3AC5Ff11145f47EE89; 
     
     function setUp() external {}
 
@@ -134,6 +134,25 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0++_market_06_25_25"), true); 
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_corn_market_3_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_market_12_26_24"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_market_03_26_25"), true); 
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_corn_market_02_26_25"), true); 
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_liquidBeraBTC_04_09_25"), true); 
+
+        // ========================== Teller ==========================
+        {
+            ERC20[] memory eBTCTellerAssets = new ERC20[](3);
+            eBTCTellerAssets[0] = getERC20(sourceChain, "WBTC");
+            eBTCTellerAssets[1] = getERC20(sourceChain, "LBTC");
+            eBTCTellerAssets[2] = getERC20(sourceChain, "cbBTC");
+            _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCTellerAssets); 
+
+            ERC20[] memory liquidBeraBTCTellerAssets = new ERC20[](4);
+            liquidBeraBTCTellerAssets[0] = getERC20(sourceChain, "WBTC"); 
+            liquidBeraBTCTellerAssets[1] = getERC20(sourceChain, "LBTC"); 
+            liquidBeraBTCTellerAssets[2] = getERC20(sourceChain, "cbBTC"); 
+            liquidBeraBTCTellerAssets[3] = getERC20(sourceChain, "eBTC"); 
+            _addTellerLeafs(leafs, getAddress(sourceChain, "liquidBeraBTCTeller"), liquidBeraBTCTellerAssets); 
+        }
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
