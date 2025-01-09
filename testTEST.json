@@ -1,51 +1,11 @@
-{
-    "metadata": {
-        "AccountantAddress": "0x0000000000000000000000000000000000000001",
-        "BoringVaultAddress": "0x2e234DAe75C793f67A35089C9d99245E1C58470b",
-        "DecoderAndSanitizerAddress": "0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f",
-        "DigestComposition": [
-            "Bytes20(DECODER_AND_SANITIZER_ADDRESS)",
-            "Bytes20(TARGET_ADDRESS)",
-            "Bytes1(CAN_SEND_VALUE)",
-            "Bytes4(TARGET_FUNCTION_SELECTOR)",
-            "Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"
-        ],
-        "LeafCount": 2,
-        "ManageRoot": "0x16047133fc57e91c55909dd6deea1ecebcb10c5e272f67fa529927c5523f40f1",
-        "ManagerAddress": "0xF62849F9A0B5Bf2913b396098F7c7019b51A820a",
-        "TreeCapacity": 2
-    },
-    "leafs": [
-        {
-            "AddressArguments": ["0x75E3f26Ceff44258CE8cB451D7d2cC8966Ef3554"],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f",
-            "Description": "Approve u��l��BXΌ�Q��̉f�5T, to spend WBTC",
-            "FunctionSelector": "0x095ea7b3",
-            "FunctionSignature": "approve(address,uint256)",
-            "LeafDigest": "0x3bf80ce4e3b523ec535e7231c842da95f540cb527aeddff62cdfd5e402655c27",
-            "PackedArgumentAddresses": "0x75e3f26ceff44258ce8cb451d7d2cc8966ef3554",
-            "TargetAddress": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
-        },
-        {
-            "AddressArguments": ["0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f",
-            "Description": "Request Withdraw of WBTC, from queue",
-            "FunctionSelector": "0xb75fa7b3",
-            "FunctionSignature": "requestWithdraw(address,uint96,uint16,bool)",
-            "LeafDigest": "0x1526d386db7a8c6d8199c137c7b8f6d8951cde1d4bfbb5f86c985ce4b14bccfd",
-            "PackedArgumentAddresses": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
-            "TargetAddress": "0x75E3f26Ceff44258CE8cB451D7d2cC8966Ef3554"
-        }
-    ],
-    "MerkleTree": {
-        "0": [
-            "0x16047133fc57e91c55909dd6deea1ecebcb10c5e272f67fa529927c5523f40f1"
-        ],
-        "1": [
-            "0x3bf80ce4e3b523ec535e7231c842da95f540cb527aeddff62cdfd5e402655c27",
-            "0x1526d386db7a8c6d8199c137c7b8f6d8951cde1d4bfbb5f86c985ce4b14bccfd"
-        ]
-    }
+{ "metadata": 
+{"AccountantAddress":"0x0000000000000000000000000000000000000001","BoringVaultAddress":"0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f","DecoderAndSanitizerAddress":"0xF62849F9A0B5Bf2913b396098F7c7019b51A820a","DigestComposition":["Bytes20(DECODER_AND_SANITIZER_ADDRESS)","Bytes20(TARGET_ADDRESS)","Bytes1(CAN_SEND_VALUE)","Bytes4(TARGET_FUNCTION_SELECTOR)","Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"],"LeafCount":2,"ManageRoot":"0xc6665b33c00788c0f3d06a6c36533c0ccef12cf6281eece04f08c3784ef0ff65","ManagerAddress":"0x2e234DAe75C793f67A35089C9d99245E1C58470b","TreeCapacity":2}
+,
+"leafs": [
+{"AddressArguments":["0x74EC75fb641ec17B04007733d9efBE2D1dA5CA2C"],"CanSendValue":false,"DecoderAndSanitizerAddress":"0xF62849F9A0B5Bf2913b396098F7c7019b51A820a","Description":"Approve BoringOnChainQueue to spend WBTC","FunctionSelector":"0x095ea7b3","FunctionSignature":"approve(address,uint256)","LeafDigest":"0xb50cbeeff163a89bd990d7fcacc6c78ba85ed8a073e6e33f952f73913f4f98d8","PackedArgumentAddresses":"0x74ec75fb641ec17b04007733d9efbe2d1da5ca2c","TargetAddress":"0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"}
+,
+{"AddressArguments":["0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"],"CanSendValue":false,"DecoderAndSanitizerAddress":"0xF62849F9A0B5Bf2913b396098F7c7019b51A820a","Description":"Request Withdraw of WBTC, from queue","FunctionSelector":"0xb745e499","FunctionSignature":"requestWithdraw(address,uint128,uint16,uint24)","LeafDigest":"0x4504028a481a040edb5371c74f506aa036c092176e62086a0a4350a293b3041f","PackedArgumentAddresses":"0x2260fac5e5542a773aa44fbcfedf7c193bc2c599","TargetAddress":"0x74EC75fb641ec17B04007733d9efBE2D1dA5CA2C"}
+],
+"MerkleTree": 
+{"0":["0xc6665b33c00788c0f3d06a6c36533c0ccef12cf6281eece04f08c3784ef0ff65"],"1":["0xb50cbeeff163a89bd990d7fcacc6c78ba85ed8a073e6e33f952f73913f4f98d8","0x4504028a481a040edb5371c74f506aa036c092176e62086a0a4350a293b3041f"]}
 }

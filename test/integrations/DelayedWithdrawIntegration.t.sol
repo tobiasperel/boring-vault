@@ -7,10 +7,8 @@ import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
-import {
-    EtherFiLiquidEthDecoderAndSanitizer,
-    TellerDecoderAndSanitizer
-} from "src/base/DecodersAndSanitizers/EtherFiLiquidEthDecoderAndSanitizer.sol";
+import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
+import {WithdrawQueueDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/WithdrawQueueDecoderAndSanitizer.sol";
 import {DelayedWithdraw} from "src/base/Roles/DelayedWithdraw.sol"; 
 import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
@@ -19,7 +17,7 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
-contract BoringOnChainQueue is Test, MerkleTreeHelper {
+contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
     using SafeTransferLib for ERC20;
     using FixedPointMathLib for uint256;
     using stdStorage for StdStorage;
@@ -114,15 +112,14 @@ contract BoringOnChainQueue is Test, MerkleTreeHelper {
 
         //eBTC roles authority
         
-        RolesAuthority eBTCAuth = RolesAuthority(getAddress(sourceChain, "eBTC")); 
-        console.log(eBTCAuth.feeAddress()); 
+        RolesAuthority eBTCAuth = RolesAuthority(address(BoringVault(payable(getAddress(sourceChain, "eBTC"))).authority())); 
         vm.startPrank(eBTCAuth.owner()); 
         eBTCAuth.setPublicCapability(getAddress(sourceChain, "eBTCDelayedWithdraw"), DelayedWithdraw.requestWithdraw.selector, true);
         //eBTCAuth.setUserRole(getAddress(sourceChain, "eBTCDelayedWithdraw"), BURNER_ROLE, true);
         vm.stopPrank(); 
     }
 
-    function testAaveV3Integration() external {
+    function testBoringOnChainQueueWithdraw() external {
         deal(getAddress(sourceChain, "eBTC"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](2);
@@ -131,6 +128,9 @@ contract BoringOnChainQueue is Test, MerkleTreeHelper {
         _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "eBTCOnChainQueue"), assets);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        string memory filePath = "./testTEST.json";
+        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -148,7 +148,9 @@ contract BoringOnChainQueue is Test, MerkleTreeHelper {
         targetData[0] =
             abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "eBTCOnChainQueue"), type(uint256).max);
         targetData[1] =
-            abi.encodeWithSignature("requestOnChainWithdraw(address,uint128,uint16,uint24)", getAddress(sourceChain, "WBTC"), 100e8, 0, 7 days);
+            abi.encodeWithSignature("requestOnChainWithdraw(address,uint128,uint16,uint24)", getAddress(sourceChain, "WBTC"), uint128(100e8), uint16(0), uint24(7 days));
+        
+        emit log_named_bytes("asset bytes", abi.encodePacked(getAddress(sourceChain, "WBTC"))); 
 
         address[] memory decodersAndSanitizers = new address[](2);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer; 
@@ -166,7 +168,7 @@ contract BoringOnChainQueue is Test, MerkleTreeHelper {
     }
 }
 
-contract FullBoringVaultDecoder is TellerDecoderAndSanitizer {
+contract FullBoringVaultDecoder is WithdrawQueueDecoderAndSanitizer {
     constructor(address _boringVault) BaseDecoderAndSanitizer(_boringVault){}    
 }
 

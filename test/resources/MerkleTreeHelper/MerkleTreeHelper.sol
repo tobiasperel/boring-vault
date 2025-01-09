@@ -5692,7 +5692,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Approve Delayed Withdraw to spend ", assets[i].symbol()),
+                string.concat("Approve BoringOnChainQueue to spend ", assets[i].symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = withdrawQueue;  
@@ -5703,7 +5703,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             leafs[leafIndex] = ManageLeaf(
                 withdrawQueue,
                 false,
-                "requestWithdraw(address,uint96,uint16,bool)",
+                "requestWithdraw(address,uint128,uint16,uint24)",
                 new address[](1),
                 string.concat("Request Withdraw of ", assets[i].symbol(), ", from queue"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
