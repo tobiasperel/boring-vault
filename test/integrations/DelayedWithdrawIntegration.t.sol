@@ -7,10 +7,9 @@ import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
-import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
-import {WithdrawQueueDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/WithdrawQueueDecoderAndSanitizer.sol";
-import {DelayedWithdraw} from "src/base/Roles/DelayedWithdraw.sol"; 
+import {TellerDecoderAndSanitizer } from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
+import {DelayedWithdraw} from "src/base/Roles/DelayedWithdraw.sol"; 
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
@@ -121,11 +120,14 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
 
     function testBoringOnChainQueueWithdraw() external {
         deal(getAddress(sourceChain, "eBTC"), address(boringVault), 1_000e18);
+        deal(getAddress(sourceChain, "WBTC"), address(boringVault), 100e8);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](2);
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
         ERC20[] memory assets = new ERC20[](1);
         assets[0] = getERC20(sourceChain, "WBTC"); 
-        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "eBTCOnChainQueue"), assets);
+        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets); 
+
+        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "eBTCOnChainQueue"), getAddress(sourceChain, "eBTC"), assets);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -134,29 +136,42 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
         manageLeafs[0] = leafs[0]; //approve
-        manageLeafs[1] = leafs[1]; //requestWithdraw
+        manageLeafs[1] = leafs[3]; //deposit
+        manageLeafs[2] = leafs[5]; //approve queue
+        manageLeafs[3] = leafs[6]; //withdraw w/ queue
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](2);
+        address[] memory targets = new address[](4);
         targets[0] = getAddress(sourceChain, "WBTC");
-        targets[1] = getAddress(sourceChain, "eBTCOnChainQueue");
+        targets[1] = getAddress(sourceChain, "eBTCTeller");
+        targets[2] = getAddress(sourceChain, "eBTC");
+        targets[3] = getAddress(sourceChain, "eBTCOnChainQueue");
 
-        bytes[] memory targetData = new bytes[](2);
+        bytes[] memory targetData = new bytes[](4);
         targetData[0] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "eBTC"), type(uint256).max);
+        targetData[1] = abi.encodeWithSignature(
+            "deposit(address,uint256,uint256)",
+            getAddress(sourceChain, "WBTC"),
+            100e8,
+            0
+        );
+        targetData[2] =
             abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "eBTCOnChainQueue"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("requestOnChainWithdraw(address,uint128,uint16,uint24)", getAddress(sourceChain, "WBTC"), uint128(100e8), uint16(0), uint24(7 days));
+        targetData[3] =
+            abi.encodeWithSignature("requestOnChainWithdraw(address,uint128,uint16,uint24)", getAddress(sourceChain, "WBTC"), uint128(100e8), uint16(100), uint24(2592000));
         
-        emit log_named_bytes("asset bytes", abi.encodePacked(getAddress(sourceChain, "WBTC"))); 
-
-        address[] memory decodersAndSanitizers = new address[](2);
+        address[] memory decodersAndSanitizers = new address[](4);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer; 
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer; 
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer; 
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer; 
 
-        uint256[] memory values = new uint256[](2);
+        uint256[] memory values = new uint256[](4);
+
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
@@ -168,7 +183,7 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
     }
 }
 
-contract FullBoringVaultDecoder is WithdrawQueueDecoderAndSanitizer {
+contract FullBoringVaultDecoder is TellerDecoderAndSanitizer {
     constructor(address _boringVault) BaseDecoderAndSanitizer(_boringVault){}    
 }
 

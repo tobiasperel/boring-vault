@@ -5682,13 +5682,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
     }
 
     // ========================================= BoringVault WithdrawQueue =========================================
-    function _addWithdrawQueueLeafs(ManageLeaf[] memory leafs, address withdrawQueue, ERC20[] memory assets) internal {
+    function _addWithdrawQueueLeafs(ManageLeaf[] memory leafs, address withdrawQueue, address boringVault, ERC20[] memory assets) internal {
         for (uint256 i = 0; i < assets.length; i++) {
             unchecked {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                address(assets[i]),
+                boringVault,
                 false,
                 "approve(address,uint256)",
                 new address[](1),
@@ -5703,7 +5703,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             leafs[leafIndex] = ManageLeaf(
                 withdrawQueue,
                 false,
-                "requestWithdraw(address,uint128,uint16,uint24)",
+                "requestOnChainWithdraw(address,uint128,uint16,uint24)",
                 new address[](1),
                 string.concat("Request Withdraw of ", assets[i].symbol(), ", from queue"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
