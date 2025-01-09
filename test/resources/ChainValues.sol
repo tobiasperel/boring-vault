@@ -859,12 +859,12 @@ contract ChainValues {
         // Hyperlane
         values[mainnet]["hyperlaneUsdcRouter"] = 0xe1De9910fe71cC216490AC7FCF019e13a34481D7.toBytes32();
         values[mainnet]["hyperlaneTestRecipient"] = 0xfb53392bf4a0590a317ca716c28c29ace7c448bc132d7f8188ca234f595aa121;
-        
+
         // Euler
-        values[mainnet]["ethereumVaultConnector"] = 0x0C9a3dd6b8F28529d72d7f9cE918D493519EE383.toBytes32(); 
-        values[mainnet]["evkWEETH"] = 0xe846ca062aB869b66aE8DcD811973f628BA82eAf.toBytes32(); 
-        values[mainnet]["evkWETH"] = 0xD8b27CF359b7D15710a5BE299AF6e7Bf904984C2.toBytes32(); 
-        values[mainnet]["evkUSDC"] = 0x797DD80692c3b2dAdabCe8e30C07fDE5307D48a9.toBytes32(); 
+        values[mainnet]["ethereumVaultConnector"] = 0x0C9a3dd6b8F28529d72d7f9cE918D493519EE383.toBytes32();
+        values[mainnet]["evkWEETH"] = 0xe846ca062aB869b66aE8DcD811973f628BA82eAf.toBytes32();
+        values[mainnet]["evkWETH"] = 0xD8b27CF359b7D15710a5BE299AF6e7Bf904984C2.toBytes32();
+        values[mainnet]["evkUSDC"] = 0x797DD80692c3b2dAdabCe8e30C07fDE5307D48a9.toBytes32();
     }
 
     function _addBaseValues() private {
