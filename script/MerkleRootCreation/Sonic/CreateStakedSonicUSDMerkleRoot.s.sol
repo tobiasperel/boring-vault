@@ -15,9 +15,9 @@ import "forge-std/Script.sol";
 contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
     
-    address public boringVault = ;
-    address public managerAddress = ;
-    address public accountantAddress = ;
+    address public boringVault = 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba;
+    address public managerAddress = 0x5F7f5205A3E7c63c3bd287EecBe7879687D4c698;
+    address public accountantAddress = 0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034;
     address public rawDataDecoderAndSanitizer = ; 
     
     function setUp() external {}
