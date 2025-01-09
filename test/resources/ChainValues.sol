@@ -202,6 +202,7 @@ contract ChainValues {
         values[mainnet]["BTCN"] = 0x386E7A3a0c0919c9d53c3b04FF67E73Ff9e45Fb6.toBytes32();
         values[mainnet]["sUSDs"] = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD.toBytes32();
         values[mainnet]["USUAL"] = 0xC4441c2BE5d8fA8126822B9929CA0b81Ea0DE38E.toBytes32();
+        values[mainnet]["MORPHO"] = 0x58D97B57BB95320F9a05dC918Aef65434969c2B2.toBytes32();
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
