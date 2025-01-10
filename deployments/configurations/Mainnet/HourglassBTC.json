@@ -57,18 +57,18 @@
         "fixedRate": false
       },
       "payoutConfiguration": {
-        "payoutTo": "0x0000000000000000000000000000000000000000",
+        "payoutTo": "0x0000000000000000000000000000000000000001",
         "optionalPaymentSplitterName": "HourglassBTC Payment Splitter",
         "splits": [
           {
-            "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
+            "to": "0x0000000000000000000000000000000000000000",
             "percent": 10000
           }
         ]
       },
       "accountantDeploymentParameters": {
-        "allowedExchangeRateChangeLower": 9500,
-        "allowedExchangeRateChangeUpper": 10500,
+        "allowedExchangeRateChangeLower": 9950,
+        "allowedExchangeRateChangeUpper": 1050,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
           "name": "WBTC"
@@ -137,8 +137,8 @@
     "boringQueueDeploymentName": "HourglassBTC Boring Queue V0.0",
     "boringQueueSolverName": "HourglassBTC Boring Solver V0.0",
     "queueParameters": {
-      "allowPublicWithdrawals": false,
-      "allowPublicSelfWithdrawals": false,
+      "allowPublicWithdrawals": true,
+      "allowPublicSelfWithdrawals": true,
       "kind": {
         "boringQueue": true,
         "boringQueueWithTracking": false
@@ -147,11 +147,11 @@
   },
   "droneConfiguration": {
     "droneDeploymentBaseName": "HourglassBTC Boring Drone V0.0",
-    "droneCount": 1,
+    "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
-    "shouldDeploy": false,
+    "shouldDeploy": true,
     "pauserDeploymentName": "HourglassBTC Pauser V0.0",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
@@ -165,12 +165,12 @@
     ]
   },
   "timelockConfiguration": {
-    "shouldDeploy": false,
+    "shouldDeploy": true,
     "timelockDeploymentName": "HourglassBTC Timelock V0.0",
     "timelockParameters": {
-      "minDelay": 86400,
-      "proposers": ["0x0000000000000000000000000000000000000000"],
-      "executors": ["0x0000000000000000000000000000000000000000"]
+      "minDelay": 300,
+      "proposers": ["0xf8553c8552f906C19286F21711721E206EE4909E"],
+      "executors": ["0xf8553c8552f906C19286F21711721E206EE4909E"]
     }
   },
   "accountantAssets": [
@@ -191,7 +191,7 @@
       },
       "allowDeposits": true,
       "allowWithdraws": true,
-      "sharePremium": 30
+      "sharePremium": 0
     },
     {
       "addressOrName": {
