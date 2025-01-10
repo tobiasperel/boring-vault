@@ -4942,16 +4942,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         );
     }
 
-    // ========================================= Fee Claiming =========================================
+     // ========================================= Fee Claiming =========================================
 
-    function _addLeafsForFeeClaiming(ManageLeaf[] memory leafs, ERC20[] memory feeAssets) internal {
+    function _addLeafsForFeeClaiming(ManageLeaf[] memory leafs, address accountant, ERC20[] memory feeAssets) internal {
         // Approvals.
         for (uint256 i; i < feeAssets.length; ++i) {
-            if (
-                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeAssets[i])][getAddress(
-                    sourceChain, "accountantAddress"
-                )]
-            ) {
+            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeAssets[i])][getAddress(sourceChain, "accountantAddress")]) {
                 unchecked {
                     leafIndex++;
                 }
@@ -4963,10 +4959,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     string.concat("Approve Accountant to spend ", feeAssets[i].symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "accountantAddress");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeAssets[i])][getAddress(
-                    sourceChain, "accountantAddress"
-                )] = true;
+                leafs[leafIndex].argumentAddresses[0] = accountant;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeAssets[i])][accountant] =
+                    true;
             }
         }
         // Claiming fees.
@@ -4975,11 +4970,24 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "accountantAddress"),
+                accountant,
                 false,
                 "claimFees(address)",
                 new address[](1),
                 string.concat("Claim fees in ", feeAssets[i].symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = address(feeAssets[i]);
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                accountant,
+                false,
+                "claimYield(address)",
+                new address[](1),
+                string.concat("Claim yield in ", feeAssets[i].symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = address(feeAssets[i]);

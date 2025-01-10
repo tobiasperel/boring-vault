@@ -1,0 +1,139 @@
+{
+    "metadata": {
+        "AccountantAddress": "0x9B3e937f0f3AA0E60b5E4Cd70d44340A7eb24265",
+        "BoringVaultAddress": "0x500DC884E986dc9eD99C2833F5210825e15e28FD",
+        "DecoderAndSanitizerAddress": "0x8A6790A3665167f3bCdfB9A3EECE92F9443c106c",
+        "DigestComposition": [
+            "Bytes20(DECODER_AND_SANITIZER_ADDRESS)",
+            "Bytes20(TARGET_ADDRESS)",
+            "Bytes1(CAN_SEND_VALUE)",
+            "Bytes4(TARGET_FUNCTION_SELECTOR)",
+            "Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"
+        ],
+        "LeafCount": 6,
+        "ManageRoot": "0xd5fb83356ad270dcc050a0c8790d177b88bff048084ad6ec7104140626db9e0f",
+        "ManagerAddress": "0x463cE91DeaeD808E6ACd540a351207f81B9A4a99",
+        "TreeCapacity": 8
+    },
+    "leafs": [
+        {
+            "AddressArguments": ["0x455d5f11Fea33A8fa9D3e285930b478B6bF85265"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x8A6790A3665167f3bCdfB9A3EECE92F9443c106c",
+            "Description": "Approve Staked Sonic ETH, to spend scETH",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xb270edc9ef41e473dfa0e36cc9d9879cf418d01c7c854f668cc1323c7347a91b",
+            "PackedArgumentAddresses": "0x455d5f11fea33a8fa9d3e285930b478b6bf85265",
+            "TargetAddress": "0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812"
+        },
+        {
+            "AddressArguments": [
+                "0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812",
+                "0x500DC884E986dc9eD99C2833F5210825e15e28FD"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x8A6790A3665167f3bCdfB9A3EECE92F9443c106c",
+            "Description": "Bulk deposit scETH into Staked Sonic ETH",
+            "FunctionSelector": "0x9d574420",
+            "FunctionSignature": "bulkDeposit(address,uint256,uint256,address)",
+            "LeafDigest": "0xa13f6c1da588d5b58e1f351921884490e712a5e3af2102f70ec879fc241bb6cd",
+            "PackedArgumentAddresses": "0x3bce5cb273f0f148010bbea2470e7b5df84c7812500dc884e986dc9ed99c2833f5210825e15e28fd",
+            "TargetAddress": "0x49AcEbF8f0f79e1Ecb0fd47D684DAdec81cc6562"
+        },
+        {
+            "AddressArguments": [
+                "0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812",
+                "0x500DC884E986dc9eD99C2833F5210825e15e28FD"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x8A6790A3665167f3bCdfB9A3EECE92F9443c106c",
+            "Description": "Bulk withdraw scETH from Staked Sonic ETH",
+            "FunctionSelector": "0x3e64ce99",
+            "FunctionSignature": "bulkWithdraw(address,uint256,uint256,address)",
+            "LeafDigest": "0x10d05045732fa8b63fa595a3568086adfa7e92a5b0a70866d5773eaa50b0badd",
+            "PackedArgumentAddresses": "0x3bce5cb273f0f148010bbea2470e7b5df84c7812500dc884e986dc9ed99c2833f5210825e15e28fd",
+            "TargetAddress": "0x49AcEbF8f0f79e1Ecb0fd47D684DAdec81cc6562"
+        },
+        {
+            "AddressArguments": ["0x61bE1eC20dfE0197c27B80bA0f7fcdb1a6B236E2"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x8A6790A3665167f3bCdfB9A3EECE92F9443c106c",
+            "Description": "Approve Accountant to spend scETH",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x604531e9fa15efdbf136146be5f4f6c884f9ff3c18c7688ecb650d99a32b303c",
+            "PackedArgumentAddresses": "0x61be1ec20dfe0197c27b80ba0f7fcdb1a6b236e2",
+            "TargetAddress": "0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812"
+        },
+        {
+            "AddressArguments": ["0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x8A6790A3665167f3bCdfB9A3EECE92F9443c106c",
+            "Description": "Claim fees in scETH",
+            "FunctionSelector": "0x15a0ea6a",
+            "FunctionSignature": "claimFees(address)",
+            "LeafDigest": "0xfc1c41443f4dd25991480ba81b577778c477a13ac3e5e6ed37b9633281ab933a",
+            "PackedArgumentAddresses": "0x3bce5cb273f0f148010bbea2470e7b5df84c7812",
+            "TargetAddress": "0x61bE1eC20dfE0197c27B80bA0f7fcdb1a6B236E2"
+        },
+        {
+            "AddressArguments": ["0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x8A6790A3665167f3bCdfB9A3EECE92F9443c106c",
+            "Description": "Claim yield in scETH",
+            "FunctionSelector": "0x999927df",
+            "FunctionSignature": "claimYield(address)",
+            "LeafDigest": "0x9eb706e7f4f6257afec9916a62bcb41fa2adc376fe9afa517141c531df98576f",
+            "PackedArgumentAddresses": "0x3bce5cb273f0f148010bbea2470e7b5df84c7812",
+            "TargetAddress": "0x61bE1eC20dfE0197c27B80bA0f7fcdb1a6B236E2"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        }
+    ],
+    "MerkleTree": {
+        "0": [
+            "0xd5fb83356ad270dcc050a0c8790d177b88bff048084ad6ec7104140626db9e0f"
+        ],
+        "1": [
+            "0xdc748863badfd1d04cade1dc78e72c8d99756e568e1e5b53f540abb92877256c",
+            "0xbbdc41de5de72bcd986caed5fb80faf0cffe0082751767198b68479a3b9579b0"
+        ],
+        "2": [
+            "0x3ddcf78c92bf295eee04e51056233c2ebd5a268df737e9006bbe75bec8358df0",
+            "0xd694eaae2729795285bdb393f57885718061dee069ff784aaa5d6cbafffc5e7b",
+            "0xc9dfd3b63bde98e2981342a4939c512f7b371e8457d01d09786c38868d222331",
+            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba"
+        ],
+        "3": [
+            "0xb270edc9ef41e473dfa0e36cc9d9879cf418d01c7c854f668cc1323c7347a91b",
+            "0xa13f6c1da588d5b58e1f351921884490e712a5e3af2102f70ec879fc241bb6cd",
+            "0x10d05045732fa8b63fa595a3568086adfa7e92a5b0a70866d5773eaa50b0badd",
+            "0x604531e9fa15efdbf136146be5f4f6c884f9ff3c18c7688ecb650d99a32b303c",
+            "0xfc1c41443f4dd25991480ba81b577778c477a13ac3e5e6ed37b9633281ab933a",
+            "0x9eb706e7f4f6257afec9916a62bcb41fa2adc376fe9afa517141c531df98576f",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400"
+        ]
+    }
+}
