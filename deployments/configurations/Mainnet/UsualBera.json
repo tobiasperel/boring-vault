@@ -2,11 +2,11 @@
   "deploymentParameters": {
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
-    "chainName": "arbitrum",
-    "evmVersion": "london",
-    "desiredNumberOfDeploymentTxs": 4,
+    "chainName": "mainnet",
+    "evmVersion": "cancun",
+    "desiredNumberOfDeploymentTxs": 5,
     "txBundlerAddressOrName": {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x47Cec90FACc9364D7C21A8ab5e2aD9F1f75D740C",
       "name": "txBundlerAddress"
     },
     "setupRoles": true,
@@ -25,66 +25,61 @@
       "name": "WETH"
     },
     "deploymentOwnerAddressOrName": {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "0x47Cec90FACc9364D7C21A8ab5e2aD9F1f75D740C",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "addresses/Arbitrum/eBTC.json"
+    "deploymentFileName": "addresses/Mainnet/UsualBera.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "ether.fi BTC RolesAuthority Version 0.0"
+    "rolesAuthorityDeploymentName": "Usual Bera Roles Authority V0.0"
   },
   "lensConfiguration": {
     "lensDeploymentName": "Arctic Architecture Lens V0.0"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "ether.fi BTC V0.0",
-    "boringVaultName": "ether.fi BTC",
-    "boringVaultSymbol": "eBTC",
-    "boringVaultDecimals": 8
+    "boringVaultDeploymentName": "Usual Bera Boring Vault V0.0",
+    "boringVaultName": "Usual Bera Vault",
+    "boringVaultSymbol": "beraUSD0++",
+    "boringVaultDecimals": 6
   },
   "managerConfiguration": {
-    "managerDeploymentName": "ether.fi BTC Manager With Merkle Verification V0.0",
+    "managerDeploymentName": "Usual Bera Manager V0.0",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "ether.fi BTC Accountant With Rate Providers V0.0",
+    "accountantDeploymentName": "Usual Bera Accountant V0.0",
     "accountantParameters": {
       "kind": {
         "variableRate": true,
         "fixedRate": false
       },
       "payoutConfiguration": {
-        "payoutTo": "0x0000000000000000000000000000000000000001",
-        "optionalPaymentSplitterName": "ether.fi BTC Payment Splitter V0.0",
-        "splits": [
-          {
-            "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
-            "percent": 10000
-          }
-        ]
+        "payoutTo": "0xA9962a5BfBea6918E958DeE0647E99fD7863b95A",
+        "optionalPaymentSplitterName": "Usual Bera Payment Splitter V0.0",
+        "splits": []
       },
       "accountantDeploymentParameters": {
-        "allowedExchangeRateChangeLower": 9900,
-        "allowedExchangeRateChangeUpper": 10000,
+        "allowedExchangeRateChangeLower": 9950,
+        "allowedExchangeRateChangeUpper": 10050,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "WBTC"
+          "name": "USDC"
         },
         "minimumUpateDelayInSeconds": 21600,
         "performanceFee": 0,
-        "platformFee": 200,
-        "startingExchangeRate": 100000000
+        "platformFee": 0,
+        "startingExchangeRate": 1000000
       }
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "ether.fi BTC Teller With Multi Asset Support V0.0",
+    "tellerDeploymentName": "Usual Bera Teller V0.0",
     "tellerParameters": {
       "allowPublicDeposits": true,
-      "shareLockPeriod": 60,
+      "shareLockPeriod": 0,
       "kind": {
         "teller": true,
         "tellerWithRemediation": false,
@@ -94,8 +89,8 @@
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "ether.fi BTC Boring Queue V0.0",
-    "boringQueueSolverName": "ether.fi BTC Boring Solver V0.0",
+    "boringQueueDeploymentName": "Usual Bera Boring Queue V0.0",
+    "boringQueueSolverName": "Usual Bera Boring Solver V0.0",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -106,13 +101,13 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "ether.fi BTC Drone V0.0",
+    "droneDeploymentBaseName": "Usual Bera Drone V0.0",
     "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
-    "shouldDeploy": true,
-    "pauserDeploymentName": "ether.fi BTC Pauser V0.0",
+    "shouldDeploy": false,
+    "pauserDeploymentName": "pauser",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
     "makePauseAll": ["0x0000000000000000000000000000000000000000"],
@@ -125,22 +120,43 @@
     ]
   },
   "timelockConfiguration": {
-    "shouldDeploy": true,
-    "timelockDeploymentName": "ether.fi BTC Timelock V0.0",
+    "shouldDeploy": false,
+    "timelockDeploymentName": "timelock",
     "timelockParameters": {
-      "minDelay": 60,
-      "proposers": [
-        "0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b",
-        "0xf8553c8552f906C19286F21711721E206EE4909E"
-      ],
-      "executors": ["0x183fE88858AAB892cc796662200374e3dF6927E3"]
+      "minDelay": 86400,
+      "proposers": ["0x0000000000000000000000000000000000000000"],
+      "executors": ["0x0000000000000000000000000000000000000000"]
     }
   },
   "accountantAssets": [
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
+        "name": "USD0"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USD0_plus"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USDT"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "DAI"
       },
       "isPeggedToBase": true,
       "rateProvider": "0x0000000000000000000000000000000000000000"
@@ -150,44 +166,48 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "WBTC"
+        "name": "USDC"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
-      "sharePremium": 40
+      "sharePremium": 0
     },
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
+        "name": "USDT"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "DAI"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USD0"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USD0_plus"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
       "sharePremium": 0
     }
   ],
-  "withdrawAssets": [
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "WBTC"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 259200,
-      "minimumShares": 0,
-      "secondsToMaturity": 172800
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 259200,
-      "minimumShares": 0,
-      "secondsToMaturity": 172800
-    }
-  ]
+  "withdrawAssets": []
 }

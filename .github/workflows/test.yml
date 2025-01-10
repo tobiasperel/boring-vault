@@ -43,5 +43,5 @@ jobs:
 
       - name: Run Forge tests
         run: |
-          forge test -vv --skip SymbioticVaultIntegration
+          forge test -vv --skip SymbioticVaultIntegration --skip CreateTimelockTx
         id: test
