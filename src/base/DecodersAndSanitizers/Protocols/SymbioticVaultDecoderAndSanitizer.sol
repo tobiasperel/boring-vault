@@ -24,6 +24,18 @@ abstract contract SymbioticVaultDecoderAndSanitizer is BaseDecoderAndSanitizer {
         addressesFound = abi.encodePacked(claimer);
     }
 
+    //  Pulled from https://github.com/symbioticfi/rewards/blob/7844a6ceaf4d740c7083a37e410194c1ef7867d3/src/contracts/defaultOperatorRewards/DefaultOperatorRewards.sol#L75-L81
+    function claimRewards(
+        address recipient,
+        address, /*network*/
+        address, /*token*/
+        uint256, /*totalClaimable*/
+        bytes32[] calldata /*proof*/
+    ) external pure virtual returns (bytes memory addressesFound) {
+        // We only sanitize recipient since this function only increases value for the boring vault.
+        addressesFound = abi.encodePacked(recipient);
+    }
+
     function claim(address recipient, uint256 /*epoch*/ ) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(recipient);
     }

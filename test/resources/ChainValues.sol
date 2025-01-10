@@ -1189,7 +1189,7 @@ contract ChainValues {
         values[holesky]["WSTETH"] = 0x8d09a4502Cc8Cf1547aD300E066060D043f6982D.toBytes32();
 
         // Symbiotic
-        values[holesky]["wstETHSymbioticVault"] = 0x89D62D1d89d8636367fc94998b3bE095a3d9c2f9.toBytes32();
+        values[holesky]["wstETHSymbioticVault"] = 0xd88dDf98fE4d161a66FB836bee4Ca469eb0E4a75.toBytes32();
     }
 
     function _addMantleValues() private {
