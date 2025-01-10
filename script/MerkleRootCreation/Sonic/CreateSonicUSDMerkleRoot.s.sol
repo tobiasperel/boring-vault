@@ -12,13 +12,13 @@ import "forge-std/Script.sol";
 /**
  *  source .env && forge script script/MerkleRootCreation/Sonic/CreateSonicUSDMerkleRoot.s.sol:CreateSonicUSDMerkleRoot --rpc-url $SONIC_MAINNET_RPC_URL
  */
-contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
+contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
     
     address public boringVault = 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE; 
     address public managerAddress = 0x76fda7A02B616070D3eC5902Fa3C5683AC3cB8B6; 
     address public accountantAddress = 0xA76E0F54918E39A63904b51F688513043242a0BE; 
-    address public rawDataDecoderAndSanitizer = ; 
+    address public rawDataDecoderAndSanitizer = 0xad67B9EdCD822FF39ad6b81860b98351F89dB40F; 
     
     function setUp() external {}
 
@@ -48,7 +48,7 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
-        string memory filePath = "./leafs/Sonic/StakedSonicETHStrategistLeafs.json";
+        string memory filePath = "./leafs/Sonic/SonicUSDStrategistLeafs.json";
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
