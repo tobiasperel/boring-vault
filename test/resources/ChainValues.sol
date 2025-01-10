@@ -901,7 +901,7 @@ contract ChainValues {
         // Sky
         values[mainnet]["daiConverter"] = 0x3225737a9Bbb6473CB4a45b7244ACa2BeFdB276A.toBytes32(); //converts dai to USDS
         values[mainnet]["usdsLitePsmUsdc"] = 0xA188EEC8F81263234dA3622A406892F3D630f98c.toBytes32(); 
-        values[mainnet]["daiLitePsmUsdc"] = 0xA188EEC8F81263234dA3622A406892F3D630f98c.toBytes32(); 
+        values[mainnet]["daiLitePsmUsdc"] = 0xf6e72db5454dd049d0788e411b06cfaf16853042.toBytes32(); 
 
         //Sonic Gateway
         values[mainnet]["sonicGateway"] = 0xa1E2481a9CD0Cb0447EeB1cbc26F1b3fff3bec20.toBytes32(); 
