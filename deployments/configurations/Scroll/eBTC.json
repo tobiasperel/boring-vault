@@ -81,37 +81,15 @@
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "eBTC LayerZero Teller V0.0",
+    "tellerDeploymentName": "ether.fi BTC Teller With Multi Asset Support V0.0",
     "tellerParameters": {
       "allowPublicDeposits": true,
       "shareLockPeriod": 60,
       "kind": {
-        "teller": false,
+        "teller": true,
         "tellerWithRemediation": false,
         "tellerWithCcip": false,
-        "tellerWithLayerZero": true
-      },
-      "layerZero": {
-        "endpointAddressOrName": {
-          "address": "0x0000000000000000000000000000000000000000",
-          "name": "LayerZeroEndPoint"
-        },
-        "lzTokenAddressOrName": {
-          "address": "0x0000000000000000000000000000000000000000",
-          "name": "ZRO"
-        },
-        "lzChains": [
-          {
-            "chainId": 30101,
-            "allowMessagesFrom": true,
-            "allowMessagesTo": true,
-            "targetTellerOrSelf": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "self": true
-            },
-            "messageGasLimit": 100000
-          }
-        ]
+        "tellerWithLayerZero": false
       }
     }
   },
@@ -119,8 +97,8 @@
     "boringQueueDeploymentName": "ether.fi BTC Boring Queue V0.0",
     "boringQueueSolverName": "ether.fi BTC Boring Solver V0.0",
     "queueParameters": {
-      "allowPublicWithdrawals": false,
-      "allowPublicSelfWithdrawals": false,
+      "allowPublicWithdrawals": true,
+      "allowPublicSelfWithdrawals": true,
       "kind": {
         "boringQueue": true,
         "boringQueueWithTracking": false

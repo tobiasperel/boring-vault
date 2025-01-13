@@ -48,11 +48,8 @@ contract AerodromeIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(
-            new AerodromeDecoderAndSanitizer(
-                getAddress(sourceChain, "aerodromeNonFungiblePositionManager")
-            )
-        );
+        rawDataDecoderAndSanitizer =
+            address(new AerodromeDecoderAndSanitizer(getAddress(sourceChain, "aerodromeNonFungiblePositionManager")));
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -447,9 +444,12 @@ contract AerodromeIntegrationTest is Test, MerkleTreeHelper {
 
         vm.expectRevert(
             bytes(
-                abi.encodeWithSelector(ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector, 
-                                        targets[3], targetData[3], 0
-                                      )
+                abi.encodeWithSelector(
+                    ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                    targets[3],
+                    targetData[3],
+                    0
+                )
             )
         );
         manager.manageVaultWithMerkleVerification(
@@ -553,9 +553,12 @@ contract AerodromeIntegrationTest is Test, MerkleTreeHelper {
 
         vm.expectRevert(
             bytes(
-                abi.encodeWithSelector(ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
-                                        targets[2], targetData[2], 0
-                                      )
+                abi.encodeWithSelector(
+                    ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                    targets[2],
+                    targetData[2],
+                    0
+                )
             )
         );
         manager.manageVaultWithMerkleVerification(
@@ -574,8 +577,12 @@ contract AerodromeIntegrationTest is Test, MerkleTreeHelper {
 
         vm.expectRevert(
             bytes(
-                abi.encodeWithSelector(ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
-                                        targets[3], targetData[3], 0)
+                abi.encodeWithSelector(
+                    ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                    targets[3],
+                    targetData[3],
+                    0
+                )
             )
         );
         manager.manageVaultWithMerkleVerification(

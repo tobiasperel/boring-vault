@@ -1677,8 +1677,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = address(0);
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = token1[i];
-            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
-            leafs[leafIndex].argumentAddresses[4] = address(0); 
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[4] = address(0);
 
             unchecked {
                 leafIndex++;
@@ -1700,8 +1700,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = address(0);
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = token1[i];
-            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3"); 
-            leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault"); 
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3");
+            leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
 
             // Swapping to move tick in pool.
             unchecked {
@@ -1758,9 +1758,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             "Remove liquidity from PancakeSwapV3 position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-            leafs[leafIndex].argumentAddresses[1] = address(0);
-       
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[1] = address(0);
+
         unchecked {
             leafIndex++;
         }
@@ -1772,8 +1772,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             "Remove liquidity from PancakeSwapV3 staked position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3"); 
-            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
         unchecked {
             leafIndex++;
@@ -1788,8 +1788,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
         leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[2] = address(0); 
-
+        leafs[leafIndex].argumentAddresses[2] = address(0);
 
         unchecked {
             leafIndex++;
@@ -1803,7 +1802,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3");  
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3");
         leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
 
         // burn
@@ -2595,7 +2594,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafs[leafIndex].argumentAddresses[0] = address(0);
                 leafs[leafIndex].argumentAddresses[1] = token0[i];
                 leafs[leafIndex].argumentAddresses[2] = token1[i];
-                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
+                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
             }
 
             //BEGIN SWAP ONLY LEAVES
@@ -2651,7 +2650,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-
 
             unchecked {
                 leafIndex++;
@@ -2811,7 +2809,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = address(0);
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = token1[i];
-            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
 
             // Swapping to move tick in pool.
             unchecked {
@@ -5282,7 +5280,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = address(0);
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = token1[i];
-            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
 
             // Approve gauge to spend NFT.
             unchecked {
@@ -5311,8 +5309,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             "Remove liquidity from VelodromeV3 position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
-
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
 
         unchecked {
             leafIndex++;

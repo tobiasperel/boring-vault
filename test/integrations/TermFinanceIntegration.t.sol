@@ -212,7 +212,6 @@ contract TermFinanceIntegrationTest is Test, MerkleTreeHelper {
 
         rawDataDecoderAndSanitizer = address(new TermFinanceDecoderAndSanitizer());
 
-
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
         setAddress(false, sourceChain, "manager", address(manager));
