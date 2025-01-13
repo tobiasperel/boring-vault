@@ -5,3 +5,4 @@ import {SonicDepositDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/SonicDepositDecoderAndSanitizer.sol";
 
 contract SonicFullDepositDecoderAndSanitizer is SonicDepositDecoderAndSanitizer {}
+

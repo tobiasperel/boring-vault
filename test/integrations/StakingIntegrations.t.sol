@@ -123,7 +123,7 @@ contract StakingIntegrationsTest is Test, MerkleTreeHelper {
         // unwrap weETH
         // unstaking eETH
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addNativeLeafs(leafs);
+        _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
         _addEtherFiLeafs(leafs);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -310,7 +310,7 @@ contract StakingIntegrationsTest is Test, MerkleTreeHelper {
         // Unwrap all WETH
         // mint WETH via deposit
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addNativeLeafs(leafs);
+        _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -343,7 +343,7 @@ contract StakingIntegrationsTest is Test, MerkleTreeHelper {
         // mint WETH via deposit
         setAddress(true, sourceChain, "boringVault", address(boringDrone));
         ManageLeaf[] memory leafs = new ManageLeaf[](4);
-        _addNativeLeafs(leafs);
+        _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
         leafs[2] = ManageLeaf(
             address(boringDrone),
             false,
@@ -392,7 +392,7 @@ contract StakingIntegrationsTest is Test, MerkleTreeHelper {
         // mint swETH
         // unstaking swETH
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addNativeLeafs(leafs);
+        _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
         _addSwellStakingLeafs(leafs);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -457,7 +457,7 @@ contract StakingIntegrationsTest is Test, MerkleTreeHelper {
         // mint swETH
         // unstaking swETH
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addNativeLeafs(leafs);
+        _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
         _addMantleStakingLeafs(leafs);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
