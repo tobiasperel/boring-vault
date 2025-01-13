@@ -47,7 +47,8 @@ contract UsualMoneyIntegrationTest is Test, MerkleTreeHelper {
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
         rawDataDecoderAndSanitizer = address(
-            new FullUsualMoneyDecoderAndSanitizer(address(boringVault))
+            new EtherFiLiquidUsdDecoderAndSanitizer(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"))
+
         );
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));

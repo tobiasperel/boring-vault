@@ -48,7 +48,7 @@ contract EthenaWithdrawIntegrationTest is Test, MerkleTreeHelper {
 
         rawDataDecoderAndSanitizer = address(
             new EtherFiLiquidUsdDecoderAndSanitizer(
-                address(boringVault), getAddress(sourceChain, "uniswapV3NonFungiblePositionManager")
+                getAddress(sourceChain, "uniswapV3NonFungiblePositionManager")
             )
         );
 

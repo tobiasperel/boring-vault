@@ -17,8 +17,6 @@ contract UniBTCDecoderAndSanitizer is
     OFTDecoderAndSanitizer,
     NativeWrapperDecoderAndSanitizer
 {
-    constructor(address _boringVault, address _uniswapV3NonFungiblePositionManager)
-        BaseDecoderAndSanitizer(_boringVault)
-        UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
-    {}
+
+    constructor(address _uniswapV3NonFungiblePositionManager){}
 }
