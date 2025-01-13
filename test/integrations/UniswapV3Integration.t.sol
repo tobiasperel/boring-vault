@@ -256,9 +256,7 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
         targets[1] = getAddress(sourceChain, "uniV3Router");
         targets[2] = getAddress(sourceChain, "RETH");
         targets[3] = getAddress(sourceChain, "WEETH");
-        targets[4] = getAddress(sourceChain, "uniswapV3NonFungibYes, aiming for 10% monthly returns on your swing trading portfolio is a safe and realistic goal within the context of your broader investment strategy. This balanced approach leverages the stability of long-term investments while allowing room for high-growth opportunities in swing trading.
-
-Would you like help refining your risk management plan or creating a tracking sheet for your trades?lePositionManager");
+        targets[4] = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
         targets[5] = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
         targets[6] = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
         targets[7] = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
@@ -364,9 +362,12 @@ Would you like help refining your risk management plan or creating a tracking sh
         );
 
         vm.expectRevert(
-            abi.encodeWithSelector(ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
-                                    targets[5], targetData[5], 0
-                                  )
+            abi.encodeWithSelector(
+                ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                targets[5],
+                targetData[5],
+                0
+            )
         );
         manager.manageVaultWithMerkleVerification(
             manageProofs, decodersAndSanitizers, targets, targetData, new uint256[](8)
@@ -386,9 +387,12 @@ Would you like help refining your risk management plan or creating a tracking sh
         );
 
         vm.expectRevert(
-            abi.encodeWithSelector(ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
-                                    targets[6], targetData[6], 0
-                                  )
+            abi.encodeWithSelector(
+                ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                targets[6],
+                targetData[6],
+                0
+            )
         );
         manager.manageVaultWithMerkleVerification(
             manageProofs, decodersAndSanitizers, targets, targetData, new uint256[](8)
@@ -407,9 +411,12 @@ Would you like help refining your risk management plan or creating a tracking sh
         targetData[7] = abi.encodeWithSignature("collect((uint256,address,uint128,uint128))", collectParams);
 
         vm.expectRevert(
-            abi.encodeWithSelector(ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
-                                    targets[7], targetData[7], 0
-                                  )
+            abi.encodeWithSelector(
+                ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                targets[7],
+                targetData[7],
+                0
+            )
         );
         manager.manageVaultWithMerkleVerification(
             manageProofs, decodersAndSanitizers, targets, targetData, new uint256[](8)
