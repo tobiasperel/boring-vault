@@ -46,6 +46,7 @@ bsc = { key = "${BSCSCAN_KEY}" }
 avalanche = { key = "${SNOWTRACE_KEY}" }
 optimism = { key = "${OPTIMISMSCAN_KEY}" }
 base = { key = "${BASESCAN_KEY}" }
+scroll = { key = "${SCROLLSCAN_KEY}" }
 sonicMainnet = { key = "${SONICSCAN_KEY}", chain = 146, url = "https://api.routescan.io/v2/network/mainnet/evm/146/etherscan" }
 
 [fmt]

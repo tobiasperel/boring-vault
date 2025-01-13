@@ -4,7 +4,7 @@
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "scroll",
     "evmVersion": "london",
-    "desiredNumberOfDeploymentTxs": 4,
+    "desiredNumberOfDeploymentTxs": 40,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -67,8 +67,8 @@
         ]
       },
       "accountantDeploymentParameters": {
-        "allowedExchangeRateChangeLower": 9900,
-        "allowedExchangeRateChangeUpper": 10000,
+        "allowedExchangeRateChangeLower": 9950,
+        "allowedExchangeRateChangeUpper": 10050,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
           "name": "WBTC"
@@ -136,16 +136,7 @@
       "executors": ["0x183fE88858AAB892cc796662200374e3dF6927E3"]
     }
   },
-  "accountantAssets": [
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
-      },
-      "isPeggedToBase": true,
-      "rateProvider": "0x0000000000000000000000000000000000000000"
-    }
-  ],
+  "accountantAssets": [],
   "depositAssets": [
     {
       "addressOrName": {
@@ -155,15 +146,6 @@
       "allowDeposits": true,
       "allowWithdraws": true,
       "sharePremium": 40
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 0
     }
   ],
   "withdrawAssets": [
@@ -171,17 +153,6 @@
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
         "name": "WBTC"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 259200,
-      "minimumShares": 0,
-      "secondsToMaturity": 172800
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
       },
       "maxDiscount": 10,
       "minDiscount": 1,

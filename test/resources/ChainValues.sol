@@ -1242,6 +1242,7 @@ contract ChainValues {
 
     function _addScrollValues() private {
         values[scroll]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[scroll]["txBundlerAddress"] = 0x534b64608E601B581AB0cbF0b03ec9f4c65f3360.toBytes32();
         values[scroll]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
         values[scroll]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
         values[scroll]["liquidPayoutAddress"] = 0xA9962a5BfBea6918E958DeE0647E99fD7863b95A.toBytes32();
