@@ -904,6 +904,11 @@ contract ChainValues {
 
         //Sonic Gateway
         values[mainnet]["sonicGateway"] = 0xa1E2481a9CD0Cb0447EeB1cbc26F1b3fff3bec20.toBytes32();
+
+        // Morpho Rewards
+        values[mainnet]["morphoRewardsWrapper"] = 0x9D03bb2092270648d7480049d0E58d2FcF0E5123.toBytes32();
+        values[mainnet]["legacyMorpho"] = 0x9994E35Db50125E0DF82e4c2dde62496CE330999.toBytes32();
+        values[mainnet]["newMorpho"] = 0x58D97B57BB95320F9a05dC918Aef65434969c2B2.toBytes32();
     }
 
     function _addBaseValues() private {

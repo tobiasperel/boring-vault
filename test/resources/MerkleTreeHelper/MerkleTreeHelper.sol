@@ -3793,6 +3793,85 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault");
     }
 
+    function _addMorphoRewardWrapperLeafs(ManageLeaf[] memory leafs) internal {
+        address legacyToken = getAddress(sourceChain, "legacyMorpho");
+        address newToken = getAddress(sourceChain, "newMorpho");
+        address wrapper = getAddress(sourceChain, "morphoRewardsWrapper");
+        // Approve morpho rewards wrapper to spend legacy morpho.
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            legacyToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            "Approve morpho rewards wrapper to spend legacy morpho",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "morphoRewardsWrapper");
+
+        // Approve morpho rewards wrapper to spend new morpho.
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            newToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            "Approve morpho rewards wrapper to spend new morpho",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "morphoRewardsWrapper");
+
+        // Wrapping
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            wrapper,
+            false,
+            "depositFor(address,uint256)",
+            new address[](1),
+            "Wrap legacy morpho for new morpho",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+        // Unwrapping
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            wrapper,
+            false,
+            "withdrawTo(address,uint256)",
+            new address[](1),
+            "Unwrap new morpho for legacy morpho",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+    }
+
+    function _addMorphoRewardMerkleClaimerLeafs(ManageLeaf[] memory leafs, address universalRewardsDistributor)
+        internal
+    {
+        // Claim morpho rewards.
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            universalRewardsDistributor,
+            false,
+            "claim(address,address,uint256,bytes32[])",
+            new address[](1),
+            "Claim morpho rewards",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+    }
+
     // ========================================= ERC4626 =========================================
 
     function _addERC4626Leafs(ManageLeaf[] memory leafs, ERC4626 vault) internal {
