@@ -160,21 +160,12 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
 
     event OnChainWithdrawSolved(bytes32 indexed requestId, address indexed user, uint256 timestamp);
 
-    event WithdrawAssetSetup(
-        address indexed assetOut,
-        uint24 secondsToMaturity,
-        uint24 minimumSecondsToDeadline,
-        uint16 minDiscount,
-        uint16 maxDiscount,
-        uint96 minimumShares
-    );
-
     event WithdrawAssetStopped(address indexed assetOut);
 
     event WithdrawAssetUpdated(
         address indexed assetOut,
-        uint24 minimumSecondsToDeadline,
         uint24 secondsToMaturity,
+        uint24 minimumSecondsToDeadline,
         uint16 minDiscount,
         uint16 maxDiscount,
         uint96 minimumShares
