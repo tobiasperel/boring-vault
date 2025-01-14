@@ -31,14 +31,13 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
     function generateLiquidBeraEthStrategistMerkleRoot() public {
         setSourceChainName(mainnet);
         setAddress(false, mainnet, "boringVault", boringVault);
-        setAddress(false, mainnet, "managerAddress", managerAddress); 
-        setAddress(false, mainnet, "accountantAddress", accountantAddress); 
+        setAddress(false, mainnet, "managerAddress", managerAddress);
+        setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        leafIndex = 0;
+        ManageLeaf[] memory leafs = new ManageLeaf[](64);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](32);
-
+        // ========================== Lido ==========================
         address[] memory assets = new address[](5);
         SwapKind[] memory kind = new SwapKind[](5);
         assets[0] = getAddress(sourceChain, "WETH");
@@ -51,6 +50,8 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
         kind[3] = SwapKind.BuyAndSell;
         assets[4] = getAddress(sourceChain, "WSTETH");
         kind[4] = SwapKind.BuyAndSell;
+
+        _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         // ========================== Lido ==========================
         _addLidoLeafs(leafs);
@@ -67,13 +68,14 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
          */
         _addNativeLeafs(leafs);
 
-        //Verify 
+        //Verify
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         string memory filePath = "./leafs/Mainnet/LiquidBeraEthStrategistLeafs.json";
 
         _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
     }
 }
-
