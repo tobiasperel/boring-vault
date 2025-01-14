@@ -10,15 +10,15 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateLiquidBtcMerkleRoot.s.sol:CreateLiquidBtcMerkleRoot --rpc-url $BNB_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/BinanceSmartChain/CreateLBTCvMerkleRoot.s.sol:CreateLBTCvMerkleRoot --rpc-url $BNB_RPC_URL
  */
-contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
+contract CreateLBTCvMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0x5401b8620E5FB570064CA9114fd1e135fd77D57c;
     address public managerAddress = 0xcf38e37872748E3b66741A42560672A6cef75e9B;
     address public accountantAddress = 0x28634D0c5edC67CF2450E74deA49B90a4FF93dCE;
-    address public rawDataDecoderAndSanitizer = address(1);
+    address public rawDataDecoderAndSanitizer = 0xF2f92fefda8642a04E32856110495c8b3C2Cd72f; 
 
     function setUp() external {}
 
@@ -49,8 +49,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addPancakeSwapV3Leafs(leafs, token0, token1);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](11);
-        SwapKind[] memory kind = new SwapKind[](11);
+        address[] memory assets = new address[](3);
+        SwapKind[] memory kind = new SwapKind[](3);
         assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
@@ -62,7 +62,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         // Verify
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
-        string memory filePath = "./leafs/BinanceSmartChain/LiquidBtcStrategistLeafs.json";
+        string memory filePath = "./leafs/BinanceSmartChain/LBTCvStrategistLeafs.json";
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
