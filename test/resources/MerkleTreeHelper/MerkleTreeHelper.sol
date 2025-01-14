@@ -3396,20 +3396,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
 
         // Approve gauge.
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pool][gauge]) {
-            unchecked {
-                leafIndex++;
+        if (gauge != address(0)) {
+            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pool][gauge]) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    pool,
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve Balancer gauge to spend ", ERC20(pool).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = gauge;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pool][gauge] = true;
             }
-            leafs[leafIndex] = ManageLeaf(
-                pool,
-                false,
-                "approve(address,uint256)",
-                new address[](1),
-                string.concat("Approve Balancer gauge to spend ", ERC20(pool).symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = gauge;
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pool][gauge] = true;
         }
 
         address[] memory addressArguments = new address[](3 + tokenCount);
@@ -3456,60 +3458,62 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
 
         // Deposit into gauge.
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            gauge,
-            false,
-            "deposit(uint256,address)",
-            new address[](1),
-            string.concat("Deposit ", ERC20(pool).symbol(), " into Balancer gauge"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-
-        // Withdraw from gauge.
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            gauge,
-            false,
-            "withdraw(uint256)",
-            new address[](0),
-            string.concat("Withdraw ", ERC20(pool).symbol(), " from Balancer gauge"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-
-        if (keccak256(abi.encode(sourceChain)) == keccak256(abi.encode(mainnet))) {
-            // Mint rewards.
-            unchecked {
-                leafIndex++;
-            }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "minter"),
-                false,
-                "mint(address)",
-                new address[](1),
-                string.concat("Mint rewards from Balancer gauge"),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = gauge;
-        } else {
-            // Call claim_rewards(address) on gauge.
+        if (gauge != address(0)) {
             unchecked {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
                 gauge,
                 false,
-                "claim_rewards(address)",
+                "deposit(uint256,address)",
                 new address[](1),
-                string.concat("Claim rewards from Balancer gauge"),
+                string.concat("Deposit ", ERC20(pool).symbol(), " into Balancer gauge"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            // Withdraw from gauge.
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                gauge,
+                false,
+                "withdraw(uint256)",
+                new address[](0),
+                string.concat("Withdraw ", ERC20(pool).symbol(), " from Balancer gauge"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            if (keccak256(abi.encode(sourceChain)) == keccak256(abi.encode(mainnet))) {
+                // Mint rewards.
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "minter"),
+                    false,
+                    "mint(address)",
+                    new address[](1),
+                    string.concat("Mint rewards from Balancer gauge"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = gauge;
+            } else {
+                // Call claim_rewards(address) on gauge.
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    gauge,
+                    false,
+                    "claim_rewards(address)",
+                    new address[](1),
+                    string.concat("Claim rewards from Balancer gauge"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            }
         }
     }
 
