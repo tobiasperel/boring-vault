@@ -1279,6 +1279,12 @@ contract ChainValues {
         values[bsc]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
         values[bsc]["WBTC"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32();
         values[bsc]["WBNB"] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.toBytes32();
+        values[bsc]["BTCB"] = 0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.toBytes32(); 
+
+        // 1Inch
+        values[bsc]["aggregationRouterV5"] = 0x1111111254EEB25477B68fb85Ed929f73A960582.toBytes32(); 
+        values[bsc]["oneInchExecutor"] = 0xde9e4FE32B049f821c7f3e9802381aa470FFCA73.toBytes32(); 
+    
     }
 
     function _addCornValues() private {
