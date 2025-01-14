@@ -42,7 +42,7 @@ contract CreateSonicEthMerkleRoot is Script, MerkleTreeHelper {
         feeAssets[0] = getERC20(sourceChain, "WETH");
         feeAssets[1] = getERC20(sourceChain, "WEETH");
         feeAssets[2] = getERC20(sourceChain, "WSTETH");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== UniswapV3 ==========================
         // WETH, WEETH, wstETH

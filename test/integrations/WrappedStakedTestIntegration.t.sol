@@ -47,9 +47,8 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
         rawDataDecoderAndSanitizer = address(
-            new FullBaseDecoder(
-                address(boringVault))
-            ); 
+            new FullBaseDecoder()
+        ); 
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -157,6 +156,4 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
     }
 }
 
-contract FullBaseDecoder is BaseDecoderAndSanitizer {
-    constructor(address _boringVault) BaseDecoderAndSanitizer(_boringVault){}
-}
+contract FullBaseDecoder is BaseDecoderAndSanitizer {}
