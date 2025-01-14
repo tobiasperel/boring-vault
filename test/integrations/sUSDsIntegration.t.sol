@@ -8,17 +8,15 @@ import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
-import {
-    PointFarmingDecoderAndSanitizer,
-    ZircuitSimpleStakingDecoderAndSanitizer
-} from "src/base/DecodersAndSanitizers/PointFarmingDecoderAndSanitizer.sol";
+import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
+import {EtherFiLiquidDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiLiquidDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
-contract SwellSimpleStakingIntegrationTest is Test, MerkleTreeHelper {
+contract sUSDsIntegration is Test, MerkleTreeHelper {
     using SafeTransferLib for ERC20;
     using FixedPointMathLib for uint256;
     using stdStorage for StdStorage;
@@ -39,7 +37,7 @@ contract SwellSimpleStakingIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 19826676;
+        uint256 blockNumber = 21495090;
 
         _startFork(rpcKey, blockNumber);
 
@@ -48,7 +46,9 @@ contract SwellSimpleStakingIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(new PointFarmingDecoderAndSanitizer());
+        rawDataDecoderAndSanitizer = address(
+            new EtherFiLiquidDecoderAndSanitizer(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"))
+        );
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -103,57 +103,67 @@ contract SwellSimpleStakingIntegrationTest is Test, MerkleTreeHelper {
         rolesAuthority.setUserRole(address(manager), MANAGER_ROLE, true);
         rolesAuthority.setUserRole(address(boringVault), BORING_VAULT_ROLE, true);
         rolesAuthority.setUserRole(getAddress(sourceChain, "vault"), BALANCER_VAULT_ROLE, true);
+
+        // Allow the boring vault to receive ETH.
+        rolesAuthority.setPublicCapability(address(boringVault), bytes4(0), true);
     }
 
-    function testZircuitSimpleStakingIntegration() external {
-        deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18);
+    function testSUSDSIntegration() external {
+        //uint256 mintAmount = 100_000e18;
+        deal(getAddress(sourceChain, "USDS"), address(boringVault), 1_000e18);
 
-        // approve
-        // Call deposit
-        // withdraw
-        // complete withdraw
-        ManageLeaf[] memory leafs = new ManageLeaf[](4);
-        _addZircuitLeafs(leafs, getAddress(sourceChain, "WETH"), getAddress(sourceChain, "zircuitSimpleStaking"));
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sUSDs")));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
-        manageLeafs[0] = leafs[0];
-        manageLeafs[1] = leafs[1];
-        manageLeafs[2] = leafs[2];
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](5);
+        manageLeafs[0] = leafs[0]; //approve
+        manageLeafs[1] = leafs[1]; //deposit
+        manageLeafs[2] = leafs[2]; //withdraw
+        manageLeafs[3] = leafs[3]; //mint
+        manageLeafs[4] = leafs[4]; //redeem
 
-        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+        (bytes32[][] memory manageProofs) = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](3);
-        targets[0] = getAddress(sourceChain, "WETH");
-        targets[1] = getAddress(sourceChain, "zircuitSimpleStaking");
-        targets[2] = getAddress(sourceChain, "zircuitSimpleStaking");
+        address[] memory targets = new address[](5);
+        targets[0] = getAddress(sourceChain, "USDS"); //approve sUSDs
+        targets[1] = getAddress(sourceChain, "sUSDs"); //deposit
+        targets[2] = getAddress(sourceChain, "sUSDs"); //withdraw
+        targets[3] = getAddress(sourceChain, "sUSDs"); //mint
+        targets[4] = getAddress(sourceChain, "sUSDs"); //redeem
 
-        bytes[] memory targetData = new bytes[](3);
-        targetData[0] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "zircuitSimpleStaking"), type(uint256).max
+        bytes[] memory targetData = new bytes[](5);
+        targetData[0] =
+            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "sUSDs"), type(uint256).max);
+        targetData[1] =
+            abi.encodeWithSignature("deposit(uint256,address)", 100e18, getAddress(sourceChain, "boringVault"));
+        targetData[2] = abi.encodeWithSignature(
+            "withdraw(uint256,address,address)",
+            95e18,
+            getAddress(sourceChain, "boringVault"),
+            getAddress(sourceChain, "boringVault")
         );
-        targetData[1] = abi.encodeWithSignature(
-            "depositFor(address,address,uint256)", getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18
+        targetData[3] = abi.encodeWithSignature("mint(uint256,address)", 1e18, getAddress(sourceChain, "boringVault"));
+        targetData[4] = abi.encodeWithSignature(
+            "redeem(uint256,address,address)",
+            1e18,
+            getAddress(sourceChain, "boringVault"),
+            getAddress(sourceChain, "boringVault")
         );
-        targetData[2] = abi.encodeWithSignature("withdraw(address,uint256)", getAddress(sourceChain, "WETH"), 1_000e18);
 
-        address[] memory decodersAndSanitizers = new address[](3);
+        uint256[] memory values = new uint256[](5);
+
+        address[] memory decodersAndSanitizers = new address[](5);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
-
-        uint256[] memory values = new uint256[](3);
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-
-        assertEq(
-            getERC20(sourceChain, "WETH").balanceOf(address(boringVault)),
-            1_000e18,
-            "BoringVault should have received 1,000 WETH"
-        );
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
