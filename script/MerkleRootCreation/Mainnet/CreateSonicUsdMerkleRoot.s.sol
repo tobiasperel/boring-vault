@@ -43,7 +43,7 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         feeAssets[1] = getERC20(sourceChain, "DAI");
         feeAssets[2] = getERC20(sourceChain, "USDT");
         feeAssets[3] = getERC20(sourceChain, "USDS");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== UniswapV3 ==========================
         // All combinations of USDC, USDT, sDAI, DAI, sUSDs, GHO, USDs
