@@ -6180,7 +6180,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Approve Sonic Gateway L2 to spend ", string(abi.encodePacked(assetsSonic[i]))),
+                string.concat("Approve Sonic Gateway L2 to spend ", vm.toString(assetsSonic[i])),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
 
@@ -6194,7 +6194,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "withdraw(uint96,address,uint256)",
                 new address[](1),
-                string.concat("Withdraw ", string(abi.encodePacked(assetsSonic[i])), " from Sonic"),
+                string.concat("Withdraw ", vm.toString(assetsSonic[i]), " from Sonic"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = address(assetsMainnet[i]);
@@ -6207,7 +6207,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "claim(uint256,address,uint256,bytes)",
                 new address[](1),
-                string.concat("Claim ", string(abi.encodePacked(assetsSonic[i])), " from Sonic Gateway"),
+                string.concat("Claim ", vm.toString(assetsSonic[i]), " from Sonic Gateway"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = address(assetsMainnet[i]);
