@@ -10,8 +10,9 @@ import {IComet} from "src/interfaces/IComet.sol";
 import {TellerWithMultiAssetSupport} from "src/base/Roles/TellerWithMultiAssetSupport.sol";
 import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 import "forge-std/Base.sol";
+import "forge-std/Test.sol";
 
-contract MerkleTreeHelper is CommonBase, ChainValues {
+contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     using Address for address;
 
     string public sourceChain;
@@ -39,7 +40,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         require(assets.length == kind.length, "Arrays must be of equal length");
         for (uint256 i; i < assets.length; ++i) {
             // Add approval leaf if not already added
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][assets[i]][getAddress(sourceChain, "aggregationRouterV5")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][assets[i]][getAddress(
+                    sourceChain, "aggregationRouterV5"
+                )]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -52,7 +57,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "aggregationRouterV5");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][assets[i]][getAddress(sourceChain, "aggregationRouterV5")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][assets[i]][getAddress(
+                    sourceChain, "aggregationRouterV5"
+                )] = true;
             }
             // Iterate through the list again.
             for (uint256 j; j < assets.length; ++j) {
@@ -60,7 +67,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 if (i == j) {
                     continue;
                 }
-                if (!ownerToOneInchSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][assets[i]][assets[j]] && kind[j] != SwapKind.Sell) {
+                if (
+                    !ownerToOneInchSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][assets[i]][assets[j]]
+                        && kind[j] != SwapKind.Sell
+                ) {
                     // Add sell swap.
                     unchecked {
                         leafIndex++;
@@ -84,10 +94,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     leafs[leafIndex].argumentAddresses[2] = assets[j];
                     leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "oneInchExecutor");
                     leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
-                    ownerToOneInchSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][assets[i]][assets[j]] = true;
+                    ownerToOneInchSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][assets[i]][assets[j]]
+                    = true;
                 }
 
-                if (kind[i] == SwapKind.BuyAndSell && !ownerToOneInchSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][assets[j]][assets[i]]) {
+                if (
+                    kind[i] == SwapKind.BuyAndSell
+                        && !ownerToOneInchSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][assets[j]][assets[i]]
+                ) {
                     // Add buy swap.
                     unchecked {
                         leafIndex++;
@@ -111,7 +125,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     leafs[leafIndex].argumentAddresses[2] = assets[i];
                     leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "oneInchExecutor");
                     leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
-                    ownerToOneInchSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][assets[j]][assets[i]] = true;
+                    ownerToOneInchSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][assets[j]][assets[i]]
+                    = true;
                 }
             }
         }
@@ -122,7 +137,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         address token0 = uniswapV3Pool.token0();
         address token1 = uniswapV3Pool.token1();
         // Add approval leaf if not already added
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0][getAddress(sourceChain, "aggregationRouterV5")]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0][getAddress(
+                sourceChain, "aggregationRouterV5"
+            )]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -135,9 +154,15 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "aggregationRouterV5");
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0][getAddress(sourceChain, "aggregationRouterV5")] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0][getAddress(
+                sourceChain, "aggregationRouterV5"
+            )] = true;
         }
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1][getAddress(sourceChain, "aggregationRouterV5")]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1][getAddress(
+                sourceChain, "aggregationRouterV5"
+            )]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -150,7 +175,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "aggregationRouterV5");
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1][getAddress(sourceChain, "aggregationRouterV5")] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1][getAddress(
+                sourceChain, "aggregationRouterV5"
+            )] = true;
         }
         uint256 feeInBps = uniswapV3Pool.fee() / 100;
         unchecked {
@@ -187,7 +214,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         for (uint256 i; i < coinCount; i++) {
             coins[i] = ERC20(pool.coins(i));
             // Approvals.
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(coins[i])][poolAddress]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(coins[i])][poolAddress]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -200,7 +229,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = poolAddress;
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(coins[i])][poolAddress] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(coins[i])][poolAddress]
+                = true;
             }
         }
 
@@ -276,7 +306,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
 
     function _addConvexLeafs(ManageLeaf[] memory leafs, ERC20 token, address rewardsContract) internal {
         // Approve convexCurveMainnetBooster to spend lp tokens.
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(token)][getAddress(sourceChain, "convexCurveMainnetBooster")]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(token)][getAddress(
+                sourceChain, "convexCurveMainnetBooster"
+            )]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -289,7 +323,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "convexCurveMainnetBooster");
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(token)][getAddress(sourceChain, "convexCurveMainnetBooster")] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(token)][getAddress(
+                sourceChain, "convexCurveMainnetBooster"
+            )] = true;
         }
 
         // Deposit into convexCurveMainnetBooster.
@@ -482,7 +518,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         );
         leafs[leafIndex].argumentAddresses[0] = address(Usd0PP);
 
-        // Approve Usd0 to be swapped in swapper engine. 
+        // Approve Usd0 to be swapped in swapper engine.
         unchecked {
             leafIndex++;
         }
@@ -1389,7 +1425,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
     ) internal {
         // Bridge ERC20 Assets
         for (uint256 i; i < feeTokens.length; i++) {
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeTokens[i])][getAddress(sourceChain, "ccipRouter")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeTokens[i])][getAddress(
+                    sourceChain, "ccipRouter"
+                )]
+            ) {
                 // Add fee token approval.
                 unchecked {
                     leafIndex++;
@@ -1403,10 +1443,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "ccipRouter");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeTokens[i])][getAddress(sourceChain, "ccipRouter")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeTokens[i])][getAddress(
+                    sourceChain, "ccipRouter"
+                )] = true;
             }
             for (uint256 j; j < bridgeAssets.length; j++) {
-                if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(bridgeAssets[j])][getAddress(sourceChain, "ccipRouter")]) {
+                if (
+                    !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(
+                        bridgeAssets[j]
+                    )][getAddress(sourceChain, "ccipRouter")]
+                ) {
                     // Add bridge asset approval.
                     unchecked {
                         leafIndex++;
@@ -1420,8 +1466,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
                     leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "ccipRouter");
-                    ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(bridgeAssets[j])][getAddress(sourceChain, "ccipRouter")] =
-                        true;
+                    ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(
+                        bridgeAssets[j]
+                    )][getAddress(sourceChain, "ccipRouter")] = true;
                 }
                 // Add ccipSend leaf.
                 unchecked {
@@ -1506,7 +1553,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     sourceChain, "pancakeSwapV3NonFungiblePositionManager"
                 )] = true;
             }
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(sourceChain, "pancakeSwapV3MasterChefV3")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "pancakeSwapV3MasterChefV3"
+                )]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -1519,9 +1570,15 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(sourceChain, "pancakeSwapV3MasterChefV3")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "pancakeSwapV3MasterChefV3"
+                )] = true;
             }
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(sourceChain, "pancakeSwapV3MasterChefV3")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "pancakeSwapV3MasterChefV3"
+                )]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -1534,10 +1591,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(sourceChain, "pancakeSwapV3MasterChefV3")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "pancakeSwapV3MasterChefV3"
+                )] = true;
             }
 
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(sourceChain, "pancakeSwapV3Router")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "pancakeSwapV3Router"
+                )]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -1550,9 +1613,15 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pancakeSwapV3Router");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(sourceChain, "pancakeSwapV3Router")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "pancakeSwapV3Router"
+                )] = true;
             }
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(sourceChain, "pancakeSwapV3Router")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "pancakeSwapV3Router"
+                )]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -1565,7 +1634,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pancakeSwapV3Router");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(sourceChain, "pancakeSwapV3Router")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "pancakeSwapV3Router"
+                )] = true;
             }
 
             // Minting
@@ -1593,7 +1664,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"),
                 false,
                 "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))",
-                new address[](3),
+                new address[](5),
                 string.concat(
                     "Add liquidity to PancakeSwapV3 ",
                     ERC20(token0[i]).symbol(),
@@ -1606,6 +1677,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             leafs[leafIndex].argumentAddresses[0] = address(0);
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = token1[i];
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[4] = address(0);
+
             unchecked {
                 leafIndex++;
             }
@@ -1613,7 +1687,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "pancakeSwapV3MasterChefV3"),
                 false,
                 "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))",
-                new address[](3),
+                new address[](5),
                 string.concat(
                     "Add liquidity to PancakeSwapV3 ",
                     ERC20(token0[i]).symbol(),
@@ -1626,6 +1700,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             leafs[leafIndex].argumentAddresses[0] = address(0);
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = token1[i];
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3");
+            leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
 
             // Swapping to move tick in pool.
             unchecked {
@@ -1648,6 +1724,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             leafs[leafIndex].argumentAddresses[0] = token0[i];
             leafs[leafIndex].argumentAddresses[1] = token1[i];
             leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+
             unchecked {
                 leafIndex++;
             }
@@ -1677,10 +1754,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"),
             false,
             "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256))",
-            new address[](0),
+            new address[](2),
             "Remove liquidity from PancakeSwapV3 position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[1] = address(0);
+
         unchecked {
             leafIndex++;
         }
@@ -1688,10 +1768,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             getAddress(sourceChain, "pancakeSwapV3MasterChefV3"),
             false,
             "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256))",
-            new address[](0),
+            new address[](2),
             "Remove liquidity from PancakeSwapV3 staked position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
         unchecked {
             leafIndex++;
         }
@@ -1699,11 +1782,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"),
             false,
             "collect((uint256,address,uint128,uint128))",
-            new address[](1),
+            new address[](3),
             "Collect fees from PancakeSwapV3 position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[2] = address(0);
+
         unchecked {
             leafIndex++;
         }
@@ -1711,11 +1797,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             getAddress(sourceChain, "pancakeSwapV3MasterChefV3"),
             false,
             "collect((uint256,address,uint128,uint128))",
-            new address[](1),
+            new address[](3),
             "Collect fees from PancakeSwapV3 staked position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "pancakeSwapV3MasterChefV3");
+        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
 
         // burn
         unchecked {
@@ -1775,6 +1863,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
     }
 
     // ========================================= Native =========================================
+
+    function _addNativeLeafs(ManageLeaf[] memory leafs) internal {
+        _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
+    }
 
     function _addNativeLeafs(ManageLeaf[] memory leafs, address wrappedToken) internal {
         // Wrapping
@@ -2196,10 +2288,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         _addAaveV3ForkLeafs("Aave V3", getAddress(sourceChain, "v3Pool"), leafs, supplyAssets, borrowAssets);
     }
 
-    function _addAaveV3PrimeLeafs(ManageLeaf[] memory leafs, ERC20[] memory supplyAssets, ERC20[] memory borrowAssets) 
-        internal 
+    function _addAaveV3PrimeLeafs(ManageLeaf[] memory leafs, ERC20[] memory supplyAssets, ERC20[] memory borrowAssets)
+        internal
     {
-        _addAaveV3ForkLeafs("Aave V3 Prime", getAddress(sourceChain, "v3PrimePool"), leafs, supplyAssets, borrowAssets); 
+        _addAaveV3ForkLeafs("Aave V3 Prime", getAddress(sourceChain, "v3PrimePool"), leafs, supplyAssets, borrowAssets);
     }
 
     function _addAaveV3LidoLeafs(ManageLeaf[] memory leafs, ERC20[] memory supplyAssets, ERC20[] memory borrowAssets)
@@ -2214,7 +2306,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         _addAaveV3ForkLeafs("SparkLend", getAddress(sourceChain, "sparkLendPool"), leafs, supplyAssets, borrowAssets);
     }
 
-
     function _addAaveV3ForkLeafs(
         string memory protocolName,
         address protocolAddress,
@@ -2225,7 +2316,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         // Approvals
         string memory baseApprovalString = string.concat("Approve ", protocolName, " Pool to spend ");
         for (uint256 i; i < supplyAssets.length; ++i) {
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(supplyAssets[i])][protocolAddress]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(supplyAssets[i])][protocolAddress]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -2238,11 +2331,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = protocolAddress;
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(supplyAssets[i])][protocolAddress] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(supplyAssets[i])][protocolAddress]
+                = true;
             }
         }
         for (uint256 i; i < borrowAssets.length; ++i) {
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(borrowAssets[i])][protocolAddress]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(borrowAssets[i])][protocolAddress]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -2255,7 +2351,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = protocolAddress;
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(borrowAssets[i])][protocolAddress] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(borrowAssets[i])][protocolAddress]
+                = true;
             }
         }
         // Lending
@@ -2362,7 +2459,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         for (uint256 i; i < token0.length; ++i) {
             (token0[i], token1[i]) = token0[i] < token1[i] ? (token0[i], token1[i]) : (token1[i], token0[i]);
 
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(sourceChain, "uniV3Router")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "uniV3Router"
+                )]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -2375,9 +2476,15 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV3Router");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(sourceChain, "uniV3Router")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "uniV3Router"
+                )] = true;
             }
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(sourceChain, "uniV3Router")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "uniV3Router"
+                )]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -2390,7 +2497,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV3Router");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(sourceChain, "uniV3Router")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "uniV3Router"
+                )] = true;
             }
 
             //end swap only
@@ -2472,7 +2581,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"),
                     false,
                     "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))",
-                    new address[](3),
+                    new address[](4),
                     string.concat(
                         "Add liquidity to UniswapV3 ",
                         ERC20(token0[i]).symbol(),
@@ -2485,8 +2594,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 leafs[leafIndex].argumentAddresses[0] = address(0);
                 leafs[leafIndex].argumentAddresses[1] = token0[i];
                 leafs[leafIndex].argumentAddresses[2] = token1[i];
+                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
             }
-            
+
             //BEGIN SWAP ONLY LEAVES
             // Swapping to move tick in pool.
             unchecked {
@@ -2522,7 +2632,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
         }
-        
+
         //END FOR LOOP
         //END SWAP ONLY LEAVES
 
@@ -2535,10 +2645,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"),
                 false,
                 "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256))",
-                new address[](0),
+                new address[](1),
                 "Remove liquidity from UniswapV3 position",
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
             unchecked {
                 leafIndex++;
             }
@@ -2546,11 +2658,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"),
                 false,
                 "collect((uint256,address,uint128,uint128))",
-                new address[](1),
+                new address[](2),
                 "Collect fees from UniswapV3 position",
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
             // burn
             unchecked {
@@ -2575,7 +2688,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             (token0[i], token1[i]) = token0[i] < token1[i] ? (token0[i], token1[i]) : (token1[i], token0[i]);
             // Approvals
             if (
-                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(sourceChain, "camelotNonFungiblePositionManager")]
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "camelotNonFungiblePositionManager"
+                )]
             ) {
                 unchecked {
                     leafIndex++;
@@ -2589,11 +2704,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "camelotNonFungiblePositionManager");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(sourceChain, "camelotNonFungiblePositionManager")]
-                = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "camelotNonFungiblePositionManager"
+                )] = true;
             }
             if (
-                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(sourceChain, "camelotNonFungiblePositionManager")]
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "camelotNonFungiblePositionManager"
+                )]
             ) {
                 unchecked {
                     leafIndex++;
@@ -2607,11 +2725,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "camelotNonFungiblePositionManager");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(sourceChain, "camelotNonFungiblePositionManager")]
-                = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "camelotNonFungiblePositionManager"
+                )] = true;
             }
 
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(sourceChain, "camelotRouterV3")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "camelotRouterV3"
+                )]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -2624,9 +2747,15 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "camelotRouterV3");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(sourceChain, "camelotRouterV3")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "camelotRouterV3"
+                )] = true;
             }
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(sourceChain, "camelotRouterV3")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "camelotRouterV3"
+                )]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -2639,7 +2768,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "camelotRouterV3");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(sourceChain, "camelotRouterV3")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "camelotRouterV3"
+                )] = true;
             }
 
             // Minting
@@ -2665,7 +2796,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "camelotNonFungiblePositionManager"),
                 false,
                 "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))",
-                new address[](3),
+                new address[](4),
                 string.concat(
                     "Add liquidity to CamelotV3 ",
                     ERC20(token0[i]).symbol(),
@@ -2678,6 +2809,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             leafs[leafIndex].argumentAddresses[0] = address(0);
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = token1[i];
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
 
             // Swapping to move tick in pool.
             unchecked {
@@ -2721,10 +2853,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             getAddress(sourceChain, "camelotNonFungiblePositionManager"),
             false,
             "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256))",
-            new address[](0),
+            new address[](1),
             "Remove liquidity from CamelotV3 position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
         unchecked {
             leafIndex++;
         }
@@ -2732,11 +2866,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             getAddress(sourceChain, "camelotNonFungiblePositionManager"),
             false,
             "collect((uint256,address,uint128,uint128))",
-            new address[](1),
+            new address[](2),
             "Collect fees from CamelotV3 position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
         // burn
         unchecked {
@@ -2795,7 +2930,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         for (uint256 i; i < possibleTokensIn.length; ++i) {
             if (
                 possibleTokensIn[i] != address(0)
-                    && !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][possibleTokensIn[i]][getAddress(sourceChain, "pendleRouter")]
+                    && !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][possibleTokensIn[i]][getAddress(
+                        sourceChain, "pendleRouter"
+                    )]
             ) {
                 ERC20 tokenIn = ERC20(possibleTokensIn[i]);
                 unchecked {
@@ -2810,7 +2947,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pendleRouter");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][possibleTokensIn[i]][getAddress(sourceChain, "pendleRouter")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][possibleTokensIn[i]][getAddress(
+                    sourceChain, "pendleRouter"
+                )] = true;
             }
         }
         // Approve router to spend LP, SY, PT, YT
@@ -3140,7 +3279,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         PendleMarket market = PendleMarket(marketAddress);
         (address sy, address pt, address yt) = market.readTokens();
 
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][yt][getAddress(sourceChain, "pendleLimitOrderRouter")]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][yt][getAddress(
+                sourceChain, "pendleLimitOrderRouter"
+            )]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -3153,10 +3296,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pendleLimitOrderRouter");
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][yt][getAddress(sourceChain, "pendleLimitOrderRouter")] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][yt][getAddress(
+                sourceChain, "pendleLimitOrderRouter"
+            )] = true;
         }
 
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pt][getAddress(sourceChain, "pendleLimitOrderRouter")]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pt][getAddress(
+                sourceChain, "pendleLimitOrderRouter"
+            )]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -3169,10 +3318,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pendleLimitOrderRouter");
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pt][getAddress(sourceChain, "pendleLimitOrderRouter")] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pt][getAddress(
+                sourceChain, "pendleLimitOrderRouter"
+            )] = true;
         }
 
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][sy][getAddress(sourceChain, "pendleLimitOrderRouter")]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][sy][getAddress(
+                sourceChain, "pendleLimitOrderRouter"
+            )]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -3185,7 +3340,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "pendleLimitOrderRouter");
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][sy][getAddress(sourceChain, "pendleLimitOrderRouter")] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][sy][getAddress(
+                sourceChain, "pendleLimitOrderRouter"
+            )] = true;
         }
 
         // Add fill leaf.
@@ -3215,7 +3372,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         for (uint256 i; i < tokens.length; i++) {
             if (
                 address(tokens[i]) != pool
-                    && !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(sourceChain, "balancerVault")]
+                    && !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(
+                        sourceChain, "balancerVault"
+                    )]
             ) {
                 unchecked {
                     leafIndex++;
@@ -3229,26 +3388,30 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "balancerVault");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(sourceChain, "balancerVault")] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(
+                    sourceChain, "balancerVault"
+                )] = true;
             }
             tokenCount++;
         }
 
         // Approve gauge.
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pool][gauge]) {
-            unchecked {
-                leafIndex++;
+        if (gauge != address(0)) {
+            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pool][gauge]) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    pool,
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve Balancer gauge to spend ", ERC20(pool).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = gauge;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pool][gauge] = true;
             }
-            leafs[leafIndex] = ManageLeaf(
-                pool,
-                false,
-                "approve(address,uint256)",
-                new address[](1),
-                string.concat("Approve Balancer gauge to spend ", ERC20(pool).symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = gauge;
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][pool][gauge] = true;
         }
 
         address[] memory addressArguments = new address[](3 + tokenCount);
@@ -3295,60 +3458,62 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         }
 
         // Deposit into gauge.
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            gauge,
-            false,
-            "deposit(uint256,address)",
-            new address[](1),
-            string.concat("Deposit ", ERC20(pool).symbol(), " into Balancer gauge"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-
-        // Withdraw from gauge.
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            gauge,
-            false,
-            "withdraw(uint256)",
-            new address[](0),
-            string.concat("Withdraw ", ERC20(pool).symbol(), " from Balancer gauge"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-
-        if (keccak256(abi.encode(sourceChain)) == keccak256(abi.encode(mainnet))) {
-            // Mint rewards.
-            unchecked {
-                leafIndex++;
-            }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "minter"),
-                false,
-                "mint(address)",
-                new address[](1),
-                string.concat("Mint rewards from Balancer gauge"),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = gauge;
-        } else {
-            // Call claim_rewards(address) on gauge.
+        if (gauge != address(0)) {
             unchecked {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
                 gauge,
                 false,
-                "claim_rewards(address)",
+                "deposit(uint256,address)",
                 new address[](1),
-                string.concat("Claim rewards from Balancer gauge"),
+                string.concat("Deposit ", ERC20(pool).symbol(), " into Balancer gauge"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            // Withdraw from gauge.
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                gauge,
+                false,
+                "withdraw(uint256)",
+                new address[](0),
+                string.concat("Withdraw ", ERC20(pool).symbol(), " from Balancer gauge"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            if (keccak256(abi.encode(sourceChain)) == keccak256(abi.encode(mainnet))) {
+                // Mint rewards.
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "minter"),
+                    false,
+                    "mint(address)",
+                    new address[](1),
+                    string.concat("Mint rewards from Balancer gauge"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = gauge;
+            } else {
+                // Call claim_rewards(address) on gauge.
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    gauge,
+                    false,
+                    "claim_rewards(address)",
+                    new address[](1),
+                    string.concat("Claim rewards from Balancer gauge"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            }
         }
     }
 
@@ -3372,7 +3537,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = auraDeposit;
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(bpt)][auraDeposit] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(bpt)][auraDeposit] =
+                true;
         }
 
         // Deposit BPT into Aura vault.
@@ -3439,7 +3605,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             " LLTV market"
         );
         // Add approval leaf if not already added
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.loanToken][getAddress(sourceChain, "morphoBlue")]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.loanToken][getAddress(
+                sourceChain, "morphoBlue"
+            )]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -3452,7 +3622,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "morphoBlue");
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.loanToken][getAddress(sourceChain, "morphoBlue")] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.loanToken][getAddress(
+                sourceChain, "morphoBlue"
+            )] = true;
         }
         unchecked {
             leafIndex++;
@@ -3507,7 +3679,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             " LLTV market"
         );
         // Approve MorphoBlue to spend collateral.
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.collateralToken][getAddress(sourceChain, "morphoBlue")]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.collateralToken][getAddress(
+                sourceChain, "morphoBlue"
+            )]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -3520,10 +3696,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "morphoBlue");
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.collateralToken][getAddress(sourceChain, "morphoBlue")] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.collateralToken][getAddress(
+                sourceChain, "morphoBlue"
+            )] = true;
         }
         // Approve morpho blue to spend loan token.
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.collateralToken][getAddress(sourceChain, "morphoBlue")]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.collateralToken][getAddress(
+                sourceChain, "morphoBlue"
+            )]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -3536,7 +3718,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "morphoBlue");
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.loanToken][getAddress(sourceChain, "morphoBlue")] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.loanToken][getAddress(
+                sourceChain, "morphoBlue"
+            )] = true;
         }
         // Supply collateral to MorphoBlue.
         unchecked {
@@ -3940,7 +4124,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         internal
     {
         // Approval
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][asset][_swellSimpleStaking]) {
+        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][asset][_swellSimpleStaking])
+        {
             unchecked {
                 leafIndex++;
             }
@@ -3953,7 +4138,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = _swellSimpleStaking;
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][asset][_swellSimpleStaking] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][asset][_swellSimpleStaking] =
+                true;
         }
         // deposit
         unchecked {
@@ -4238,7 +4424,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
 
     function _addZircuitLeafs(ManageLeaf[] memory leafs, address asset, address _zircuitSimpleStaking) internal {
         // Approval
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][asset][_zircuitSimpleStaking]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][asset][_zircuitSimpleStaking]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -4251,7 +4439,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = _zircuitSimpleStaking;
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][asset][_zircuitSimpleStaking] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][asset][_zircuitSimpleStaking]
+            = true;
         }
         // deposit
         unchecked {
@@ -4442,7 +4631,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         ERC4626 dc = ERC4626(defaultCollateral);
         ERC20 depositAsset = dc.asset();
         // Approve
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(depositAsset)][defaultCollateral]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(depositAsset)][defaultCollateral]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -4455,7 +4646,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = defaultCollateral;
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(depositAsset)][defaultCollateral] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(depositAsset)][defaultCollateral]
+            = true;
         }
         // Deposit
         unchecked {
@@ -4501,7 +4693,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
     {
         for (uint256 i; i < assets.length; i++) {
             // Approve
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(assets[i])][vaults[i]]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(assets[i])][vaults[i]]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -4514,7 +4708,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = vaults[i];
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(assets[i])][vaults[i]] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(assets[i])][vaults[i]]
+                = true;
             }
             // Deposit
             unchecked {
@@ -4782,7 +4977,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
     function _addLeafsForFeeClaiming(ManageLeaf[] memory leafs, address accountant, ERC20[] memory feeAssets) internal {
         // Approvals.
         for (uint256 i; i < feeAssets.length; ++i) {
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeAssets[i])][getAddress(sourceChain, "accountantAddress")]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeAssets[i])][getAddress(
+                    sourceChain, "accountantAddress"
+                )]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -5022,7 +5221,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         for (uint256 i; i < token0.length; ++i) {
             (token0[i], token1[i]) = token0[i] < token1[i] ? (token0[i], token1[i]) : (token1[i], token0[i]);
             // Approvals
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][nonfungiblePositionManager]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][nonfungiblePositionManager]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -5035,9 +5236,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = nonfungiblePositionManager;
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][nonfungiblePositionManager] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][nonfungiblePositionManager]
+                = true;
             }
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][nonfungiblePositionManager]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][nonfungiblePositionManager]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -5050,7 +5254,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = nonfungiblePositionManager;
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][nonfungiblePositionManager] = true;
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][nonfungiblePositionManager]
+                = true;
             }
 
             // Minting
@@ -5078,7 +5283,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 nonfungiblePositionManager,
                 false,
                 "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))",
-                new address[](3),
+                new address[](4),
                 string.concat(
                     "Add liquidity to VelodromeV3 ",
                     ERC20(token0[i]).symbol(),
@@ -5091,6 +5296,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             leafs[leafIndex].argumentAddresses[0] = address(0);
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = token1[i];
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
 
             // Approve gauge to spend NFT.
             unchecked {
@@ -5115,10 +5321,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             nonfungiblePositionManager,
             false,
             "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256))",
-            new address[](0),
+            new address[](1),
             "Remove liquidity from VelodromeV3 position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
         unchecked {
             leafIndex++;
         }
@@ -5126,11 +5334,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             nonfungiblePositionManager,
             false,
             "collect((uint256,address,uint128,uint128))",
-            new address[](1),
+            new address[](2),
             "Collect fees from VelodromeV3 position",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
         // burn
         unchecked {
@@ -5641,7 +5850,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = termRepoLockers[i];
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(purchaseTokens[i])][termRepoLockers[i]] = true;
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(purchaseTokens[i])][termRepoLockers[i]]
+            = true;
             unchecked {
                 leafIndex++;
             }
@@ -5727,9 +5937,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
 
     // ========================================= Sky Money =========================================
     function _addAllSkyMoneyLeafs(ManageLeaf[] memory leafs) internal {
-        _addSkyDaiConverterLeafs(leafs);  
-        _addSkyUSDSLitePSMUSDCLeafs(leafs); 
-        _addSkyDAILitePSMUSDCLeafs(leafs); 
+        _addSkyDaiConverterLeafs(leafs);
+        _addSkyUSDSLitePSMUSDCLeafs(leafs);
+        _addSkyDAILitePSMUSDCLeafs(leafs);
     }
 
     function _addSkyDaiConverterLeafs(ManageLeaf[] memory leafs) internal {
@@ -5787,7 +5997,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
     }
 
     function _addSkyUSDSLitePSMUSDCLeafs(ManageLeaf[] memory leafs) internal {
-
         unchecked {
             leafIndex++;
         }
@@ -5799,8 +6008,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             string.concat("Approve USDS to be swapped for USDC"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "usdsLitePsmUsdc"); 
-          unchecked {
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "usdsLitePsmUsdc");
+        unchecked {
             leafIndex++;
         }
         leafs[leafIndex] = ManageLeaf(
@@ -5811,7 +6020,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             string.concat("Approve USDC to be swapped for USDS"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "usdsLitePsmUsdc"); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "usdsLitePsmUsdc");
 
         unchecked {
             leafIndex++;
@@ -5824,7 +6033,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             string.concat("Swap USDC for USDS"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
 
         unchecked {
             leafIndex++;
@@ -5837,8 +6046,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             string.concat("Swap USDS for USDC"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
-
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
 
     function _addSkyDAILitePSMUSDCLeafs(ManageLeaf[] memory leafs) internal {
@@ -5853,8 +6061,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             string.concat("Approve DAI to be swapped for USDC"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "daiLitePsmUsdc"); 
-        
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "daiLitePsmUsdc");
+
         unchecked {
             leafIndex++;
         }
@@ -5866,7 +6074,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             string.concat("Approve USDC to be swapped for DAI"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "daiLitePsmUsdc"); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "daiLitePsmUsdc");
 
         unchecked {
             leafIndex++;
@@ -5879,7 +6087,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             string.concat("Swap USDC for DAI"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
 
         unchecked {
             leafIndex++;
@@ -5892,12 +6100,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             string.concat("Swap DAI for USDC"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
-
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
-        
+
     // ========================================= Sonic Gateway =========================================
-    // To be used on ETH mainnet. 
+    // To be used on ETH mainnet.
     function _addSonicGatewayLeafsEth(ManageLeaf[] memory leafs, ERC20[] memory assets) internal {
         for (uint256 i = 0; i < assets.length; i++) {
             unchecked {
@@ -5924,7 +6131,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 string.concat("Deposit ", assets[i].symbol(), " into Sonic Gateway"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = address(assets[i]); 
+            leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
 
             unchecked {
                 leafIndex++;
@@ -5937,7 +6144,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 string.concat("Claim ", assets[i].symbol(), " from Sonic Gateway"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = address(assets[i]); 
+            leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
 
             unchecked {
                 leafIndex++;
@@ -5950,16 +6157,19 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 string.concat("Cancel deposit of ", assets[i].symbol(), " from Sonic Gateway while dead"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = address(assets[i]); 
-
+            leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
         }
-    } 
-    
-    // To be used on Sonic L2. 
-    // NOTE: sonic bridge uses the mainnet token address to match with their bridged versions, so we need both. 
-    // The mainnet token address is the one sanitized and the one that needs to be passed into the bridge itself, but the sonic address will be used in the leaf to (hopefully) minimize confusion. It is also used for approvals. However, this is still confusing, so I am leaving this comment. 
-    function _addSonicGatewayLeafsSonic(ManageLeaf[] memory leafs, address[] memory assetsMainnet, address[] memory assetsSonic) internal {
-        require(assetsSonic.length == assetsMainnet.length, "Asset length mismatch"); 
+    }
+
+    // To be used on Sonic L2.
+    // NOTE: sonic bridge uses the mainnet token address to match with their bridged versions, so we need both.
+    // The mainnet token address is the one sanitized and the one that needs to be passed into the bridge itself, but the sonic address will be used in the leaf to (hopefully) minimize confusion. It is also used for approvals. However, this is still confusing, so I am leaving this comment.
+    function _addSonicGatewayLeafsSonic(
+        ManageLeaf[] memory leafs,
+        address[] memory assetsMainnet,
+        address[] memory assetsSonic
+    ) internal {
+        require(assetsSonic.length == assetsMainnet.length, "Asset length mismatch");
         unchecked {
             leafIndex++;
         }
@@ -5982,7 +6192,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Approve Sonic Gateway L2 to spend ", string(abi.encodePacked(assetsSonic[i]))),
+                string.concat("Approve Sonic Gateway L2 to spend ", vm.toString(assetsSonic[i])),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
 
@@ -5996,10 +6206,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 false,
                 "withdraw(uint96,address,uint256)",
                 new address[](1),
-                string.concat("Withdraw ", string(abi.encodePacked(assetsSonic[i])), " from Sonic"),
+                string.concat("Withdraw ", vm.toString(assetsSonic[i]), " from Sonic"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = address(assetsMainnet[i]); 
+            leafs[leafIndex].argumentAddresses[0] = address(assetsMainnet[i]);
 
             unchecked {
                 leafIndex++;
@@ -6009,13 +6219,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 false,
                 "claim(uint256,address,uint256,bytes)",
                 new address[](1),
-                string.concat("Claim ", string(abi.encodePacked(assetsSonic[i])), " from Sonic Gateway"),
+                string.concat("Claim ", vm.toString(assetsSonic[i]), " from Sonic Gateway"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = address(assetsMainnet[i]); 
-        }    
-    } 
-
+            leafs[leafIndex].argumentAddresses[0] = address(assetsMainnet[i]);
+        }
+    }
 
     // ========================================= BoringVault Teller =========================================
 
