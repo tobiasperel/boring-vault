@@ -41,8 +41,11 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     //address boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
 
+
     //address boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
-    address boringVault = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C; 
+    //address boringVault = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C; 
+
+
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
