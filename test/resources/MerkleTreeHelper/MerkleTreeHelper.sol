@@ -4972,16 +4972,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
-    // ========================================= Fee Claiming =========================================
+     // ========================================= Fee Claiming =========================================
 
     function _addLeafsForFeeClaiming(ManageLeaf[] memory leafs, address accountant, ERC20[] memory feeAssets) internal {
         // Approvals.
         for (uint256 i; i < feeAssets.length; ++i) {
-            if (
-                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeAssets[i])][getAddress(
-                    sourceChain, "accountantAddress"
-                )]
-            ) {
+            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(feeAssets[i])][getAddress(sourceChain, "accountantAddress")]) {
                 unchecked {
                     leafIndex++;
                 }
