@@ -8,18 +8,15 @@ import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
-import {
-    OnlyTreehouseDecoderAndSanitizer,
-    TreehouseDecoderAndSanitizer
-} from "src/base/DecodersAndSanitizers/OnlyTreehouseDecoderAndSanitizer.sol";
+import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
+import {SkyMoneyDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SkyMoneyDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
-
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
-contract SwellSimpleStakingIntegrationTest is Test, MerkleTreeHelper {
+contract SkyMoneyIntegrationTest is Test, MerkleTreeHelper {
     using SafeTransferLib for ERC20;
     using FixedPointMathLib for uint256;
     using stdStorage for StdStorage;
@@ -40,7 +37,7 @@ contract SwellSimpleStakingIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 20825215;
+        uint256 blockNumber = 21495090;
 
         _startFork(rpcKey, blockNumber);
 
@@ -49,7 +46,7 @@ contract SwellSimpleStakingIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(new OnlyTreehouseDecoderAndSanitizer());
+        rawDataDecoderAndSanitizer = address(new FullSkyMoneyDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -104,100 +101,96 @@ contract SwellSimpleStakingIntegrationTest is Test, MerkleTreeHelper {
         rolesAuthority.setUserRole(address(manager), MANAGER_ROLE, true);
         rolesAuthority.setUserRole(address(boringVault), BORING_VAULT_ROLE, true);
         rolesAuthority.setUserRole(getAddress(sourceChain, "vault"), BALANCER_VAULT_ROLE, true);
+
+        // Allow the boring vault to receive ETH.
+        rolesAuthority.setPublicCapability(address(boringVault), bytes4(0), true);
     }
 
-    function testTreehouseIntegration() external {
-        deal(getAddress(sourceChain, "WSTETH"), address(boringVault), 1_000e18);
+    function testSkyMoneyIntegration() external {
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 100_000e6);
+        deal(getAddress(sourceChain, "DAI"), address(boringVault), 100_000e18);
+        deal(getAddress(sourceChain, "USDS"), address(boringVault), 100_000e18);
 
-        // approve
-        // Call deposit
-        // withdraw
-        // complete withdraw
-        ManageLeaf[] memory leafs = new ManageLeaf[](32);
-        ERC20[] memory routerTokensIn = new ERC20[](1);
-        routerTokensIn[0] = getERC20(sourceChain, "WSTETH");
-        _addTreehouseLeafs(
-            leafs,
-            routerTokensIn,
-            getAddress(sourceChain, "TreehouseRouter"),
-            getAddress(sourceChain, "TreehouseRedemption"),
-            getERC20(sourceChain, "tETH"),
-            getAddress(sourceChain, "tETH_wstETH_curve_pool"),
-            2,
-            address(0)
-        );
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        _addAllSkyMoneyLeafs(leafs);
+
+        //string memory filePath = "./TestTEST.json";
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
+        //_generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
-        manageLeafs[0] = leafs[0];
-        manageLeafs[1] = leafs[1];
-        manageLeafs[2] = leafs[2];
-        manageLeafs[3] = leafs[3];
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](12);
+        manageLeafs[0] = leafs[0]; //approve
+        manageLeafs[1] = leafs[1]; //approve
+        manageLeafs[2] = leafs[2]; //dai -> usds
+        manageLeafs[3] = leafs[3]; //usds -> dai
+        manageLeafs[4] = leafs[4]; //approve
+        manageLeafs[5] = leafs[5]; //approve
+        manageLeafs[6] = leafs[6]; //sellGem (swap USDC for USDS)
+        manageLeafs[7] = leafs[7]; //buyGem (swap USDS for USDC)
+        manageLeafs[8] = leafs[8]; //approve
+        manageLeafs[9] = leafs[9]; //approve
+        manageLeafs[10] = leafs[10]; //sellGem (swap USDC for DAI)
+        manageLeafs[11] = leafs[11]; //buyGem (swap DAI for USDC)
 
-        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+        (bytes32[][] memory manageProofs) = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](4);
-        targets[0] = getAddress(sourceChain, "WSTETH");
-        targets[1] = getAddress(sourceChain, "TreehouseRouter");
-        targets[2] = getAddress(sourceChain, "tETH");
-        targets[3] = getAddress(sourceChain, "TreehouseRedemption");
+        address[] memory targets = new address[](12);
+        targets[0] = getAddress(sourceChain, "DAI"); //approve converter
+        targets[1] = getAddress(sourceChain, "USDS"); //approve converter
+        targets[2] = getAddress(sourceChain, "daiConverter"); //swap DAI to USDS
+        targets[3] = getAddress(sourceChain, "daiConverter"); //swap USDS to DAI
+        targets[4] = getAddress(sourceChain, "USDS"); //approve USDS
+        targets[5] = getAddress(sourceChain, "USDC"); //approve USDC
+        targets[6] = getAddress(sourceChain, "usdsLitePsmUsdc"); //swap usdc for usds
+        targets[7] = getAddress(sourceChain, "usdsLitePsmUsdc"); //swap usds for usdc
+        targets[8] = getAddress(sourceChain, "DAI"); //approve
+        targets[9] = getAddress(sourceChain, "USDC"); //approve
+        targets[10] = getAddress(sourceChain, "daiLitePsmUsdc"); //swap usdc for dai
+        targets[11] = getAddress(sourceChain, "daiLitePsmUsdc"); //swap dai for usdc
 
-        bytes[] memory targetData = new bytes[](4);
-        targetData[0] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "TreehouseRouter"), type(uint256).max
+        bytes[] memory targetData = new bytes[](12);
+        targetData[0] =
+            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "daiConverter"), type(uint256).max);
+        targetData[1] =
+            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "daiConverter"), type(uint256).max);
+        targetData[2] =
+            abi.encodeWithSignature("daiToUsds(address,uint256)", getAddress(sourceChain, "boringVault"), 100e18);
+        targetData[3] =
+            abi.encodeWithSignature("usdsToDai(address,uint256)", getAddress(sourceChain, "boringVault"), 100e18);
+        targetData[4] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "usdsLitePsmUsdc"), type(uint256).max
         );
-        targetData[1] = abi.encodeWithSignature(
-            "deposit(address,uint256)", getAddress(sourceChain, "WSTETH"), 1_000e18, address(boringVault)
+        targetData[5] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "usdsLitePsmUsdc"), type(uint256).max
         );
-        targetData[2] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "TreehouseRedemption"), type(uint256).max
+        targetData[6] =
+            abi.encodeWithSignature("sellGem(address,uint256)", getAddress(sourceChain, "boringVault"), 100e6);
+        targetData[7] =
+            abi.encodeWithSignature("buyGem(address,uint256)", getAddress(sourceChain, "boringVault"), 100e6);
+        targetData[8] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "daiLitePsmUsdc"), type(uint256).max
         );
-        uint96 expectedShareBalance = 999994557806148621988;
-        targetData[3] = abi.encodeWithSignature("redeem(uint96)", expectedShareBalance);
+        targetData[9] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "daiLitePsmUsdc"), type(uint256).max
+        );
+        targetData[10] =
+            abi.encodeWithSignature("sellGem(address,uint256)", getAddress(sourceChain, "boringVault"), 100e6);
+        targetData[11] =
+            abi.encodeWithSignature("buyGem(address,uint256)", getAddress(sourceChain, "boringVault"), 100e6);
 
-        address[] memory decodersAndSanitizers = new address[](4);
-        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
-        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
-        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
-        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        uint256[] memory values = new uint256[](12);
 
-        uint256[] memory values = new uint256[](4);
+        address[] memory decodersAndSanitizers = new address[](12);
+        for (uint256 i = 0; i < decodersAndSanitizers.length; i++) {
+            decodersAndSanitizers[i] = rawDataDecoderAndSanitizer;
+        }
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-
-        // Wait 7 days.
-        skip(7 days);
-
-        manageLeafs = new ManageLeaf[](1);
-        manageLeafs[0] = leafs[4];
-
-        manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
-
-        targets = new address[](1);
-        targets[0] = getAddress(sourceChain, "TreehouseRedemption");
-
-        targetData = new bytes[](1);
-        targetData[0] = abi.encodeWithSignature("finalizeRedeem(uint256)", 0);
-
-        decodersAndSanitizers = new address[](1);
-        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
-
-        values = new uint256[](1);
-
-        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-
-        assertEq(
-            getERC20(sourceChain, "WSTETH").balanceOf(address(boringVault)),
-            999.5e18,
-            "BoringVault should have received 1,000 WSTETH minus fee"
-        );
     }
-
-    // TODO test curve pool interactions
-    function testCurvePoolIntegration() external {}
 
     // ========================================= HELPER FUNCTIONS =========================================
 
@@ -206,3 +199,5 @@ contract SwellSimpleStakingIntegrationTest is Test, MerkleTreeHelper {
         vm.selectFork(forkId);
     }
 }
+
+contract FullSkyMoneyDecoderAndSanitizer is SkyMoneyDecoderAndSanitizer {}
