@@ -6262,6 +6262,28 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
+    // ========================================= Silo Finance V2 =========================================
+    function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket) internal {
+        //get the underlying market token or pass in as param if easier
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            teller,
+            false,
+            "approve(address,uint256,uint256,address)",
+            new address[](2),
+            string.concat("Bulk withdraw ", assets[i].symbol(), " from ", boringVault.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+
+        
+    }
+
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
     bool addLeafIndex = false;

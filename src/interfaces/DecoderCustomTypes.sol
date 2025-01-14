@@ -402,4 +402,14 @@ contract DecoderCustomTypes {
         /// @dev The address of the ERC20 purchase token
         address purchaseToken;
     }
+
+    // ========================================= Silo Finance ==================================
+    /// @dev There are 2 types of accounting in the system: for non-borrowable collateral deposit called "protected" and
+    ///      for borrowable collateral deposit called "collateral". System does
+    ///      identical calculations for each type of accounting but it uses different data. To avoid code duplication
+    ///      this enum is used to decide which data should be read.
+    enum CollateralType {
+        Protected, // default
+        Collateral
+    }
 }
