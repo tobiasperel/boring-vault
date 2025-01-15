@@ -4639,6 +4639,109 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
     }
 
+    // ========================================= Fluid Dex =========================================
+
+    // @notice dex borrows happen against a vault, but each dex type is different, ranging from T1 to T4 indicating either smart collateral or smart debt (see docs for more)
+    // @param dexType 2000, 3000, 4000. Used by Instadapp for types of pools. They have different operate functions, but each pool will only need it's specific type
+    function _addFluidDexLeafs(
+        ManageLeaf[] memory leafs,
+        address dex,
+        uint256 dexType,
+        ERC20[] memory supplyTokens,
+        ERC20[] memory borrowTokens
+    ) internal {
+        // Approvals for token
+        for (uint256 i = 0; i < supplyTokens.length; i++) {
+            unchecked {
+                leafIndex++;
+            }
+
+            leafs[leafIndex] = ManageLeaf(
+                address(supplyTokens[i]),
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve Fluid Dex to spend ", supplyTokens[i].symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = dex;
+        }
+
+        for (uint256 i = 0; i < borrowTokens.length; i++) {
+            unchecked {
+                leafIndex++;
+            }
+
+            leafs[leafIndex] = ManageLeaf(
+                address(borrowTokens[i]),
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve Fluid Dex to spend ", borrowTokens[i].symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = dex;
+        }
+
+        //t2 and t3 leaves
+        if (dexType == 2000 || dexType == 3000) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                address(dex),
+                false,
+                "operate(uint256,int256,int256,int256,int256,address)",
+                new address[](1),
+                string.concat("Operate on Fluid Dex Vault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                address(dex),
+                false,
+                "operatePerfect(uint256,int256,int256,int256,int256,address)",
+                new address[](1),
+                string.concat("Operate Perfect on Fluid Dex Vault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        }
+
+        //t4 leaves
+        if (dexType == 4000) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                address(dex),
+                false,
+                "operate(uint256,int256,int256,int256,int256,int256,int256,address)",
+                new address[](1),
+                string.concat("Operate on Fluid Dex Vault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                address(dex),
+                false,
+                "operatePerfect(uint256,int256,int256,int256,int256,int256,int256,address)",
+                new address[](1),
+                string.concat("Operate on Fluid Dex Vault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        }
+    }
+
     // ========================================= Symbiotic =========================================
 
     function _addSymbioticApproveAndDepositLeaf(ManageLeaf[] memory leafs, address defaultCollateral) internal {
