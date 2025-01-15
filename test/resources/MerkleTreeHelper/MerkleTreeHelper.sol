@@ -2934,7 +2934,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             (, ERC20 underlyingAsset,) = SY.assetInfo();
             if (keccak256(bytes(sourceChain)) == keccak256(bytes(mainnet))) {
                 // Underlying asset is a contract on sourceChain.
-                underlyingAssetDescriptor = underlyingAsset.symbol();
+                if (address(underlyingAsset) == address(0)) {
+                    underlyingAssetDescriptor = "liquidBeraETH"; 
+                } else {
+                    underlyingAssetDescriptor = underlyingAsset.symbol();
+                }
             } else {
                 // Underlying asset is not a contract on targetChain.
                 underlyingAssetDescriptor = ERC20(sy).symbol();
