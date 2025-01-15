@@ -15,7 +15,7 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
-contract SiloDecoderAndSanitizer is Test, MerkleTreeHelper {
+contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
     using SafeTransferLib for ERC20;
     using FixedPointMathLib for uint256;
     using stdStorage for StdStorage;
@@ -107,74 +107,71 @@ contract SiloDecoderAndSanitizer is Test, MerkleTreeHelper {
         rolesAuthority.setPublicCapability(address(boringVault), bytes4(0), true);
     }
 
-    function testAaveV3Integration() external {
-        deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18);
-        deal(getAddress(sourceChain, "WSTETH"), address(boringVault), 1_000e18);
+    function testSiloIntegrationERC4626Functions() external {
+        deal(getAddress(sourceChain, "wS"), address(boringVault), 1_000e18);
+        deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addSiloV2Leafs(leafs, 
+        ManageLeaf[] memory leafs = new ManageLeaf[](64); //24 leaves per silo v2 market
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));  
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
+        //string memory filePath = "./testTEST.json";
+        //_generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](8);
-        manageLeafs[0] = leafs[0];
-        manageLeafs[1] = leafs[1];
-        manageLeafs[2] = leafs[2];
-        manageLeafs[3] = leafs[4];
-        manageLeafs[4] = leafs[5];
-        manageLeafs[5] = leafs[3];
-        manageLeafs[6] = leafs[6];
-        manageLeafs[7] = leafs[7];
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](10);
+        manageLeafs[0] = leafs[0]; //approve stS
+        manageLeafs[1] = leafs[17]; //approve wS
+        manageLeafs[2] = leafs[1]; //deposit stS
+        manageLeafs[3] = leafs[2]; //withdraw stS
+        manageLeafs[4] = leafs[3]; //mint stS
+        manageLeafs[5] = leafs[4]; //redeem stS
+        manageLeafs[6] = leafs[18]; //deposit wS
+        manageLeafs[7] = leafs[19]; //withdraw wS
+        manageLeafs[8] = leafs[20]; //mint wS
+        manageLeafs[9] = leafs[21]; //redeem wS
+
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](8);
-        targets[0] = getAddress(sourceChain, "WSTETH");
-        targets[1] = getAddress(sourceChain, "WETH");
-        targets[2] = getAddress(sourceChain, "v3Pool");
-        targets[3] = getAddress(sourceChain, "v3Pool");
-        targets[4] = getAddress(sourceChain, "v3Pool");
-        targets[5] = getAddress(sourceChain, "v3Pool");
-        targets[6] = getAddress(sourceChain, "v3Pool");
-        targets[7] = getAddress(sourceChain, "v3Pool");
+        (address silo0, address silo1) = ISiloConfig(getAddress(sourceChain, "silo_stS_wS_config")).getSilos(); 
 
-        bytes[] memory targetData = new bytes[](8);
+        address[] memory targets = new address[](10);
+        targets[0] = getAddress(sourceChain, "stS");
+        targets[1] = getAddress(sourceChain, "wS");
+        targets[2] = silo0; 
+        targets[3] = silo0;   
+        targets[4] = silo0;  
+        targets[5] = silo0;   
+        targets[6] = silo1;  
+        targets[7] = silo1;  
+        targets[8] = silo1;  
+        targets[9] = silo1;  
+
+        bytes[] memory targetData = new bytes[](10);
         targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "v3Pool"), type(uint256).max);
+            abi.encodeWithSignature("approve(address,uint256)", silo0, type(uint256).max);
         targetData[1] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "v3Pool"), type(uint256).max);
-        targetData[2] = abi.encodeWithSignature(
-            "supply(address,uint256,address,uint16)",
-            getAddress(sourceChain, "WSTETH"),
-            1_000e18,
-            address(boringVault),
-            0
-        );
-        targetData[3] = abi.encodeWithSignature(
-            "borrow(address,uint256,uint256,uint16,address)",
-            getAddress(sourceChain, "WETH"),
-            100e18,
-            2,
-            0,
-            address(boringVault)
-        );
-        targetData[4] = abi.encodeWithSignature(
-            "repay(address,uint256,uint256,address)",
-            getAddress(sourceChain, "WETH"),
-            type(uint256).max,
-            2,
-            address(boringVault)
-        );
-        targetData[5] = abi.encodeWithSignature(
-            "withdraw(address,uint256,address)", getAddress(sourceChain, "WSTETH"), 1_000e18 - 1, address(boringVault)
-        );
-        targetData[6] = abi.encodeWithSignature(
-            "setUserUseReserveAsCollateral(address,bool)", getAddress(sourceChain, "WSTETH"), true
-        );
-        targetData[7] = abi.encodeWithSignature("setUserEMode(uint8)", 0);
+            abi.encodeWithSignature("approve(address,uint256)", silo1, type(uint256).max);
+        targetData[2] =
+            abi.encodeWithSignature("deposit(uint256,address)", 100e18, getAddress(sourceChain, "boringVault"));
+        targetData[3] =
+            abi.encodeWithSignature("withdraw(uint256,address,address)", 10e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"));
+        targetData[4] =
+            abi.encodeWithSignature("mint(uint256,address)", 10e18, getAddress(sourceChain, "boringVault"));
+        targetData[5] =
+            abi.encodeWithSignature("redeem(uint256,address,address)", 1e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"));
+        targetData[6] =
+            abi.encodeWithSignature("deposit(uint256,address)", 100e18, getAddress(sourceChain, "boringVault"));
+        targetData[7] =
+            abi.encodeWithSignature("withdraw(uint256,address,address)", 10e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"));
+        targetData[8] =
+            abi.encodeWithSignature("mint(uint256,address)", 10e18, getAddress(sourceChain, "boringVault"));
+        targetData[9] =
+            abi.encodeWithSignature("redeem(uint256,address,address)", 1e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"));
 
-        address[] memory decodersAndSanitizers = new address[](8);
+        address[] memory decodersAndSanitizers = new address[](10);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
@@ -183,10 +180,95 @@ contract SiloDecoderAndSanitizer is Test, MerkleTreeHelper {
         decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[7] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[8] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[9] = rawDataDecoderAndSanitizer;
 
-        uint256[] memory values = new uint256[](8);
+        uint256[] memory values = new uint256[](10);
+
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
+
+    function testSiloIntegrationISiloFunctions() external {
+        deal(getAddress(sourceChain, "wS"), address(boringVault), 1_000e18);
+        deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));  
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        string memory filePath = "./testTEST.json";
+        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](10);
+        manageLeafs[0] = leafs[0]; //approve stS
+        manageLeafs[1] = leafs[17]; //approve wS
+        manageLeafs[2] = leafs[5]; //deposit stS
+        manageLeafs[3] = leafs[6]; //mint stS
+        manageLeafs[4] = leafs[7]; //withdraw stS
+        manageLeafs[5] = leafs[8]; //redeem stS
+        manageLeafs[6] = leafs[22]; //deposit wS
+        manageLeafs[7] = leafs[23]; //withdraw wS
+        manageLeafs[8] = leafs[24]; //mint wS
+        manageLeafs[9] = leafs[25]; //redeem wS
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        (address silo0, address silo1) = ISiloConfig(getAddress(sourceChain, "silo_stS_wS_config")).getSilos(); 
+
+        address[] memory targets = new address[](10);
+        targets[0] = getAddress(sourceChain, "stS");
+        targets[1] = getAddress(sourceChain, "wS");
+        targets[2] = silo0; 
+        targets[3] = silo0;   
+        targets[4] = silo0;  
+        targets[5] = silo0;   
+        targets[6] = silo1;  
+        targets[7] = silo1;  
+        targets[8] = silo1;  
+        targets[9] = silo1;  
+
+        bytes[] memory targetData = new bytes[](10);
+        targetData[0] =
+            abi.encodeWithSignature("approve(address,uint256)", silo0, type(uint256).max);
+        targetData[1] =
+            abi.encodeWithSignature("approve(address,uint256)", silo1, type(uint256).max);
+        targetData[2] =
+            abi.encodeWithSignature("deposit(uint256,address,uint8)", 100e18, getAddress(sourceChain, "boringVault"), 0);
+        targetData[3] =
+            abi.encodeWithSignature("mint(uint256,address,uint8)", 10e18, getAddress(sourceChain, "boringVault"), 0);
+        targetData[4] =
+            abi.encodeWithSignature("withdraw(uint256,address,address,uint8)", 10e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"), 0);
+        targetData[5] =
+            abi.encodeWithSignature("redeem(uint256,address,address,uint8)", 1e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"), 0);
+        targetData[6] =
+            abi.encodeWithSignature("deposit(uint256,address,uint8)", 100e18, getAddress(sourceChain, "boringVault"), 0);
+        targetData[7] =
+            abi.encodeWithSignature("mint(uint256,address,uint8)", 10e18, getAddress(sourceChain, "boringVault"), 0);
+        targetData[8] =
+            abi.encodeWithSignature("withdraw(uint256,address,address,uint8)", 10e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"), 0);
+        targetData[9] =
+            abi.encodeWithSignature("redeem(uint256,address,address,uint8)", 1e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"), 0);
+
+        address[] memory decodersAndSanitizers = new address[](10);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[7] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[8] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[9] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](10);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
 
     // ========================================= HELPER FUNCTIONS =========================================
 
@@ -197,3 +279,7 @@ contract SiloDecoderAndSanitizer is Test, MerkleTreeHelper {
 }
 
 contract FullSiloDecoderAndSanitizer is SiloDecoderAndSanitizer {}
+
+interface ISiloConfig {
+    function getSilos() external view returns (address,address); 
+}

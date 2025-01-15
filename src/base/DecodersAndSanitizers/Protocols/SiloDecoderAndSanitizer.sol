@@ -20,39 +20,30 @@ abstract contract SiloDecoderAndSanitizer is BaseDecoderAndSanitizer, ERC4626Dec
        addressesFound = abi.encodePacked(_receiver, _owner); 
     }
 
-    function maxWithdraw(address _owner, DecoderCustomTypes.CollateralType /*_collateralType*/) external pure virtual returns (bytes memory addressesFound) {
-       addressesFound = abi.encodePacked(_owner); 
-    }
 
     function redeem(uint256 /*_shares*/, address _receiver, address _owner, DecoderCustomTypes.CollateralType /*_collateralType*/) external pure virtual returns (bytes memory addressesFound) {
        addressesFound = abi.encodePacked(_receiver, _owner); 
     }
 
-    function maxRedeem(address _owner, DecoderCustomTypes.CollateralType /*_collateralType*/) external pure virtual returns (bytes memory addressesFound) {
-       addressesFound = abi.encodePacked(_owner); 
-    }
 
     function borrow(uint256 /*_assets*/, address _receiver, address _borrower) external pure virtual returns (bytes memory addressesFound) {
        addressesFound = abi.encodePacked(_receiver, _borrower); 
     }
 
-    function maxBorrow(address _borrower) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_borrower); 
-    }
 
     function borrowShares(uint256 /*_shares*/, address _receiver, address _borrower) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(_receiver, _borrower);  
-    }
-
-    function maxBorrowShares(address _borrower) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_borrower);     
     }
 
     function borrowSameAsset(uint256 /*_assets*/, address _receiver, address _borrower) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(_receiver, _borrower); 
     }
 
-    function maxBorrowSameAsset(address _borrower) external pure virtual returns (bytes memory addressesFound) {
+    function repay(uint256 /*_assets*/, address _borrower) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(_borrower); 
+    }
+
+    function repayShares(uint256 /*_shares*/, address _borrower) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(_borrower); 
     }
 
@@ -62,22 +53,6 @@ abstract contract SiloDecoderAndSanitizer is BaseDecoderAndSanitizer, ERC4626Dec
 
     function switchCollateralToThisSilo() external pure virtual returns (bytes memory addressesFound) {
         return addressesFound; 
-    }
-
-    function repay(uint256 /*_assets*/, address _borrower) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_borrower); 
-    }
-
-    function maxRepay(address _borrower) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_borrower); 
-    }
-
-    function repayShares(uint256 /*_shares*/, address _borrower) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_borrower); 
-    }
-
-    function maxRepayShares(address _borrower) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_borrower); 
     }
 
     function accrueInterest() external pure virtual returns (bytes memory addressesFound) {
