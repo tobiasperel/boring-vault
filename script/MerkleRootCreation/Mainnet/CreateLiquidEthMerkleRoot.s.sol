@@ -97,6 +97,7 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleWeETHMarketSeptember"), false);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleWeETHMarketDecember"), false);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleKarakWeETHMarketSeptember"), false);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_liquid_bera_eth_04_09_25"), false); 
         // _addPendleMarketLeafs(leafs, pendleZircuitWeETHMarketAugust);
         // _addPendleMarketLeafs(leafs, pendleWeETHMarketJuly);
 
@@ -233,6 +234,9 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             leafs, getERC20(sourceChain, "weETH_wETH_NG_Pool"), getAddress(sourceChain, "weETH_wETH_NG_Convex_Reward")
         );
 
+        // ========================== Fluid Dex ==========================
+        _addFluid 
+
         // ========================== ITB Reserve ==========================
         ERC20[] memory tokensUsed = new ERC20[](3);
         tokensUsed[0] = getERC20(sourceChain, "SFRXETH");
@@ -266,6 +270,10 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         token1[6] = getAddress(sourceChain, "SFRXETH");
 
         _addPancakeSwapV3Leafs(leafs, token0, token1);
+
+        //VERIFY
+
+        _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
