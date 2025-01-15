@@ -38,6 +38,8 @@ import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocol
 import {KarakDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/KarakDecoderAndSanitizer.sol";
 import {TreehouseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TreehouseDecoderAndSanitizer.sol";
 import {FraxDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FraxDecoderAndSanitizer.sol";
+import {TermFinanceDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TermFinanceDecoderAndSanitizer.sol"; 
+import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol"; 
 
 contract EtherFiLiquidEthDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -67,7 +69,9 @@ contract EtherFiLiquidEthDecoderAndSanitizer is
     TellerDecoderAndSanitizer,
     KarakDecoderAndSanitizer,
     TreehouseDecoderAndSanitizer,
-    FraxDecoderAndSanitizer
+    FraxDecoderAndSanitizer,
+    TermFinanceDecoderAndSanitizer,
+    FluidDexDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)

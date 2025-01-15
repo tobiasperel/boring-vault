@@ -30,7 +30,6 @@ import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
-
 /**
  *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --with-gas-price 30000000000 --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
  * @dev Optionally can change `--with-gas-price` to something more reasonable
@@ -115,9 +114,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
        
-        creationCode = type(AaveV3FullDecoderAndSanitizer).creationCode;
+        creationCode = type(EtherFiLiquidEthDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(boringVault);
-        deployer.deployContract("AaveV3 Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        deployer.deployContract(EtherFiLiquidEthDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
