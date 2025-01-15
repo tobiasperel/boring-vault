@@ -16,7 +16,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
     address public boringVault = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C;
     // address public rawDataDecoderAndSanitizer = 0x96B0d32c5F8C15Ee7B4aaF19a7F92809a8c9eDeD;
-    address public rawDataDecoderAndSanitizer = 0xF8e9517e7e98D7134E306aD3747A50AC8dC1dbc9;
+    address public rawDataDecoderAndSanitizer = 0x67cD2b7D6666B9aa68fd9AaCe34473eA88111944;
     address public symbioticDecoderAndSanitizer = 0xdaEfE2146908BAd73A1C45f75eB2B8E46935c781;
     address public pancakeSwapDataDecoderAndSanitizer = 0x47F62174e7A8EF939d8525C9670025d19DeFd821;
     address public aaveV3DecoderAndSanitizer = 0x159Af850c18a83B67aeEB9597409f6C4Aa07ACb3;
@@ -639,18 +639,22 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Term ==========================
         {
-            ERC20[] memory purchaseTokens = new ERC20[](2);
+            ERC20[] memory purchaseTokens = new ERC20[](3);
             purchaseTokens[0] = getERC20(sourceChain, "USDC");
             purchaseTokens[1] = getERC20(sourceChain, "USDC");
-            address[] memory termAuctionOfferLockerAddresses = new address[](2);
+            purchaseTokens[2] = getERC20(sourceChain, "USDC");
+            address[] memory termAuctionOfferLockerAddresses = new address[](3);
             termAuctionOfferLockerAddresses[0] = 0x55580a11c5C111EE2e36e24aef04443Bf130F092;
             termAuctionOfferLockerAddresses[1] = 0x35ff5064C57d7E9531d9E70e36a49703aBDa3Df4;
-            address[] memory termRepoLockers = new address[](2);
+            termAuctionOfferLockerAddresses[2] = 0xA78Cd93714748fA4Af847f43647E8D56A356b5Ef;
+            address[] memory termRepoLockers = new address[](3);
             termRepoLockers[0] = 0xDFC8271C70303B0d98819267f93F86EfFe9BC3AD;
             termRepoLockers[1] = 0xF8FdFAD735e9A8fD8f5e7B8e2073A25F812168A1;
-            address[] memory termRepoServicers = new address[](2);
+            termRepoLockers[2] = 0x93b6130393973ECAB1CBAd23c62eFC9325450787; 
+            address[] memory termRepoServicers = new address[](3);
             termRepoServicers[0] = 0x65Cc6CD9d99f497053C3978b8724B05d2aE03D17;
             termRepoServicers[1] = 0x648C24e31b0FC9c8652d7DA7133498A48E03Bd25;
+            termRepoServicers[2] = 0x4279d7545821ea854b9EECc8da2f271cFAf5cAF4;
             _addTermFinanceLockOfferLeafs(leafs, purchaseTokens, termAuctionOfferLockerAddresses, termRepoLockers);
             _addTermFinanceUnlockOfferLeafs(leafs, termAuctionOfferLockerAddresses);
             _addTermFinanceRevealOfferLeafs(leafs, termAuctionOfferLockerAddresses);

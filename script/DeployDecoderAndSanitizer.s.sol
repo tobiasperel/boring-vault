@@ -41,7 +41,6 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     //address boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
 
-
     //address boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
     address boringVault = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C; 
 
@@ -77,9 +76,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // constructorArgs = abi.encode(liquidUsd);
         // deployer.deployContract(ItbPositionDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
-        // creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode(liquidUsd, uniswapV3NonFungiblePositionManager);
-        // deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
+         creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
+         constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
+         deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
         //creationCode = type(OnlyHyperlaneDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(address(0));
@@ -115,9 +114,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
        
-        creationCode = type(AaveV3FullDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(boringVault);
-        deployer.deployContract("AaveV3 Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        //creationCode = type(AaveV3FullDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(boringVault);
+        //deployer.deployContract("AaveV3 Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
