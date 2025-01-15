@@ -57,8 +57,8 @@ contract CreateUsualBeraMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Usual Money ==========================
         _addUsualMoneyLeafs(leafs); //minting, redeeming, etc
 
-
         // ========================== Incentives Controller ==========================
+        _addTransferLeafs(leafs, getERC20(sourceChain, "USUAL"), getAddress(sourceChain, "beraUsual_incentives_distributor")); 
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
