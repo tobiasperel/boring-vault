@@ -76,9 +76,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // constructorArgs = abi.encode(liquidUsd);
         // deployer.deployContract(ItbPositionDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
-         creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
-         constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
-         deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
+        //creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
+        //deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
         //creationCode = type(OnlyHyperlaneDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(address(0));
@@ -113,10 +113,12 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //creationCode = type(EtherFiLiquidBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
-       
-        //creationCode = type(AaveV3FullDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(boringVault);
-        //deployer.deployContract("AaveV3 Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        
+        address pancakeswapV3nfpm = 0x46A15B0b27311cedF172AB29E4f4766fbE7F4364;  
+        address pancakeswapV3chef = 0x556B9306565093C855AEA9AE92A594704c2Cd59e; 
+        creationCode = type(PancakeSwapV3FullDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(pancakeswapV3nfpm, pancakeswapV3chef);
+        deployer.deployContract("PancakeSwapV3 Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
