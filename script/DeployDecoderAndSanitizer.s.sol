@@ -77,9 +77,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // constructorArgs = abi.encode(liquidUsd);
         // deployer.deployContract(ItbPositionDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
-        // creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode(liquidUsd, uniswapV3NonFungiblePositionManager);
-        // deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
+         creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
+         constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
+         deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
         //creationCode = type(OnlyHyperlaneDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(address(0));
@@ -115,9 +115,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
        
-        creationCode = type(AaveV3FullDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(boringVault);
-        deployer.deployContract("AaveV3 Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        //creationCode = type(AaveV3FullDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(boringVault);
+        //deployer.deployContract("AaveV3 Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
