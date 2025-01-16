@@ -1250,6 +1250,7 @@ contract ChainValues {
 
     function _addScrollValues() private {
         values[scroll]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[scroll]["txBundlerAddress"] = 0x534b64608E601B581AB0cbF0b03ec9f4c65f3360.toBytes32();
         values[scroll]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
         values[scroll]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
         values[scroll]["liquidPayoutAddress"] = 0xA9962a5BfBea6918E958DeE0647E99fD7863b95A.toBytes32();
@@ -1258,6 +1259,11 @@ contract ChainValues {
         values[scroll]["DAI"] = 0xcA77eB3fEFe3725Dc33bccB54eDEFc3D9f764f97.toBytes32();
         values[scroll]["WETH"] = 0x5300000000000000000000000000000000000004.toBytes32();
         values[scroll]["WEETH"] = 0x01f0a31698C4d065659b9bdC21B3610292a1c506.toBytes32();
+        values[scroll]["WBTC"] = 0x3C1BCa5a656e69edCD0D4E36BEbb3FcDAcA60Cf1.toBytes32();
+        values[scroll]["ZRO"] = address(1).toBytes32();
+
+        // Layer Zero
+        values[scroll]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
 
         // Scroll Bridge.
         values[scroll]["scrollGatewayRouter"] = 0x4C0926FF5252A435FD19e10ED15e5a249Ba19d79.toBytes32(); // withdrawERC20
