@@ -6335,11 +6335,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 silos[i],
                 false,
                 "borrow(uint256,address,address)",
-                new address[](1),
+                new address[](2),
                 string.concat("Borrow ", underlyingName, " from Silo"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
             unchecked {
                 leafIndex++;
@@ -6401,11 +6402,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex] = ManageLeaf(
                 silos[i],
                 false,
-                "transitionCollateral()",
-                new address[](0),
-                string.concat("Transition Collateral from ", underlyingName, " Silo"),
+                "transitionCollateral(uint256,address,uint8)",
+                new address[](1),
+                string.concat("Transition Collateral in ", underlyingName, " Silo"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
 
             unchecked {
                 leafIndex++;

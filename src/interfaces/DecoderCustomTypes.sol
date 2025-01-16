@@ -412,4 +412,29 @@ contract DecoderCustomTypes {
         Protected, // default
         Collateral
     }
+
+    enum ActionType {
+        Deposit,
+        Mint,
+        Repay,
+        RepayShares
+    }
+
+    struct Action {
+        // what do you want to do?
+        uint8 actionType;
+        // which Silo are you interacting with?
+        address silo;
+        // what asset do you want to use?
+        address asset;
+        // options specific for actions
+        bytes options;
+    }
+
+    struct AnyAction {
+        // how much assets or shares do you want to use?
+        uint256 amount;
+        // are you using Protected, Collateral
+        uint8 assetType;
+    }
 }

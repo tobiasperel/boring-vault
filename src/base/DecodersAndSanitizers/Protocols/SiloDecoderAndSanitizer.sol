@@ -58,4 +58,14 @@ abstract contract SiloDecoderAndSanitizer is BaseDecoderAndSanitizer, ERC4626Dec
     function accrueInterest() external pure virtual returns (bytes memory addressesFound) {
         return addressesFound; 
     }
+
+    // SILO ROUTER FUNCTIONS
+    
+    function execute(DecoderCustomTypes.Action[] memory actions) external pure virtual returns (bytes memory addressesFound) {
+        for (uint256 i = 0; i < actions.length; i++) {
+            address silo = address(actions[i].silo); 
+            address asset = address(actions[i].asset); 
+            addressesFound = abi.encodePacked(silo, asset); 
+        }
+    }
 }

@@ -36,7 +36,7 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("sonicMainnet");
         // Setup forked environment.
         string memory rpcKey = "SONIC_MAINNET_RPC_URL";
-        uint256 blockNumber = 3886309;
+        uint256 blockNumber = 4154346;
 
         _startFork(rpcKey, blockNumber);
 
@@ -197,8 +197,8 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        string memory filePath = "./testTEST.json";
-        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+        //string memory filePath = "./testTEST.json";
+        //_generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -265,6 +265,195 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         decodersAndSanitizers[9] = rawDataDecoderAndSanitizer;
 
         uint256[] memory values = new uint256[](10);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
+    function testSiloIntegrationBorrowOtherSilo() external {
+        deal(getAddress(sourceChain, "wS"), address(boringVault), 1_000e18);
+        deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));  
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //string memory filePath = "./testTEST.json";
+        //_generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](7);
+        manageLeafs[0] = leafs[0]; //approve stS
+        manageLeafs[1] = leafs[17]; //approve wS
+        manageLeafs[2] = leafs[5]; //deposit stS
+        manageLeafs[3] = leafs[26]; //borrow wS (NOTE: borrow is for opposite asset, if wanting to borrow the same asset as depositing, borrowSame must be used instead)
+        manageLeafs[4] = leafs[27]; //borrowShares wS 
+        manageLeafs[5] = leafs[29]; //repay wS 
+        manageLeafs[6] = leafs[30]; //repayShares wS
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        (address silo0, address silo1) = ISiloConfig(getAddress(sourceChain, "silo_stS_wS_config")).getSilos(); 
+
+        address[] memory targets = new address[](7);
+        targets[0] = getAddress(sourceChain, "stS");
+        targets[1] = getAddress(sourceChain, "wS");
+        targets[2] = silo0; 
+        targets[3] = silo1;   
+        targets[4] = silo1;   
+        targets[5] = silo1;   
+        targets[6] = silo1;   
+
+        bytes[] memory targetData = new bytes[](7);
+        targetData[0] =
+            abi.encodeWithSignature("approve(address,uint256)", silo0, type(uint256).max);
+        targetData[1] =
+            abi.encodeWithSignature("approve(address,uint256)", silo1, type(uint256).max);
+        targetData[2] =
+            abi.encodeWithSignature("deposit(uint256,address,uint8)", 1000e18, getAddress(sourceChain, "boringVault"), 1);
+        targetData[3] =
+            abi.encodeWithSignature("borrow(uint256,address,address)", 10e6, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"));
+        targetData[4] =
+            abi.encodeWithSignature("borrowShares(uint256,address,address)", 10e6, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"));
+        targetData[5] =
+            abi.encodeWithSignature("repay(uint256,address)", 10e6, getAddress(sourceChain, "boringVault"));
+        targetData[6] =
+            abi.encodeWithSignature("repayShares(uint256,address)", 10e6, getAddress(sourceChain, "boringVault"));
+        
+
+        address[] memory decodersAndSanitizers = new address[](7);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](7);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
+    function testSiloIntegrationBorrowSameSilo() external {
+        deal(getAddress(sourceChain, "wS"), address(boringVault), 1_000e18);
+        deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));  
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        string memory filePath = "./testTEST.json";
+        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](6);
+        manageLeafs[0] = leafs[0]; //approve stS
+        manageLeafs[1] = leafs[17]; //approve wS
+        manageLeafs[2] = leafs[5]; //deposit stS
+        manageLeafs[3] = leafs[11]; //borrowSame stS
+        manageLeafs[4] = leafs[12]; //repay stS
+        manageLeafs[5] = leafs[13]; //repayShares stS
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        (address silo0, address silo1) = ISiloConfig(getAddress(sourceChain, "silo_stS_wS_config")).getSilos(); 
+
+        address[] memory targets = new address[](6);
+        targets[0] = getAddress(sourceChain, "stS");
+        targets[1] = getAddress(sourceChain, "wS");
+        targets[2] = silo0; 
+        targets[3] = silo0;   
+        targets[4] = silo0;   
+        targets[5] = silo0;   
+
+        bytes[] memory targetData = new bytes[](6);
+        targetData[0] =
+            abi.encodeWithSignature("approve(address,uint256)", silo0, type(uint256).max);
+        targetData[1] =
+            abi.encodeWithSignature("approve(address,uint256)", silo1, type(uint256).max);
+        targetData[2] =
+            abi.encodeWithSignature("deposit(uint256,address,uint8)", 1000e18, getAddress(sourceChain, "boringVault"), 1);
+        targetData[3] =
+            abi.encodeWithSignature("borrowSameAsset(uint256,address,address)", 10e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"));
+        targetData[4] =
+            abi.encodeWithSignature("repay(uint256,address)", 10e6, getAddress(sourceChain, "boringVault"));
+        targetData[5] =
+            abi.encodeWithSignature("repayShares(uint256,address)", 10e4, getAddress(sourceChain, "boringVault"));
+
+        address[] memory decodersAndSanitizers = new address[](6);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](6);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
+    function testSiloIntegrationHelpers() external {
+        deal(getAddress(sourceChain, "wS"), address(boringVault), 1_000e18);
+        deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));  
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        string memory filePath = "./testTEST.json";
+        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](6);
+        manageLeafs[0] = leafs[0]; //approve stS
+        manageLeafs[1] = leafs[17]; //approve wS
+        manageLeafs[2] = leafs[5]; //deposit stS
+        manageLeafs[3] = leafs[14]; //transitionCollateral
+        manageLeafs[4] = leafs[32]; //switchCollateralToThisSilo
+        manageLeafs[5] = leafs[33]; //accrueInterest
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        (address silo0, address silo1) = ISiloConfig(getAddress(sourceChain, "silo_stS_wS_config")).getSilos(); 
+
+        address[] memory targets = new address[](6);
+        targets[0] = getAddress(sourceChain, "stS");
+        targets[1] = getAddress(sourceChain, "wS");
+        targets[2] = silo0; 
+        targets[3] = silo0;   
+        targets[4] = silo1;   
+        targets[5] = silo1;   
+
+        bytes[] memory targetData = new bytes[](6);
+        targetData[0] =
+            abi.encodeWithSignature("approve(address,uint256)", silo0, type(uint256).max);
+        targetData[1] =
+            abi.encodeWithSignature("approve(address,uint256)", silo1, type(uint256).max);
+        targetData[2] =
+            abi.encodeWithSignature("deposit(uint256,address,uint8)", 1000e18, getAddress(sourceChain, "boringVault"), 0);
+        targetData[3] =
+            abi.encodeWithSignature("transitionCollateral(uint256,address,uint8)", 100e18, getAddress(sourceChain, "boringVault"), 0); 
+        targetData[4] =
+            abi.encodeWithSignature("switchCollateralToThisSilo()");
+        targetData[5] =
+            abi.encodeWithSignature("accrueInterest()");
+
+        address[] memory decodersAndSanitizers = new address[](6);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](6);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
