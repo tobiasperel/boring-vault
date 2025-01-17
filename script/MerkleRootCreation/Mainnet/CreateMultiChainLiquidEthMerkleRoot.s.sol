@@ -25,6 +25,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
     address public itbAaveLidoPositionManager = 0xC4F5Ee078a1C4DA280330546C29840d45ab32753;
     address public itbAaveLidoPositionManager2 = 0x572F323Aa330B467C356c5a30Bf9A20480F4fD52;
     address public hyperlaneDecoderAndSanitizer = 0xfC823909C7D2Cb8701FE7d6EE74508C57Df1D6dE;
+    address public termFinanceDecoderAndSanitizer = 0xF8e9517e7e98D7134E306aD3747A50AC8dC1dbc9;
 
     function setUp() external {}
 
@@ -96,6 +97,12 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
          */
         _addMorphoBlueSupplyLeafs(leafs, 0x698fe98247a40c5771537b5786b2f3f9d78eb487b4ce4d75533cd0e94d88a115);
 
+        // ========================== Meta Morpho ==========================
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHPrime")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHCore")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "mevCapitalwWeth")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "Re7WETH")));
+
         // ========================== Pendle ==========================
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleWeETHMarket"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleZircuitWeETHMarket"), true);
@@ -133,7 +140,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         token1[7] = getAddress(sourceChain, "CBETH");
         token1[8] = getAddress(sourceChain, "RSETH");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**
@@ -143,7 +150,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[0] = getERC20(sourceChain, "WETH");
         feeAssets[1] = getERC20(sourceChain, "WEETH");
         feeAssets[2] = getERC20(sourceChain, "EETH");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](16);
@@ -295,6 +302,24 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             _addTellerLeafs(leafs, kingKarakTeller, tellerAssets);
         }
 
+        // ========================== Term ==========================
+        {
+            setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", termFinanceDecoderAndSanitizer);
+            ERC20[] memory purchaseTokens = new ERC20[](1);
+            purchaseTokens[0] = getERC20(sourceChain, "WETH");
+            address[] memory termAuctionOfferLockerAddresses = new address[](1);
+            termAuctionOfferLockerAddresses[0] = 0x8b051F8Bc836EC4B01da563dB82df9CD22CA4884;
+            address[] memory termRepoLockers = new address[](1);
+            termRepoLockers[0] = 0x330e701F0523b445958f0484E6Ea3656c55932A4;
+            address[] memory termRepoServicers = new address[](1);
+            termRepoServicers[0] = 0x4895958D1F170Db5fD71bcf3B2cE0dA40A0e38FF;
+            _addTermFinanceLockOfferLeafs(leafs, purchaseTokens, termAuctionOfferLockerAddresses, termRepoLockers);
+            _addTermFinanceUnlockOfferLeafs(leafs, termAuctionOfferLockerAddresses);
+            _addTermFinanceRevealOfferLeafs(leafs, termAuctionOfferLockerAddresses);
+            _addTermFinanceRedeemTermRepoTokensLeafs(leafs, termRepoServicers);
+        }
+        setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+
         // ========================== ITB Reserve ==========================
         ERC20[] memory tokensUsed = new ERC20[](3);
         tokensUsed[0] = getERC20(sourceChain, "SFRXETH");
@@ -373,6 +398,13 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         );
         _addLayerZeroLeafs(
             leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "EtherFiOFTAdapter"), layerZeroBaseEndpointId
+        );
+
+        _addLayerZeroLeafs(
+            leafs,
+            getERC20(sourceChain, "WEETH"),
+            getAddress(sourceChain, "EtherFiOFTAdapter"),
+            layerZeroSwellEndpointId
         );
 
         // ========================== Merkl ==========================

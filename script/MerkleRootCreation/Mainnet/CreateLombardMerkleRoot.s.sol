@@ -75,7 +75,7 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         token1[3] = getAddress(sourceChain, "LBTC");
         token1[4] = getAddress(sourceChain, "LBTC");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**
@@ -85,7 +85,7 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[0] = getERC20(sourceChain, "WBTC");
         feeAssets[1] = getERC20(sourceChain, "LBTC");
         feeAssets[2] = getERC20(sourceChain, "cbBTC");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](12);

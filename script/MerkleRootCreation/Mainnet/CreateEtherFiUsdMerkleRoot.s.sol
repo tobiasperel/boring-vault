@@ -72,7 +72,7 @@ contract CreateEtherFiUsdMerkleRootScript is Script, MerkleTreeHelper {
         token1[8] = getAddress(sourceChain, "SUSDE");
         token1[9] = getAddress(sourceChain, "SUSDE");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**
@@ -83,7 +83,7 @@ contract CreateEtherFiUsdMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[1] = getERC20(sourceChain, "DAI");
         feeAssets[2] = getERC20(sourceChain, "USDT");
         feeAssets[3] = getERC20(sourceChain, "USDE");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== 1inch ==========================
         /**

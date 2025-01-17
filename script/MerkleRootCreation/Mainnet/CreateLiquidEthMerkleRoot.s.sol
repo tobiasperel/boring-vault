@@ -119,7 +119,7 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         token1[5] = getAddress(sourceChain, "RETH");
         token1[6] = getAddress(sourceChain, "SFRXETH");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**
@@ -129,7 +129,7 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[0] = getERC20(sourceChain, "WETH");
         feeAssets[1] = getERC20(sourceChain, "WEETH");
         feeAssets[2] = getERC20(sourceChain, "EETH");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](13);

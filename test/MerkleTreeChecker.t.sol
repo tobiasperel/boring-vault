@@ -21,7 +21,7 @@ contract MerkleTreeCheckerTest is Test, MerkleTreeHelper {
 
         _startFork(rpcKey, blockNumber);
 
-        rawDataDecoderAndSanitizer = address(new LombardBtcDecoderAndSanitizer(boringVault, address(0)));
+        rawDataDecoderAndSanitizer = address(new LombardBtcDecoderAndSanitizer(address(0)));
     }
 
     function testCheckingGoodTree() external {
@@ -59,7 +59,7 @@ contract MerkleTreeCheckerTest is Test, MerkleTreeHelper {
         address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "LBTC");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**
@@ -68,7 +68,7 @@ contract MerkleTreeCheckerTest is Test, MerkleTreeHelper {
         ERC20[] memory feeAssets = new ERC20[](2);
         feeAssets[0] = getERC20(sourceChain, "WBTC");
         feeAssets[1] = getERC20(sourceChain, "LBTC");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](10);
@@ -139,7 +139,7 @@ contract MerkleTreeCheckerTest is Test, MerkleTreeHelper {
         address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "LBTC");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**
@@ -148,7 +148,7 @@ contract MerkleTreeCheckerTest is Test, MerkleTreeHelper {
         ERC20[] memory feeAssets = new ERC20[](2);
         feeAssets[0] = getERC20(sourceChain, "WBTC");
         feeAssets[1] = getERC20(sourceChain, "LBTC");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](10);

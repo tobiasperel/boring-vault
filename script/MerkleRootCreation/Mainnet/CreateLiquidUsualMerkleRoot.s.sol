@@ -108,7 +108,7 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         token1[8] = getAddress(sourceChain, "USD0_plus");
         token1[9] = getAddress(sourceChain, "USD0_plus");
 
-        _addUniswapV3Leafs(leafs, token0, token1);
+        _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== Fee Claiming ==========================
         /**
@@ -120,7 +120,7 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[2] = getERC20(sourceChain, "USDT");
         feeAssets[3] = getERC20(sourceChain, "USD0");
         feeAssets[4] = getERC20(sourceChain, "USD0_plus");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== Fluid fToken ==========================
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDC"));
@@ -154,8 +154,8 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
          * Swap PYUSD <-> FRAX
          * Swap PYUSD <-> crvUSD
          */
-        address[] memory assets = new address[](13);
-        SwapKind[] memory kind = new SwapKind[](13);
+        address[] memory assets = new address[](14);
+        SwapKind[] memory kind = new SwapKind[](14);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -182,6 +182,8 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         kind[11] = SwapKind.Sell;
         assets[12] = getAddress(sourceChain, "PENDLE");
         kind[12] = SwapKind.Sell;
+        assets[13] = getAddress(sourceChain, "USUAL");
+        kind[13] = SwapKind.Sell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         // ========================== 1inch Uniswap V3 ==========================
