@@ -10,15 +10,15 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateUsualBeraMerkleRoot.s.sol:CreateUsualBeraMerkleRoot --rpc-url $MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateLiquidBeraBtcMerkleRoot.s.sol:CreateLiquidBeraBtcMerkleRoot --rpc-url $MAINNET_RPC_URL
  */
-contract CreateUsualBeraMerkleRoot is Script, MerkleTreeHelper {
+contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
-    address public boringVault = 0x165c62448015d96c920dDA001Ae27733AF2C36c7;
-    address public managerAddress = 0x0E6d1Eb34544023C595199AE4dd32908642d970f;
-    address public accountantAddress = 0x2E0e8cF5FE97423f6929403246eBa88de4b2811D;
-    address public rawDataDecoderAndSanitizer = 0x20A650CEc7d32EE955D4e32d74fBC88A4E3b3deA;
+    address public boringVault = 0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80;
+    address public managerAddress = 0x603064caAf2e76C414C5f7b6667D118322d311E6;
+    address public accountantAddress = 0xF44BD12956a0a87c2C20113DdFe1537A442526B5;
+    address public rawDataDecoderAndSanitizer = 0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D;
 
     function setUp() external {}
 
@@ -37,32 +37,33 @@ contract CreateUsualBeraMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](64);
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](5);
-        SwapKind[] memory kind = new SwapKind[](5);
-        assets[0] = getAddress(sourceChain, "USDC");
+        address[] memory assets = new address[](4);
+        SwapKind[] memory kind = new SwapKind[](4);
+        assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
-        assets[1] = getAddress(sourceChain, "USDT");
+        assets[1] = getAddress(sourceChain, "LBTC");
         kind[1] = SwapKind.BuyAndSell;
-        assets[2] = getAddress(sourceChain, "DAI");
+        assets[2] = getAddress(sourceChain, "cbBTC");
         kind[2] = SwapKind.BuyAndSell;
-        assets[3] = getAddress(sourceChain, "USD0");
+        assets[3] = getAddress(sourceChain, "eBTC");
         kind[3] = SwapKind.BuyAndSell;
-        assets[4] = getAddress(sourceChain, "USD0_plus");
-        kind[4] = SwapKind.BuyAndSell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
-        // ========================== Usual Money ==========================
-        _addUsualMoneyLeafs(leafs); //minting, redeeming, etc
+        // ========================== Teller ==========================
+        address eBTCTellerLZ = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268;
 
-        // ========================== Incentives Controller ==========================
-        _addTransferLeafs(leafs, getERC20(sourceChain, "USUAL"), getAddress(sourceChain, "beraUsual_incentives_distributor")); 
+        ERC20[] memory tellerAssets = new ERC20[](3);
+        tellerAssets[0] = getERC20(sourceChain, "WBTC");
+        tellerAssets[1] = getERC20(sourceChain, "LBTC");
+        tellerAssets[2] = getERC20(sourceChain, "cbBTC");
+        _addTellerLeafs(leafs, eBTCTellerLZ, tellerAssets);
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
-        string memory filePath = "./leafs/Mainnet/UsualBeraStrategistLeafs.json";
+        string memory filePath = "./leafs/Mainnet/LiquidBeraBtcStrategistLeafs.json";
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 

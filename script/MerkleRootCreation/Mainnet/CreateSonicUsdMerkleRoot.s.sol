@@ -146,10 +146,10 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         // ========================== sUSDs  ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sUSDs")));
 
-         // ========================== Sonic Gateway ==========================
-        ERC20[] memory bridgeAssets = new ERC20[](1); 
-        bridgeAssets[0] = getERC20(sourceChain, "USDC"); 
-        _addSonicGatewayLeafsEth(leafs, bridgeAssets); 
+        // ========================== Sonic Gateway ==========================
+        ERC20[] memory bridgeAssets = new ERC20[](1);
+        bridgeAssets[0] = getERC20(sourceChain, "USDC");
+        _addSonicGatewayLeafsEth(leafs, bridgeAssets);
 
         // ========================== Verify & Generate ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
