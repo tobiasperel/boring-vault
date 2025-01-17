@@ -15,7 +15,7 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xeDa663610638E6557c27e2f4e973D3393e844E70;
-    address public rawDataDecoderAndSanitizer = 0xA8633d10B828f80383D57a63914Fd23D6F71B157;
+    address public rawDataDecoderAndSanitizer = 0x4Cb75353D930C212Bbb800eE9e52B28A16684931;
     address public managerAddress = 0x5F2Ecb56Ed33c86219840A2F89316285A1D9ee0F;
     address public accountantAddress = 0x1D4F0F05e50312d3E7B65659Ef7d06aa74651e0C;
 
@@ -120,7 +120,7 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[2] = getERC20(sourceChain, "USDT");
         feeAssets[3] = getERC20(sourceChain, "USD0");
         feeAssets[4] = getERC20(sourceChain, "USD0_plus");
-        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, false);
 
         // ========================== Fluid fToken ==========================
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDC"));
@@ -154,8 +154,8 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
          * Swap PYUSD <-> FRAX
          * Swap PYUSD <-> crvUSD
          */
-        address[] memory assets = new address[](14);
-        SwapKind[] memory kind = new SwapKind[](14);
+        address[] memory assets = new address[](15);
+        SwapKind[] memory kind = new SwapKind[](15);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -184,6 +184,8 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         kind[12] = SwapKind.Sell;
         assets[13] = getAddress(sourceChain, "USUAL");
         kind[13] = SwapKind.Sell;
+        assets[14] = getAddress(sourceChain, "MORPHO");
+        kind[14] = SwapKind.Sell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         // ========================== 1inch Uniswap V3 ==========================
@@ -203,6 +205,10 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Usual ==========================
         _addUsualMoneyLeafs(leafs);
+
+        // ========================== Morpho Conversion ==========================
+        _addMorphoRewardWrapperLeafs(leafs);
+        _addMorphoRewardMerkleClaimerLeafs(leafs, 0x330eefa8a787552DC5cAd3C3cA644844B1E61Ddb);
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 

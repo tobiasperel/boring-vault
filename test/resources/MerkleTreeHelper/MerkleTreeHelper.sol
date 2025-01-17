@@ -5171,11 +5171,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
-    // ========================================= Fee Claiming =========================================
-
-    function _addLeafsForFeeClaiming(ManageLeaf[] memory leafs, address accountant, ERC20[] memory feeAssets)
-        internal
-    {
+     // ========================================= Fee Claiming =========================================
+    function _addLeafsForFeeClaiming(ManageLeaf[] memory leafs, address accountant, ERC20[] memory feeAssets, bool addYieldClaiming) internal {
         // Approvals.
         for (uint256 i; i < feeAssets.length; ++i) {
             if (
@@ -5214,18 +5211,20 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = address(feeAssets[i]);
 
-            unchecked {
-                leafIndex++;
+            if (addYieldClaiming) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    accountant,
+                    false,
+                    "claimYield(address)",
+                    new address[](1),
+                    string.concat("Claim yield in ", feeAssets[i].symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = address(feeAssets[i]);
             }
-            leafs[leafIndex] = ManageLeaf(
-                accountant,
-                false,
-                "claimYield(address)",
-                new address[](1),
-                string.concat("Claim yield in ", feeAssets[i].symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = address(feeAssets[i]);
         }
     }
 

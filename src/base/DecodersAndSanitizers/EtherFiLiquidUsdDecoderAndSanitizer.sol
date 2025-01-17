@@ -26,6 +26,7 @@ import {CompoundV3DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Prot
 import {MerklDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MerklDecoderAndSanitizer.sol";
 import {KarakDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/KarakDecoderAndSanitizer.sol";
 import {UsualMoneyDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/UsualMoneyDecoderAndSanitizer.sol";
+import {MorphoRewardsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/MorphoRewardsDecoderAndSanitizer.sol"; 
 import {TermFinanceDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TermFinanceDecoderAndSanitizer.sol";
 
 contract EtherFiLiquidUsdDecoderAndSanitizer is
@@ -49,6 +50,7 @@ contract EtherFiLiquidUsdDecoderAndSanitizer is
     MerklDecoderAndSanitizer,
     KarakDecoderAndSanitizer,
     UsualMoneyDecoderAndSanitizer,
+    MorphoRewardsDecoderAndSanitizer,
     TermFinanceDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager)
