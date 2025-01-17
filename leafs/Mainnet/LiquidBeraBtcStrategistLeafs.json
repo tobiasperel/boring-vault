@@ -1,0 +1,539 @@
+{
+    "metadata": {
+        "AccountantAddress": "0xF44BD12956a0a87c2C20113DdFe1537A442526B5",
+        "BoringVaultAddress": "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80",
+        "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+        "DigestComposition": [
+            "Bytes20(DECODER_AND_SANITIZER_ADDRESS)",
+            "Bytes20(TARGET_ADDRESS)",
+            "Bytes1(CAN_SEND_VALUE)",
+            "Bytes4(TARGET_FUNCTION_SELECTOR)",
+            "Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"
+        ],
+        "LeafCount": 25,
+        "ManageRoot": "0x81c14bf7ebd83f14c659c285156b1eca7e181aca3c03aa1ff642d5a83ba05037",
+        "ManagerAddress": "0x603064caAf2e76C414C5f7b6667D118322d311E6",
+        "TreeCapacity": 32
+    },
+    "leafs": [
+        {
+            "AddressArguments": ["0x1111111254EEB25477B68fb85Ed929f73A960582"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Approve 1Inch router to spend WBTC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x1066d2f1ff687a228e9741f089dbc61b228f9f8ab84346405b916cecdee345af",
+            "PackedArgumentAddresses": "0x1111111254eeb25477b68fb85ed929f73a960582",
+            "TargetAddress": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+                "0x8236a87084f8B84306f72007F36F2618A5634494",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap WBTC for LBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0x9476be54677ec525178ef6709827418d8483b061f812d560496b7ce5db957f7d",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a1902260fac5e5542a773aa44fbcfedf7c193bc2c5998236a87084f8b84306f72007f36f2618a56344945141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0x8236a87084f8B84306f72007F36F2618A5634494",
+                "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap LBTC for WBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0xa6728ef9ca0f1201e4ae5516a8b61f1dfe7304c82299d5a5995937f6dde29526",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a1908236a87084f8b84306f72007f36f2618a56344942260fac5e5542a773aa44fbcfedf7c193bc2c5995141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+                "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap WBTC for cbBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0xf34c427429d3909571896e6e515d26840dfed8ab988f0f53e83c55131084dcfb",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a1902260fac5e5542a773aa44fbcfedf7c193bc2c599cbb7c0000ab88b473b1f5afd9ef808440eed33bf5141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+                "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap cbBTC for WBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0x1b8126b3bbef3d49efbeb92f70ccdb744a3856b95878f12688a00135613865e3",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a190cbb7c0000ab88b473b1f5afd9ef808440eed33bf2260fac5e5542a773aa44fbcfedf7c193bc2c5995141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+                "0x657e8C867D8B37dCC18fA4Caead9C45EB088C642",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap WBTC for eBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0xcf574f6eea539889d2405db8cb30be8a23cea5d436bdc854bf18940be563e0ef",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a1902260fac5e5542a773aa44fbcfedf7c193bc2c599657e8c867d8b37dcc18fa4caead9c45eb088c6425141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0x657e8C867D8B37dCC18fA4Caead9C45EB088C642",
+                "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap eBTC for WBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0x6971ee395ab17490e35f5aadcb69b1a7b7222d4a207aaa7461dab4ba2a398721",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a190657e8c867d8b37dcc18fa4caead9c45eb088c6422260fac5e5542a773aa44fbcfedf7c193bc2c5995141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": ["0x1111111254EEB25477B68fb85Ed929f73A960582"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Approve 1Inch router to spend LBTC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xad6dbbab5c29e24e3843abf5138f3215caf9c99fa96b52f998a3628174788fc1",
+            "PackedArgumentAddresses": "0x1111111254eeb25477b68fb85ed929f73a960582",
+            "TargetAddress": "0x8236a87084f8B84306f72007F36F2618A5634494"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0x8236a87084f8B84306f72007F36F2618A5634494",
+                "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap LBTC for cbBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0xbffe4e97b0a30007a8cb36d38bbe4dd0f2b17f150f06d7fe485142f32012c8f8",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a1908236a87084f8b84306f72007f36f2618a5634494cbb7c0000ab88b473b1f5afd9ef808440eed33bf5141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+                "0x8236a87084f8B84306f72007F36F2618A5634494",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap cbBTC for LBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0x056caeb244111a0c1565a21ef821a96ac9fc2c3289e156ea602a2dd24185cae3",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a190cbb7c0000ab88b473b1f5afd9ef808440eed33bf8236a87084f8b84306f72007f36f2618a56344945141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0x8236a87084f8B84306f72007F36F2618A5634494",
+                "0x657e8C867D8B37dCC18fA4Caead9C45EB088C642",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap LBTC for eBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0xbe9d7fcb174a544f924603168aa3d9e6f54587e6beb62ff40498a1dd5f02a9c5",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a1908236a87084f8b84306f72007f36f2618a5634494657e8c867d8b37dcc18fa4caead9c45eb088c6425141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0x657e8C867D8B37dCC18fA4Caead9C45EB088C642",
+                "0x8236a87084f8B84306f72007F36F2618A5634494",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap eBTC for LBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0x61a7909c4723e43f7b84bda160e83002657a6ce52544d230e2547ed5a75b24f3",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a190657e8c867d8b37dcc18fa4caead9c45eb088c6428236a87084f8b84306f72007f36f2618a56344945141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": ["0x1111111254EEB25477B68fb85Ed929f73A960582"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Approve 1Inch router to spend cbBTC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x5285879ae29e9c6e0e18ad0ba39c0cb1731de5fce56801de395e1f695acc9b40",
+            "PackedArgumentAddresses": "0x1111111254eeb25477b68fb85ed929f73a960582",
+            "TargetAddress": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+                "0x657e8C867D8B37dCC18fA4Caead9C45EB088C642",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap cbBTC for eBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0x924482146e24986337a9fa201c19597fe4ea4a8498d5e78c9b6edc9cb414a634",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a190cbb7c0000ab88b473b1f5afd9ef808440eed33bf657e8c867d8b37dcc18fa4caead9c45eb088c6425141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": [
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0x657e8C867D8B37dCC18fA4Caead9C45EB088C642",
+                "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+                "0x5141B82f5fFDa4c6fE1E372978F1C5427640a190",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Swap eBTC for cbBTC using 1inch router",
+            "FunctionSelector": "0x12aa3caf",
+            "FunctionSignature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)",
+            "LeafDigest": "0x9c27a870c61fb65457f82e22cf768d3bf30934e99df3aa940a5ec0735967d88b",
+            "PackedArgumentAddresses": "0x5141b82f5ffda4c6fe1e372978f1c5427640a190657e8c867d8b37dcc18fa4caead9c45eb088c642cbb7c0000ab88b473b1f5afd9ef808440eed33bf5141b82f5ffda4c6fe1e372978f1c5427640a190c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x1111111254EEB25477B68fb85Ed929f73A960582"
+        },
+        {
+            "AddressArguments": ["0x1111111254EEB25477B68fb85Ed929f73A960582"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Approve 1Inch router to spend eBTC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x1cfd04c55c0c4f292dcd8e353703201b419dc1788e1bd67d5e3b72ba959b6b8c",
+            "PackedArgumentAddresses": "0x1111111254eeb25477b68fb85ed929f73a960582",
+            "TargetAddress": "0x657e8C867D8B37dCC18fA4Caead9C45EB088C642"
+        },
+        {
+            "AddressArguments": ["0x657e8C867D8B37dCC18fA4Caead9C45EB088C642"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Approve ether.fi BTC, to spend WBTC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x8c29b72648b470f49b3a6b2bf9a5bd22eac4b736af25ae77c841665852e93162",
+            "PackedArgumentAddresses": "0x657e8c867d8b37dcc18fa4caead9c45eb088c642",
+            "TargetAddress": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+        },
+        {
+            "AddressArguments": [
+                "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Bulk deposit WBTC into ether.fi BTC",
+            "FunctionSelector": "0x9d574420",
+            "FunctionSignature": "bulkDeposit(address,uint256,uint256,address)",
+            "LeafDigest": "0xe1139f4639a2b45eb027ff463a9b81362dba347d31b5eb6b684c49036361c6e0",
+            "PackedArgumentAddresses": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268"
+        },
+        {
+            "AddressArguments": [
+                "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Bulk withdraw WBTC from ether.fi BTC",
+            "FunctionSelector": "0x3e64ce99",
+            "FunctionSignature": "bulkWithdraw(address,uint256,uint256,address)",
+            "LeafDigest": "0x61cc91384c6ed654b7d955ad4e622b6c2a3b81af4e5dc60dd1731bc437b0cac3",
+            "PackedArgumentAddresses": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268"
+        },
+        {
+            "AddressArguments": ["0x657e8C867D8B37dCC18fA4Caead9C45EB088C642"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Approve ether.fi BTC, to spend LBTC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x03f5db321fe9851ccc011b7135c779473dfdfdb85ce9767726240c11e5808f87",
+            "PackedArgumentAddresses": "0x657e8c867d8b37dcc18fa4caead9c45eb088c642",
+            "TargetAddress": "0x8236a87084f8B84306f72007F36F2618A5634494"
+        },
+        {
+            "AddressArguments": [
+                "0x8236a87084f8B84306f72007F36F2618A5634494",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Bulk deposit LBTC into ether.fi BTC",
+            "FunctionSelector": "0x9d574420",
+            "FunctionSignature": "bulkDeposit(address,uint256,uint256,address)",
+            "LeafDigest": "0xd75a5e69a7aa3f817d568f72428b20bfd674ecb1c6d834a381c54b1f74160c42",
+            "PackedArgumentAddresses": "0x8236a87084f8b84306f72007f36f2618a5634494c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268"
+        },
+        {
+            "AddressArguments": [
+                "0x8236a87084f8B84306f72007F36F2618A5634494",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Bulk withdraw LBTC from ether.fi BTC",
+            "FunctionSelector": "0x3e64ce99",
+            "FunctionSignature": "bulkWithdraw(address,uint256,uint256,address)",
+            "LeafDigest": "0x5722c814f48958548e45886cc910141588d255ec3e7fb2e6ff0202fe587e7d3c",
+            "PackedArgumentAddresses": "0x8236a87084f8b84306f72007f36f2618a5634494c673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268"
+        },
+        {
+            "AddressArguments": ["0x657e8C867D8B37dCC18fA4Caead9C45EB088C642"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Approve ether.fi BTC, to spend cbBTC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x0fee4a89228fed3a6a0ce65db2344cd1da174ff7b2b2649881b6c854a4710be6",
+            "PackedArgumentAddresses": "0x657e8c867d8b37dcc18fa4caead9c45eb088c642",
+            "TargetAddress": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf"
+        },
+        {
+            "AddressArguments": [
+                "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Bulk deposit cbBTC into ether.fi BTC",
+            "FunctionSelector": "0x9d574420",
+            "FunctionSignature": "bulkDeposit(address,uint256,uint256,address)",
+            "LeafDigest": "0x5f0ec15c37981e198ee3ed9ce908a39d13b221c9415b2c43ebd85e0166ccf975",
+            "PackedArgumentAddresses": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bfc673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268"
+        },
+        {
+            "AddressArguments": [
+                "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+                "0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D",
+            "Description": "Bulk withdraw cbBTC from ether.fi BTC",
+            "FunctionSelector": "0x3e64ce99",
+            "FunctionSignature": "bulkWithdraw(address,uint256,uint256,address)",
+            "LeafDigest": "0x403ba7c26499989b9567f352e83355b82e7c46d0a7569c033a32d0440eb33992",
+            "PackedArgumentAddresses": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bfc673ef7791724f0dcca38adb47fbb3aef3db6c80",
+            "TargetAddress": "0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        }
+    ],
+    "MerkleTree": {
+        "0": [
+            "0x81c14bf7ebd83f14c659c285156b1eca7e181aca3c03aa1ff642d5a83ba05037"
+        ],
+        "1": [
+            "0xc17e0b011460034d85171b9567087c06a3c76f57d35bdb10d6e33a5236a668e5",
+            "0x6bb4461a9f1d396e11fee835c01b613e66dfe99093444d1ab977da813517a552"
+        ],
+        "2": [
+            "0xc9ad379aa41a7824d07a15423d794c528698ae8e23339c4c6484affa1adc2931",
+            "0x124ca3f6b154babbc1cc7d066784502a13ad024850f5c9d11e5675cba72617d8",
+            "0x6df2a162f3fd9b2b9b6d039d06c94c912689654877e1448d1274dd0d8057db95",
+            "0xa04fd6d730a218f1293409a590166fadd3502185f18efb2ea8a8848bd2414049"
+        ],
+        "3": [
+            "0x669ea9869f061c87760843d32a30ed13fbff8c2970adc4b7dcca10e7bbd63fb6",
+            "0x8fac82f9eb7d9e9e6f4baa5b2ab30ddd5400d0f2d5c2df938605702fb2e8b8c8",
+            "0x44e85d9704564fc16425c8dc3c6c16d0ec9422abb7fd50b6180e4ad3e01f59aa",
+            "0x65655f4e57d740ae6442f1957e83291fef9882270c08d288952906c21dad048c",
+            "0xacb928dad9f6d3ce33008e53780be6dd93abf182024048db34359df90aec6cc0",
+            "0x4759fc895302ef20d89275a7c097d44afc5afcc36b1db500ac303a981cfaba48",
+            "0x7f0d9baf2ba52db676175e0c00d9b01a0647ed7050ce6260545c4155c57979e1",
+            "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe"
+        ],
+        "4": [
+            "0x7c498f530772b82ad5d954a1b8ad577a3a4aaa8cdf436bb9b93f812a8751cab3",
+            "0x7e1834e0b9c112a86f80b6a252b20f302b8977574f5543583571a5abfb7483ed",
+            "0x2b20fe77861bc2a3336c3a7d1d8ba1f059ca72f12fc412302e0192f4e6d028cb",
+            "0x5a99c5c6376fcee0e47b3fb30aaa5ab92446b2d1873a6ef9c279060213bda480",
+            "0x42ca3ae52652b3d6ec4b46a919c9772970cb3af112c25760872ca9a1b2100fea",
+            "0x8ca0890ea8283f79553d26d032df104bdd3ba9096be3bf806d3811512677ef09",
+            "0x3262aa1444376a56758290f7f71b62cf1490f225fdc49b6a2abde477c97f09fc",
+            "0xc62fb8da589aef8803a86542e3eb0757f72e65815e23132431c0853785f74a4a",
+            "0x92325686743b359d3cb660421dd777a6c8d4343e2bc8fbe8c16d3b49fbf76031",
+            "0xb50cd045990d079a63656efd62c0207253dc548bc7b1a3561d2fd50d44114b63",
+            "0x40150340d648c3f08aad892bfd3b3d24594742ef6f2e720fbc8d7cedba98a15b",
+            "0x0a13d85ca9f6200ca8f44c7455bfdd83fd186ebc7592cff88d1d358590ebf193",
+            "0x77838435e86002db28dc3bc9551e9d6ddac035ff3cd48dabc410c01aa9ca4fa8",
+            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
+            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
+            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba"
+        ],
+        "5": [
+            "0x1066d2f1ff687a228e9741f089dbc61b228f9f8ab84346405b916cecdee345af",
+            "0x9476be54677ec525178ef6709827418d8483b061f812d560496b7ce5db957f7d",
+            "0xa6728ef9ca0f1201e4ae5516a8b61f1dfe7304c82299d5a5995937f6dde29526",
+            "0xf34c427429d3909571896e6e515d26840dfed8ab988f0f53e83c55131084dcfb",
+            "0x1b8126b3bbef3d49efbeb92f70ccdb744a3856b95878f12688a00135613865e3",
+            "0xcf574f6eea539889d2405db8cb30be8a23cea5d436bdc854bf18940be563e0ef",
+            "0x6971ee395ab17490e35f5aadcb69b1a7b7222d4a207aaa7461dab4ba2a398721",
+            "0xad6dbbab5c29e24e3843abf5138f3215caf9c99fa96b52f998a3628174788fc1",
+            "0xbffe4e97b0a30007a8cb36d38bbe4dd0f2b17f150f06d7fe485142f32012c8f8",
+            "0x056caeb244111a0c1565a21ef821a96ac9fc2c3289e156ea602a2dd24185cae3",
+            "0xbe9d7fcb174a544f924603168aa3d9e6f54587e6beb62ff40498a1dd5f02a9c5",
+            "0x61a7909c4723e43f7b84bda160e83002657a6ce52544d230e2547ed5a75b24f3",
+            "0x5285879ae29e9c6e0e18ad0ba39c0cb1731de5fce56801de395e1f695acc9b40",
+            "0x924482146e24986337a9fa201c19597fe4ea4a8498d5e78c9b6edc9cb414a634",
+            "0x9c27a870c61fb65457f82e22cf768d3bf30934e99df3aa940a5ec0735967d88b",
+            "0x1cfd04c55c0c4f292dcd8e353703201b419dc1788e1bd67d5e3b72ba959b6b8c",
+            "0x8c29b72648b470f49b3a6b2bf9a5bd22eac4b736af25ae77c841665852e93162",
+            "0xe1139f4639a2b45eb027ff463a9b81362dba347d31b5eb6b684c49036361c6e0",
+            "0x61cc91384c6ed654b7d955ad4e622b6c2a3b81af4e5dc60dd1731bc437b0cac3",
+            "0x03f5db321fe9851ccc011b7135c779473dfdfdb85ce9767726240c11e5808f87",
+            "0xd75a5e69a7aa3f817d568f72428b20bfd674ecb1c6d834a381c54b1f74160c42",
+            "0x5722c814f48958548e45886cc910141588d255ec3e7fb2e6ff0202fe587e7d3c",
+            "0x0fee4a89228fed3a6a0ce65db2344cd1da174ff7b2b2649881b6c854a4710be6",
+            "0x5f0ec15c37981e198ee3ed9ce908a39d13b221c9415b2c43ebd85e0166ccf975",
+            "0x403ba7c26499989b9567f352e83355b82e7c46d0a7569c033a32d0440eb33992",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400"
+        ]
+    }
+}
