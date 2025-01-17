@@ -15,7 +15,7 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
-    address public rawDataDecoderAndSanitizer = 0xdCbC0DeF063C497aA25Eb52eB29aa96C90be0F79;
+    address public rawDataDecoderAndSanitizer = 0x72B0dB3c5b133C6D060AB58134654287fA9f05BF;
     address public pancakeSwapDataDecoderAndSanitizer = 0x4dE66AA174b99481dAAe12F2Cdd5D76Dc14Eb3BC;
     address public managerAddress = 0x227975088C28DBBb4b421c6d96781a53578f19a8;
     address public accountantAddress = 0x0d05D94a5F1E76C18fbeB7A13d17C8a314088198;
@@ -39,9 +39,8 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        leafIndex = 0;
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](512);
+        ManageLeaf[] memory leafs = new ManageLeaf[](1024);
 
         // ========================== Aave V3 ==========================
         ERC20[] memory supplyAssets = new ERC20[](4);
@@ -97,6 +96,7 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleWeETHMarketSeptember"), false);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleWeETHMarketDecember"), false);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleKarakWeETHMarketSeptember"), false);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_liquid_bera_eth_04_09_25"), true); 
         // _addPendleMarketLeafs(leafs, pendleZircuitWeETHMarketAugust);
         // _addPendleMarketLeafs(leafs, pendleWeETHMarketJuly);
 
@@ -217,6 +217,43 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fWETH"));
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fWSTETH"));
 
+        // ========================== Fluid Dex ==========================
+        {
+        ERC20[] memory supplyTokens = new ERC20[](2);
+        supplyTokens[0] = getERC20(sourceChain, "WEETH");
+        supplyTokens[1] = getERC20(sourceChain, "WETH");
+
+        ERC20[] memory borrowTokens = new ERC20[](1);
+        borrowTokens[0] = getERC20(sourceChain, "WSTETH");
+
+        uint256 dexType = 2000;
+
+        _addFluidDexLeafs(
+            leafs, 
+            getAddress(sourceChain, "weETH_ETHDex_wstETH"),  
+            dexType,
+            supplyTokens,
+            borrowTokens
+        ); 
+
+        }
+
+        // ========================== Term ==========================
+        {
+            ERC20[] memory purchaseTokens = new ERC20[](1);
+            purchaseTokens[0] = getERC20(sourceChain, "WETH");
+            address[] memory termAuctionOfferLockerAddresses = new address[](1);
+            termAuctionOfferLockerAddresses[0] = 0x8a98076a97dc3e905b6beEb47268a92658bCf9C1;
+            address[] memory termRepoLockers = new address[](1);
+            termRepoLockers[0] = 0x46044AccFa442cDd1f4958847CC05F01a59b9610;
+            address[] memory termRepoServicers = new address[](1);
+            termRepoServicers[0] = 0x859B4aDc287E76fe7076F6Af9bfB56e3E9253c1c;
+            _addTermFinanceLockOfferLeafs(leafs, purchaseTokens, termAuctionOfferLockerAddresses, termRepoLockers);
+            _addTermFinanceUnlockOfferLeafs(leafs, termAuctionOfferLockerAddresses);
+            _addTermFinanceRevealOfferLeafs(leafs, termAuctionOfferLockerAddresses);
+            _addTermFinanceRedeemTermRepoTokensLeafs(leafs, termRepoServicers);
+        }
+
         // ========================== FrxEth ==========================
         /**
          * deposit, withdraw
@@ -232,6 +269,7 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         _addConvexLeafs(
             leafs, getERC20(sourceChain, "weETH_wETH_NG_Pool"), getAddress(sourceChain, "weETH_wETH_NG_Convex_Reward")
         );
+
 
         // ========================== ITB Reserve ==========================
         ERC20[] memory tokensUsed = new ERC20[](3);
@@ -266,6 +304,10 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         token1[6] = getAddress(sourceChain, "SFRXETH");
 
         _addPancakeSwapV3Leafs(leafs, token0, token1);
+
+        //VERIFY
+
+        _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
