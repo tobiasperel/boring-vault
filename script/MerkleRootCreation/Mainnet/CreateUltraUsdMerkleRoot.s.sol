@@ -15,7 +15,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xbc0f3B23930fff9f4894914bD745ABAbA9588265;
-    address public rawDataDecoderAndSanitizer = 0x5eB7B2394dce510AD9575C222E3eaCa9D79B643d;
+    address public rawDataDecoderAndSanitizer = 0x4Cb75353D930C212Bbb800eE9e52B28A16684931;
     address public managerAddress = 0x4f81c27e750A453d6206C2d10548d6566F60886C;
     address public accountantAddress = 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe;
     address public drone = 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De;
@@ -44,7 +44,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[1] = getERC20(sourceChain, "DAI");
         feeAssets[2] = getERC20(sourceChain, "USDT");
         feeAssets[3] = getERC20(sourceChain, "USDE");
-        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, false);
 
         // ========================== Aave V3 ==========================
         ERC20[] memory aaveSupplyAssets = new ERC20[](5);
@@ -111,8 +111,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         /*
          *
          */
-        address[] memory oneInchAssets = new address[](16);
-        SwapKind[] memory oneInchKind = new SwapKind[](16);
+        address[] memory oneInchAssets = new address[](19);
+        SwapKind[] memory oneInchKind = new SwapKind[](19);
         oneInchAssets[0] = getAddress(sourceChain, "USDC");
         oneInchKind[0] = SwapKind.BuyAndSell;
         oneInchAssets[1] = getAddress(sourceChain, "USDT");
@@ -145,6 +145,12 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         oneInchKind[14] = SwapKind.BuyAndSell;
         oneInchAssets[15] = getAddress(sourceChain, "WSTETH");
         oneInchKind[15] = SwapKind.BuyAndSell;
+        oneInchAssets[16] = getAddress(sourceChain, "MORPHO");
+        oneInchKind[16] = SwapKind.Sell;
+        oneInchAssets[17] = getAddress(sourceChain, "USUAL");
+        oneInchKind[17] = SwapKind.Sell;
+        oneInchAssets[18] = getAddress(sourceChain, "ETHFI");
+        oneInchKind[18] = SwapKind.Sell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
 
@@ -166,6 +172,15 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
          */
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "SUSDE")));
         _addEthenaSUSDeWithdrawLeafs(leafs);
+
+        // ========================== Curve ==========================
+        _addCurveLeafs(
+            leafs,
+            getAddress(sourceChain, "USD0_USD0++_CurvePool"),
+            2,
+            getAddress(sourceChain, "USD0_USD0++_CurveGauge")
+        );
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USD0_USD0++_CurvePool"));
 
         // ========================== UniswapV3 ==========================
         address[] memory uniswapV3Token0 = new address[](78);
@@ -424,6 +439,15 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
          */
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "SUSDE")));
         _addEthenaSUSDeWithdrawLeafs(leafs);
+
+        // ========================== Curve ==========================
+        _addCurveLeafs(
+            leafs,
+            getAddress(sourceChain, "USD0_USD0++_CurvePool"),
+            2,
+            getAddress(sourceChain, "USD0_USD0++_CurveGauge")
+        );
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USD0_USD0++_CurvePool"));
 
         // ========================== UniswapV3 ==========================
         _addUniswapV3Leafs(leafs, uniswapV3Token0, uniswapV3Token1, true);

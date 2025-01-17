@@ -43,7 +43,7 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         feeAssets[1] = getERC20(sourceChain, "DAI");
         feeAssets[2] = getERC20(sourceChain, "USDT");
         feeAssets[3] = getERC20(sourceChain, "USDS");
-        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true);
 
         // ========================== UniswapV3 ==========================
         // All combinations of USDC, USDT, sDAI, DAI, sUSDs, GHO, USDs
@@ -146,10 +146,10 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         // ========================== sUSDs  ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sUSDs")));
 
-         // ========================== Sonic Gateway ==========================
-        ERC20[] memory bridgeAssets = new ERC20[](1); 
-        bridgeAssets[0] = getERC20(sourceChain, "USDC"); 
-        _addSonicGatewayLeafsEth(leafs, bridgeAssets); 
+        // ========================== Sonic Gateway ==========================
+        ERC20[] memory bridgeAssets = new ERC20[](1);
+        bridgeAssets[0] = getERC20(sourceChain, "USDC");
+        _addSonicGatewayLeafsEth(leafs, bridgeAssets);
 
         // ========================== Verify & Generate ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);

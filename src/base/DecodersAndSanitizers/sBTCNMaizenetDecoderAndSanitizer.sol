@@ -10,5 +10,16 @@ import {NativeWrapperDecoderAndSanitizer} from
 contract sBTCNMaizenetDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
-    CurveDecoderAndSanitizer
-{}
+    CurveDecoderAndSanitizer,
+    NativeWrapperDecoderAndSanitizer
+{
+    function withdraw(uint256 /*amount*/ )
+        external
+        pure
+        virtual
+        override(NativeWrapperDecoderAndSanitizer, CurveDecoderAndSanitizer)
+        returns (bytes memory addressesFound)
+    {
+        return addressesFound;
+    }
+}
