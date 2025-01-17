@@ -39,7 +39,6 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-
         ManageLeaf[] memory leafs = new ManageLeaf[](1024);
 
         // ========================== Aave V3 ==========================
@@ -96,7 +95,7 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleWeETHMarketSeptember"), false);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleWeETHMarketDecember"), false);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleKarakWeETHMarketSeptember"), false);
-        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_liquid_bera_eth_04_09_25"), true); 
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_liquid_bera_eth_04_09_25"), true);
         // _addPendleMarketLeafs(leafs, pendleZircuitWeETHMarketAugust);
         // _addPendleMarketLeafs(leafs, pendleWeETHMarketJuly);
 
@@ -219,23 +218,18 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Fluid Dex ==========================
         {
-        ERC20[] memory supplyTokens = new ERC20[](2);
-        supplyTokens[0] = getERC20(sourceChain, "WEETH");
-        supplyTokens[1] = getERC20(sourceChain, "WETH");
+            ERC20[] memory supplyTokens = new ERC20[](2);
+            supplyTokens[0] = getERC20(sourceChain, "WEETH");
+            supplyTokens[1] = getERC20(sourceChain, "WETH");
 
-        ERC20[] memory borrowTokens = new ERC20[](1);
-        borrowTokens[0] = getERC20(sourceChain, "WSTETH");
+            ERC20[] memory borrowTokens = new ERC20[](1);
+            borrowTokens[0] = getERC20(sourceChain, "WSTETH");
 
-        uint256 dexType = 2000;
+            uint256 dexType = 2000;
 
-        _addFluidDexLeafs(
-            leafs, 
-            getAddress(sourceChain, "weETH_ETHDex_wstETH"),  
-            dexType,
-            supplyTokens,
-            borrowTokens
-        ); 
-
+            _addFluidDexLeafs(
+                leafs, getAddress(sourceChain, "weETH_ETHDex_wstETH"), dexType, supplyTokens, borrowTokens
+            );
         }
 
         // ========================== Term ==========================
@@ -269,7 +263,6 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         _addConvexLeafs(
             leafs, getERC20(sourceChain, "weETH_wETH_NG_Pool"), getAddress(sourceChain, "weETH_wETH_NG_Convex_Reward")
         );
-
 
         // ========================== ITB Reserve ==========================
         ERC20[] memory tokensUsed = new ERC20[](3);

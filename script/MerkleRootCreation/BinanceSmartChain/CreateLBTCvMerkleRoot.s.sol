@@ -18,7 +18,7 @@ contract CreateLBTCvMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x5401b8620E5FB570064CA9114fd1e135fd77D57c;
     address public managerAddress = 0xcf38e37872748E3b66741A42560672A6cef75e9B;
     address public accountantAddress = 0x28634D0c5edC67CF2450E74deA49B90a4FF93dCE;
-    address public rawDataDecoderAndSanitizer = 0xF2f92fefda8642a04E32856110495c8b3C2Cd72f; 
+    address public rawDataDecoderAndSanitizer = 0xF2f92fefda8642a04E32856110495c8b3C2Cd72f;
 
     function setUp() external {}
 

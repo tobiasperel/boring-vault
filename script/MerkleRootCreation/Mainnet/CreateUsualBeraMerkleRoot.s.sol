@@ -57,7 +57,6 @@ contract CreateUsualBeraMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Usual Money ==========================
         _addUsualMoneyLeafs(leafs); //minting, redeeming, etc
 
-
         // ========================== Incentives Controller ==========================
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);

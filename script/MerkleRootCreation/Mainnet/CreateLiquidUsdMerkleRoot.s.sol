@@ -171,10 +171,10 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addMorphoBlueSupplyLeafs(leafs, 0x39d11026eae1c6ec02aa4c0910778664089cdd97c3fd23f68f7cd05e2e95af48);
         _addMorphoBlueSupplyLeafs(leafs, 0xe7e9694b754c4d4f7e21faf7223f6fa71abaeb10296a4c43a54a7977149687d2);
         _addMorphoBlueSupplyLeafs(leafs, 0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc);
-        
-        // Borrowing 
+
+        // Borrowing
         // Collateral sUSDePT_03_27 Borrow DAI at 91.5 LLTV
-        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT_03_27_DAI_915")); 
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT_03_27_DAI_915"));
 
         // ========================== MetaMorpho ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseUSDCRWA")));
@@ -650,7 +650,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
             address[] memory termRepoLockers = new address[](3);
             termRepoLockers[0] = 0xDFC8271C70303B0d98819267f93F86EfFe9BC3AD;
             termRepoLockers[1] = 0xF8FdFAD735e9A8fD8f5e7B8e2073A25F812168A1;
-            termRepoLockers[2] = 0x93b6130393973ECAB1CBAd23c62eFC9325450787; 
+            termRepoLockers[2] = 0x93b6130393973ECAB1CBAd23c62eFC9325450787;
             address[] memory termRepoServicers = new address[](3);
             termRepoServicers[0] = 0x65Cc6CD9d99f497053C3978b8724B05d2aE03D17;
             termRepoServicers[1] = 0x648C24e31b0FC9c8652d7DA7133498A48E03Bd25;

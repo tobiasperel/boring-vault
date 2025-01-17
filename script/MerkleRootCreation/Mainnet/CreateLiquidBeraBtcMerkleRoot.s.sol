@@ -17,8 +17,8 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
 
     address public boringVault = 0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80;
     address public managerAddress = 0x603064caAf2e76C414C5f7b6667D118322d311E6;
-    address public accountantAddress = 0xF44BD12956a0a87c2C20113DdFe1537A442526B5; 
-    address public rawDataDecoderAndSanitizer = 0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D; 
+    address public accountantAddress = 0xF44BD12956a0a87c2C20113DdFe1537A442526B5;
+    address public rawDataDecoderAndSanitizer = 0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D;
 
     function setUp() external {}
 
@@ -51,15 +51,15 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         assets[3] = getAddress(sourceChain, "eBTC");
         kind[3] = SwapKind.BuyAndSell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
-    
-        // ========================== Teller ==========================
-         address eBTCTellerLZ = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268; 
 
-         ERC20[] memory tellerAssets = new ERC20[](3);
-         tellerAssets[0] = getERC20(sourceChain, "WBTC");
-         tellerAssets[1] = getERC20(sourceChain, "LBTC");
-         tellerAssets[2] = getERC20(sourceChain, "cbBTC");
-         _addTellerLeafs(leafs, eBTCTellerLZ, tellerAssets);
+        // ========================== Teller ==========================
+        address eBTCTellerLZ = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268;
+
+        ERC20[] memory tellerAssets = new ERC20[](3);
+        tellerAssets[0] = getERC20(sourceChain, "WBTC");
+        tellerAssets[1] = getERC20(sourceChain, "LBTC");
+        tellerAssets[2] = getERC20(sourceChain, "cbBTC");
+        _addTellerLeafs(leafs, eBTCTellerLZ, tellerAssets);
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 

@@ -241,9 +241,7 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         targetData[3] = abi.encodeWithSignature(
             "disableCollateral(address,address)", address(boringVault), getAddress(sourceChain, "evkWETH")
         );
-        targetData[4] = abi.encodeWithSignature(
-            "disableController(address)", address(boringVault)
-        );
+        targetData[4] = abi.encodeWithSignature("disableController(address)", address(boringVault));
 
         uint256[] memory values = new uint256[](5);
 
@@ -256,7 +254,6 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
-
 
     // ========================================= HELPER FUNCTIONS =========================================
 
