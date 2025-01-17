@@ -5229,6 +5229,23 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
+    // ========================================= Transfer =========================================
+    function _addTransferLeafs(ManageLeaf[] memory leafs, ERC20 token, address to) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            address(token),
+            false,
+            "transfer(address,uint256)",
+            new address[](1),
+            string.concat("Transfer ", token.symbol(), " to ", vm.toString(to)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = to;
+
+    }
+
     // ========================================= LayerZero =========================================
 
     function _addLayerZeroLeafs(ManageLeaf[] memory leafs, ERC20 asset, address oftAdapter, uint32 endpoint) internal {

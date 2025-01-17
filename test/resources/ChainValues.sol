@@ -916,6 +916,7 @@ contract ChainValues {
         values[mainnet]["TreehouseRouter"] = 0xeFA3fa8e85D2b3CfdB250CdeA156c2c6C90628F5.toBytes32();
         values[mainnet]["tETH"] = 0xD11c452fc99cF405034ee446803b6F6c1F6d5ED8.toBytes32();
         values[mainnet]["tETH_wstETH_curve_pool"] = 0xA10d15538E09479186b4D3278BA5c979110dDdB1.toBytes32();
+
         // Term Finance
         values[mainnet]["termAuctionOfferLocker"] = 0xa557a6099d1a85d7569EA4B6d8ad59a94a8162CC.toBytes32();
         values[mainnet]["termRepoLocker"] = 0xFD9033C9A97Bc3Ec8a44439Cb6512516c5053076.toBytes32();
@@ -948,10 +949,14 @@ contract ChainValues {
         //Sonic Gateway
         values[mainnet]["sonicGateway"] = 0xa1E2481a9CD0Cb0447EeB1cbc26F1b3fff3bec20.toBytes32();
 
+        // Incentives Distributors
+        values[mainnet]["beraUsual_incentives_distributor"] = 0x4a610757352d63D45B0a1680e95158887955582C.toBytes32(); 
+
         // Morpho Rewards
         values[mainnet]["morphoRewardsWrapper"] = 0x9D03bb2092270648d7480049d0E58d2FcF0E5123.toBytes32();
         values[mainnet]["legacyMorpho"] = 0x9994E35Db50125E0DF82e4c2dde62496CE330999.toBytes32();
         values[mainnet]["newMorpho"] = 0x58D97B57BB95320F9a05dC918Aef65434969c2B2.toBytes32();
+
     }
 
     function _addBaseValues() private {
