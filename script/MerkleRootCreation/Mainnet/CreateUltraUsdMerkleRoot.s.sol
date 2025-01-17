@@ -44,7 +44,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[1] = getERC20(sourceChain, "DAI");
         feeAssets[2] = getERC20(sourceChain, "USDT");
         feeAssets[3] = getERC20(sourceChain, "USDE");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== Aave V3 ==========================
         ERC20[] memory aaveSupplyAssets = new ERC20[](5);
@@ -111,8 +111,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         /*
          *
          */
-        address[] memory oneInchAssets = new address[](16);
-        SwapKind[] memory oneInchKind = new SwapKind[](16);
+        address[] memory oneInchAssets = new address[](18);
+        SwapKind[] memory oneInchKind = new SwapKind[](18);
         oneInchAssets[0] = getAddress(sourceChain, "USDC");
         oneInchKind[0] = SwapKind.BuyAndSell;
         oneInchAssets[1] = getAddress(sourceChain, "USDT");
@@ -145,6 +145,10 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         oneInchKind[14] = SwapKind.BuyAndSell;
         oneInchAssets[15] = getAddress(sourceChain, "WSTETH");
         oneInchKind[15] = SwapKind.BuyAndSell;
+        oneInchAssets[16] = getAddress(sourceChain, "MORPHO");
+        oneInchKind[16] = SwapKind.Sell;
+        oneInchAssets[17] = getAddress(sourceChain, "USUAL");
+        oneInchKind[17] = SwapKind.Sell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
 
@@ -166,6 +170,15 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
          */
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "SUSDE")));
         _addEthenaSUSDeWithdrawLeafs(leafs);
+
+        // ========================== Curve ==========================
+        _addCurveLeafs(
+            leafs,
+            getAddress(sourceChain, "USD0_USD0++_CurvePool"),
+            2,
+            getAddress(sourceChain, "USD0_USD0++_CurveGauge")
+        );
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USD0_USD0++_CurvePool"));
 
         // ========================== UniswapV3 ==========================
         address[] memory uniswapV3Token0 = new address[](78);
@@ -424,6 +437,15 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
          */
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "SUSDE")));
         _addEthenaSUSDeWithdrawLeafs(leafs);
+
+        // ========================== Curve ==========================
+        _addCurveLeafs(
+            leafs,
+            getAddress(sourceChain, "USD0_USD0++_CurvePool"),
+            2,
+            getAddress(sourceChain, "USD0_USD0++_CurveGauge")
+        );
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USD0_USD0++_CurvePool"));
 
         // ========================== UniswapV3 ==========================
         _addUniswapV3Leafs(leafs, uniswapV3Token0, uniswapV3Token1, true);

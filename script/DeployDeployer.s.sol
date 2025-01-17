@@ -29,16 +29,22 @@ contract DeployDeployerScript is Script, ContractNames {
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("swell");
-
+        vm.createSelectFork("scroll");
     }
 
     function run() external {
-        bytes memory constructorArgs;
-        bytes memory creationCode;
+        // bytes memory constructorArgs;
+        // bytes memory creationCode;
         vm.startBroadcast(privateKey);
 
-        // deployer = new Deployer(dev0Address, Authority(address(0)));
+        rolesAuthority = RolesAuthority(0x4df6b73328B639073db150C4584196c4d97053b7);
+        // deployer = new Deployer(dev0Address, Authority(address(rolesAuthority)));
+
+        // rolesAuthority.setRoleCapability(DEPLOYER_ROLE, address(deployer), Deployer.bundleTxs.selector, true);
+        // rolesAuthority.setUserRole(dev1Address, DEPLOYER_ROLE, true);
+        // rolesAuthority.setUserRole(0xBBc5569B0b32403037F37255f4ff50B8Bb825b2A, DEPLOYER_ROLE, true);
+        // rolesAuthority.setUserRole(address(deployer), DEPLOYER_ROLE, true);
+
         // swell changes
         // require(address(deployer) == deployerAddress, "Deployer address mismatch");
         // creationCode = type(RolesAuthority).creationCode;
@@ -63,9 +69,11 @@ contract DeployDeployerScript is Script, ContractNames {
 
         deployer = Deployer(0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d);
 
-        constructorArgs = abi.encode("Crispy USD", "CUSD", 6);
-        creationCode = type(MockERC20).creationCode;
-        MockERC20(deployer.deployContract("CrispyUSD V0.0", creationCode, constructorArgs, 0));
+        deployer.setAuthority(rolesAuthority);
+
+        // constructorArgs = abi.encode("Crispy USD", "CUSD", 6);
+        // creationCode = type(MockERC20).creationCode;
+        // MockERC20(deployer.deployContract("CrispyUSD V0.0", creationCode, constructorArgs, 0));
 
         vm.stopBroadcast();
     }
