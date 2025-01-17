@@ -47,7 +47,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(new FullRoycoDecoderAndSaniziter(address(boringVault)));
+        rawDataDecoderAndSanitizer = address(new FullRoycoDecoderAndSaniziter());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -319,6 +319,4 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
     }
 }
 
-contract FullRoycoDecoderAndSaniziter is RoycoWeirollDecoderAndSanitizer, ERC4626DecoderAndSanitizer {
-    constructor(address _boringVault) BaseDecoderAndSanitizer(_boringVault){}
-}
+contract FullRoycoDecoderAndSaniziter is RoycoWeirollDecoderAndSanitizer, ERC4626DecoderAndSanitizer { }

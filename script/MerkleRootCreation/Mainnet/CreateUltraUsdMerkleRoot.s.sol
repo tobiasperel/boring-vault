@@ -36,7 +36,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](1024);
+        ManageLeaf[] memory leafs = new ManageLeaf[](2048);
 
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](4);
@@ -44,46 +44,52 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[1] = getERC20(sourceChain, "DAI");
         feeAssets[2] = getERC20(sourceChain, "USDT");
         feeAssets[3] = getERC20(sourceChain, "USDE");
-        _addLeafsForFeeClaiming(leafs, feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
 
         // ========================== Aave V3 ==========================
-        ERC20[] memory supplyAssets = new ERC20[](5);
-        supplyAssets[0] = getERC20(sourceChain, "USDC");
-        supplyAssets[1] = getERC20(sourceChain, "USDT");
-        supplyAssets[2] = getERC20(sourceChain, "DAI");
-        supplyAssets[3] = getERC20(sourceChain, "WEETH");
-        supplyAssets[4] = getERC20(sourceChain, "WSTETH");
-        ERC20[] memory borrowAssets = new ERC20[](5);
-        borrowAssets[0] = getERC20(sourceChain, "USDC");
-        borrowAssets[1] = getERC20(sourceChain, "USDT");
-        borrowAssets[2] = getERC20(sourceChain, "DAI");
-        borrowAssets[3] = getERC20(sourceChain, "WETH");
-        borrowAssets[4] = getERC20(sourceChain, "WSTETH");
-        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
+        ERC20[] memory aaveSupplyAssets = new ERC20[](5);
+        aaveSupplyAssets[0] = getERC20(sourceChain, "USDC");
+        aaveSupplyAssets[1] = getERC20(sourceChain, "USDT");
+        aaveSupplyAssets[2] = getERC20(sourceChain, "DAI");
+        aaveSupplyAssets[3] = getERC20(sourceChain, "WEETH");
+        aaveSupplyAssets[4] = getERC20(sourceChain, "WSTETH");
+        ERC20[] memory aaveBorrowAssets = new ERC20[](5);
+        aaveBorrowAssets[0] = getERC20(sourceChain, "USDC");
+        aaveBorrowAssets[1] = getERC20(sourceChain, "USDT");
+        aaveBorrowAssets[2] = getERC20(sourceChain, "DAI");
+        aaveBorrowAssets[3] = getERC20(sourceChain, "WETH");
+        aaveBorrowAssets[4] = getERC20(sourceChain, "WSTETH");
+        _addAaveV3Leafs(leafs, aaveSupplyAssets, aaveBorrowAssets);
 
         // ========================== SparkLend ==========================
-        supplyAssets = new ERC20[](7);
-        supplyAssets[0] = getERC20(sourceChain, "USDC");
-        supplyAssets[1] = getERC20(sourceChain, "USDT");
-        supplyAssets[2] = getERC20(sourceChain, "DAI");
-        supplyAssets[3] = getERC20(sourceChain, "sUSDs");
-        supplyAssets[4] = getERC20(sourceChain, "WETH");
-        supplyAssets[5] = getERC20(sourceChain, "WSTETH");
-        supplyAssets[6] = getERC20(sourceChain, "WEETH");
-        borrowAssets = new ERC20[](5);
-        borrowAssets[0] = getERC20(sourceChain, "USDC");
-        borrowAssets[1] = getERC20(sourceChain, "USDT");
-        borrowAssets[2] = getERC20(sourceChain, "DAI");
-        borrowAssets[3] = getERC20(sourceChain, "WETH");
-        borrowAssets[4] = getERC20(sourceChain, "WSTETH");
+        ERC20[] memory sparkLendSupplyAssets = new ERC20[](7);
+        sparkLendSupplyAssets[0] = getERC20(sourceChain, "USDC");
+        sparkLendSupplyAssets[1] = getERC20(sourceChain, "USDT");
+        sparkLendSupplyAssets[2] = getERC20(sourceChain, "DAI");
+        sparkLendSupplyAssets[3] = getERC20(sourceChain, "sUSDs");
+        sparkLendSupplyAssets[4] = getERC20(sourceChain, "WETH");
+        sparkLendSupplyAssets[5] = getERC20(sourceChain, "WSTETH");
+        sparkLendSupplyAssets[6] = getERC20(sourceChain, "WEETH");
+        ERC20[] memory sparkLendBorrowAssets = new ERC20[](5);
+        sparkLendBorrowAssets[0] = getERC20(sourceChain, "USDC");
+        sparkLendBorrowAssets[1] = getERC20(sourceChain, "USDT");
+        sparkLendBorrowAssets[2] = getERC20(sourceChain, "DAI");
+        sparkLendBorrowAssets[3] = getERC20(sourceChain, "WETH");
+        sparkLendBorrowAssets[4] = getERC20(sourceChain, "WSTETH");
 
-        _addSparkLendLeafs(leafs, supplyAssets, borrowAssets);
+        _addSparkLendLeafs(leafs, sparkLendSupplyAssets, sparkLendBorrowAssets);
 
         // ========================== MetaMorpho ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "usualBoostedUSDC")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCcore")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCprime")));
 
+        // ========================== MorphoBlue ==========================
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "sUSDePT03_USDC_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "USD0_plusPT03_USDC_915"));
+
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT03_USDC_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "USD0_plusPT03_USDC_915"));
         // ========================== Usual ==========================
         _addUsualMoneyLeafs(leafs);
 
@@ -95,47 +101,56 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Pendle ==========================
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_03_26_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_01_29_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_02_26_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_03_26_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_04_23_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_06_25_2025"), true);
 
         // ========================== 1inch ==========================
         /*
          *
          */
-        address[] memory assets = new address[](15);
-        SwapKind[] memory kind = new SwapKind[](15);
-        assets[0] = getAddress(sourceChain, "USDC");
-        kind[0] = SwapKind.BuyAndSell;
-        assets[1] = getAddress(sourceChain, "USDT");
-        kind[1] = SwapKind.BuyAndSell;
-        assets[2] = getAddress(sourceChain, "DAI");
-        kind[2] = SwapKind.BuyAndSell;
-        assets[3] = getAddress(sourceChain, "USDS");
-        kind[3] = SwapKind.BuyAndSell;
-        assets[4] = getAddress(sourceChain, "PENDLE");
-        kind[4] = SwapKind.Sell;
-        assets[5] = getAddress(sourceChain, "deUSD");
-        kind[5] = SwapKind.BuyAndSell;
-        assets[6] = getAddress(sourceChain, "sdeUSD");
-        kind[6] = SwapKind.BuyAndSell;
-        assets[7] = getAddress(sourceChain, "USDS");
-        kind[7] = SwapKind.BuyAndSell;
-        assets[8] = getAddress(sourceChain, "sUSDs");
-        kind[8] = SwapKind.BuyAndSell;
-        assets[8] = getAddress(sourceChain, "USD0");
-        kind[8] = SwapKind.BuyAndSell;
-        assets[9] = getAddress(sourceChain, "USD0_plus");
-        kind[9] = SwapKind.BuyAndSell;
-        assets[10] = getAddress(sourceChain, "WETH");
-        kind[10] = SwapKind.BuyAndSell;
-        assets[11] = getAddress(sourceChain, "WEETH");
-        kind[11] = SwapKind.BuyAndSell;
-        assets[12] = getAddress(sourceChain, "USDE");
-        kind[12] = SwapKind.BuyAndSell;
-        assets[13] = getAddress(sourceChain, "SUSDE");
-        kind[13] = SwapKind.BuyAndSell;
-        assets[14] = getAddress(sourceChain, "WSTETH");
-        kind[14] = SwapKind.BuyAndSell;
+        address[] memory oneInchAssets = new address[](18);
+        SwapKind[] memory oneInchKind = new SwapKind[](18);
+        oneInchAssets[0] = getAddress(sourceChain, "USDC");
+        oneInchKind[0] = SwapKind.BuyAndSell;
+        oneInchAssets[1] = getAddress(sourceChain, "USDT");
+        oneInchKind[1] = SwapKind.BuyAndSell;
+        oneInchAssets[2] = getAddress(sourceChain, "DAI");
+        oneInchKind[2] = SwapKind.BuyAndSell;
+        oneInchAssets[3] = getAddress(sourceChain, "USDS");
+        oneInchKind[3] = SwapKind.BuyAndSell;
+        oneInchAssets[4] = getAddress(sourceChain, "PENDLE");
+        oneInchKind[4] = SwapKind.Sell;
+        oneInchAssets[5] = getAddress(sourceChain, "deUSD");
+        oneInchKind[5] = SwapKind.BuyAndSell;
+        oneInchAssets[6] = getAddress(sourceChain, "sdeUSD");
+        oneInchKind[6] = SwapKind.BuyAndSell;
+        oneInchAssets[7] = getAddress(sourceChain, "USDS");
+        oneInchKind[7] = SwapKind.BuyAndSell;
+        oneInchAssets[8] = getAddress(sourceChain, "sUSDs");
+        oneInchKind[8] = SwapKind.BuyAndSell;
+        oneInchAssets[9] = getAddress(sourceChain, "USD0");
+        oneInchKind[9] = SwapKind.BuyAndSell;
+        oneInchAssets[10] = getAddress(sourceChain, "USD0_plus");
+        oneInchKind[10] = SwapKind.BuyAndSell;
+        oneInchAssets[11] = getAddress(sourceChain, "WETH");
+        oneInchKind[11] = SwapKind.BuyAndSell;
+        oneInchAssets[12] = getAddress(sourceChain, "WEETH");
+        oneInchKind[12] = SwapKind.BuyAndSell;
+        oneInchAssets[13] = getAddress(sourceChain, "USDE");
+        oneInchKind[13] = SwapKind.BuyAndSell;
+        oneInchAssets[14] = getAddress(sourceChain, "SUSDE");
+        oneInchKind[14] = SwapKind.BuyAndSell;
+        oneInchAssets[15] = getAddress(sourceChain, "WSTETH");
+        oneInchKind[15] = SwapKind.BuyAndSell;
+        oneInchAssets[16] = getAddress(sourceChain, "MORPHO");
+        oneInchKind[16] = SwapKind.Sell;
+        oneInchAssets[17] = getAddress(sourceChain, "USUAL");
+        oneInchKind[17] = SwapKind.Sell;
 
-        _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
+        _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
 
         // ========================== EtherFi ==========================
         /**
@@ -156,168 +171,177 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "SUSDE")));
         _addEthenaSUSDeWithdrawLeafs(leafs);
 
+        // ========================== Curve ==========================
+        _addCurveLeafs(
+            leafs,
+            getAddress(sourceChain, "USD0_USD0++_CurvePool"),
+            2,
+            getAddress(sourceChain, "USD0_USD0++_CurveGauge")
+        );
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USD0_USD0++_CurvePool"));
+
         // ========================== UniswapV3 ==========================
-        address[] memory token0 = new address[](78);
-        token0[0] = getAddress(sourceChain, "USDC");
-        token0[1] = getAddress(sourceChain, "USDC");
-        token0[2] = getAddress(sourceChain, "USDC");
-        token0[3] = getAddress(sourceChain, "USDC");
-        token0[4] = getAddress(sourceChain, "USDC");
-        token0[5] = getAddress(sourceChain, "USDC");
-        token0[6] = getAddress(sourceChain, "USDC");
-        token0[7] = getAddress(sourceChain, "USDC");
-        token0[8] = getAddress(sourceChain, "USDC");
-        token0[9] = getAddress(sourceChain, "USDC");
-        token0[10] = getAddress(sourceChain, "USDC");
-        token0[11] = getAddress(sourceChain, "USDC");
-        token0[12] = getAddress(sourceChain, "USDC");
-        token0[13] = getAddress(sourceChain, "DAI");
-        token0[14] = getAddress(sourceChain, "DAI");
-        token0[15] = getAddress(sourceChain, "DAI");
-        token0[16] = getAddress(sourceChain, "DAI");
-        token0[17] = getAddress(sourceChain, "DAI");
-        token0[18] = getAddress(sourceChain, "DAI");
-        token0[19] = getAddress(sourceChain, "DAI");
-        token0[20] = getAddress(sourceChain, "DAI");
-        token0[21] = getAddress(sourceChain, "DAI");
-        token0[22] = getAddress(sourceChain, "DAI");
-        token0[23] = getAddress(sourceChain, "DAI");
-        token0[24] = getAddress(sourceChain, "DAI");
-        token0[25] = getAddress(sourceChain, "USDT");
-        token0[26] = getAddress(sourceChain, "USDT");
-        token0[27] = getAddress(sourceChain, "USDT");
-        token0[28] = getAddress(sourceChain, "USDT");
-        token0[29] = getAddress(sourceChain, "USDT");
-        token0[30] = getAddress(sourceChain, "USDT");
-        token0[31] = getAddress(sourceChain, "USDT");
-        token0[32] = getAddress(sourceChain, "USDT");
-        token0[33] = getAddress(sourceChain, "USDT");
-        token0[34] = getAddress(sourceChain, "USDT");
-        token0[35] = getAddress(sourceChain, "USDT");
-        token0[36] = getAddress(sourceChain, "USDS");
-        token0[37] = getAddress(sourceChain, "USDS");
-        token0[38] = getAddress(sourceChain, "USDS");
-        token0[39] = getAddress(sourceChain, "USDS");
-        token0[40] = getAddress(sourceChain, "USDS");
-        token0[41] = getAddress(sourceChain, "USDS");
-        token0[42] = getAddress(sourceChain, "USDS");
-        token0[43] = getAddress(sourceChain, "USDS");
-        token0[44] = getAddress(sourceChain, "USDS");
-        token0[45] = getAddress(sourceChain, "sUSDs");
-        token0[46] = getAddress(sourceChain, "sUSDs");
-        token0[47] = getAddress(sourceChain, "sUSDs");
-        token0[48] = getAddress(sourceChain, "sUSDs");
-        token0[49] = getAddress(sourceChain, "sUSDs");
-        token0[50] = getAddress(sourceChain, "sUSDs");
-        token0[51] = getAddress(sourceChain, "sUSDs");
-        token0[52] = getAddress(sourceChain, "sUSDs");
-        token0[53] = getAddress(sourceChain, "USD0");
-        token0[54] = getAddress(sourceChain, "USD0");
-        token0[55] = getAddress(sourceChain, "USD0");
-        token0[56] = getAddress(sourceChain, "USD0");
-        token0[57] = getAddress(sourceChain, "USD0");
-        token0[58] = getAddress(sourceChain, "USD0");
-        token0[59] = getAddress(sourceChain, "USD0_plus");
-        token0[60] = getAddress(sourceChain, "USD0_plus");
-        token0[61] = getAddress(sourceChain, "USD0_plus");
-        token0[62] = getAddress(sourceChain, "USD0_plus");
-        token0[63] = getAddress(sourceChain, "USD0_plus");
-        token0[64] = getAddress(sourceChain, "deUSD");
-        token0[65] = getAddress(sourceChain, "deUSD");
-        token0[66] = getAddress(sourceChain, "deUSD");
-        token0[67] = getAddress(sourceChain, "deUSD");
-        token0[68] = getAddress(sourceChain, "sdeUSD");
-        token0[69] = getAddress(sourceChain, "sdeUSD");
-        token0[70] = getAddress(sourceChain, "WETH");
-        token0[71] = getAddress(sourceChain, "WETH");
-        token0[72] = getAddress(sourceChain, "USDE");
-        token0[73] = getAddress(sourceChain, "SUSDE");
-        token0[74] = getAddress(sourceChain, "WSTETH");
-        token0[75] = getAddress(sourceChain, "WSTETH");
-        token0[76] = getAddress(sourceChain, "WSTETH");
-        token0[77] = getAddress(sourceChain, "WSTETH");
+        address[] memory uniswapV3Token0 = new address[](78);
+        uniswapV3Token0[0] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[1] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[2] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[3] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[4] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[5] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[6] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[7] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[8] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[9] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[10] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[11] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[12] = getAddress(sourceChain, "USDC");
+        uniswapV3Token0[13] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[14] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[15] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[16] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[17] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[18] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[19] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[20] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[21] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[22] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[23] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[24] = getAddress(sourceChain, "DAI");
+        uniswapV3Token0[25] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[26] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[27] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[28] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[29] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[30] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[31] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[32] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[33] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[34] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[35] = getAddress(sourceChain, "USDT");
+        uniswapV3Token0[36] = getAddress(sourceChain, "USDS");
+        uniswapV3Token0[37] = getAddress(sourceChain, "USDS");
+        uniswapV3Token0[38] = getAddress(sourceChain, "USDS");
+        uniswapV3Token0[39] = getAddress(sourceChain, "USDS");
+        uniswapV3Token0[40] = getAddress(sourceChain, "USDS");
+        uniswapV3Token0[41] = getAddress(sourceChain, "USDS");
+        uniswapV3Token0[42] = getAddress(sourceChain, "USDS");
+        uniswapV3Token0[43] = getAddress(sourceChain, "USDS");
+        uniswapV3Token0[44] = getAddress(sourceChain, "USDS");
+        uniswapV3Token0[45] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token0[46] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token0[47] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token0[48] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token0[49] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token0[50] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token0[51] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token0[52] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token0[53] = getAddress(sourceChain, "USD0");
+        uniswapV3Token0[54] = getAddress(sourceChain, "USD0");
+        uniswapV3Token0[55] = getAddress(sourceChain, "USD0");
+        uniswapV3Token0[56] = getAddress(sourceChain, "USD0");
+        uniswapV3Token0[57] = getAddress(sourceChain, "USD0");
+        uniswapV3Token0[58] = getAddress(sourceChain, "USD0");
+        uniswapV3Token0[59] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token0[60] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token0[61] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token0[62] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token0[63] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token0[64] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token0[65] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token0[66] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token0[67] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token0[68] = getAddress(sourceChain, "sdeUSD");
+        uniswapV3Token0[69] = getAddress(sourceChain, "sdeUSD");
+        uniswapV3Token0[70] = getAddress(sourceChain, "WETH");
+        uniswapV3Token0[71] = getAddress(sourceChain, "WETH");
+        uniswapV3Token0[72] = getAddress(sourceChain, "USDE");
+        uniswapV3Token0[73] = getAddress(sourceChain, "SUSDE");
+        uniswapV3Token0[74] = getAddress(sourceChain, "WSTETH");
+        uniswapV3Token0[75] = getAddress(sourceChain, "WSTETH");
+        uniswapV3Token0[76] = getAddress(sourceChain, "WSTETH");
+        uniswapV3Token0[77] = getAddress(sourceChain, "WSTETH");
 
-        address[] memory token1 = new address[](78);
-        token1[0] = getAddress(sourceChain, "DAI");
-        token1[1] = getAddress(sourceChain, "USDT");
-        token1[2] = getAddress(sourceChain, "USDS");
-        token1[3] = getAddress(sourceChain, "sUSDs");
-        token1[4] = getAddress(sourceChain, "USD0");
-        token1[5] = getAddress(sourceChain, "USD0_plus");
-        token1[6] = getAddress(sourceChain, "deUSD");
-        token1[7] = getAddress(sourceChain, "sdeUSD");
-        token1[8] = getAddress(sourceChain, "WETH");
-        token1[9] = getAddress(sourceChain, "WEETH");
-        token1[10] = getAddress(sourceChain, "USDE");
-        token1[11] = getAddress(sourceChain, "SUSDE");
-        token1[12] = getAddress(sourceChain, "WSTETH");
-        token1[13] = getAddress(sourceChain, "USDT");
-        token1[14] = getAddress(sourceChain, "USDS");
-        token1[15] = getAddress(sourceChain, "sUSDs");
-        token1[16] = getAddress(sourceChain, "USD0");
-        token1[17] = getAddress(sourceChain, "USD0_plus");
-        token1[18] = getAddress(sourceChain, "deUSD");
-        token1[19] = getAddress(sourceChain, "sdeUSD");
-        token1[20] = getAddress(sourceChain, "WETH");
-        token1[21] = getAddress(sourceChain, "WEETH");
-        token1[22] = getAddress(sourceChain, "USDE");
-        token1[23] = getAddress(sourceChain, "SUSDE");
-        token1[24] = getAddress(sourceChain, "WSTETH");
-        token1[25] = getAddress(sourceChain, "USDS");
-        token1[26] = getAddress(sourceChain, "sUSDs");
-        token1[27] = getAddress(sourceChain, "USD0");
-        token1[28] = getAddress(sourceChain, "USD0_plus");
-        token1[29] = getAddress(sourceChain, "deUSD");
-        token1[30] = getAddress(sourceChain, "sdeUSD");
-        token1[31] = getAddress(sourceChain, "WETH");
-        token1[32] = getAddress(sourceChain, "WEETH");
-        token1[33] = getAddress(sourceChain, "USDE");
-        token1[34] = getAddress(sourceChain, "SUSDE");
-        token1[35] = getAddress(sourceChain, "WSTETH");
-        token1[36] = getAddress(sourceChain, "sUSDs");
-        token1[37] = getAddress(sourceChain, "USD0");
-        token1[38] = getAddress(sourceChain, "USD0_plus");
-        token1[39] = getAddress(sourceChain, "deUSD");
-        token1[40] = getAddress(sourceChain, "sdeUSD");
-        token1[41] = getAddress(sourceChain, "WETH");
-        token1[42] = getAddress(sourceChain, "WEETH");
-        token1[43] = getAddress(sourceChain, "USDE");
-        token1[44] = getAddress(sourceChain, "SUSDE");
-        token1[45] = getAddress(sourceChain, "USD0");
-        token1[46] = getAddress(sourceChain, "USD0_plus");
-        token1[47] = getAddress(sourceChain, "deUSD");
-        token1[48] = getAddress(sourceChain, "sdeUSD");
-        token1[49] = getAddress(sourceChain, "WETH");
-        token1[50] = getAddress(sourceChain, "WEETH");
-        token1[51] = getAddress(sourceChain, "USDE");
-        token1[52] = getAddress(sourceChain, "SUSDE");
-        token1[53] = getAddress(sourceChain, "USD0_plus");
-        token1[54] = getAddress(sourceChain, "deUSD");
-        token1[55] = getAddress(sourceChain, "sdeUSD");
-        token1[56] = getAddress(sourceChain, "WETH");
-        token1[57] = getAddress(sourceChain, "WEETH");
-        token1[58] = getAddress(sourceChain, "USDE");
-        token1[59] = getAddress(sourceChain, "deUSD");
-        token1[60] = getAddress(sourceChain, "sdeUSD");
-        token1[61] = getAddress(sourceChain, "WETH");
-        token1[62] = getAddress(sourceChain, "WEETH");
-        token1[63] = getAddress(sourceChain, "USDE");
-        token1[64] = getAddress(sourceChain, "sdeUSD");
-        token1[65] = getAddress(sourceChain, "WETH");
-        token1[66] = getAddress(sourceChain, "WEETH");
-        token1[67] = getAddress(sourceChain, "USDE");
-        token1[68] = getAddress(sourceChain, "WEETH");
-        token1[69] = getAddress(sourceChain, "USDE");
-        token1[70] = getAddress(sourceChain, "WEETH");
-        token1[71] = getAddress(sourceChain, "USDC");
-        token1[72] = getAddress(sourceChain, "USDC");
-        token1[73] = getAddress(sourceChain, "USDC");
-        token1[74] = getAddress(sourceChain, "USDC");
-        token1[75] = getAddress(sourceChain, "DAI");
-        token1[76] = getAddress(sourceChain, "USDT");
-        token1[77] = getAddress(sourceChain, "WETH");
+        address[] memory uniswapV3Token1 = new address[](78);
+        uniswapV3Token1[0] = getAddress(sourceChain, "DAI");
+        uniswapV3Token1[1] = getAddress(sourceChain, "USDT");
+        uniswapV3Token1[2] = getAddress(sourceChain, "USDS");
+        uniswapV3Token1[3] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token1[4] = getAddress(sourceChain, "USD0");
+        uniswapV3Token1[5] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token1[6] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token1[7] = getAddress(sourceChain, "sdeUSD");
+        uniswapV3Token1[8] = getAddress(sourceChain, "WETH");
+        uniswapV3Token1[9] = getAddress(sourceChain, "WEETH");
+        uniswapV3Token1[10] = getAddress(sourceChain, "USDE");
+        uniswapV3Token1[11] = getAddress(sourceChain, "SUSDE");
+        uniswapV3Token1[12] = getAddress(sourceChain, "WSTETH");
+        uniswapV3Token1[13] = getAddress(sourceChain, "USDT");
+        uniswapV3Token1[14] = getAddress(sourceChain, "USDS");
+        uniswapV3Token1[15] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token1[16] = getAddress(sourceChain, "USD0");
+        uniswapV3Token1[17] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token1[18] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token1[19] = getAddress(sourceChain, "sdeUSD");
+        uniswapV3Token1[20] = getAddress(sourceChain, "WETH");
+        uniswapV3Token1[21] = getAddress(sourceChain, "WEETH");
+        uniswapV3Token1[22] = getAddress(sourceChain, "USDE");
+        uniswapV3Token1[23] = getAddress(sourceChain, "SUSDE");
+        uniswapV3Token1[24] = getAddress(sourceChain, "WSTETH");
+        uniswapV3Token1[25] = getAddress(sourceChain, "USDS");
+        uniswapV3Token1[26] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token1[27] = getAddress(sourceChain, "USD0");
+        uniswapV3Token1[28] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token1[29] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token1[30] = getAddress(sourceChain, "sdeUSD");
+        uniswapV3Token1[31] = getAddress(sourceChain, "WETH");
+        uniswapV3Token1[32] = getAddress(sourceChain, "WEETH");
+        uniswapV3Token1[33] = getAddress(sourceChain, "USDE");
+        uniswapV3Token1[34] = getAddress(sourceChain, "SUSDE");
+        uniswapV3Token1[35] = getAddress(sourceChain, "WSTETH");
+        uniswapV3Token1[36] = getAddress(sourceChain, "sUSDs");
+        uniswapV3Token1[37] = getAddress(sourceChain, "USD0");
+        uniswapV3Token1[38] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token1[39] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token1[40] = getAddress(sourceChain, "sdeUSD");
+        uniswapV3Token1[41] = getAddress(sourceChain, "WETH");
+        uniswapV3Token1[42] = getAddress(sourceChain, "WEETH");
+        uniswapV3Token1[43] = getAddress(sourceChain, "USDE");
+        uniswapV3Token1[44] = getAddress(sourceChain, "SUSDE");
+        uniswapV3Token1[45] = getAddress(sourceChain, "USD0");
+        uniswapV3Token1[46] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token1[47] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token1[48] = getAddress(sourceChain, "sdeUSD");
+        uniswapV3Token1[49] = getAddress(sourceChain, "WETH");
+        uniswapV3Token1[50] = getAddress(sourceChain, "WEETH");
+        uniswapV3Token1[51] = getAddress(sourceChain, "USDE");
+        uniswapV3Token1[52] = getAddress(sourceChain, "SUSDE");
+        uniswapV3Token1[53] = getAddress(sourceChain, "USD0_plus");
+        uniswapV3Token1[54] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token1[55] = getAddress(sourceChain, "sdeUSD");
+        uniswapV3Token1[56] = getAddress(sourceChain, "WETH");
+        uniswapV3Token1[57] = getAddress(sourceChain, "WEETH");
+        uniswapV3Token1[58] = getAddress(sourceChain, "USDE");
+        uniswapV3Token1[59] = getAddress(sourceChain, "deUSD");
+        uniswapV3Token1[60] = getAddress(sourceChain, "sdeUSD");
+        uniswapV3Token1[61] = getAddress(sourceChain, "WETH");
+        uniswapV3Token1[62] = getAddress(sourceChain, "WEETH");
+        uniswapV3Token1[63] = getAddress(sourceChain, "USDE");
+        uniswapV3Token1[64] = getAddress(sourceChain, "sdeUSD");
+        uniswapV3Token1[65] = getAddress(sourceChain, "WETH");
+        uniswapV3Token1[66] = getAddress(sourceChain, "WEETH");
+        uniswapV3Token1[67] = getAddress(sourceChain, "USDE");
+        uniswapV3Token1[68] = getAddress(sourceChain, "WEETH");
+        uniswapV3Token1[69] = getAddress(sourceChain, "USDE");
+        uniswapV3Token1[70] = getAddress(sourceChain, "WEETH");
+        uniswapV3Token1[71] = getAddress(sourceChain, "USDC");
+        uniswapV3Token1[72] = getAddress(sourceChain, "USDC");
+        uniswapV3Token1[73] = getAddress(sourceChain, "USDC");
+        uniswapV3Token1[74] = getAddress(sourceChain, "USDC");
+        uniswapV3Token1[75] = getAddress(sourceChain, "DAI");
+        uniswapV3Token1[76] = getAddress(sourceChain, "USDT");
+        uniswapV3Token1[77] = getAddress(sourceChain, "WETH");
 
-        _addUniswapV3Leafs(leafs, token0, token1, true);
+        _addUniswapV3Leafs(leafs, uniswapV3Token0, uniswapV3Token1, true);
 
         // ========================== MakerDAO ==========================
         /**
@@ -352,44 +376,25 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Drone Leafs ==========================
 
         uint256 startIndex = leafIndex + 1;
+        setAddress(true, sourceChain, "boringVault", drone);
 
         // ========================== Aave V3 ==========================
-        supplyAssets = new ERC20[](5);
-        supplyAssets[0] = getERC20(sourceChain, "USDC");
-        supplyAssets[1] = getERC20(sourceChain, "USDT");
-        supplyAssets[2] = getERC20(sourceChain, "DAI");
-        supplyAssets[3] = getERC20(sourceChain, "WEETH");
-        supplyAssets[4] = getERC20(sourceChain, "WSTETH");
-        borrowAssets = new ERC20[](5);
-        borrowAssets[0] = getERC20(sourceChain, "USDC");
-        borrowAssets[1] = getERC20(sourceChain, "USDT");
-        borrowAssets[2] = getERC20(sourceChain, "DAI");
-        borrowAssets[3] = getERC20(sourceChain, "WETH");
-        borrowAssets[4] = getERC20(sourceChain, "WSTETH");
-        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
+        _addAaveV3Leafs(leafs, aaveSupplyAssets, aaveBorrowAssets);
 
         // ========================== SparkLend ==========================
-        supplyAssets = new ERC20[](7);
-        supplyAssets[0] = getERC20(sourceChain, "USDC");
-        supplyAssets[1] = getERC20(sourceChain, "USDT");
-        supplyAssets[2] = getERC20(sourceChain, "DAI");
-        supplyAssets[3] = getERC20(sourceChain, "sUSDs");
-        supplyAssets[4] = getERC20(sourceChain, "WETH");
-        supplyAssets[5] = getERC20(sourceChain, "WSTETH");
-        supplyAssets[6] = getERC20(sourceChain, "WEETH");
-        borrowAssets = new ERC20[](5);
-        borrowAssets[0] = getERC20(sourceChain, "USDC");
-        borrowAssets[1] = getERC20(sourceChain, "USDT");
-        borrowAssets[2] = getERC20(sourceChain, "DAI");
-        borrowAssets[3] = getERC20(sourceChain, "WETH");
-        borrowAssets[4] = getERC20(sourceChain, "WSTETH");
-
-        _addSparkLendLeafs(leafs, supplyAssets, borrowAssets);
+        _addSparkLendLeafs(leafs, sparkLendSupplyAssets, sparkLendBorrowAssets);
 
         // ========================== MetaMorpho ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "usualBoostedUSDC")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCcore")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCprime")));
+
+        // ========================== MorphoBlue ==========================
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "sUSDePT03_USDC_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "USD0_plusPT03_USDC_915"));
+
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT03_USDC_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "USD0_plusPT03_USDC_915"));
 
         // ========================== Usual ==========================
         _addUsualMoneyLeafs(leafs);
@@ -402,47 +407,17 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Pendle ==========================
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_03_26_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_01_29_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_02_26_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_03_26_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_04_23_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_06_25_2025"), true);
 
         // ========================== 1inch ==========================
         /*
          *
          */
-        assets = new address[](15);
-        kind = new SwapKind[](15);
-        assets[0] = getAddress(sourceChain, "USDC");
-        kind[0] = SwapKind.BuyAndSell;
-        assets[1] = getAddress(sourceChain, "USDT");
-        kind[1] = SwapKind.BuyAndSell;
-        assets[2] = getAddress(sourceChain, "DAI");
-        kind[2] = SwapKind.BuyAndSell;
-        assets[3] = getAddress(sourceChain, "USDS");
-        kind[3] = SwapKind.BuyAndSell;
-        assets[4] = getAddress(sourceChain, "PENDLE");
-        kind[4] = SwapKind.Sell;
-        assets[5] = getAddress(sourceChain, "deUSD");
-        kind[5] = SwapKind.BuyAndSell;
-        assets[6] = getAddress(sourceChain, "sdeUSD");
-        kind[6] = SwapKind.BuyAndSell;
-        assets[7] = getAddress(sourceChain, "USDS");
-        kind[7] = SwapKind.BuyAndSell;
-        assets[8] = getAddress(sourceChain, "sUSDs");
-        kind[8] = SwapKind.BuyAndSell;
-        assets[8] = getAddress(sourceChain, "USD0");
-        kind[8] = SwapKind.BuyAndSell;
-        assets[9] = getAddress(sourceChain, "USD0_plus");
-        kind[9] = SwapKind.BuyAndSell;
-        assets[10] = getAddress(sourceChain, "WETH");
-        kind[10] = SwapKind.BuyAndSell;
-        assets[11] = getAddress(sourceChain, "WEETH");
-        kind[11] = SwapKind.BuyAndSell;
-        assets[12] = getAddress(sourceChain, "USDE");
-        kind[12] = SwapKind.BuyAndSell;
-        assets[13] = getAddress(sourceChain, "SUSDE");
-        kind[13] = SwapKind.BuyAndSell;
-        assets[14] = getAddress(sourceChain, "WSTETH");
-        kind[14] = SwapKind.BuyAndSell;
-
-        _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
+        _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
 
         // ========================== EtherFi ==========================
         /**
@@ -463,168 +438,17 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "SUSDE")));
         _addEthenaSUSDeWithdrawLeafs(leafs);
 
+        // ========================== Curve ==========================
+        _addCurveLeafs(
+            leafs,
+            getAddress(sourceChain, "USD0_USD0++_CurvePool"),
+            2,
+            getAddress(sourceChain, "USD0_USD0++_CurveGauge")
+        );
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USD0_USD0++_CurvePool"));
+
         // ========================== UniswapV3 ==========================
-        token0 = new address[](78);
-        token0[0] = getAddress(sourceChain, "USDC");
-        token0[1] = getAddress(sourceChain, "USDC");
-        token0[2] = getAddress(sourceChain, "USDC");
-        token0[3] = getAddress(sourceChain, "USDC");
-        token0[4] = getAddress(sourceChain, "USDC");
-        token0[5] = getAddress(sourceChain, "USDC");
-        token0[6] = getAddress(sourceChain, "USDC");
-        token0[7] = getAddress(sourceChain, "USDC");
-        token0[8] = getAddress(sourceChain, "USDC");
-        token0[9] = getAddress(sourceChain, "USDC");
-        token0[10] = getAddress(sourceChain, "USDC");
-        token0[11] = getAddress(sourceChain, "USDC");
-        token0[12] = getAddress(sourceChain, "USDC");
-        token0[13] = getAddress(sourceChain, "DAI");
-        token0[14] = getAddress(sourceChain, "DAI");
-        token0[15] = getAddress(sourceChain, "DAI");
-        token0[16] = getAddress(sourceChain, "DAI");
-        token0[17] = getAddress(sourceChain, "DAI");
-        token0[18] = getAddress(sourceChain, "DAI");
-        token0[19] = getAddress(sourceChain, "DAI");
-        token0[20] = getAddress(sourceChain, "DAI");
-        token0[21] = getAddress(sourceChain, "DAI");
-        token0[22] = getAddress(sourceChain, "DAI");
-        token0[23] = getAddress(sourceChain, "DAI");
-        token0[24] = getAddress(sourceChain, "DAI");
-        token0[25] = getAddress(sourceChain, "USDT");
-        token0[26] = getAddress(sourceChain, "USDT");
-        token0[27] = getAddress(sourceChain, "USDT");
-        token0[28] = getAddress(sourceChain, "USDT");
-        token0[29] = getAddress(sourceChain, "USDT");
-        token0[30] = getAddress(sourceChain, "USDT");
-        token0[31] = getAddress(sourceChain, "USDT");
-        token0[32] = getAddress(sourceChain, "USDT");
-        token0[33] = getAddress(sourceChain, "USDT");
-        token0[34] = getAddress(sourceChain, "USDT");
-        token0[35] = getAddress(sourceChain, "USDT");
-        token0[36] = getAddress(sourceChain, "USDS");
-        token0[37] = getAddress(sourceChain, "USDS");
-        token0[38] = getAddress(sourceChain, "USDS");
-        token0[39] = getAddress(sourceChain, "USDS");
-        token0[40] = getAddress(sourceChain, "USDS");
-        token0[41] = getAddress(sourceChain, "USDS");
-        token0[42] = getAddress(sourceChain, "USDS");
-        token0[43] = getAddress(sourceChain, "USDS");
-        token0[44] = getAddress(sourceChain, "USDS");
-        token0[45] = getAddress(sourceChain, "sUSDs");
-        token0[46] = getAddress(sourceChain, "sUSDs");
-        token0[47] = getAddress(sourceChain, "sUSDs");
-        token0[48] = getAddress(sourceChain, "sUSDs");
-        token0[49] = getAddress(sourceChain, "sUSDs");
-        token0[50] = getAddress(sourceChain, "sUSDs");
-        token0[51] = getAddress(sourceChain, "sUSDs");
-        token0[52] = getAddress(sourceChain, "sUSDs");
-        token0[53] = getAddress(sourceChain, "USD0");
-        token0[54] = getAddress(sourceChain, "USD0");
-        token0[55] = getAddress(sourceChain, "USD0");
-        token0[56] = getAddress(sourceChain, "USD0");
-        token0[57] = getAddress(sourceChain, "USD0");
-        token0[58] = getAddress(sourceChain, "USD0");
-        token0[59] = getAddress(sourceChain, "USD0_plus");
-        token0[60] = getAddress(sourceChain, "USD0_plus");
-        token0[61] = getAddress(sourceChain, "USD0_plus");
-        token0[62] = getAddress(sourceChain, "USD0_plus");
-        token0[63] = getAddress(sourceChain, "USD0_plus");
-        token0[64] = getAddress(sourceChain, "deUSD");
-        token0[65] = getAddress(sourceChain, "deUSD");
-        token0[66] = getAddress(sourceChain, "deUSD");
-        token0[67] = getAddress(sourceChain, "deUSD");
-        token0[68] = getAddress(sourceChain, "sdeUSD");
-        token0[69] = getAddress(sourceChain, "sdeUSD");
-        token0[70] = getAddress(sourceChain, "WETH");
-        token0[71] = getAddress(sourceChain, "WETH");
-        token0[72] = getAddress(sourceChain, "USDE");
-        token0[73] = getAddress(sourceChain, "SUSDE");
-        token0[74] = getAddress(sourceChain, "WSTETH");
-        token0[75] = getAddress(sourceChain, "WSTETH");
-        token0[76] = getAddress(sourceChain, "WSTETH");
-        token0[77] = getAddress(sourceChain, "WSTETH");
-
-        token1 = new address[](78);
-        token1[0] = getAddress(sourceChain, "DAI");
-        token1[1] = getAddress(sourceChain, "USDT");
-        token1[2] = getAddress(sourceChain, "USDS");
-        token1[3] = getAddress(sourceChain, "sUSDs");
-        token1[4] = getAddress(sourceChain, "USD0");
-        token1[5] = getAddress(sourceChain, "USD0_plus");
-        token1[6] = getAddress(sourceChain, "deUSD");
-        token1[7] = getAddress(sourceChain, "sdeUSD");
-        token1[8] = getAddress(sourceChain, "WETH");
-        token1[9] = getAddress(sourceChain, "WEETH");
-        token1[10] = getAddress(sourceChain, "USDE");
-        token1[11] = getAddress(sourceChain, "SUSDE");
-        token1[12] = getAddress(sourceChain, "WSTETH");
-        token1[13] = getAddress(sourceChain, "USDT");
-        token1[14] = getAddress(sourceChain, "USDS");
-        token1[15] = getAddress(sourceChain, "sUSDs");
-        token1[16] = getAddress(sourceChain, "USD0");
-        token1[17] = getAddress(sourceChain, "USD0_plus");
-        token1[18] = getAddress(sourceChain, "deUSD");
-        token1[19] = getAddress(sourceChain, "sdeUSD");
-        token1[20] = getAddress(sourceChain, "WETH");
-        token1[21] = getAddress(sourceChain, "WEETH");
-        token1[22] = getAddress(sourceChain, "USDE");
-        token1[23] = getAddress(sourceChain, "SUSDE");
-        token1[24] = getAddress(sourceChain, "WSTETH");
-        token1[25] = getAddress(sourceChain, "USDS");
-        token1[26] = getAddress(sourceChain, "sUSDs");
-        token1[27] = getAddress(sourceChain, "USD0");
-        token1[28] = getAddress(sourceChain, "USD0_plus");
-        token1[29] = getAddress(sourceChain, "deUSD");
-        token1[30] = getAddress(sourceChain, "sdeUSD");
-        token1[31] = getAddress(sourceChain, "WETH");
-        token1[32] = getAddress(sourceChain, "WEETH");
-        token1[33] = getAddress(sourceChain, "USDE");
-        token1[34] = getAddress(sourceChain, "SUSDE");
-        token1[35] = getAddress(sourceChain, "WSTETH");
-        token1[36] = getAddress(sourceChain, "sUSDs");
-        token1[37] = getAddress(sourceChain, "USD0");
-        token1[38] = getAddress(sourceChain, "USD0_plus");
-        token1[39] = getAddress(sourceChain, "deUSD");
-        token1[40] = getAddress(sourceChain, "sdeUSD");
-        token1[41] = getAddress(sourceChain, "WETH");
-        token1[42] = getAddress(sourceChain, "WEETH");
-        token1[43] = getAddress(sourceChain, "USDE");
-        token1[44] = getAddress(sourceChain, "SUSDE");
-        token1[45] = getAddress(sourceChain, "USD0");
-        token1[46] = getAddress(sourceChain, "USD0_plus");
-        token1[47] = getAddress(sourceChain, "deUSD");
-        token1[48] = getAddress(sourceChain, "sdeUSD");
-        token1[49] = getAddress(sourceChain, "WETH");
-        token1[50] = getAddress(sourceChain, "WEETH");
-        token1[51] = getAddress(sourceChain, "USDE");
-        token1[52] = getAddress(sourceChain, "SUSDE");
-        token1[53] = getAddress(sourceChain, "USD0_plus");
-        token1[54] = getAddress(sourceChain, "deUSD");
-        token1[55] = getAddress(sourceChain, "sdeUSD");
-        token1[56] = getAddress(sourceChain, "WETH");
-        token1[57] = getAddress(sourceChain, "WEETH");
-        token1[58] = getAddress(sourceChain, "USDE");
-        token1[59] = getAddress(sourceChain, "deUSD");
-        token1[60] = getAddress(sourceChain, "sdeUSD");
-        token1[61] = getAddress(sourceChain, "WETH");
-        token1[62] = getAddress(sourceChain, "WEETH");
-        token1[63] = getAddress(sourceChain, "USDE");
-        token1[64] = getAddress(sourceChain, "sdeUSD");
-        token1[65] = getAddress(sourceChain, "WETH");
-        token1[66] = getAddress(sourceChain, "WEETH");
-        token1[67] = getAddress(sourceChain, "USDE");
-        token1[68] = getAddress(sourceChain, "WEETH");
-        token1[69] = getAddress(sourceChain, "USDE");
-        token1[70] = getAddress(sourceChain, "WEETH");
-        token1[71] = getAddress(sourceChain, "USDC");
-        token1[72] = getAddress(sourceChain, "USDC");
-        token1[73] = getAddress(sourceChain, "USDC");
-        token1[74] = getAddress(sourceChain, "USDC");
-        token1[75] = getAddress(sourceChain, "DAI");
-        token1[76] = getAddress(sourceChain, "USDT");
-        token1[77] = getAddress(sourceChain, "WETH");
-
-        _addUniswapV3Leafs(leafs, token0, token1, true);
+        _addUniswapV3Leafs(leafs, uniswapV3Token0, uniswapV3Token1, true);
 
         // ========================== MakerDAO ==========================
         /**
