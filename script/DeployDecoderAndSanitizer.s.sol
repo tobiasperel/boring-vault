@@ -25,6 +25,7 @@ import {EtherFiLiquidBtcDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/EtherFiLiquidBtcDecoderAndSanitizer.sol";
 import {SonicMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicEthMainnetDecoderAndSanitizer.sol";
 import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AaveV3FullDecoderAndSanitizer.sol"; 
+import {LombardBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LombardBtcDecoderAndSanitizer.sol"; 
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -115,9 +116,13 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
        
-        creationCode = type(AaveV3FullDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(boringVault);
-        deployer.deployContract("AaveV3 Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        //creationCode = type(AaveV3FullDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(boringVault);
+        //deployer.deployContract("AaveV3 Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        
+        creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager); 
+        deployer.deployContract("Lombard BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }

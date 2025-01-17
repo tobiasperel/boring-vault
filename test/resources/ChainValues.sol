@@ -31,6 +31,8 @@ contract ChainValues {
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
     uint64 public constant ccipMainnetChainSelector = 5009297550715157269;
+    uint64 public constant ccipBaseChainSelector = 15971525489660198786; 
+    uint64 public constant ccipBscChainSelector = 11344663589394136015; 
     uint32 public constant layerZeroBaseEndpointId = 30184;
     uint32 public constant layerZeroMainnetEndpointId = 30101;
     uint32 public constant layerZeroOptimismEndpointId = 30111;
@@ -690,6 +692,8 @@ contract ChainValues {
         values[mainnet]["pendle_LBTC_corn_market_12_26_24"] = 0xCaE62858DB831272A03768f5844cbe1B40bB381f.toBytes32();
         values[mainnet]["pendle_LBTC_market_03_26_25"] = 0x70B70Ac0445C3eF04E314DFdA6caafd825428221.toBytes32();
         values[mainnet]["pendle_eBTC_corn_market_3_26_25"] = 0x2C71Ead7ac9AE53D05F8664e77031d4F9ebA064B.toBytes32();
+        values[mainnet]["pendle_LBTC_concrete_market_04_09_25"] = 0x83916356556f51dcBcB226202c3efeEfc88d5eaA.toBytes32(); 
+        values[mainnet]["pendle_WBTC_concrete_market_04_09_25"] = 0x9471d9c5B57b59d42B739b00389a6d520c33A7a9.toBytes32(); 
 
         values[mainnet]["pendle_pumpBTC_market_03_26_25"] = 0x8098B48a1c4e4080b30A43a7eBc0c87b52F17222.toBytes32();
         values[mainnet]["pendle_corn_pumpBTC_market_12_25_24"] = 0xf8208fB52BA80075aF09840A683143C22DC5B4dd.toBytes32();
@@ -697,6 +701,7 @@ contract ChainValues {
         values[mainnet]["pendle_uniBTC_market_03_26_25"] = 0x380C751BD0412f47Ca560B6AFeB566d88dc18630.toBytes32();
         values[mainnet]["pendle_corn_uniBTC_market_12_26_24"] = 0x40dEAE18c3CE932Fdd5Df1f44b54D8Cf3902787B.toBytes32();
         values[mainnet]["pendle_sUSDs_market_03_26_25"] = 0x21D85Ff3BEDFF031EF466C7d5295240C8AB2a2b8.toBytes32();
+
 
         // Aave V3 Core
         values[mainnet]["v3Pool"] = 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2.toBytes32();
