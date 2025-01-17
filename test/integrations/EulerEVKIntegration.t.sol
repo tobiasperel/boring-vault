@@ -51,7 +51,7 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(new EulerEVKFullDecoderAndSanitizer(address(boringVault)));
+        rawDataDecoderAndSanitizer = address(new EulerEVKFullDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);

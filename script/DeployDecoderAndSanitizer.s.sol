@@ -110,7 +110,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
        
         creationCode = type(AaveV3FullDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(boringVault);
+        constructorArgs = abi.encode();
         deployer.deployContract("AaveV3 Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
