@@ -15,10 +15,10 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
-    address public rawDataDecoderAndSanitizer = 0xB1B5dAe58E10c98f57Fb93d6F5849958a17fd0Ab;
+    address public rawDataDecoderAndSanitizer = 0x72B0dB3c5b133C6D060AB58134654287fA9f05BF;
     address public managerAddress = 0x227975088C28DBBb4b421c6d96781a53578f19a8;
     address public accountantAddress = 0x0d05D94a5F1E76C18fbeB7A13d17C8a314088198;
-    address public pancakeSwapDataDecoderAndSanitizer = 0x4dE66AA174b99481dAAe12F2Cdd5D76Dc14Eb3BC;
+    address public pancakeSwapDataDecoderAndSanitizer = 0xfdC73Fc6B60e4959b71969165876213918A443Cd;
     address public itbDecoderAndSanitizer = 0xEEb53299Cb894968109dfa420D69f0C97c835211;
     address public itbAaveDecoderAndSanitizer = 0x7fA5dbDB1A76d2990Ea0f3c74e520E3fcE94748B;
     address public itbReserveProtocolPositionManager = 0x778aC5d0EE062502fADaa2d300a51dE0869f7995;
@@ -46,16 +46,14 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](1024);
 
         // ========================== Aave V3 ==========================
-        ERC20[] memory supplyAssets = new ERC20[](4);
+        ERC20[] memory supplyAssets = new ERC20[](3);
         supplyAssets[0] = getERC20(sourceChain, "WETH");
         supplyAssets[1] = getERC20(sourceChain, "WEETH");
         supplyAssets[2] = getERC20(sourceChain, "WSTETH");
-        supplyAssets[3] = getERC20(sourceChain, "RETH");
-        ERC20[] memory borrowAssets = new ERC20[](4);
+        ERC20[] memory borrowAssets = new ERC20[](3);
         borrowAssets[0] = getERC20(sourceChain, "WETH");
         borrowAssets[1] = getERC20(sourceChain, "WEETH");
         borrowAssets[2] = getERC20(sourceChain, "WSTETH");
-        borrowAssets[3] = getERC20(sourceChain, "RETH");
         _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
 
         // ========================== SparkLend ==========================
@@ -116,6 +114,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_weETHs_market_12_25_24"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleKarakWeETHMarketDecember"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendleWeETHkDecember"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_liquid_bera_eth_04_09_25"), true);
 
         // ========================== UniswapV3 ==========================
         address[] memory token0 = new address[](9);
@@ -150,7 +149,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[0] = getERC20(sourceChain, "WETH");
         feeAssets[1] = getERC20(sourceChain, "WEETH");
         feeAssets[2] = getERC20(sourceChain, "EETH");
-        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, false);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](16);
@@ -302,17 +301,37 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             _addTellerLeafs(leafs, kingKarakTeller, tellerAssets);
         }
 
+        // ========================== Fluid Dex ==========================
+        {
+            ERC20[] memory supplyTokens = new ERC20[](2);
+            supplyTokens[0] = getERC20(sourceChain, "WEETH");
+            supplyTokens[1] = getERC20(sourceChain, "WETH");
+
+            ERC20[] memory borrowTokens = new ERC20[](1);
+            borrowTokens[0] = getERC20(sourceChain, "WSTETH");
+
+            uint256 dexType = 2000;
+
+            _addFluidDexLeafs(
+                leafs, getAddress(sourceChain, "weETH_ETHDex_wstETH"), dexType, supplyTokens, borrowTokens
+            );
+        }
+
         // ========================== Term ==========================
         {
             setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", termFinanceDecoderAndSanitizer);
-            ERC20[] memory purchaseTokens = new ERC20[](1);
+            ERC20[] memory purchaseTokens = new ERC20[](2);
             purchaseTokens[0] = getERC20(sourceChain, "WETH");
-            address[] memory termAuctionOfferLockerAddresses = new address[](1);
+            purchaseTokens[1] = getERC20(sourceChain, "WETH");
+            address[] memory termAuctionOfferLockerAddresses = new address[](2);
             termAuctionOfferLockerAddresses[0] = 0x8b051F8Bc836EC4B01da563dB82df9CD22CA4884;
-            address[] memory termRepoLockers = new address[](1);
+            termAuctionOfferLockerAddresses[1] = 0x8a98076a97dc3e905b6beEb47268a92658bCf9C1;
+            address[] memory termRepoLockers = new address[](2);
             termRepoLockers[0] = 0x330e701F0523b445958f0484E6Ea3656c55932A4;
-            address[] memory termRepoServicers = new address[](1);
+            termRepoLockers[1] = 0x46044AccFa442cDd1f4958847CC05F01a59b9610;
+            address[] memory termRepoServicers = new address[](2);
             termRepoServicers[0] = 0x4895958D1F170Db5fD71bcf3B2cE0dA40A0e38FF;
+            termRepoServicers[1] = 0x859B4aDc287E76fe7076F6Af9bfB56e3E9253c1c;
             _addTermFinanceLockOfferLeafs(leafs, purchaseTokens, termAuctionOfferLockerAddresses, termRepoLockers);
             _addTermFinanceUnlockOfferLeafs(leafs, termAuctionOfferLockerAddresses);
             _addTermFinanceRevealOfferLeafs(leafs, termAuctionOfferLockerAddresses);
