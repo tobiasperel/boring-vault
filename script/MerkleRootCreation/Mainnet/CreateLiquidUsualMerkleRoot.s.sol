@@ -208,6 +208,7 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Morpho Conversion ==========================
         _addMorphoRewardWrapperLeafs(leafs);  
+        _addMorphoRewardMerkleClaimerLeafs(leafs, 0x330eefa8a787552DC5cAd3C3cA644844B1E61Ddb); 
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
