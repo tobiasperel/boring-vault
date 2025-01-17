@@ -31,26 +31,26 @@
     "deploymentFileName": "addresses/Arbitrum/eBTC.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "test ether.fi BTC Roles Authority Version 0.6"
+    "rolesAuthorityDeploymentName": "ether.fi BTC RolesAuthority Version 0.0"
   },
   "lensConfiguration": {
-    "lensDeploymentName": "Arctic Architecture Lens V0.6"
+    "lensDeploymentName": "Arctic Architecture Lens V0.0"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "test ether.fi BTC V0.6",
+    "boringVaultDeploymentName": "ether.fi BTC V0.0",
     "boringVaultName": "ether.fi BTC",
     "boringVaultSymbol": "eBTC",
     "boringVaultDecimals": 8
   },
   "managerConfiguration": {
-    "managerDeploymentName": "test ether.fi BTC Manager V0.6",
+    "managerDeploymentName": "ether.fi BTC Manager With Merkle Verification V0.0",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "test ether.fi BTC Accountant V0.6",
+    "accountantDeploymentName": "ether.fi BTC Accountant With Rate Providers V0.0",
     "accountantParameters": {
       "kind": {
         "variableRate": true,
@@ -58,7 +58,7 @@
       },
       "payoutConfiguration": {
         "payoutTo": "0x0000000000000000000000000000000000000001",
-        "optionalPaymentSplitterName": "test ether.fi BTC Payment Splitter V0.6",
+        "optionalPaymentSplitterName": "ether.fi BTC Payment Splitter V0.0",
         "splits": [
           {
             "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
@@ -81,7 +81,7 @@
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "test ether.fi BTC Teller V0.6",
+    "tellerDeploymentName": "ether.fi BTC Teller With Multi Asset Support V0.0",
     "tellerParameters": {
       "allowPublicDeposits": true,
       "shareLockPeriod": 60,
@@ -90,52 +90,12 @@
         "tellerWithRemediation": false,
         "tellerWithCcip": false,
         "tellerWithLayerZero": false
-      },
-      "ccip": {
-        "routerAddressOrName": {
-          "address": "0x0000000000000000000000000000000000000000",
-          "name": "ccipRouter"
-        },
-        "ccipChains": [
-          {
-            "chainSelector": 1,
-            "allowMessagesFrom": true,
-            "allowMessagesTo": true,
-            "targetTellerOrSelf": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "self": true
-            },
-            "messageGasLimit": 100000
-          }
-        ]
-      },
-      "layerZero": {
-        "endpointAddressOrName": {
-          "address": "0x0000000000000000000000000000000000000000",
-          "name": "LayerZeroEndPoint"
-        },
-        "lzTokenAddressOrName": {
-          "address": "0x0000000000000000000000000000000000000000",
-          "name": "ZRO"
-        },
-        "lzChains": [
-          {
-            "chainId": 1,
-            "allowMessagesFrom": true,
-            "allowMessagesTo": true,
-            "targetTellerOrSelf": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "self": true
-            },
-            "messageGasLimit": 100000
-          }
-        ]
       }
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "test ether.fi BTC Boring Queue V0.6",
-    "boringQueueSolverName": "test ether.fi BTC Boring Solver V0.6",
+    "boringQueueDeploymentName": "ether.fi BTC Boring Queue V0.0",
+    "boringQueueSolverName": "ether.fi BTC Boring Solver V0.0",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -146,13 +106,13 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "test ether.fi BTC Drone V0.6",
+    "droneDeploymentBaseName": "ether.fi BTC Drone V0.0",
     "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
     "shouldDeploy": true,
-    "pauserDeploymentName": "test ether.fi BTC Pauser V0.6",
+    "pauserDeploymentName": "ether.fi BTC Pauser V0.0",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
     "makePauseAll": ["0x0000000000000000000000000000000000000000"],
@@ -166,7 +126,7 @@
   },
   "timelockConfiguration": {
     "shouldDeploy": true,
-    "timelockDeploymentName": "test ether.fi BTC Timelock V0.6",
+    "timelockDeploymentName": "ether.fi BTC Timelock V0.0",
     "timelockParameters": {
       "minDelay": 60,
       "proposers": [
@@ -194,7 +154,7 @@
       },
       "allowDeposits": true,
       "allowWithdraws": true,
-      "sharePremium": 10
+      "sharePremium": 40
     },
     {
       "addressOrName": {
@@ -203,7 +163,7 @@
       },
       "allowDeposits": true,
       "allowWithdraws": true,
-      "sharePremium": 40
+      "sharePremium": 0
     }
   ],
   "withdrawAssets": [

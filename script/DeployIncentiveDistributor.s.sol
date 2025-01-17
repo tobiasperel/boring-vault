@@ -21,7 +21,7 @@ contract DeployIncentiveDistributorScript is Script {
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("sonicMainnet");
+        vm.createSelectFork("mainnet");
     }
 
     function run() external {
@@ -33,9 +33,7 @@ contract DeployIncentiveDistributorScript is Script {
 
         constructorArgs = abi.encode(owner, address(0));
         creationCode = type(IncentiveDistributor).creationCode;
-        IncentiveDistributor(
-            deployer.deployContract("Staked Sonic ETH Incentive Distributor V0.0", creationCode, constructorArgs, 0)
-        );
+        IncentiveDistributor(deployer.deployContract("Incentive Distributor V0.0", creationCode, constructorArgs, 0));
 
         vm.stopBroadcast();
     }

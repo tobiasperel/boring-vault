@@ -6,18 +6,18 @@ import {UniswapV3DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Proto
 import {OneInchDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OneInchDecoderAndSanitizer.sol";
 import {PendleRouterDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/PendleRouterDecoderAndSanitizer.sol";
-import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";  
-import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol"; 
+import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
+import {NativeWrapperDecoderAndSanitizer} from
+    "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol";
 
 contract UniBTCDecoderAndSanitizer is
-    UniswapV3DecoderAndSanitizer, 
-    OneInchDecoderAndSanitizer, 
+    UniswapV3DecoderAndSanitizer,
+    OneInchDecoderAndSanitizer,
     PendleRouterDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
-    NativeWrapperDecoderAndSanitizer {
-
-    constructor(address _boringVault, address _uniswapV3NonFungiblePositionManager)
-        BaseDecoderAndSanitizer(_boringVault)
+    NativeWrapperDecoderAndSanitizer
+{
+    constructor(address _uniswapV3NonFungiblePositionManager)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
     {}
 }
