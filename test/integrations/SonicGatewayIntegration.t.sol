@@ -224,17 +224,17 @@ contract SonicGatewayIntegration is Test, MerkleTreeHelper {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
-    //test bridge sonic l2 -> eth mainnet 
+    //test bridge sonic l2 -> eth mainnet
     function testSonicGatewaySonicWitdraw2() external {
-        setUpSonic(); 
+        setUpSonic();
         deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e6);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](4);
-        address[] memory mainnetAssets= new address[](1); 
-        address[] memory sonicAssets = new address[](1); 
+        address[] memory mainnetAssets = new address[](1);
+        address[] memory sonicAssets = new address[](1);
         mainnetAssets[0] = getAddress(mainnet, "WETH"); //NOTE: this needs to be mainnet USDC
-        sonicAssets[0] = getAddress(sonicMainnet, "WETH"); 
-        _addSonicGatewayLeafsSonic(leafs, mainnetAssets, sonicAssets); 
+        sonicAssets[0] = getAddress(sonicMainnet, "WETH");
+        _addSonicGatewayLeafsSonic(leafs, mainnetAssets, sonicAssets);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -249,14 +249,16 @@ contract SonicGatewayIntegration is Test, MerkleTreeHelper {
         address[] memory targets = new address[](2);
         targets[0] = getAddress(sourceChain, "WETH");
         targets[1] = getAddress(sourceChain, "sonicGateway");
-        
-        //uid can be any number of the depositors choosing? I believe in their SDK they might simply pick a random number, these don't appear to be incrementing with any kind of pattern afaict 
+
+        //uid can be any number of the depositors choosing? I believe in their SDK they might simply pick a random number, these don't appear to be incrementing with any kind of pattern afaict
         //the only condition is that it hasn't been used before
         bytes[] memory targetData = new bytes[](2);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "sonicGateway"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("withdraw(uint96,address,uint256)", 1234123412342314556, getAddress(mainnet, "WETH"), 100e6);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "sonicGateway"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "withdraw(uint96,address,uint256)", 1234123412342314556, getAddress(mainnet, "WETH"), 100e6
+        );
 
         address[] memory decodersAndSanitizers = new address[](2);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -266,7 +268,6 @@ contract SonicGatewayIntegration is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
-    
 
     //test bridge sonic l2 -> eth mainnet
     function testSonicGatewaySonicWitdraw() external {

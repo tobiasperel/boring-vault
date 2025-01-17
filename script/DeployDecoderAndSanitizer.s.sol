@@ -24,26 +24,20 @@ import {EdgeCapitalDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Edg
 import {EtherFiLiquidBtcDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/EtherFiLiquidBtcDecoderAndSanitizer.sol";
 import {SonicMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicEthMainnetDecoderAndSanitizer.sol";
-import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AaveV3FullDecoderAndSanitizer.sol"; 
+import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AaveV3FullDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
-
 /**
  *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --with-gas-price 30000000000 --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
+
 contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddresses {
     uint256 public privateKey;
     Deployer public deployer = Deployer(deployerAddress);
-
-    //address boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
-
-
-    //address boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
-    address boringVault = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C; 
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
@@ -77,9 +71,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // constructorArgs = abi.encode(liquidUsd);
         // deployer.deployContract(ItbPositionDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
-        // creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode(liquidUsd, uniswapV3NonFungiblePositionManager);
-        // deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
+        //creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
+        //deployer.deployContract(EtherFiLiquidUsdDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
         //creationCode = type(OnlyHyperlaneDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(address(0));
@@ -114,10 +108,12 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //creationCode = type(EtherFiLiquidBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
-       
-        creationCode = type(AaveV3FullDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(boringVault);
-        deployer.deployContract("AaveV3 Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+
+        address pancakeswapV3nfpm = 0x46A15B0b27311cedF172AB29E4f4766fbE7F4364;
+        address pancakeswapV3chef = 0x556B9306565093C855AEA9AE92A594704c2Cd59e;
+        creationCode = type(PancakeSwapV3FullDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(pancakeswapV3nfpm, pancakeswapV3chef);
+        deployer.deployContract("PancakeSwapV3 Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
