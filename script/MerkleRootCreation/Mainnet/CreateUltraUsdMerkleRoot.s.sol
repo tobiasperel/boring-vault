@@ -145,11 +145,11 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         oneInchKind[14] = SwapKind.BuyAndSell;
         oneInchAssets[15] = getAddress(sourceChain, "WSTETH");
         oneInchKind[15] = SwapKind.BuyAndSell;
-        oneInchAssets[16] = getAddress(sourceChain, "ETHFI");
+        oneInchAssets[16] = getAddress(sourceChain, "MORPHO");
         oneInchKind[16] = SwapKind.Sell;
-        oneInchAssets[17] = getAddress(sourceChain, "MORPHO");
+        oneInchAssets[17] = getAddress(sourceChain, "USUAL");
         oneInchKind[17] = SwapKind.Sell;
-        oneInchAssets[18] = getAddress(sourceChain, "USUAL");
+        oneInchAssets[18] = getAddress(sourceChain, "ETHFI");
         oneInchKind[18] = SwapKind.Sell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
