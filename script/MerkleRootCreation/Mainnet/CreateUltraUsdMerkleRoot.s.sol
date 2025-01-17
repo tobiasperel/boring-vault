@@ -15,7 +15,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xbc0f3B23930fff9f4894914bD745ABAbA9588265;
-    address public rawDataDecoderAndSanitizer = 0x5eB7B2394dce510AD9575C222E3eaCa9D79B643d;
+    address public rawDataDecoderAndSanitizer = 0x4Cb75353D930C212Bbb800eE9e52B28A16684931;
     address public managerAddress = 0x4f81c27e750A453d6206C2d10548d6566F60886C;
     address public accountantAddress = 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe;
     address public drone = 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De;
@@ -111,8 +111,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         /*
          *
          */
-        address[] memory oneInchAssets = new address[](18);
-        SwapKind[] memory oneInchKind = new SwapKind[](18);
+        address[] memory oneInchAssets = new address[](19);
+        SwapKind[] memory oneInchKind = new SwapKind[](19);
         oneInchAssets[0] = getAddress(sourceChain, "USDC");
         oneInchKind[0] = SwapKind.BuyAndSell;
         oneInchAssets[1] = getAddress(sourceChain, "USDT");
@@ -149,6 +149,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         oneInchKind[16] = SwapKind.Sell;
         oneInchAssets[17] = getAddress(sourceChain, "USUAL");
         oneInchKind[17] = SwapKind.Sell;
+        oneInchAssets[18] = getAddress(sourceChain, "ETHFI");
+        oneInchKind[18] = SwapKind.Sell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
 

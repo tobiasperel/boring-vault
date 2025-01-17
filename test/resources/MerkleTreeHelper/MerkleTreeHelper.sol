@@ -5171,7 +5171,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
-     // ========================================= Fee Claiming =========================================
+    // ========================================= Fee Claiming =========================================
     function _addLeafsForFeeClaiming(ManageLeaf[] memory leafs, address accountant, ERC20[] memory feeAssets, bool addYieldClaiming) internal {
         // Approvals.
         for (uint256 i; i < feeAssets.length; ++i) {
