@@ -120,7 +120,7 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[2] = getERC20(sourceChain, "USDT");
         feeAssets[3] = getERC20(sourceChain, "USD0");
         feeAssets[4] = getERC20(sourceChain, "USD0_plus");
-        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, false);
 
         // ========================== Fluid fToken ==========================
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDC"));
@@ -207,8 +207,8 @@ contract CreateLiquidUsualMerkleRootScript is Script, MerkleTreeHelper {
         _addUsualMoneyLeafs(leafs);
 
         // ========================== Morpho Conversion ==========================
-        _addMorphoRewardWrapperLeafs(leafs);  
-        _addMorphoRewardMerkleClaimerLeafs(leafs, 0x330eefa8a787552DC5cAd3C3cA644844B1E61Ddb); 
+        _addMorphoRewardWrapperLeafs(leafs);
+        _addMorphoRewardMerkleClaimerLeafs(leafs, 0x330eefa8a787552DC5cAd3C3cA644844B1E61Ddb);
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
