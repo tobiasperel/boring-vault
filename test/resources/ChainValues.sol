@@ -833,8 +833,7 @@ contract ChainValues {
         values[mainnet]["ccipRouter"] = 0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D.toBytes32();
 
         // PancakeSwap V3
-        values[mainnet]["pancakeSwapV3NonFungiblePositionManager"] =
-            0x46A15B0b27311cedF172AB29E4f4766fbE7F4364.toBytes32();
+        values[mainnet]["pancakeSwapV3NonFungiblePositionManager"] = 0x46A15B0b27311cedF172AB29E4f4766fbE7F4364.toBytes32();
         values[mainnet]["pancakeSwapV3MasterChefV3"] = 0x556B9306565093C855AEA9AE92A594704c2Cd59e.toBytes32();
         values[mainnet]["pancakeSwapV3Router"] = 0x13f4EA83D0bd40E75C8222255bc855a974568Dd4.toBytes32();
         // Arbitrum Bridge
@@ -1324,6 +1323,17 @@ contract ChainValues {
         values[bsc]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
         values[bsc]["WBTC"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32();
         values[bsc]["WBNB"] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.toBytes32();
+        values[bsc]["BTCB"] = 0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.toBytes32(); 
+
+        // 1Inch
+        values[bsc]["aggregationRouterV5"] = 0x1111111254EEB25477B68fb85Ed929f73A960582.toBytes32(); 
+        values[bsc]["oneInchExecutor"] = 0xde9e4FE32B049f821c7f3e9802381aa470FFCA73.toBytes32(); 
+
+        // PancakeSwapV3
+        values[bsc]["pancakeSwapV3NonFungiblePositionManager"] = 0x46A15B0b27311cedF172AB29E4f4766fbE7F4364.toBytes32();
+        values[bsc]["pancakeSwapV3MasterChefV3"] = 0x556B9306565093C855AEA9AE92A594704c2Cd59e.toBytes32();
+        values[bsc]["pancakeSwapV3Router"] = 0x13f4EA83D0bd40E75C8222255bc855a974568Dd4.toBytes32();
+    
     }
 
     function _addCornValues() private {
