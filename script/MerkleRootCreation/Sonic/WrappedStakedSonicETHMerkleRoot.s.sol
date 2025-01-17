@@ -48,7 +48,7 @@ contract CreateWrappedStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         _addTellerLeafs(leafs, getAddress(sourceChain, "stkscETHTeller"), tellerAssets);
 
         // ========================== Fee Claiming ==========================
-        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "stkscETHAccountant"), tellerAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "stkscETHAccountant"), tellerAssets, false);
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 

@@ -13,13 +13,15 @@ import "forge-std/Script.sol";
  */
 contract CreateLiquidElixirMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
-
+    
+    //standard
     address public boringVault = 0x352180974C71f84a934953Cf49C4E538a6F9c997;
     address public rawDataDecoderAndSanitizer = 0x0b01C5F5D333f9921240ab08dA92805F41604add;
-    address public elixirWithdrawDecoderAndSanitizer = 0xF8e9517e7e98D7134E306aD3747A50AC8dC1dbc9;
     address public managerAddress = 0x4D0EF2A55db2439A37507a893b624f89eC7A403c;
     address public accountantAddress = 0xBae19b38Bf727Be64AF0B578c34985c3D612e2Ba;
-
+    
+    //one offs
+    address public elixirWithdrawDecoderAndSanitizer = 0xF8e9517e7e98D7134E306aD3747A50AC8dC1dbc9;
     address public pancakeSwapDataDecoderAndSanitizer = 0xA33cA951986cE360eddaB0c9e3791E99aACde437;
 
     function setUp() external {}
@@ -80,7 +82,7 @@ contract CreateLiquidElixirMerkleRootScript is Script, MerkleTreeHelper {
         feeAssets[2] = getERC20(sourceChain, "USDT");
         feeAssets[3] = getERC20(sourceChain, "deUSD");
         feeAssets[4] = getERC20(sourceChain, "sdeUSD");
-        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets);
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, false);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](7);

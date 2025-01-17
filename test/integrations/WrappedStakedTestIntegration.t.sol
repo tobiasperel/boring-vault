@@ -116,7 +116,7 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "scUSD");
         //_addTellerLeafs(leafs, 0x5e39021Ae7D3f6267dc7995BB5Dd15669060DAe0, tellerAssets);
-        _addLeafsForFeeClaiming(leafs, stkscUSDAccountant, tellerAssets);
+        _addLeafsForFeeClaiming(leafs, stkscUSDAccountant, tellerAssets, true);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
