@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
+
 import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
 import {BoringVault} from "src/base/BoringVault.sol";
 import {ManagerWithMerkleVerification} from "src/base/Roles/ManagerWithMerkleVerification.sol";
@@ -7,9 +8,9 @@ import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
-import {TellerDecoderAndSanitizer } from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
+import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
-import {DelayedWithdraw} from "src/base/Roles/DelayedWithdraw.sol"; 
+import {DelayedWithdraw} from "src/base/Roles/DelayedWithdraw.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
@@ -47,10 +48,7 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(
-            new FullBoringVaultDecoder(
-                address(boringVault))
-            ); 
+        rawDataDecoderAndSanitizer = address(new FullBoringVaultDecoder());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -110,12 +108,15 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
         rolesAuthority.setPublicCapability(address(boringVault), bytes4(0), true);
 
         //eBTC roles authority
-        
-        RolesAuthority eBTCAuth = RolesAuthority(address(BoringVault(payable(getAddress(sourceChain, "eBTC"))).authority())); 
-        vm.startPrank(eBTCAuth.owner()); 
-        eBTCAuth.setPublicCapability(getAddress(sourceChain, "eBTCDelayedWithdraw"), DelayedWithdraw.requestWithdraw.selector, true);
+
+        RolesAuthority eBTCAuth =
+            RolesAuthority(address(BoringVault(payable(getAddress(sourceChain, "eBTC"))).authority()));
+        vm.startPrank(eBTCAuth.owner());
+        eBTCAuth.setPublicCapability(
+            getAddress(sourceChain, "eBTCDelayedWithdraw"), DelayedWithdraw.requestWithdraw.selector, true
+        );
         //eBTCAuth.setUserRole(getAddress(sourceChain, "eBTCDelayedWithdraw"), BURNER_ROLE, true);
-        vm.stopPrank(); 
+        vm.stopPrank();
     }
 
     function testBoringOnChainQueueWithdraw() external {
@@ -124,10 +125,12 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         ERC20[] memory assets = new ERC20[](1);
-        assets[0] = getERC20(sourceChain, "WBTC"); 
-        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets); 
+        assets[0] = getERC20(sourceChain, "WBTC");
+        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets);
 
-        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "eBTCOnChainQueue"), getAddress(sourceChain, "eBTC"), assets);
+        _addWithdrawQueueLeafs(
+            leafs, getAddress(sourceChain, "eBTCOnChainQueue"), getAddress(sourceChain, "eBTC"), assets
+        );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -153,22 +156,24 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
         bytes[] memory targetData = new bytes[](4);
         targetData[0] =
             abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "eBTC"), type(uint256).max);
-        targetData[1] = abi.encodeWithSignature(
-            "deposit(address,uint256,uint256)",
-            getAddress(sourceChain, "WBTC"),
-            100e8,
-            0
+        targetData[1] =
+            abi.encodeWithSignature("deposit(address,uint256,uint256)", getAddress(sourceChain, "WBTC"), 100e8, 0);
+        targetData[2] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "eBTCOnChainQueue"), type(uint256).max
         );
-        targetData[2] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "eBTCOnChainQueue"), type(uint256).max);
-        targetData[3] =
-            abi.encodeWithSignature("requestOnChainWithdraw(address,uint128,uint16,uint24)", getAddress(sourceChain, "WBTC"), uint128(100e8), uint16(100), uint24(2592000));
-        
+        targetData[3] = abi.encodeWithSignature(
+            "requestOnChainWithdraw(address,uint128,uint16,uint24)",
+            getAddress(sourceChain, "WBTC"),
+            uint128(100e8),
+            uint16(100),
+            uint24(2592000)
+        );
+
         address[] memory decodersAndSanitizers = new address[](4);
-        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer; 
-        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer; 
-        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer; 
-        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer; 
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
 
         uint256[] memory values = new uint256[](4);
 
@@ -183,7 +188,4 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
     }
 }
 
-contract FullBoringVaultDecoder is TellerDecoderAndSanitizer {
-    constructor(address _boringVault) BaseDecoderAndSanitizer(_boringVault){}    
-}
-
+contract FullBoringVaultDecoder is TellerDecoderAndSanitizer {}

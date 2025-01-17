@@ -23,6 +23,7 @@ import {SwellSimpleStakingDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/SwellSimpleStakingDecoderAndSanitizer.sol";
 import {ZircuitSimpleStakingDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/ZircuitSimpleStakingDecoderAndSanitizer.sol";
+import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 
 contract EtherFiLiquidBtcDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -40,10 +41,10 @@ contract EtherFiLiquidBtcDecoderAndSanitizer is
     AaveV3DecoderAndSanitizer,
     EigenLayerLSTStakingDecoderAndSanitizer,
     SwellSimpleStakingDecoderAndSanitizer,
-    ZircuitSimpleStakingDecoderAndSanitizer
+    ZircuitSimpleStakingDecoderAndSanitizer,
+    TellerDecoderAndSanitizer
 {
-    constructor(address _boringVault, address _uniswapV3NonFungiblePositionManager)
-        BaseDecoderAndSanitizer(_boringVault)
+    constructor(address _uniswapV3NonFungiblePositionManager)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
     {}
 

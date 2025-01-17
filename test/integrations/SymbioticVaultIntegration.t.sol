@@ -40,7 +40,7 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("holesky");
         // Setup forked environment.
         string memory rpcKey = "HOLESKY_RPC_URL";
-        uint256 blockNumber = 2145334;
+        uint256 blockNumber = 3118548;
 
         _startFork(rpcKey, blockNumber);
 
@@ -48,7 +48,7 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
 
         manager = new ManagerWithMerkleVerification(address(this), address(boringVault), address(0));
 
-        rawDataDecoderAndSanitizer = address(new SymbioticVaultDecoderAndSanitizerFull(address(boringVault)));
+        rawDataDecoderAndSanitizer = address(new SymbioticVaultDecoderAndSanitizerFull());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);

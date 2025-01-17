@@ -49,9 +49,7 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
         rawDataDecoderAndSanitizer = address(
-            new EtherFiLiquidDecoderAndSanitizer(
-                address(boringVault), getAddress(sourceChain, "uniswapV3NonFungiblePositionManager")
-            )
+            new EtherFiLiquidDecoderAndSanitizer(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"))
         );
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
@@ -113,24 +111,27 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18);
         deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](32);
-        address[] memory token0 = new address[](2);
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        address[] memory token0 = new address[](1);
         token0[0] = getAddress(sourceChain, "WETH");
-        token0[1] = getAddress(sourceChain, "RETH");
-        address[] memory token1 = new address[](2);
+        //token0[1] = getAddress(sourceChain, "RETH");
+        address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "RETH");
-        token1[1] = getAddress(sourceChain, "WEETH");
+        //token1[1] = getAddress(sourceChain, "WEETH");
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+        string memory filePath = "./TestTEST.json";
+
+        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](9);
-        manageLeafs[0] = leafs[3];
+        manageLeafs[0] = leafs[1]; //tokens are sorted, so this is actually leaf 1, token1 becomes token0 during sort
         manageLeafs[1] = leafs[7];
-        manageLeafs[2] = leafs[0];
-        manageLeafs[3] = leafs[8];
+        manageLeafs[2] = leafs[2];
+        manageLeafs[3] = leafs[9];
         manageLeafs[4] = leafs[10];
         manageLeafs[5] = leafs[11];
         manageLeafs[6] = leafs[14];
@@ -141,13 +142,14 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
         address[] memory targets = new address[](9);
         targets[0] = getAddress(sourceChain, "WETH");
         targets[1] = getAddress(sourceChain, "uniV3Router");
-        targets[2] = getAddress(sourceChain, "RETH");
-        targets[3] = getAddress(sourceChain, "WEETH");
+        targets[2] = getAddress(sourceChain, "RETH"); //token0
+        targets[3] = getAddress(sourceChain, "WEETH"); //token1?
         targets[4] = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
         targets[5] = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
         targets[6] = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
         targets[7] = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
         targets[8] = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
+
         bytes[] memory targetData = new bytes[](9);
         targetData[0] = abi.encodeWithSignature(
             "approve(address,uint256)", getAddress(sourceChain, "uniV3Router"), type(uint256).max
@@ -239,10 +241,10 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](8);
-        manageLeafs[0] = leafs[3];
+        manageLeafs[0] = leafs[1]; //tokens are sorted, so this is actually leaf 1, token1 becomes token0 during sort
         manageLeafs[1] = leafs[7];
-        manageLeafs[2] = leafs[0];
-        manageLeafs[3] = leafs[8];
+        manageLeafs[2] = leafs[2];
+        manageLeafs[3] = leafs[9];
         manageLeafs[4] = leafs[10];
         manageLeafs[5] = leafs[11];
         manageLeafs[6] = leafs[14];
@@ -360,7 +362,12 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
         );
 
         vm.expectRevert(
-            abi.encodeWithSelector(UniswapV3DecoderAndSanitizer.UniswapV3DecoderAndSanitizer__BadTokenId.selector)
+            abi.encodeWithSelector(
+                ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                targets[5],
+                targetData[5],
+                0
+            )
         );
         manager.manageVaultWithMerkleVerification(
             manageProofs, decodersAndSanitizers, targets, targetData, new uint256[](8)
@@ -380,7 +387,12 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
         );
 
         vm.expectRevert(
-            abi.encodeWithSelector(UniswapV3DecoderAndSanitizer.UniswapV3DecoderAndSanitizer__BadTokenId.selector)
+            abi.encodeWithSelector(
+                ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                targets[6],
+                targetData[6],
+                0
+            )
         );
         manager.manageVaultWithMerkleVerification(
             manageProofs, decodersAndSanitizers, targets, targetData, new uint256[](8)
@@ -399,7 +411,12 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
         targetData[7] = abi.encodeWithSignature("collect((uint256,address,uint128,uint128))", collectParams);
 
         vm.expectRevert(
-            abi.encodeWithSelector(UniswapV3DecoderAndSanitizer.UniswapV3DecoderAndSanitizer__BadTokenId.selector)
+            abi.encodeWithSelector(
+                ManagerWithMerkleVerification.ManagerWithMerkleVerification__FailedToVerifyManageProof.selector,
+                targets[7],
+                targetData[7],
+                0
+            )
         );
         manager.manageVaultWithMerkleVerification(
             manageProofs, decodersAndSanitizers, targets, targetData, new uint256[](8)

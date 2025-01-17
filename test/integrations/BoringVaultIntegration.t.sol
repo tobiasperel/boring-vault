@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
+
 import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
 import {BoringVault} from "src/base/BoringVault.sol";
 import {ManagerWithMerkleVerification} from "src/base/Roles/ManagerWithMerkleVerification.sol";
@@ -12,7 +13,7 @@ import {
     EtherFiLiquidEthDecoderAndSanitizer,
     TellerDecoderAndSanitizer
 } from "src/base/DecodersAndSanitizers/EtherFiLiquidEthDecoderAndSanitizer.sol";
-import {EtherFiBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiBtcDecoderAndSanitizer.sol"; 
+import {EtherFiBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiBtcDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
@@ -43,15 +44,14 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
 
         _startFork(rpcKey, blockNumber);
 
+        //TODO fixme, most likely broken
         liquidEth = BoringVault(payable(getAddress(sourceChain, "liquidEth")));
         liquidEthManager = ManagerWithMerkleVerification(getAddress(sourceChain, "liquidEthManager"));
         superSymbiotic = BoringVault(payable(getAddress(sourceChain, "superSymbiotic")));
         superSymbioticTeller = TellerWithMultiAssetSupport(getAddress(sourceChain, "superSymbioticTeller"));
 
         rawDataDecoderAndSanitizer = address(
-            new EtherFiLiquidEthDecoderAndSanitizer(
-                getAddress(sourceChain, "liquidEth"), getAddress(sourceChain, "uniswapV3NonFungiblePositionManager")
-            )
+            new EtherFiLiquidEthDecoderAndSanitizer(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"))
         );
 
         setAddress(false, sourceChain, "boringVault", address(liquidEth));
@@ -182,15 +182,21 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
         liquidEthManager.manageVaultWithMerkleVerification(
             manageProofs, decodersAndSanitizers, targets, targetData, values
         );
-        
-        uint256 wethDust = 271785476448469428; 
+
+        uint256 wethDust = 271785476448469428;
         assertApproxEqAbs(
-            getERC20(sourceChain, "WETH").balanceOf(address(liquidEth)) - wethDust, 1_000e18, 1, "Should have withdrawn all WETH"
+            getERC20(sourceChain, "WETH").balanceOf(address(liquidEth)) - wethDust,
+            1_000e18,
+            1,
+            "Should have withdrawn all WETH"
         );
 
-        uint256 weethDust = 256474008239288232; 
+        uint256 weethDust = 256474008239288232;
         assertApproxEqAbs(
-            getERC20(sourceChain, "WEETH").balanceOf(address(liquidEth)) + weethDust, 1_000e18, 1, "Should have withdrawn all WEETH"
+            getERC20(sourceChain, "WEETH").balanceOf(address(liquidEth)) + weethDust,
+            1_000e18,
+            1,
+            "Should have withdrawn all WEETH"
         );
         assertEq(superSymbiotic.balanceOf(address(liquidEth)), 0, "Should have burned all superSymbiotic shares");
     }
@@ -216,9 +222,9 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-       // string memory filePath = "./testTEST.json";
+        // string memory filePath = "./testTEST.json";
 
-       // _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+        // _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
 
         address[] memory targets = new address[](2);
         targets[0] = getAddress(sourceChain, "WETH");
@@ -226,12 +232,8 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
 
         bytes[] memory targetData = new bytes[](2);
         targetData[0] = abi.encodeWithSignature("approve(address,uint256)", address(superSymbiotic), type(uint256).max);
-        targetData[1] = abi.encodeWithSignature(
-            "deposit(address,uint256,uint256)",
-            getAddress(sourceChain, "WETH"),
-            1_000e18,
-            0
-        );
+        targetData[1] =
+            abi.encodeWithSignature("deposit(address,uint256,uint256)", getAddress(sourceChain, "WETH"), 1_000e18, 0);
 
         uint256[] memory values = new uint256[](2);
 
@@ -253,7 +255,6 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
         //    expectedSuperSymbioticBalance,
         //    "Should expected superSymbiotic balance"
         //);
-
     }
 
     function testBoringVaultSingleDepositETH() external {
@@ -270,11 +271,11 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
         liquidEthManager.setManageRoot(
             getAddress(sourceChain, "liquidEthStrategist"), manageTree[manageTree.length - 1][0]
         );
-        
-        vm.prank(liquidEthOwner); 
-        IOldTeller(address(superSymbioticTeller)).addAsset(getERC20(sourceChain, "ETH"));   
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](1); 
+        vm.prank(liquidEthOwner);
+        IOldTeller(address(superSymbioticTeller)).addAsset(getERC20(sourceChain, "ETH"));
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](1);
         manageLeafs[0] = leafs[4]; //deposit w/ value
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
@@ -283,15 +284,11 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
         targets[0] = address(superSymbioticTeller);
 
         bytes[] memory targetData = new bytes[](1);
-        targetData[0] = abi.encodeWithSignature(
-            "deposit(address,uint256,uint256)",
-            getAddress(sourceChain, "ETH"),
-            1_000e18,
-            0
-        );
+        targetData[0] =
+            abi.encodeWithSignature("deposit(address,uint256,uint256)", getAddress(sourceChain, "ETH"), 1_000e18, 0);
 
         uint256[] memory values = new uint256[](1);
-        values[0] = 1_000e18; 
+        values[0] = 1_000e18;
 
         address[] memory decodersAndSanitizers = new address[](1);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -301,7 +298,6 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
         liquidEthManager.manageVaultWithMerkleVerification(
             manageProofs, decodersAndSanitizers, targets, targetData, values
         );
-
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
@@ -313,6 +309,5 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
 }
 
 interface IOldTeller {
-    function addAsset(ERC20 asset) external; 
+    function addAsset(ERC20 asset) external;
 }
-

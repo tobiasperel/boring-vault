@@ -24,20 +24,20 @@ abstract contract TellerDecoderAndSanitizer is BaseDecoderAndSanitizer {
 
     function deposit(address depositAsset, uint256, /*depositAmount*/ uint256 /*minimumMint*/ )
         external
-        virtual
         pure
+        virtual
         returns (bytes memory addressesFound)
     {
         addressesFound = abi.encodePacked(depositAsset);
     }
-    
+
     // BoringOnChainQueue.sol
     function requestOnChainWithdraw(address asset, uint128, uint16, uint24)
         external
-        virtual
         pure
+        virtual
         returns (bytes memory addressesFound)
     {
-        addressesFound = abi.encodePacked(asset); 
+        addressesFound = abi.encodePacked(asset);
     }
 }
