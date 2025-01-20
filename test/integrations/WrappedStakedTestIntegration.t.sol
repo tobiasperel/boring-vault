@@ -13,10 +13,10 @@ import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecode
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
-
+import {AccountantWithFixedRate} from "src/base/Roles/AccountantWithFixedRate.sol";
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
-contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
+contract WrappedStakedIntegrationTest is Test, MerkleTreeHelper {
     using SafeTransferLib for ERC20;
     using FixedPointMathLib for uint256;
     using stdStorage for StdStorage;
@@ -141,6 +141,16 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
 
         uint256[] memory values = new uint256[](2);
+
+        // Update yield distributor in stkscUSDAccountant.
+        {
+            address accountantOwner = AccountantWithFixedRate(stkscUSDAccountant).owner();
+            vm.prank(accountantOwner);
+            AccountantWithFixedRate(stkscUSDAccountant).setYieldDistributor(address(boringVault));
+        }
+
+        // Expect this to revert with zero yield owed, but we can call the function.
+        vm.expectRevert(abi.encodeWithSelector(AccountantWithFixedRate.AccountantWithFixedRate__ZeroYieldOwed.selector));
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
