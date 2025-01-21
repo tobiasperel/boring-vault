@@ -112,11 +112,12 @@ contract UniswapV2IntegrationTest is Test, MerkleTreeHelper {
         address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "USDC");
 
-        _addUniswapV2Leafs(leafs, token0, token1, false);
-bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+        _addUniswapV2Leafs(leafs, token0, token1);
 
-        string memory filePath = "testTEST.json";
-        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //string memory filePath = "testTEST.json";
+        //_generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -193,7 +194,7 @@ bytes32[][] memory manageTree = _generateMerkleTree(leafs);
         address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "USDC");
 
-        _addUniswapV2Leafs(leafs, token0, token1, true);
+        _addUniswapV2Leafs(leafs, token0, token1);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -206,8 +207,8 @@ bytes32[][] memory manageTree = _generateMerkleTree(leafs);
         manageLeafs[0] = leafs[0]; //tokens are sorted, so this is actually leaf 1, token1 becomes token0 during sort since USDC > WETH address
         manageLeafs[1] = leafs[1]; //approve weth 
         manageLeafs[2] = leafs[2]; //approve tokenPair
-        manageLeafs[3] = leafs[5]; //addLiquidity
-        manageLeafs[4] = leafs[6]; //removeLiquidity
+        manageLeafs[3] = leafs[5]; //addLiquidityETH
+        manageLeafs[4] = leafs[6]; //removeLiquidityETH
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 

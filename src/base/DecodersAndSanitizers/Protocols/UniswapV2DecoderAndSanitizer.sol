@@ -5,62 +5,72 @@ import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecode
 
 abstract contract UniswapV2DecoderAndSanitizer is BaseDecoderAndSanitizer {
 
+    //============================== ERRORS ===============================
+    error UniswapV2DecoderAndSanitizer__PathTooLong();
+
+    //Decoder and Sanitizer will only direct swaps between tokenA/tokenB
     function swapExactTokensForTokens(
         uint256, /*amountIn*/
         uint256, /*amountOutMin*/
-        address[] calldata, /*path*/
+        address[] calldata path,
         address to,
         uint256 /*deadline*/
     ) external pure returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(to);
+        if (path.length > 2) revert UniswapV2DecoderAndSanitizer__PathTooLong(); 
+        addressesFound = abi.encodePacked(path[0], path[1], to);
     }
 
     function swapTokensForExactTokens(
         uint256, /*amountOut*/
         uint256, /*amountInMax*/
-        address[] calldata, /*path*/
+        address[] calldata path,
         address to,
         uint256 /*deadline*/
     ) external pure returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(to);
+        if (path.length > 2) revert UniswapV2DecoderAndSanitizer__PathTooLong(); 
+        addressesFound = abi.encodePacked(path[0], path[1], to);
     }
 
     function swapExactETHForTokens(
         uint256, /*amountOutMin*/
-        address[] calldata, /*path*/
+        address[] calldata path,
         address to,
         uint256 /*deadline*/
     ) external pure returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(to);
-    }
-
-    function swapTokensForExactETH(
-        uint256 /*amountOut*/,
-        uint256 /*amountInMax*/,
-        address[] calldata /*path*/,
-        address to,
-        uint256 /*deadline*/
-    ) external pure returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(to);
+        if (path.length > 2) revert UniswapV2DecoderAndSanitizer__PathTooLong(); 
+        addressesFound = abi.encodePacked(path[0], path[1], to);
     }
 
     function swapExactTokensForETH(
         uint256, /*amountIn*/
         uint256, /*amountOutMin*/
-        address[] calldata, /*path*/
+        address[] calldata path,
         address to,
         uint256 /*deadline*/
     ) external pure returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(to);
+        if (path.length > 2) revert UniswapV2DecoderAndSanitizer__PathTooLong(); 
+        addressesFound = abi.encodePacked(path[0], path[1], to);
+    }
+
+    function swapTokensForExactETH(
+        uint256 /*amountOut*/,
+        uint256 /*amountInMax*/,
+        address[] calldata path,
+        address to,
+        uint256 /*deadline*/
+    ) external pure returns (bytes memory addressesFound) {
+        if (path.length > 2) revert UniswapV2DecoderAndSanitizer__PathTooLong(); 
+        addressesFound = abi.encodePacked(path[0], path[1], to);
     }
 
     function swapETHForExactTokens(
         uint256, /*amountOut*/
-        address[] calldata, /*path*/
+        address[] calldata path,
         address to,
         uint256 /*deadline*/
     ) external pure returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(to);
+        if (path.length > 2) revert UniswapV2DecoderAndSanitizer__PathTooLong(); 
+        addressesFound = abi.encodePacked(path[0], path[1], to);
     }
 
     function addLiquidity(
