@@ -228,8 +228,10 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
     function testRoycoWeirollForfeitIntegration() external {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
 
+        bytes32 stkGHOHash = 0x8349eff9a17d01f2e9fa015121d0d03cd4b15ae9f2b8b17add16bbad006a1c6a; 
+
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "USDC"));
+        _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "USDC"), stkGHOHash, getAddress(sourceChain, "boringVault"));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -248,7 +250,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
         targets[1] = getAddress(sourceChain, "recipeMarketHub");
 
         bytes32[] memory ipOfferHashes = new bytes32[](1);
-        ipOfferHashes[0] = 0x8349eff9a17d01f2e9fa015121d0d03cd4b15ae9f2b8b17add16bbad006a1c6a; //stkGHO offer hash from: https://etherscan.io/tx/0x133e477a7573555df912bba020c3a5e3c3b137a21a76c8f52b3b5a7a2065f2e0
+        ipOfferHashes[0] = stkGHOHash; //stkGHO offer hash from: https://etherscan.io/tx/0x133e477a7573555df912bba020c3a5e3c3b137a21a76c8f52b3b5a7a2065f2e0
 
         uint256[] memory amounts = new uint256[](1);
         amounts[0] = 100e6;
@@ -306,8 +308,10 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
     function testRoycoWeirollExecuteWithdrawIntegration() external {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
 
+        bytes32 stkGHOHash = 0x8349eff9a17d01f2e9fa015121d0d03cd4b15ae9f2b8b17add16bbad006a1c6a; 
+
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "USDC"));
+        _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "USDC"), stkGHOHash, getAddress(sourceChain, "boringVault"));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -326,7 +330,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
         targets[1] = getAddress(sourceChain, "recipeMarketHub");
 
         bytes32[] memory ipOfferHashes = new bytes32[](1);
-        ipOfferHashes[0] = 0x8349eff9a17d01f2e9fa015121d0d03cd4b15ae9f2b8b17add16bbad006a1c6a; //stkGHO offer hash from: https://etherscan.io/tx/0x133e477a7573555df912bba020c3a5e3c3b137a21a76c8f52b3b5a7a2065f2e0
+        ipOfferHashes[0] = stkGHOHash; //stkGHO offer hash from: https://etherscan.io/tx/0x133e477a7573555df912bba020c3a5e3c3b137a21a76c8f52b3b5a7a2065f2e0
 
         uint256[] memory amounts = new uint256[](1);
         amounts[0] = 100e6;

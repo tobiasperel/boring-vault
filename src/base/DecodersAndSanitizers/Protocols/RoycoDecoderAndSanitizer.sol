@@ -3,13 +3,21 @@ pragma solidity 0.8.21;
 import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 
 abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
+    //============================== ERRORS ===============================
+
+    error RoycoWeirollDecoderAndSanitizer__TooManyOfferHashes();
+
     function fillIPOffers(
-        bytes32[] calldata, /*ipOfferHashes*/
+        bytes32[] calldata ipOfferHashes,
         uint256[] calldata, /*fillAmounts*/
-        address, /*fundingVault*/ //this might have to be zero always?
+        address fundingVault, 
         address frontendFeeRecipient
     ) external pure virtual returns (bytes memory addressesFound) {
-        return abi.encodePacked(frontendFeeRecipient);
+        if (ipOfferHashes.length != 1) revert RoycoWeirollDecoderAndSanitizer__TooManyOfferHashes(); 
+
+        address offerHash0 = address(bytes20(bytes16(ipOfferHashes[0])));
+        address offerHash1 = address(bytes20(bytes16(ipOfferHashes[0] << 128)));
+        return abi.encodePacked(offerHash0, offerHash1, fundingVault, frontendFeeRecipient);
     }
 
     function executeWithdrawalScript(address weirollWallet)
