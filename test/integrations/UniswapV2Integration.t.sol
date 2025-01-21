@@ -112,7 +112,7 @@ contract UniswapV2IntegrationTest is Test, MerkleTreeHelper {
         address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "USDC");
 
-        _addUniswapV2Leafs(leafs, token0, token1);
+        _addUniswapV2Leafs(leafs, token0, token1, false);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -125,8 +125,8 @@ contract UniswapV2IntegrationTest is Test, MerkleTreeHelper {
         manageLeafs[0] = leafs[0]; //tokens are sorted, so this is actually leaf 1, token1 becomes token0 during sort since USDC > WETH address
         manageLeafs[1] = leafs[1]; //approve weth 
         manageLeafs[2] = leafs[2]; //approve tokenPair
-        manageLeafs[3] = leafs[5]; //addLiquidity
-        manageLeafs[4] = leafs[6]; //removeLiquidity
+        manageLeafs[3] = leafs[7]; //addLiquidity
+        manageLeafs[4] = leafs[8]; //removeLiquidity
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -194,7 +194,195 @@ contract UniswapV2IntegrationTest is Test, MerkleTreeHelper {
         address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "USDC");
 
-        _addUniswapV2Leafs(leafs, token0, token1);
+        _addUniswapV2Leafs(leafs, token0, token1, true);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //string memory filePath = "testTEST.json";
+        //_generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
+        manageLeafs[0] = leafs[0]; //tokens are sorted, so this is actually leaf 1, token1 becomes token0 during sort since USDC > WETH address
+        manageLeafs[1] = leafs[2]; //approve tokenPair
+        manageLeafs[2] = leafs[13]; //addLiquidityETH
+        manageLeafs[3] = leafs[14]; //removeLiquidityETH
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address tokenPair = IUniswapV2Factory(getAddress(sourceChain, "uniV2Factory")).getPair(token0[0], token1[0]); 
+
+        address[] memory targets = new address[](4);
+        targets[0] = getAddress(sourceChain, "USDC");
+        targets[1] = tokenPair; 
+        targets[2] = getAddress(sourceChain, "uniV2Router");
+        targets[3] = getAddress(sourceChain, "uniV2Router");
+
+        bytes[] memory targetData = new bytes[](4);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV2Router"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV2Router"), type(uint256).max
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)", 
+                getAddress(sourceChain, "USDC"),
+                100_000e8,
+                0,
+                0,
+                getAddress(sourceChain, "boringVault"),
+                block.timestamp + 1
+        );
+        uint256 amountLiquidity = 26539317965273; 
+        targetData[3] = abi.encodeWithSignature(
+            "removeLiquidityETH(address,uint256,uint256,uint256,address,uint256)", 
+                getAddress(sourceChain, "USDC"),
+                amountLiquidity,
+                0,
+                0,
+                getAddress(sourceChain, "boringVault"),
+                block.timestamp + 1
+        );
+
+        address[] memory decodersAndSanitizers = new address[](4);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        
+        uint256[] memory values = new uint256[](4); 
+        values[0] = 0; 
+        values[1] = 0; 
+        values[2] = 1000e18; 
+        values[3] = 0; 
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
+    function testUniswapV2IntegrationSwapsNoETH() external {
+        deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18);
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        address[] memory token0 = new address[](1);
+        token0[0] = getAddress(sourceChain, "WETH");
+        address[] memory token1 = new address[](1);
+        token1[0] = getAddress(sourceChain, "USDC");
+
+        _addUniswapV2Leafs(leafs, token0, token1, false);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //string memory filePath = "testTEST.json";
+        //_generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](6);
+        manageLeafs[0] = leafs[0]; 
+        manageLeafs[1] = leafs[1]; 
+        manageLeafs[2] = leafs[3]; //swapTokensForTokens token0 -> token1 
+        manageLeafs[3] = leafs[4]; //swapTokensForTokens token0 -> token1 
+        manageLeafs[4] = leafs[5]; //swapTokenForExactTokens token0 -> token1 
+        manageLeafs[5] = leafs[6]; //swapTokenForExactTokens token1 -> token0
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        //address tokenPair = IUniswapV2Factory(getAddress(sourceChain, "uniV2Factory")).getPair(token0[0], token1[0]); 
+
+        address[] memory targets = new address[](6);
+        targets[0] = getAddress(sourceChain, "USDC");
+        targets[1] = getAddress(sourceChain, "WETH");
+        targets[2] = getAddress(sourceChain, "uniV2Router");
+        targets[3] = getAddress(sourceChain, "uniV2Router");
+        targets[4] = getAddress(sourceChain, "uniV2Router");
+        targets[5] = getAddress(sourceChain, "uniV2Router");
+        
+        
+        address[] memory path =  new address[](2); 
+        path[0] = getAddress(sourceChain, "USDC");
+        path[1] = getAddress(sourceChain, "WETH");
+
+        bytes[] memory targetData = new bytes[](6);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV2Router"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV2Router"), type(uint256).max
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)", 
+                100_000e8,
+                0,
+                path,
+                getAddress(sourceChain, "boringVault"),
+                block.timestamp + 1
+        );
+        
+        uint256 wethOut = 2112645616190283048320; 
+        path[0] = getAddress(sourceChain, "WETH");
+        path[1] = getAddress(sourceChain, "USDC");
+
+        targetData[3] = abi.encodeWithSignature(
+            "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)", 
+                wethOut,
+                0,
+                path,
+                getAddress(sourceChain, "boringVault"),
+                block.timestamp + 1
+        );
+
+        path[0] = getAddress(sourceChain, "USDC");
+        path[1] = getAddress(sourceChain, "WETH");
+        
+        //swap USDC for exactly 
+        targetData[4] = abi.encodeWithSignature(
+            "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)", 
+                10e18,
+                100_000_000e18,
+                path,
+                getAddress(sourceChain, "boringVault"),
+                block.timestamp + 1
+        );
+
+        path[0] = getAddress(sourceChain, "WETH");
+        path[1] = getAddress(sourceChain, "USDC");
+
+        targetData[5] = abi.encodeWithSignature(
+            "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)", 
+                100e6,
+                1e18,
+                path,
+                getAddress(sourceChain, "boringVault"),
+                block.timestamp + 1
+        );
+
+        address[] memory decodersAndSanitizers = new address[](6);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        
+        uint256[] memory values = new uint256[](6); 
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
+    function testUniswapV2IntegrationSwapsWithETH() external {
+        deal(address(boringVault), 1_000e18);
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        address[] memory token0 = new address[](1);
+        token0[0] = getAddress(sourceChain, "ETH");
+        address[] memory token1 = new address[](1);
+        token1[0] = getAddress(sourceChain, "USDC");
+
+        _addUniswapV2Leafs(leafs, token0, token1, true);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -203,25 +391,32 @@ contract UniswapV2IntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](5);
-        manageLeafs[0] = leafs[0]; //tokens are sorted, so this is actually leaf 1, token1 becomes token0 during sort since USDC > WETH address
-        manageLeafs[1] = leafs[1]; //approve weth 
-        manageLeafs[2] = leafs[2]; //approve tokenPair
-        manageLeafs[3] = leafs[5]; //addLiquidityETH
-        manageLeafs[4] = leafs[6]; //removeLiquidityETH
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](6);
+        manageLeafs[0] = leafs[0]; 
+        manageLeafs[1] = leafs[1]; 
+        manageLeafs[2] = leafs[9]; //swapExactETHForTokens ETH -> token
+        manageLeafs[3] = leafs[10]; //swapExactTokensForETH token -> ETH
+        manageLeafs[4] = leafs[11]; //swapTokensForExactETH token -> ETH
+        manageLeafs[5] = leafs[12]; //swapTokenForExactTokens token1 -> token0
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address tokenPair = IUniswapV2Factory(getAddress(sourceChain, "uniV2Factory")).getPair(token0[0], token1[0]); 
+        //address tokenPair = IUniswapV2Factory(getAddress(sourceChain, "uniV2Factory")).getPair(token0[0], token1[0]); 
 
-        address[] memory targets = new address[](5);
+        address[] memory targets = new address[](6);
         targets[0] = getAddress(sourceChain, "USDC");
         targets[1] = getAddress(sourceChain, "WETH");
-        targets[2] = tokenPair; 
+        targets[2] = getAddress(sourceChain, "uniV2Router");
         targets[3] = getAddress(sourceChain, "uniV2Router");
         targets[4] = getAddress(sourceChain, "uniV2Router");
+        targets[5] = getAddress(sourceChain, "uniV2Router");
+        
+        
+        address[] memory path =  new address[](2); 
+        path[0] = getAddress(sourceChain, "WETH");
+        path[1] = getAddress(sourceChain, "USDC");
 
-        bytes[] memory targetData = new bytes[](5);
+        bytes[] memory targetData = new bytes[](6);
         targetData[0] = abi.encodeWithSignature(
             "approve(address,uint256)", getAddress(sourceChain, "uniV2Router"), type(uint256).max
         );
@@ -229,39 +424,60 @@ contract UniswapV2IntegrationTest is Test, MerkleTreeHelper {
             "approve(address,uint256)", getAddress(sourceChain, "uniV2Router"), type(uint256).max
         );
         targetData[2] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "uniV2Router"), type(uint256).max
-        );
-        targetData[3] = abi.encodeWithSignature(
-            "addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256)", 
-                getAddress(sourceChain, "USDC"),
-                getAddress(sourceChain, "WETH"),
-                100_000e8,
-                1_000e18,
-                0,
-                0,
-                getAddress(sourceChain, "boringVault"),
-                block.timestamp + 1
-        );
-        uint256 amountLiquidity = 26539317965273; 
-        targetData[4] = abi.encodeWithSignature(
-            "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)", 
-                getAddress(sourceChain, "USDC"),
-                getAddress(sourceChain, "WETH"),
-                amountLiquidity,
-                0,
-                0,
-                getAddress(sourceChain, "boringVault"),
-                block.timestamp + 1
+            "swapExactETHForTokens(uint256,address[],address,uint256)",
+            0,
+            path,
+            getAddress(sourceChain, "boringVault"),
+            block.timestamp + 1
         );
 
-        address[] memory decodersAndSanitizers = new address[](5);
+        path[0] = getAddress(sourceChain, "USDC");
+        path[1] = getAddress(sourceChain, "WETH");
+
+        targetData[3] = abi.encodeWithSignature(
+            "swapExactTokensForETH(uint256,uint256,address[],address,uint256)",
+            100e6,
+            0,
+            path,
+            getAddress(sourceChain, "boringVault"),
+            block.timestamp + 1
+        );
+
+        targetData[4] = abi.encodeWithSignature(
+            "swapTokensForExactETH(uint256,uint256,address[],address,uint256)",
+            1e18,
+            3000e8,
+            path,
+            getAddress(sourceChain, "boringVault"),
+            block.timestamp + 1
+        );
+
+        path[0] = getAddress(sourceChain, "WETH");
+        path[1] = getAddress(sourceChain, "USDC");
+
+        targetData[5] = abi.encodeWithSignature(
+            "swapETHForExactTokens(uint256,address[],address,uint256)",
+            3000e8,
+            path,
+            getAddress(sourceChain, "boringVault"),
+            block.timestamp + 1
+        );
+        
+        address[] memory decodersAndSanitizers = new address[](6);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
         
-        uint256[] memory values = new uint256[](5); 
+        uint256[] memory values = new uint256[](6); 
+        values[0] = 0; 
+        values[1] = 0; 
+        values[2] = 10e18; 
+        values[3] = 0; 
+        values[4] = 0; 
+        values[5] = 100e18; 
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
@@ -273,7 +489,6 @@ contract UniswapV2IntegrationTest is Test, MerkleTreeHelper {
         forkId = vm.createFork(vm.envString(rpcKey), blockNumber);
         vm.selectFork(forkId);
     }
-
 }
 
 
