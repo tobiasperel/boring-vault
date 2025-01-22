@@ -402,4 +402,13 @@ contract DecoderCustomTypes {
         /// @dev The address of the ERC20 purchase token
         address purchaseToken;
     }
+
+    // ========================================= Dolomite Finance ==================================
+
+    enum BalanceCheckFlag {
+        Both,
+        From,
+        To,
+        None
+    }
 }

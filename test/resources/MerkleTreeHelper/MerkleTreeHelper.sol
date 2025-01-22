@@ -5172,7 +5172,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Fee Claiming =========================================
-    function _addLeafsForFeeClaiming(ManageLeaf[] memory leafs, address accountant, ERC20[] memory feeAssets, bool addYieldClaiming) internal {
+    function _addLeafsForFeeClaiming(
+        ManageLeaf[] memory leafs,
+        address accountant,
+        ERC20[] memory feeAssets,
+        bool addYieldClaiming
+    ) internal {
         // Approvals.
         for (uint256 i; i < feeAssets.length; ++i) {
             if (
@@ -5242,7 +5247,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = to;
-
     }
 
     // ========================================= LayerZero =========================================
@@ -6746,6 +6750,323 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
         }
+    }
+
+    // ========================================= Dolomite Finance =========================================
+
+    function _addDolomiteLeafs(ManageLeaf[] memory leafs, address token) internal {
+        uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(token);   
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            token,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Dolomite DepositWithdraw Router to spend ", ERC20(token).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter"); 
+
+        // Wad Scaled Functions
+        
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            false,
+            "depositWei(uint256,uint256,uint256)",
+            new address[](1),
+            string.concat("Deposit ", ERC20(token).symbol(), " into Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer"));
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            false,
+            "depositWeiIntoDefaultAccount(uint256,uint256)",
+            new address[](1),
+            string.concat("Deposit ", ERC20(token).symbol(), " into Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId), " Default Account"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            false,
+            "withdrawWei(uint256,uint256,uint256,uint8)",
+            new address[](1),
+            string.concat("Withdraw ", ERC20(token).symbol(), " from Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            false,
+            "withdrawWeiFromDefaultAccount(uint256,uint256,uint8)",
+            new address[](1),
+            string.concat("Withdraw ", ERC20(token).symbol(), " from Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId), " default account"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+
+        // Native ETH Functions         
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            true,
+            "depositETH(uint256)",
+            new address[](0),
+            string.concat("Deposit ETH into Dolomite ETH Market"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            true,
+            "depositETHIntoDefaultAccount()",
+            new address[](0),
+            string.concat("Deposit ETH into Dolomite ETH Market in default account"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            false,
+            "withdrawETH(uint256,uint256,uint8)",
+            new address[](0),
+            string.concat("Withdraw ETH from Dolomite ETH Market"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            false,
+            "withdrawETHFromDefaultAccount(uint256,uint8)",
+            new address[](0),
+            string.concat("Withdraw ETH from Dolomite ETH Market default account"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        // Par Scaled Functions
+        
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            false,
+            "depositPar(uint256,uint256,uint256)",
+            new address[](1),
+            string.concat("Deposit Par scaled", ERC20(token).symbol(), " into Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            false,
+            "depositParIntoDefaultAccount(uint256,uint256)",
+            new address[](1),
+            string.concat("Deposit Par scaled", ERC20(token).symbol(), " into Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId), " in default account"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            false,
+            "withdrawPar(uint256,uint256,uint256,uint8)",
+            new address[](1),
+            string.concat("Withdraw Par scaled", ERC20(token).symbol(), " from Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+            false,
+            "withdrawParFromDefaultAccount(uint256,uint256,uint8)",
+            new address[](1),
+            string.concat("Withdraw Par scaled ", ERC20(token).symbol(), " from Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+
+    }
+        
+    function _addDolomiteBorrowLeafs(ManageLeaf[] memory leafs, address borrowToken) internal {
+        uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(token);   
+        
+        //Main Borrow Position Functions
+
+        unchecked {
+            leafIndex++; 
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteBorrowProxy"),
+            false,
+            "openBorrowPosition(uint256,uint256,uint256,uint256,uint8)",
+            new address[](1),
+            string.concat("Borrow ", ERC20(borrowToken).symbol(), " from Dolomite BorrowPosition Market ID: ", vm.toString(marketId)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+
+        unchecked {
+            leafIndex++; 
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteBorrowProxy"),
+            false,
+            "closeBorrowPosition(uint256,uint256,uint256[])",
+            new address[](1),
+            string.concat("Close Borrow Position of ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+
+        unchecked {
+            leafIndex++; 
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteBorrowProxy"),
+            false,
+            "repayAllForBorrowPosition(uint256,uint256,uint256,uint8)",
+            new address[](1),
+            string.concat("Repay Borrow Position of ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        
+        unchecked {
+            leafIndex++; 
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteBorrowProxy"),
+            false,
+            "transferBetweenAccounts(uint256,uint256,uint256,uint8)",
+            new address[](1),
+            string.concat("Transfer Borrow Position of ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId), " to additional subaccount"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = marketId;  
+    } 
+
+    function _addDolomiteExtraAccountLeafs(ManageLeaf[] memory leafs, address borrowToken, address from, address to) {
+        uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(token);   
+    
+        unchecked {
+            leafIndex++; 
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteBorrowProxy"),
+            false,
+            "openBorrowPositionWithDifferentAccounts(address,uint256,address,uint256,uint256,uint256,uint8)",
+            new address[](3),
+            string.concat("Open Borrow Position of ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId), " from ", vm.toString(from), " to ", vm.toString(to)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = from;  
+        leafs[leafIndex].argumentAddresses[1] = to; 
+        leafs[leafIndex].argumentAddresses[2] = marketId;  
+         
+        unchecked {
+            leafIndex++; 
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteBorrowProxy"),
+            false,
+            "closeBorrowPositionWithDifferentAccounts(address,uint256,address,uint256,uint256[])",
+            new address[](3),
+            string.concat("Close Borrow Position of ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId), " from ", vm.toString(from), " to ", vm.toString(to)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = from; //borrowAccountOwner
+        leafs[leafIndex].argumentAddresses[1] = to;  
+        leafs[leafIndex].argumentAddresses[2] = marketId;  
+         
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteBorrowProxy"),
+            false,
+            "transferBetweenAccountsWithDifferentAccounts(address,uint256,address,uint256,uint256,uint256,uint8)",
+            new address[](3),
+            string.concat("Transfer ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId), " from ", vm.toString(from), " to ", vm.toString(to)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = to; //TODO check this
+        leafs[leafIndex].argumentAddresses[1] = from;  //TODO this too
+        leafs[leafIndex].argumentAddresses[2] = marketId;  
+
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dolomiteBorrowProxy"),
+            false,
+            "repayAllForBorrowPositionWithDifferentAccounts(address,uint256,address,uint256,uint256,uint8)",
+            new address[](3),
+            string.concat("Repay ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId), " from ", vm.toString(from), " to ", vm.toString(to)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = from;
+        leafs[leafIndex].argumentAddresses[1] = to;  
+        leafs[leafIndex].argumentAddresses[2] = marketId;  
+
     }
 
     // ========================================= JSON FUNCTIONS =========================================
