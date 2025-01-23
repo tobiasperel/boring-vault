@@ -821,6 +821,9 @@ contract ChainValues {
         values[mainnet]["ethfiDefaultCollateral"] = 0x21DbBA985eEA6ba7F27534a72CCB292eBA1D2c7c.toBytes32();
         values[mainnet]["LBTCDefaultCollateral"] = 0x9C0823D3A1172F9DdF672d438dec79c39a64f448.toBytes32();
 
+        values[mainnet]["wstETHSymbioticVault"] = 0xBecfad885d8A89A0d2f0E099f66297b0C296Ea21.toBytes32();
+        values[mainnet]["wstETHSymbioticVaultRewards"] = 0xe34DcEA5aB7c4f3c4AD2F5f144Fc7fc3D5b0137C.toBytes32(); 
+
         // Karak
         values[mainnet]["vaultSupervisor"] = 0x54e44DbB92dBA848ACe27F44c0CB4268981eF1CC.toBytes32();
         values[mainnet]["delegationSupervisor"] = 0xAfa904152E04aBFf56701223118Be2832A4449E0.toBytes32();

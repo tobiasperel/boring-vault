@@ -5,8 +5,7 @@ import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
 import {BoringVault} from "src/base/BoringVault.sol";
 import {ManagerWithMerkleVerification} from "src/base/Roles/ManagerWithMerkleVerification.sol";
 import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
-import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
-import {ERC20} from "@solmate/tokens/ERC20.sol";
+import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol"; import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {SymbioticLRTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SymbioticLRTDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
@@ -36,11 +35,83 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
     uint8 public constant BORING_VAULT_ROLE = 5;
     uint8 public constant BALANCER_VAULT_ROLE = 6;
 
-    function setUp() external {
+    function _setUpHolesky() internal {
         setSourceChainName("holesky");
         // Setup forked environment.
         string memory rpcKey = "HOLESKY_RPC_URL";
-        uint256 blockNumber = 3118548;
+        uint256 blockNumber = 3200468;
+
+        _startFork(rpcKey, blockNumber);
+
+        boringVault = new BoringVault(address(this), "Boring Vault", "BV", 18);
+
+        manager = new ManagerWithMerkleVerification(address(this), address(boringVault), address(0));
+
+        rawDataDecoderAndSanitizer = address(new SymbioticVaultDecoderAndSanitizerFull());
+
+        setAddress(false, sourceChain, "boringVault", address(boringVault));
+        setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        setAddress(false, sourceChain, "manager", address(manager));
+        setAddress(false, sourceChain, "managerAddress", address(manager));
+        setAddress(false, sourceChain, "accountantAddress", address(1));
+
+        rolesAuthority = new RolesAuthority(address(this), Authority(address(0)));
+        boringVault.setAuthority(rolesAuthority);
+        manager.setAuthority(rolesAuthority);
+
+        // Setup roles authority.
+        rolesAuthority.setRoleCapability(
+            MANAGER_ROLE,
+            address(boringVault),
+            bytes4(keccak256(abi.encodePacked("manage(address,bytes,uint256)"))),
+            true
+        );
+        rolesAuthority.setRoleCapability(
+            MANAGER_ROLE,
+            address(boringVault),
+            bytes4(keccak256(abi.encodePacked("manage(address[],bytes[],uint256[])"))),
+            true
+        );
+
+        rolesAuthority.setRoleCapability(
+            STRATEGIST_ROLE,
+            address(manager),
+            ManagerWithMerkleVerification.manageVaultWithMerkleVerification.selector,
+            true
+        );
+        rolesAuthority.setRoleCapability(
+            MANGER_INTERNAL_ROLE,
+            address(manager),
+            ManagerWithMerkleVerification.manageVaultWithMerkleVerification.selector,
+            true
+        );
+        rolesAuthority.setRoleCapability(
+            ADMIN_ROLE, address(manager), ManagerWithMerkleVerification.setManageRoot.selector, true
+        );
+        rolesAuthority.setRoleCapability(
+            BORING_VAULT_ROLE, address(manager), ManagerWithMerkleVerification.flashLoan.selector, true
+        );
+        rolesAuthority.setRoleCapability(
+            BALANCER_VAULT_ROLE, address(manager), ManagerWithMerkleVerification.receiveFlashLoan.selector, true
+        );
+
+        // Grant roles
+        rolesAuthority.setUserRole(address(this), STRATEGIST_ROLE, true);
+        rolesAuthority.setUserRole(address(manager), MANGER_INTERNAL_ROLE, true);
+        rolesAuthority.setUserRole(address(this), ADMIN_ROLE, true);
+        rolesAuthority.setUserRole(address(manager), MANAGER_ROLE, true);
+        rolesAuthority.setUserRole(address(boringVault), BORING_VAULT_ROLE, true);
+        rolesAuthority.setUserRole(address(0), BALANCER_VAULT_ROLE, true);
+
+        // Allow the boring vault to receive ETH.
+        rolesAuthority.setPublicCapability(address(boringVault), bytes4(0), true);
+    }
+
+    function _setUpMainnet() internal {
+        setSourceChainName("mainnet");
+        // Setup forked environment.
+        string memory rpcKey = "MAINNET_RPC_URL";
+        uint256 blockNumber = 21683743;
 
         _startFork(rpcKey, blockNumber);
 
@@ -109,6 +180,8 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
     }
 
     function testSymbioticVaultIntegration() external {
+        _setUpHolesky(); 
+
         deal(getAddress(sourceChain, "WSTETH"), address(boringVault), 100e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
@@ -116,7 +189,9 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
         vaults[0] = getAddress(sourceChain, "wstETHSymbioticVault");
         ERC20[] memory assets = new ERC20[](1);
         assets[0] = ERC20(getAddress(sourceChain, "WSTETH"));
-        _addSymbioticVaultLeafs(leafs, vaults, assets);
+        address[] memory rewards = new address[](1); 
+        rewards[0] = address(1); 
+        _addSymbioticVaultLeafs(leafs, vaults, assets, rewards);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -153,7 +228,7 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
 
         skip(10 days);
 
-        uint256 beforeClaim = vm.snapshot();
+        uint256 beforeClaim = vm.snapshotState();
 
         // Use claim to withdraw.
         manageLeafs = new ManageLeaf[](1);
@@ -180,7 +255,7 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
             "BoringVault should have 100 wstETH."
         );
 
-        vm.revertTo(beforeClaim);
+        vm.revertToState(beforeClaim);
 
         // Use claimBatch to withdraw.
         manageLeafs = new ManageLeaf[](1);
@@ -210,6 +285,148 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
         );
     }
 
+     struct RewardDistribution {
+        uint256 amount;
+        uint48 timestamp;
+    }
+
+    function testSymbioticVaultIntegrationMainnet() external {
+        _setUpMainnet(); 
+
+        deal(getAddress(sourceChain, "wstETHDefaultCollateral"), address(boringVault), 100e18);
+
+        uint256 rewardsMapSlot = 2;
+        address token = getAddress(sourceChain, "WETH");  
+        address network = 0xcffAca5f6887f307718ae41b9777ca509A5980F1; //middleware network
+
+        // Get storage slot for rewards mapping
+        bytes32 slot = keccak256(abi.encode(token, network, rewardsMapSlot));
+
+
+        vm.store(getAddress(sourceChain, "wstETHSymbioticVaultRewards"), slot, bytes32(uint256(1)));
+
+        // Create RewardDistribution struct value
+        uint256 amount = 100e18; 
+        uint48 timestamp = uint48(block.timestamp);
+        bytes32 value = bytes32(abi.encode(RewardDistribution(amount, timestamp)));
+
+        // Store at the correct index
+        vm.store(getAddress(sourceChain, "wstETHSymbioticVaultRewards"), keccak256(abi.encode(slot, 0)), value);
+
+        
+        //IStakerRewards.RewardDistribution memory r  = IStakerRewards(getAddress(sourceChain, "wstETHSymbioticVaultRewards")).rewards(getAddress(sourceChain, "WETH"), network, 0); 
+        //assertGt(r.amount, 0); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        address[] memory vaults = new address[](1);
+        vaults[0] = getAddress(sourceChain, "wstETHSymbioticVault");
+        ERC20[] memory assets = new ERC20[](1);
+        assets[0] = ERC20(getAddress(sourceChain, "wstETHDefaultCollateral"));
+        address[] memory rewards = new address[](1); 
+        rewards[0] = getAddress(sourceChain, "wstETHSymbioticVaultRewards"); 
+        _addSymbioticVaultLeafs(leafs, vaults, assets, rewards);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
+        manageLeafs[0] = leafs[0];
+        manageLeafs[1] = leafs[1];
+        manageLeafs[2] = leafs[2];
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](3);
+        targets[0] = getAddress(sourceChain, "wstETHDefaultCollateral");
+        targets[1] = getAddress(sourceChain, "wstETHSymbioticVault");
+        //targets[2] = getAddress(sourceChain, "wstETHSymbioticVaultRewards");
+        targets[2] = getAddress(sourceChain, "wstETHSymbioticVault");
+        
+        bytes[] memory activeSharesOfHints = new bytes[](0);  
+        bytes memory data = abi.encode(network, 100e18, activeSharesOfHints); 
+        data; 
+
+        bytes[] memory targetData = new bytes[](3);
+        targetData[0] =
+            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "wstETHSymbioticVault"), type(uint256).max);
+        targetData[1] = abi.encodeWithSignature("deposit(address,uint256)", boringVault, 100e18);
+        //targetData[2] = abi.encodeWithSignature("claimRewards(address,address,bytes)", boringVault, getAddress(sourceChain, "WETH"), data);
+        targetData[2] = abi.encodeWithSignature("withdraw(address,uint256)", boringVault, 100e18);
+
+        uint256[] memory values = new uint256[](3);
+
+        address[] memory decodersAndSanitizers = new address[](3); 
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        //decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+        uint256 epoch = SymbioticVault(getAddress(sourceChain, "wstETHSymbioticVault")).currentEpoch() + 1;
+
+        skip(10 days);
+
+        uint256 beforeClaim = vm.snapshotState();
+
+        // Use claim to withdraw.
+        manageLeafs = new ManageLeaf[](1);
+        manageLeafs[0] = leafs[3];
+
+        manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        targets = new address[](1);
+        targets[0] = getAddress(sourceChain, "wstETHSymbioticVault");
+
+        targetData = new bytes[](1);
+        targetData[0] = abi.encodeWithSignature("claim(address,uint256)", boringVault, epoch);
+
+        values = new uint256[](1);
+
+        decodersAndSanitizers = new address[](1);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+        assertEq(
+            getERC20(sourceChain, "wstETHDefaultCollateral").balanceOf(address(boringVault)),
+            100e18,
+            "BoringVault should have 100 wstETHDefaultCollateral."
+        );
+
+        vm.revertToState(beforeClaim);
+
+        // Use claimBatch to withdraw.
+        manageLeafs = new ManageLeaf[](1);
+        manageLeafs[0] = leafs[4];
+
+        manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        targets = new address[](1);
+        targets[0] = getAddress(sourceChain, "wstETHSymbioticVault");
+
+        targetData = new bytes[](1);
+        uint256[] memory batch = new uint256[](1);
+        batch[0] = epoch;
+        targetData[0] = abi.encodeWithSignature("claimBatch(address,uint256[])", boringVault, batch);
+
+        values = new uint256[](1);
+
+        decodersAndSanitizers = new address[](1);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+        assertEq(
+            getERC20(sourceChain, "wstETHDefaultCollateral").balanceOf(address(boringVault)),
+            100e18,
+            "BoringVault should have 100 wstETHDefaultCollateral."
+        );
+        
+
+    }
+
     // ========================================= HELPER FUNCTIONS =========================================
 
     function _startFork(string memory rpcKey, uint256 blockNumber) internal returns (uint256 forkId) {
@@ -220,4 +437,14 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
 
 interface SymbioticVault {
     function currentEpoch() external view returns (uint256);
+}
+
+interface IStakerRewards {
+
+     struct RewardDistribution {
+        uint256 amount;
+        uint48 timestamp;
+    }
+
+    function rewards(address token, address network, uint256 index) external view returns (RewardDistribution memory); 
 }
