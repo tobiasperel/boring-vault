@@ -33,10 +33,10 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
     uint8 public constant BALANCER_VAULT_ROLE = 6;
 
     function setUp() external {
-        setSourceChainName("bartio");
+        setSourceChainName("arbitrum");
         // Setup forked environment.
-        string memory rpcKey = "BARTIO_RPC_URL";
-        uint256 blockNumber = 9650287;
+        string memory rpcKey = "ARBITRUM_RPC_URL";
+        uint256 blockNumber = 800880;
 
         _startFork(rpcKey, blockNumber);
 
@@ -111,7 +111,7 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
+        _addDolomiteLeafs(leafs, getAddress(sourceChain, "USDC");
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
