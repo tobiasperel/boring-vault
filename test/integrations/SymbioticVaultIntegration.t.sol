@@ -5,7 +5,8 @@ import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
 import {BoringVault} from "src/base/BoringVault.sol";
 import {ManagerWithMerkleVerification} from "src/base/Roles/ManagerWithMerkleVerification.sol";
 import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
-import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol"; import {ERC20} from "@solmate/tokens/ERC20.sol";
+import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol"; 
+import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {SymbioticLRTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SymbioticLRTDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
@@ -295,27 +296,7 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
 
         deal(getAddress(sourceChain, "wstETHDefaultCollateral"), address(boringVault), 100e18);
 
-        uint256 rewardsMapSlot = 2;
-        address token = getAddress(sourceChain, "WETH");  
-        address network = 0xcffAca5f6887f307718ae41b9777ca509A5980F1; //middleware network
-
-        // Get storage slot for rewards mapping
-        bytes32 slot = keccak256(abi.encode(token, network, rewardsMapSlot));
-
-
-        vm.store(getAddress(sourceChain, "wstETHSymbioticVaultRewards"), slot, bytes32(uint256(1)));
-
-        // Create RewardDistribution struct value
-        uint256 amount = 100e18; 
-        uint48 timestamp = uint48(block.timestamp);
-        bytes32 value = bytes32(abi.encode(RewardDistribution(amount, timestamp)));
-
-        // Store at the correct index
-        vm.store(getAddress(sourceChain, "wstETHSymbioticVaultRewards"), keccak256(abi.encode(slot, 0)), value);
-
-        
-        //IStakerRewards.RewardDistribution memory r  = IStakerRewards(getAddress(sourceChain, "wstETHSymbioticVaultRewards")).rewards(getAddress(sourceChain, "WETH"), network, 0); 
-        //assertGt(r.amount, 0); 
+        address networkMiddleware = address(0x96d37DC47CBE2486E25c4a4587FFCdc48cDd3172);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         address[] memory vaults = new address[](1);
@@ -340,11 +321,10 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
         address[] memory targets = new address[](3);
         targets[0] = getAddress(sourceChain, "wstETHDefaultCollateral");
         targets[1] = getAddress(sourceChain, "wstETHSymbioticVault");
-        //targets[2] = getAddress(sourceChain, "wstETHSymbioticVaultRewards");
         targets[2] = getAddress(sourceChain, "wstETHSymbioticVault");
         
         bytes[] memory activeSharesOfHints = new bytes[](0);  
-        bytes memory data = abi.encode(network, 100e18, activeSharesOfHints); 
+        bytes memory data = abi.encode(networkMiddleware, 100e18, activeSharesOfHints); 
         data; 
 
         bytes[] memory targetData = new bytes[](3);
@@ -394,7 +374,6 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
             100e18,
             "BoringVault should have 100 wstETHDefaultCollateral."
         );
-
         vm.revertToState(beforeClaim);
 
         // Use claimBatch to withdraw.
@@ -424,6 +403,122 @@ contract SymbioticVaultIntegrationTest is Test, MerkleTreeHelper {
             "BoringVault should have 100 wstETHDefaultCollateral."
         );
         
+    }
+
+    function testSymbioticVaultIntegrationMainnetRewards() external {
+        _setUpMainnet(); 
+
+        deal(getAddress(sourceChain, "wstETHDefaultCollateral"), address(boringVault), 100e18);
+
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        address[] memory vaults = new address[](1);
+        vaults[0] = getAddress(sourceChain, "wstETHSymbioticVault");
+        ERC20[] memory assets = new ERC20[](1);
+        assets[0] = ERC20(getAddress(sourceChain, "wstETHDefaultCollateral"));
+        address[] memory rewards = new address[](1); 
+        rewards[0] = getAddress(sourceChain, "wstETHSymbioticVaultRewards"); 
+        _addSymbioticVaultLeafs(leafs, vaults, assets, rewards);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
+        manageLeafs[0] = leafs[0];
+        manageLeafs[1] = leafs[1];
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](2);
+        targets[0] = getAddress(sourceChain, "wstETHDefaultCollateral");
+        targets[1] = getAddress(sourceChain, "wstETHSymbioticVault");
+        
+
+        bytes[] memory targetData = new bytes[](2);
+        targetData[0] =
+            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "wstETHSymbioticVault"), type(uint256).max);
+        targetData[1] = abi.encodeWithSignature("deposit(address,uint256)", boringVault, 100e18);
+
+        uint256[] memory values = new uint256[](2);
+
+        address[] memory decodersAndSanitizers = new address[](2); 
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+
+        {
+            // 1. First get/setup our contracts
+            address rewardsContract = getAddress(sourceChain, "wstETHSymbioticVaultRewards");
+
+            // 2. We need to mock the middleware service to return our middleware address
+            vm.mockCall(
+                0xD7dC9B366c027743D90761F71858BCa83C6899Ad,
+                abi.encodeWithSelector(INetworkMiddlewareService.middleware.selector, 0x96d37DC47CBE2486E25c4a4587FFCdc48cDd3172),
+                abi.encode(0x96d37DC47CBE2486E25c4a4587FFCdc48cDd3172)
+            );
+        
+            // 3. Setup reward distribution parameters
+            uint48 timestamp = uint48(block.timestamp - 1); // Must be in the past
+            uint256 maxAdminFee = 1000; // 10% max
+            
+        //address networkMiddleware = address(0x96d37DC47CBE2486E25c4a4587FFCdc48cDd3172);
+            // 4. Deal tokens to middleware for distribution
+            deal(getAddress(sourceChain, "WETH"), 0x96d37DC47CBE2486E25c4a4587FFCdc48cDd3172, 100e18);
+
+            // Mock vault responses
+            vm.mockCall(
+                0xBecfad885d8A89A0d2f0E099f66297b0C296Ea21,
+                abi.encodeWithSelector(IVault.activeSharesAt.selector, timestamp, ""),
+                abi.encode(1e18) // Non-zero shares
+            );
+                
+            vm.mockCall(
+                0xBecfad885d8A89A0d2f0E099f66297b0C296Ea21,
+                abi.encodeWithSelector(IVault.activeStakeAt.selector, timestamp, ""),
+                abi.encode(1e18) // Non-zero stake
+            );
+
+            // 5. Impersonate middleware to call distributeRewards
+            vm.startPrank(0x96d37DC47CBE2486E25c4a4587FFCdc48cDd3172);
+            ERC20(getAddress(sourceChain, "WETH")).approve(rewardsContract, 100e18);
+            
+            IStakerRewards(rewardsContract).distributeRewards(
+                0x96d37DC47CBE2486E25c4a4587FFCdc48cDd3172,
+                getAddress(sourceChain, "WETH"),
+                100e18,
+                abi.encode(timestamp, maxAdminFee, "", "")
+            );
+            vm.stopPrank();
+
+
+        (uint256 a, )  = IStakerRewards(getAddress(sourceChain, "wstETHSymbioticVaultRewards")).rewards(getAddress(sourceChain, "WETH"), 0x96d37DC47CBE2486E25c4a4587FFCdc48cDd3172, 0); 
+        assertGt(a, 0); 
+
+        }
+ 
+        manageLeafs = new ManageLeaf[](1);
+        manageLeafs[0] = leafs[5];
+
+        manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        targets = new address[](1);
+        targets[0] = getAddress(sourceChain, "wstETHSymbioticVaultRewards");
+
+        targetData = new bytes[](1);
+        bytes[] memory activeSharesOfHints = new bytes[](0);
+        bytes memory data = abi.encode(0x96d37DC47CBE2486E25c4a4587FFCdc48cDd3172, 100e18, activeSharesOfHints);
+        targetData[0] = abi.encodeWithSignature("claimRewards(address,address,bytes)", boringVault, getAddress(sourceChain, "WETH"), data);
+
+        values = new uint256[](1);
+
+        decodersAndSanitizers = new address[](1);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
 
     }
 
@@ -446,5 +541,21 @@ interface IStakerRewards {
         uint48 timestamp;
     }
 
-    function rewards(address token, address network, uint256 index) external view returns (RewardDistribution memory); 
+    function rewards(
+        address token,
+        address network,
+        uint256 rewardIndex
+    ) external view returns (uint256 amount, uint48 timestamp);
+    
+    function distributeRewards(address network, address token, uint256 amount, bytes calldata data) external;
+
+}
+
+interface INetworkMiddlewareService { 
+    function  middleware(address _middleware) external view returns (address); 
+}
+
+interface IVault {
+    function activeSharesAt(uint48 ts, bytes memory hint) external view returns (uint256); 
+    function activeStakeAt(uint48 ts, bytes memory hint) external view returns (uint256); 
 }
