@@ -7,28 +7,36 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
     //============================== Errors  ===============================
    
     error DolomiteDecoderAndSanitizer__ArrayLengthGTOne(); 
+
+    address dolomiteMargin; 
+
+    constructor(address _dolomiteMargin) {
+        dolomiteMargin = _dolomiteMargin; 
+    }
     
     //============================== DepositWithdrawalProxy Functions ===============================
 
     /////////////////// WAD Scaled Functions //////////////////
 
     //account numbers are owned by wallet address, so no need to sanitize
-    function depositWei(uint256, /*_toAccountNumber*/ uint256 _marketId, uint256 /*_amountWei*/ )
+    function depositWei(uint256, /*_toAccountNumber*/ uint256 _marketId, uint256 /*_amountWei*/)
         external
-        pure
+        view
         virtual
         returns (bytes memory addressesFound)
     {
-        addressesFound = abi.encodePacked(_marketId);
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
     }
 
     function depositWeiIntoDefaultAccount(uint256 _marketId, uint256 /*_amountWei*/ )
         external
-        pure
+        view
         virtual
         returns (bytes memory addressesFound)
     {
-        addressesFound = abi.encodePacked(_marketId);
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
     }
 
     function withdrawWei(
@@ -36,25 +44,27 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 _marketId,
         uint256, /*_amountWei*/
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_marketId);
+    ) external view virtual returns (bytes memory addressesFound) {
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
     }
 
     function withdrawWeiFromDefaultAccount(
         uint256 _marketId,
         uint256, /*_amountWei*/
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_marketId);
+    ) external view virtual returns (bytes memory addressesFound) {
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
     }
 
     /////////////////// Native ETH Functions //////////////////
 
-    function depositETH(uint256 /*_toAccountNumber*/ ) external pure virtual returns (bytes memory addressesFound) {
+    function depositETH(uint256 /*_toAccountNumber*/ ) external view virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
 
-    function depositETHIntoDefaultAccount() external pure virtual returns (bytes memory addressesFound) {
+    function depositETHIntoDefaultAccount() external view virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
 
@@ -62,35 +72,37 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256, /*_fromAccountNumber*/
         uint256, /*_amountWei*/
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
+    ) external view virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
 
     function withdrawETHFromDefaultAccount(
         uint256, /*_amountWei*/
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
+    ) external view virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
 
     /////////////////// Par Scaled Functions //////////////////
 
-    function depositPar(uint256, /*_toAccountNumber*/ uint256 _marketId, uint256 /*_amountPar*/ )
+    function depositPar(uint256, /*_toAccountNumber*/ uint256 _marketId, uint256 /*_amountPar*/)
         external
-        pure
+        view
         virtual
         returns (bytes memory addressesFound)
     {
-        addressesFound = abi.encodePacked(_marketId);
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
     }
 
     function depositParIntoDefaultAccount(uint256 _marketId, uint256 /*_amountPar*/ )
         external
-        pure
+        view
         virtual
         returns (bytes memory addressesFound)
     {
-        addressesFound = abi.encodePacked(_marketId);
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
     }
 
     function withdrawPar(
@@ -98,16 +110,18 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 _marketId,
         uint256, /*_amountPar*/
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_marketId);
+    ) external view virtual returns (bytes memory addressesFound) {
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
     }
 
     function withdrawParFromDefaultAccount(
         uint256 _marketId,
         uint256, /*_amountPar*/
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_marketId);
+    ) external view virtual returns (bytes memory addressesFound) {
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
     }
 
     //============================== BorrowPositionProxy Functions ===============================
@@ -118,35 +132,39 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 _marketId,
         uint256 /*_amountWei*/,
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_marketId);   
+    ) external view virtual returns (bytes memory addressesFound) {
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
     }
-
+    
+    //all deposited assets are already whitelisted  
     function closeBorrowPosition(
         uint256 /*_borrowAccountNumber*/,
         uint256 /*_toAccountNumber*/,
-        uint256[] calldata _collateralMarketIds
-    ) external pure virtual returns (bytes memory addressesFound) {
-        if (_collateralMarketIds.length > 1) revert DolomiteDecoderAndSanitizer__ArrayLengthGTOne(); 
-        addressesFound = abi.encodePacked(_collateralMarketIds[0]); 
-     }
+        uint256[] calldata /*_collateralMarketIds*/
+    ) external view virtual returns (bytes memory addressesFound) {
+        return addressesFound; 
+    }
 
     function repayAllForBorrowPosition(
         uint256 /*_fromAccountNumber*/,
         uint256 /*_borrowAccountNumber*/,
         uint256 _marketId,
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_marketId); 
+    ) external view virtual returns (bytes memory addressesFound) {
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
     }
 
     function transferBetweenAccounts(
         uint256 /*_fromAccountNumber*/,
-        uint256 /*_amountWei*/,
+        uint256 /*_toAccountNumber*/,
         uint256 _marketId,
+        uint256 /*_amountWei*/,
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_marketId); 
+    ) external view virtual returns (bytes memory addressesFound) {
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(tokenFromId);
      }
 
     function openBorrowPositionWithDifferentAccounts(
@@ -157,8 +175,9 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 _marketId,
         uint256 /*_amountWei*/,
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_fromAccountOwner, _toAccountOwner, _marketId); 
+    ) external view virtual returns (bytes memory addressesFound) {
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(_fromAccountOwner, _toAccountOwner, tokenFromId); 
     }
 
     function closeBorrowPositionWithDifferentAccounts(
@@ -167,7 +186,7 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
         address _toAccountOwner,
         uint256 /*_toAccountNumber*/,
         uint256[] calldata _collateralMarketIds
-    ) external pure virtual returns (bytes memory addressesFound) {
+    ) external view virtual returns (bytes memory addressesFound) {
         if (_collateralMarketIds.length > 1) revert DolomiteDecoderAndSanitizer__ArrayLengthGTOne(); 
         addressesFound = abi.encodePacked(_borrowAccountOwner, _toAccountOwner, _collateralMarketIds[0]); 
     }
@@ -180,8 +199,9 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 _marketId,
         uint256 /*_amountWei*/,
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_fromAccountOwner, _toAccountOwner, _marketId); 
+    ) external view virtual returns (bytes memory addressesFound) {
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(_fromAccountOwner, _toAccountOwner, tokenFromId); 
     }
 
     function repayAllForBorrowPositionWithDifferentAccounts(
@@ -191,7 +211,12 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 /*_borrowAccountNumber*/,
         uint256 _marketId,
         DecoderCustomTypes.BalanceCheckFlag /*_balanceCheckFlag*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_fromAccountOwner, _borrowAccountOwner, _marketId); 
+    ) external view virtual returns (bytes memory addressesFound) {
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_marketId); 
+        addressesFound = abi.encodePacked(_fromAccountOwner, _borrowAccountOwner, tokenFromId); 
     }
+}
+
+interface IDolomiteMargin {
+    function getMarketTokenAddress(uint256 _marketId) external view returns (address); 
 }

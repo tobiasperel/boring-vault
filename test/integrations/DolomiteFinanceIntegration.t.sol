@@ -36,7 +36,7 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("arbitrum");
         // Setup forked environment.
         string memory rpcKey = "ARBITRUM_RPC_URL";
-        uint256 blockNumber = 800880;
+        uint256 blockNumber = 298481162;
 
         _startFork(rpcKey, blockNumber);
 
@@ -46,7 +46,7 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
         rawDataDecoderAndSanitizer = address(
-            new FullDolomiteDecoderAndSanitizer()
+            new FullDolomiteDecoderAndSanitizer(getAddress(sourceChain, "dolomiteMargin"))
         );
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
@@ -107,11 +107,12 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
         rolesAuthority.setPublicCapability(address(boringVault), bytes4(0), true);
     }
 
-    function testAaveV3Integration() external {
+    function testDolomiteIntegrationDepositsAndWithdraws() external {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e18);
+        deal(address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addDolomiteLeafs(leafs, getAddress(sourceChain, "USDC");
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "USDC")); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -120,23 +121,165 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](9);
-        manageLeafs[0] = leafs[0];
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](13);
+        manageLeafs[0] = leafs[0]; //approve
+        manageLeafs[1] = leafs[1]; //depositWei
+        manageLeafs[2] = leafs[2]; //depositWeiIntoDefault
+        manageLeafs[3] = leafs[3]; //withdrawWei
+        manageLeafs[4] = leafs[4]; //withdrawWeiFromDefault
+        manageLeafs[5] = leafs[5]; //depositETH
+        manageLeafs[6] = leafs[6]; //depositETHIntoDefault
+        manageLeafs[7] = leafs[7]; //withdrawETH
+        manageLeafs[8] = leafs[8]; //withdrawETHFromDefault
+        manageLeafs[9] = leafs[9]; //depositPar
+        manageLeafs[10] = leafs[10]; //depositParIntoDefault
+        manageLeafs[11] = leafs[11]; //withdrawPar
+        manageLeafs[12] = leafs[12]; //withdrawParFromDefault
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](9);
-        targets[0] = getAddress(sourceChain, "WSTETH");
+        address[] memory targets = new address[](13);
+        targets[0] = getAddress(sourceChain, "USDC");
+        targets[1] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[2] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[3] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[4] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[5] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[6] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[7] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[8] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[9] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[10] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[11] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[12] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
 
-        address[] memory claimAssetsData = new address[](1);
-        claimAssetsData[0] = getAddress(sourceChain, "WSTETH");
+        uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(getAddress(sourceChain, "USDC"));   
 
-        bytes[] memory targetData = new bytes[](9);
+        bytes[] memory targetData = new bytes[](13);
         targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "v3Pool"), type(uint256).max);
-        address[] memory decodersAndSanitizers = new address[](9);
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "dolomiteMargin"), type(uint256).max);
+        targetData[1] = 
+            abi.encodeWithSignature("depositWei(uint256,uint256,uint256)", 0, marketId, 100e6);  
+        targetData[2] = 
+            abi.encodeWithSignature("depositWeiIntoDefaultAccount(uint256,uint256)", marketId, 100e6);  
+        targetData[3] = 
+            abi.encodeWithSignature("withdrawWei(uint256,uint256,uint256,uint8)", 0, marketId, 100e6, 0);  
+        targetData[4] = 
+            abi.encodeWithSignature("withdrawWeiFromDefaultAccount(uint256,uint256,uint8)", marketId, 100e6, 0);  
+        targetData[5] = 
+            abi.encodeWithSignature("depositETH(uint256)", 0);  
+        targetData[6] = 
+            abi.encodeWithSignature("depositETHIntoDefaultAccount()");  
+        targetData[7] = 
+            abi.encodeWithSignature("withdrawETH(uint256,uint256,uint8)", 0, 1e18, 0);  
+        targetData[8] = 
+            abi.encodeWithSignature("withdrawETHFromDefaultAccount(uint256,uint8)", 1e18, 0);  
+        targetData[9] = 
+            abi.encodeWithSignature("depositPar(uint256,uint256,uint256)", 0, marketId, 100);  
+        targetData[10] = 
+            abi.encodeWithSignature("depositParIntoDefaultAccount(uint256,uint256)", marketId, 100);  
+        targetData[11] = 
+            abi.encodeWithSignature("withdrawPar(uint256,uint256,uint256,uint8)", 0, marketId, 100, 0);  
+        targetData[12] = 
+            abi.encodeWithSignature("withdrawParFromDefaultAccount(uint256,uint256,uint8)", marketId, 100, 0);  
+
+        address[] memory decodersAndSanitizers = new address[](13);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
-        uint256[] memory values = new uint256[](9);
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[7] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[8] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[9] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[10] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[11] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[12] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](13);
+        values[0] = 0; 
+        values[1] = 0; 
+        values[2] = 0; 
+        values[3] = 0; 
+        values[4] = 0; 
+        values[5] = 1e18; 
+        values[6] = 1e18; 
+        values[7] = 0; 
+        values[8] = 0; 
+        values[9] = 0; 
+        values[10] = 0; 
+
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
+    function testDolomiteIntegrationBorrowing() external {
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e18);
+        deal(address(boringVault), 1_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "USDC")); 
+        _addDolomiteBorrowLeafs(leafs, getAddress(sourceChain, "WETH")); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //string memory filePath = "./testTEST.json";
+        //_generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](6);
+        manageLeafs[0] = leafs[0]; //approve
+        manageLeafs[1] = leafs[1]; //depositWei
+        manageLeafs[2] = leafs[13]; //borrow 
+        manageLeafs[3] = leafs[16]; //transferBetweenAccounts
+        manageLeafs[4] = leafs[15]; //repayAll
+        manageLeafs[5] = leafs[14]; //closeBorrow
+
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](6);
+        targets[0] = getAddress(sourceChain, "USDC");
+        targets[1] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter");
+        targets[2] = getAddress(sourceChain, "dolomiteBorrowProxy");
+        targets[3] = getAddress(sourceChain, "dolomiteBorrowProxy");
+        targets[4] = getAddress(sourceChain, "dolomiteBorrowProxy");
+        targets[5] = getAddress(sourceChain, "dolomiteBorrowProxy");
+
+        uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(getAddress(sourceChain, "USDC"));   
+        uint256 marketIdBorrow = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(getAddress(sourceChain, "WETH"));   
+
+        bytes[] memory targetData = new bytes[](6);
+        targetData[0] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "dolomiteMargin"), type(uint256).max);
+        targetData[1] = 
+            abi.encodeWithSignature("depositWei(uint256,uint256,uint256)", 0, marketId, 100e6);  
+        targetData[2] = 
+            abi.encodeWithSignature("openBorrowPosition(uint256,uint256,uint256,uint256,uint8)", 0, 1, marketIdBorrow, 10e6, 2);  
+        targetData[3] = 
+            abi.encodeWithSignature("transferBetweenAccounts(uint256,uint256,uint256,uint256,uint8)", 1, 2, marketIdBorrow, 10e6, 2);  
+        targetData[4] = 
+            abi.encodeWithSignature("repayAllForBorrowPosition(uint256,uint256,uint256,uint8)", 0, 2, marketIdBorrow, 2);  
+        
+        uint256[] memory collateralIds = new uint256[](1); 
+        collateralIds[0] = marketId; 
+
+        targetData[5] = 
+            abi.encodeWithSignature("closeBorrowPosition(uint256,uint256,uint256[])", 2, 0, collateralIds);  
+
+        address[] memory decodersAndSanitizers = new address[](6);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](6);
+
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
@@ -148,4 +291,10 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
     }
 }
 
-contract FullDolomiteDecoderAndSanitizer is DolomiteDecoderAndSanitizer {}
+contract FullDolomiteDecoderAndSanitizer is DolomiteDecoderAndSanitizer {
+    constructor(address _dolomiteMargin) DolomiteDecoderAndSanitizer(_dolomiteMargin){}
+}
+
+interface IDolomiteMargin {
+    function getMarketIdByTokenAddress(address token) external view returns (uint256); 
+}

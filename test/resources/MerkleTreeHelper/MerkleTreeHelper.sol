@@ -6754,7 +6754,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= Dolomite Finance =========================================
 
-    function _addDolomiteLeafs(ManageLeaf[] memory leafs, address token) internal {
+    function _addDolomiteDepositLeafs(ManageLeaf[] memory leafs, address token) internal {
         uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(token);   
 
         unchecked {
@@ -6768,7 +6768,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Approve Dolomite DepositWithdraw Router to spend ", ERC20(token).symbol()),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "dolomiteDepositWithdrawRouter"); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "dolomiteMargin"); 
 
         // Wad Scaled Functions
         
@@ -6783,7 +6783,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             new address[](1),
             string.concat("Deposit ", ERC20(token).symbol(), " into Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer"));
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = token;  
 
         unchecked {
             leafIndex++;
@@ -6797,7 +6797,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Deposit ", ERC20(token).symbol(), " into Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId), " Default Account"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = token;  
 
         unchecked {
             leafIndex++;
@@ -6811,7 +6811,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Withdraw ", ERC20(token).symbol(), " from Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = token;  
 
         unchecked {
             leafIndex++;
@@ -6825,7 +6825,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Withdraw ", ERC20(token).symbol(), " from Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId), " default account"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = token;  
 
         // Native ETH Functions         
         unchecked {
@@ -6894,7 +6894,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Deposit Par scaled", ERC20(token).symbol(), " into Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = token;  
 
         unchecked {
             leafIndex++;
@@ -6908,7 +6908,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Deposit Par scaled", ERC20(token).symbol(), " into Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId), " in default account"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = token;  
 
         unchecked {
             leafIndex++;
@@ -6922,7 +6922,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Withdraw Par scaled", ERC20(token).symbol(), " from Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = token;  
 
         unchecked {
             leafIndex++;
@@ -6936,12 +6936,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Withdraw Par scaled ", ERC20(token).symbol(), " from Dolomite DepositWithdraw Router Market ID: ", vm.toString(marketId)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = token;  
 
     }
         
     function _addDolomiteBorrowLeafs(ManageLeaf[] memory leafs, address borrowToken) internal {
-        uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(token);   
+        uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(borrowToken);   
         
         //Main Borrow Position Functions
 
@@ -6957,7 +6957,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Borrow ", ERC20(borrowToken).symbol(), " from Dolomite BorrowPosition Market ID: ", vm.toString(marketId)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = borrowToken;  
 
         unchecked {
             leafIndex++; 
@@ -6967,11 +6967,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "dolomiteBorrowProxy"),
             false,
             "closeBorrowPosition(uint256,uint256,uint256[])",
-            new address[](1),
+            new address[](0),
             string.concat("Close Borrow Position of ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
 
         unchecked {
             leafIndex++; 
@@ -6985,7 +6984,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Repay Borrow Position of ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = borrowToken;  
         
         unchecked {
             leafIndex++; 
@@ -6994,16 +6993,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "dolomiteBorrowProxy"),
             false,
-            "transferBetweenAccounts(uint256,uint256,uint256,uint8)",
+            "transferBetweenAccounts(uint256,uint256,uint256,uint256,uint8)",
             new address[](1),
             string.concat("Transfer Borrow Position of ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId), " to additional subaccount"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = marketId;  
+        leafs[leafIndex].argumentAddresses[0] = borrowToken;  
     } 
 
-    function _addDolomiteExtraAccountLeafs(ManageLeaf[] memory leafs, address borrowToken, address from, address to) {
-        uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(token);   
+    function _addDolomiteExtraAccountLeafs(ManageLeaf[] memory leafs, address borrowToken, address from, address to) internal {
+        uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(borrowToken);   
     
         unchecked {
             leafIndex++; 
@@ -7019,7 +7018,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = from;  
         leafs[leafIndex].argumentAddresses[1] = to; 
-        leafs[leafIndex].argumentAddresses[2] = marketId;  
+        leafs[leafIndex].argumentAddresses[2] = borrowToken;  
          
         unchecked {
             leafIndex++; 
@@ -7035,7 +7034,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = from; //borrowAccountOwner
         leafs[leafIndex].argumentAddresses[1] = to;  
-        leafs[leafIndex].argumentAddresses[2] = marketId;  
+        leafs[leafIndex].argumentAddresses[2] = borrowToken;  
          
         unchecked {
             leafIndex++; 
@@ -7050,7 +7049,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = to; //TODO check this
         leafs[leafIndex].argumentAddresses[1] = from;  //TODO this too
-        leafs[leafIndex].argumentAddresses[2] = marketId;  
+        leafs[leafIndex].argumentAddresses[2] = borrowToken;  
 
         unchecked {
             leafIndex++; 
@@ -7065,7 +7064,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = from;
         leafs[leafIndex].argumentAddresses[1] = to;  
-        leafs[leafIndex].argumentAddresses[2] = marketId;  
+        leafs[leafIndex].argumentAddresses[2] = borrowToken;  
 
     }
 
@@ -7370,4 +7369,8 @@ interface VelodromV2Gauge {
 
 interface VaultSupervisor {
     function delegationSupervisor() external view returns (address);
+}
+
+interface IDolomiteMargin {
+    function getMarketIdByTokenAddress(address token) external view returns (uint256); 
 }
