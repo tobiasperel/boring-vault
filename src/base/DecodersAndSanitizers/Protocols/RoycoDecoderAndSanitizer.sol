@@ -52,6 +52,10 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
     function claim(address to) external pure virtual returns (bytes memory addressesFound) {
         return abi.encodePacked(to); 
     }
+
+    function merkleWithdraw() external pure virtual returns (bytes memory addressesFound) {
+        return addressesFound; 
+    }
 }
 
 interface IWeirollWalletHelper {
