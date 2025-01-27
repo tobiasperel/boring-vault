@@ -49,7 +49,7 @@ contract CreateSonicETHMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](1);   
-        feeAssets[0] = getERC20(sourceChain, "USDC"); 
+        feeAssets[0] = getERC20(sourceChain, "WETH"); 
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true); //add yield claiming
 
 
