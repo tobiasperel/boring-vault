@@ -6884,7 +6884,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex] = ManageLeaf(
                 getAddress(sourceChain, "kodiakIslandRouterNew"),
                 false,
-                "removeLiquidity(address,uint256,uint256,uint256,address)",
+                "removeLiquidityNative(address,uint256,uint256,uint256,address)",
                 new address[](2),
                 string.concat("Remove Liquidity Native from ", IKodiakIsland(islands[i]).name()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")

@@ -229,7 +229,7 @@ contract KodiakIslandIntegrationTest is Test, MerkleTreeHelper {
         uint256 liquidity = 32290217619646538319; 
         targetData[3] =
             abi.encodeWithSignature(
-                "removeLiquidityNative(address,uint256,uint256,uint256,address)", 
+                "removeLiquidityNative(address,uint256,uint256,uint256,address)",
                 getAddress(sourceChain, "kodiak_island_WBERA_YEET_1%"), 
                 liquidity, 
                 0,
