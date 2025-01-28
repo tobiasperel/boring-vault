@@ -41,20 +41,29 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
         //WeirollWallet will check that the caller is owner (boring vault)
         //but we check here before delegating for safety.
         address owner = IWeirollWalletHelper(weirollWallet).owner();
-        return abi.encodePacked(owner);
+        addressesFound = abi.encodePacked(owner);
     }
 
     function claim(address weirollWallet, address to) external view virtual returns (bytes memory addressesFound) {
         address owner = IWeirollWalletHelper(weirollWallet).owner();
-        return abi.encodePacked(owner, to);
+        addressesFound = abi.encodePacked(owner, to);
     }
     
     function claim(address to) external pure virtual returns (bytes memory addressesFound) {
-        return abi.encodePacked(to); 
+        addressesFound = abi.encodePacked(to); 
     }
 
     function merkleWithdraw() external pure virtual returns (bytes memory addressesFound) {
         return addressesFound; 
+    }
+
+     function withdrawMerkleDeposit(
+        address _weirollWallet,
+        uint256 /*_merkleDepositNonce*/,
+        uint256 /*_amountDepositedOnSource*/,
+        bytes32[] calldata /*_merkleProof*/
+    ) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(_weirollWallet);  
     }
 }
 
