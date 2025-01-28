@@ -6848,18 +6848,18 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
             leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
-            //unchecked {
-            //    leafIndex++;
-            //}
-            //leafs[leafIndex] = ManageLeaf(
-            //    teller,
-            //    false,
-            //    "deposit(address,uint256,uint256)",
-            //    new address[](1),
-            //    string.concat("Deposit ", assets[i].symbol(), " into ", boringVault.name()),
-            //    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            //);
-            //leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                teller,
+                false,
+                "deposit(address,uint256,uint256)",
+                new address[](1),
+                string.concat("Deposit ", assets[i].symbol(), " into ", boringVault.name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
             
             if (ethBase) {
                 unchecked {

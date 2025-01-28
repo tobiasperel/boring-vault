@@ -112,7 +112,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         
         creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager); 
-        deployer.deployContract("Lombard BTC Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
+        deployer.deployContract("Lombard BTC Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
 
         //address pancakeswapV3nfpm = 0x46A15B0b27311cedF172AB29E4f4766fbE7F4364;
         //address pancakeswapV3chef = 0x556B9306565093C855AEA9AE92A594704c2Cd59e;
