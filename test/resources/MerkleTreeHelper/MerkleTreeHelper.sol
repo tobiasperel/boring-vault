@@ -6725,6 +6725,52 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
+    // ========================================= beraETH =========================================
+    function _addBeraETHLeafs(ManageLeaf[] memory leafs) internal {
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "WETH"),
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve rberaETH to spend WETH"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "rberaETH");
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "rberaETH"),
+            false,
+            "depositAndWrap(address,uint256,uint256)",
+            new address[](1),
+            string.concat("Deposit and wrap WETH into beraETH"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "WETH");
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "beraETH"),
+            false,
+            "withdraw(uint256)",
+            new address[](0),
+            string.concat("Withdraw WETH from beraETH"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+    } 
+
     // ========================================= BoringVault WithdrawQueue =========================================
     function _addWithdrawQueueLeafs(
         ManageLeaf[] memory leafs,
