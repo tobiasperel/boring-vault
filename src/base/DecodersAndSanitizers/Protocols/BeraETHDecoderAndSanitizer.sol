@@ -18,7 +18,7 @@ abstract contract BeraETHDecoderAndSanitizer is BaseDecoderAndSanitizer {
 
     //============================== beraETH ===============================
 
-    function withdraw(uint256 /*amount*/) external pure virtual returns (bytes memory addressesFound) {
+    function unwrap(uint256 /*amount*/) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound; 
     }
 

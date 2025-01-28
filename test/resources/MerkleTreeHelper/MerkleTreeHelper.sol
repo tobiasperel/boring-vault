@@ -6763,9 +6763,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "beraETH"),
             false,
-            "withdraw(uint256)",
+            "unwrap(uint256)",
             new address[](0),
-            string.concat("Withdraw WETH from beraETH"),
+            string.concat("Unwrap beraETH"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
 

@@ -15,7 +15,7 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
-contract InfraredIntegratonTest is Test, MerkleTreeHelper {
+contract BeraETHIntegrationTest is Test, MerkleTreeHelper {
     using SafeTransferLib for ERC20;
     using FixedPointMathLib for uint256;
     using stdStorage for StdStorage;
@@ -33,10 +33,10 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
     uint8 public constant BALANCER_VAULT_ROLE = 6;
 
     function setUp() external {
-        setSourceChainName("bartio");
+        setSourceChainName("berachain");
         // Setup forked environment.
-        string memory rpcKey = "BARTIO_RPC_URL";
-        uint256 blockNumber = 9869258;
+        string memory rpcKey = "BERACHAIN_RPC_URL";
+        uint256 blockNumber = 372325;
 
         _startFork(rpcKey, blockNumber);
 
@@ -119,26 +119,26 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
         manageLeafs[0] = leafs[0]; //approve WETH
         manageLeafs[1] = leafs[1]; //depositAndWrap (deposits WETH into rberaETH, returns beraETH)
-        manageLeafs[2] = leafs[2]; //withdraw WETH from beraETH
+        manageLeafs[2] = leafs[2]; //unwrap beraETH
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](2);
+        address[] memory targets = new address[](3);
         targets[0] = getAddress(sourceChain, "WETH");
         targets[1] = getAddress(sourceChain, "rberaETH"); //depositAndWrap
         targets[2] = getAddress(sourceChain, "beraETH"); //withdraw
 
 
-        bytes[] memory targetData = new bytes[](2);
+        bytes[] memory targetData = new bytes[](3);
         targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault"), type(uint256).max);
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "rberaETH"), type(uint256).max);
         targetData[1] =
-            abi.encodeWithSignature("rberaETH(uint256)", 100e18);
+            abi.encodeWithSignature("depositAndWrap(address,uint256,uint256)", getAddress(sourceChain, "WETH"), 10e18, 0);
         targetData[2] =
-            abi.encodeWithSignature("beraETH(uint256)", 100e18);
+            abi.encodeWithSignature("unwrap(uint256)", 9997638401662115534);
 
         address[] memory decodersAndSanitizers = new address[](3);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;

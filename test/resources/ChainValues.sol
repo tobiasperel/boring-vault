@@ -23,6 +23,7 @@ contract ChainValues {
     string public constant corn = "corn";
     string public constant swell = "swell";
     string public constant sonicMainnet = "sonicMainnet";
+    string public constant berachain = "berachain"; 
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
@@ -99,6 +100,7 @@ contract ChainValues {
         _addCornValues();
         _addSwellValues();
         _addSonicMainnetValues();
+        _addBerachainValues(); 
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
