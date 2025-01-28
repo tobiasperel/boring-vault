@@ -6725,6 +6725,86 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
+    // ========================================= Infrared  =========================================
+    function _addInfraredVaultLeafs(ManageLeaf[] memory leafs, address vault) internal {
+        address stakingToken = IInfraredVault(vault).stakingToken();  
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            stakingToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Infrared Vault to spend ", ERC20(stakingToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = vault;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "stake(uint256)",
+            new address[](0),
+            string.concat("Stake ", ERC20(stakingToken).symbol(), " into Infrared Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "withdraw(uint256)",
+            new address[](0),
+            string.concat("Withdraw ", ERC20(stakingToken).symbol(), " from Infrared Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "getRewardForUser(address)",
+            new address[](1),
+            string.concat("Get Reward for user from ", ERC20(stakingToken).symbol(), " Infrared Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "getReward()",
+            new address[](0),
+            string.concat("Get Reward for ", ERC20(stakingToken).symbol(), " Infrared Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+       
+        unchecked { 
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "exit()",
+            new address[](0),
+            string.concat("Exit from ", ERC20(stakingToken).symbol(), " Infrared Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+    }
+
     // ========================================= BoringVault WithdrawQueue =========================================
     function _addWithdrawQueueLeafs(
         ManageLeaf[] memory leafs,
@@ -7062,4 +7142,8 @@ interface VelodromV2Gauge {
 
 interface VaultSupervisor {
     function delegationSupervisor() external view returns (address);
+}
+
+interface IInfraredVault {
+    function stakingToken() external view returns (address); 
 }
