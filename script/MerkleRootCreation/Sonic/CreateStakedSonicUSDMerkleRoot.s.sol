@@ -56,13 +56,11 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "USDC");
-        _addTellerLeafs(leafs, getAddress(sourceChain, "scUSDTeller"), tellerAssets);
-
+        _addTellerLeafs(leafs, getAddress(sourceChain, "scUSDTeller"), tellerAssets, false);
 
         // ========================== SiloV2 ==========================
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_scUSD_config")); 
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_USDC_config")); 
-
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_scUSD_config"));
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_USDC_config"));
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
