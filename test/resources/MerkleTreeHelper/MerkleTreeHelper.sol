@@ -6967,10 +6967,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "dolomiteBorrowProxy"),
             false,
             "closeBorrowPosition(uint256,uint256,uint256[])",
-            new address[](0),
+            new address[](1),
             string.concat("Close Borrow Position of ", ERC20(borrowToken).symbol(), " in Dolomite BorrowPosition Market ID: ", vm.toString(marketId)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+        leafs[leafIndex].argumentAddresses[0] = borrowToken;  
 
         unchecked {
             leafIndex++; 

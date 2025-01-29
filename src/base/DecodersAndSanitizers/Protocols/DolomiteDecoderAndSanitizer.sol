@@ -137,13 +137,15 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
         addressesFound = abi.encodePacked(tokenFromId);
     }
     
-    //all deposited assets are already whitelisted  
     function closeBorrowPosition(
         uint256 /*_borrowAccountNumber*/,
         uint256 /*_toAccountNumber*/,
-        uint256[] calldata /*_collateralMarketIds*/
+        uint256[] calldata _collateralMarketIds
     ) external view virtual returns (bytes memory addressesFound) {
-        return addressesFound; 
+        if (_collateralMarketIds.length > 1) revert DolomiteDecoderAndSanitizer__ArrayLengthGTOne(); 
+
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_collateralMarketIds[0]); 
+        addressesFound = abi.encodePacked(tokenFromId); 
     }
 
     function repayAllForBorrowPosition(
@@ -188,7 +190,8 @@ abstract contract DolomiteDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256[] calldata _collateralMarketIds
     ) external view virtual returns (bytes memory addressesFound) {
         if (_collateralMarketIds.length > 1) revert DolomiteDecoderAndSanitizer__ArrayLengthGTOne(); 
-        addressesFound = abi.encodePacked(_borrowAccountOwner, _toAccountOwner, _collateralMarketIds[0]); 
+        address tokenFromId = IDolomiteMargin(dolomiteMargin).getMarketTokenAddress(_collateralMarketIds[0]); 
+        addressesFound = abi.encodePacked(_borrowAccountOwner, _toAccountOwner, tokenFromId); 
     }
 
      function transferBetweenAccountsWithDifferentAccounts(

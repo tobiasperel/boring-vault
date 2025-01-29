@@ -265,7 +265,7 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
             abi.encodeWithSignature("repayAllForBorrowPosition(uint256,uint256,uint256,uint8)", 0, 2, marketIdBorrow, 2);  
         
         uint256[] memory collateralIds = new uint256[](1); 
-        collateralIds[0] = marketId; 
+        collateralIds[0] = marketIdBorrow; 
 
         targetData[5] = 
             abi.encodeWithSignature("closeBorrowPosition(uint256,uint256,uint256[])", 2, 0, collateralIds);  
