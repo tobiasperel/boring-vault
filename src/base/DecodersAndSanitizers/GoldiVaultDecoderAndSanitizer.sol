@@ -5,7 +5,8 @@ import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndS
 
 
 abstract contract GoldiVaultDecoderAndSanitizer is BaseDecoderAndSanitizer {
-
+    
+    //============================== GoldiVault ===============================
 
     function deposit(uint256 /*amount*/) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound; 
@@ -16,6 +17,20 @@ abstract contract GoldiVaultDecoderAndSanitizer is BaseDecoderAndSanitizer {
     }
 
     function redeemYield(uint256 /*amount*/) external pure virtual returns (bytes memory addressesFound) {
+        return addressesFound; 
+    }
+
+    function compound() external pure virtual returns (bytes memory addressesFound) {
+        return addressesFound; 
+    }
+
+    //============================== PointsGoldiVaultStreaming ===============================
+
+    function buyYT(uint256 /*ytAmount*/, uint256 /*dtAmountMax*/, uint256 /*amountOutMin*/) external pure virtual returns (bytes memory addressesFound) {
+        return addressesFound;  
+    }
+
+    function sellYT(uint256 /*ytAmount*/, uint256 /*dtAmountMin*/, uint256 /*amountInMax*/) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound; 
     }
 

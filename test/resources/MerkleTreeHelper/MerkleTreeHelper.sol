@@ -6637,6 +6637,79 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
 
+    // ========================================= Golilocks =========================================
+    function _addGoldiVaultLeafs(ManageLeafp[] memory leafs, address[] memory vaults) internal {
+        
+        for (uint256 i = 0; i < vaults.length; i++) {
+
+            address depositToken = IGoldiVault(vault).depositToken(); 
+            
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                depositToken,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve ", vm.toString(vaults[i]), " to spend ", ERC20(depositToken).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = vaults[i];
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vaults[i],
+                false,
+                "deposit(uint256)",
+                new address[](0),
+                string.concat("Deposit ", ERC20(depositToken).symbol(), " into GoldiVault ", vm.toString(vaults[i])),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vaults[i],
+                false,
+                "redeemOwnership(uint256)",
+                new address[](0),
+                string.concat("Redeem OT in ", ERC20(depositToken).symbol(), " GoldiVault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vaults[i],
+                false,
+                "redeemYield(uint256)",
+                new address[](0),
+                string.concat("Redeem YT in ", ERC20(depositToken).symbol(), " GoldiVault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vaults[i],
+                false,
+                "compound()",
+                new address[](0),
+                string.concat("Redeem YT in ", ERC20(depositToken).symbol(), " GoldiVault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            
+
+        }
+
+    }
+
     // ========================================= Sonic Gateway =========================================
     // To be used on ETH mainnet.
     function _addSonicGatewayLeafsEth(ManageLeaf[] memory leafs, ERC20[] memory assets) internal {
@@ -7353,4 +7426,8 @@ interface VaultSupervisor {
 interface ISilo {
     function SILO_ID() external view returns (uint256); 
     function getSilos() external view returns (address, address); 
+}
+
+interface IGoldiVault {
+    function depositToken() external view returns (address); 
 }
