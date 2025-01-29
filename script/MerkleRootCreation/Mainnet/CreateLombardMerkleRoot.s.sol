@@ -157,6 +157,7 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_concrete_market_04_09_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_WBTC_concrete_market_04_09_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_liquidBeraBTC_04_09_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_market_6_25_25"), true);
 
         // ========================== MorphoBlue ==========================
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "LBTC_WBTC_945"));
@@ -188,8 +189,7 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
 
         _addPancakeSwapV3Leafs(leafs, token0, token1);
 
-
-        setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer); 
+        setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
         // ========================== Corn BTCN ==========================
         _addBTCNLeafs(
             leafs,
