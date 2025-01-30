@@ -7,6 +7,7 @@ import {Strings} from "lib/openzeppelin-contracts/contracts/utils/Strings.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 import "forge-std/Script.sol";
+
 /**
  *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateLiquidBeraEthMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL
  */
@@ -17,7 +18,7 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
     address public boringVault = 0x83599937c2C9bEA0E0E8ac096c6f32e86486b410;
     address public managerAddress = 0x62b283d4FeFB2a120e1120dba9f83bE6CA41bCD7;
     address public accountantAddress = 0x04B8136820598A4e50bEe21b8b6a23fE25Df9Bd8;
-    address public rawDataDecoderAndSanitizer = 0xB6e56b6c8f0BC8DD2B266554629100BB3BAB323D;
+    address public rawDataDecoderAndSanitizer = 0xf7301C2A56510814B88b024d7066b6B62acC704D;
 
     function setUp() external {}
 
