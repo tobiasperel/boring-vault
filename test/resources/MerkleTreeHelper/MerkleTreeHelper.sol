@@ -6735,6 +6735,30 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
 
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vaults[i],
+                false,
+                "buyYT(uint256,uint256,uint256)",
+                new address[](0),
+                string.concat("Buy YT ", ERC20(depositToken).symbol(), " via GoldiVault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vaults[i],
+                false,
+                "sellYT(uint256,uint256,uint256)",
+                new address[](0),
+                string.concat("Sell YT ", ERC20(depositToken).symbol(), " via GoldiVault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
         }
 
     }

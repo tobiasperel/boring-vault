@@ -110,7 +110,7 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
     function testGoldiVaultIntegrationRedeemOT() external {
         deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
 
         address[] memory vaults = new address[](1); 
         vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
@@ -166,7 +166,7 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
     function testGoldiVaultIntegrationRedeemYT() external {
         deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
         address[] memory vaults = new address[](1); 
         vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
         _addGoldiVaultLeafs(leafs, vaults);
@@ -242,7 +242,7 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
     function testGoldiVaultIntegrationCompound() external {
         deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
         address[] memory vaults = new address[](1); 
         vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
         _addGoldiVaultLeafs(leafs, vaults);
@@ -308,6 +308,59 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         values = new uint256[](1);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
+    function testGoldiVaultIntegrationBuyYT() external {
+        deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        address[] memory vaults = new address[](1); 
+        vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
+        _addGoldiVaultLeafs(leafs, vaults);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](5);
+        manageLeafs[0] = leafs[0];
+        manageLeafs[1] = leafs[1];
+        manageLeafs[2] = leafs[2];
+        manageLeafs[3] = leafs[7];
+        manageLeafs[4] = leafs[8];
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](5);
+        targets[0] = getAddress(sourceChain, "WEETH");
+        targets[1] = getAddress(sourceChain, "weethOT");
+        targets[2] = getAddress(sourceChain, "weethYT");
+        targets[3] = getAddress(sourceChain, "goldivault_weeth");
+        targets[4] = getAddress(sourceChain, "goldivault_weeth");
+
+        bytes[] memory targetData = new bytes[](5);
+        targetData[0] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[1] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[2] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[3] =
+            abi.encodeWithSignature("buyYT(uint256,uint256,uint256)", 10e18, 100e18, 1e18);
+        targetData[4] =
+            abi.encodeWithSignature("sellYT(uint256,uint256,uint256)", 1e18, 1e18, 1e18);
+
+        address[] memory decodersAndSanitizers = new address[](5);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](5);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
