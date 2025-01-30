@@ -212,6 +212,7 @@ contract ChainValues {
         values[mainnet]["MORPHO"] = 0x58D97B57BB95320F9a05dC918Aef65434969c2B2.toBytes32();
         values[mainnet]["ETHFI"] = 0xFe0c30065B384F05761f15d0CC899D4F9F9Cc0eB.toBytes32(); 
         values[mainnet]["USR"] = 0x66a1E37c9b0eAddca17d3662D6c05F4DECf3e110.toBytes32(); 
+        values[mainnet]["beraSTONE"] = 0x97Ad75064b20fb2B2447feD4fa953bF7F007a706.toBytes32(); 
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -591,6 +592,7 @@ contract ChainValues {
         values[mainnet]["LBTC_PT03_LBTC_915"] = 0x3170feb9e3c0172beb9901f6035e4e005f42177c5c14e8c0538c27078864654e;
         values[mainnet]["LBTC_PT03_WBTC_915"] = 0xa39263bf7275f772863c464ef4e9e972aaa0f1a6a1bf2a47f92bf57a542d2458;
         values[mainnet]["LBTC_PT03_WBTC_86"] = 0x198132864e7974fb451dfebeb098b3b7e7e65566667fb1cf1116db4fb2ad23f9;
+        values[mainnet]["EBTC_USDC_86"] = 0xb6f4eebd60871f99bf464ae0b67045a26797cf7ef57c458d57e08c205f84feac;
 
         // MetaMorpho
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();

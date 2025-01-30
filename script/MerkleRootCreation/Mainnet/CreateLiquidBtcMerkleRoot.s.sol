@@ -87,8 +87,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](14);
-        SwapKind[] memory kind = new SwapKind[](14);
+        address[] memory assets = new address[](16);
+        SwapKind[] memory kind = new SwapKind[](16);
         assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
@@ -117,6 +117,11 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         kind[12] = SwapKind.Sell;
         assets[13] = getAddress(sourceChain, "USR");
         kind[13] = SwapKind.BuyAndSell;
+        assets[14] = getAddress(sourceChain, "beraSTONE");
+        kind[14] = SwapKind.BuyAndSell;
+        assets[15] = getAddress(sourceChain, "WETH");
+        kind[15] = SwapKind.BuyAndSell;
+
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         // ========================== Aave ==========================
@@ -124,8 +129,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         supplyAssets[0] = getERC20(sourceChain, "WBTC");
         supplyAssets[1] = getERC20(sourceChain, "LBTC");
         supplyAssets[2] = getERC20(sourceChain, "cbBTC");
-        supplyAssets[3] = getERC20(sourceChain, "USDC")
-        supplyAssets[4] = getERC20(sourceChain, "USDT")
+        supplyAssets[3] = getERC20(sourceChain, "USDC"); 
+        supplyAssets[4] = getERC20(sourceChain, "USDT"); 
 
         ERC20[] memory borrowAssets = new ERC20[](4);
         borrowAssets[0] = getERC20(sourceChain, "USDC");
@@ -149,6 +154,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "LBTC_PT03_LBTC_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "LBTC_PT03_WBTC_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "LBTC_PT03_WBTC_86"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "EBTC_USDC_86"));
 
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USDC_86"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USDT_86"));
@@ -156,6 +162,9 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "LBTC_PT03_LBTC_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "LBTC_PT03_WBTC_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "LBTC_PT03_WBTC_86"));
+
+        // ========================== MorphoRewards ==========================
+
 
         // ========================== Pendle ==========================
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0++_market_01_29_25"), true);
