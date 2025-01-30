@@ -1516,6 +1516,8 @@ contract ChainValues {
 
         // Goldilocks
         values[bartio]["goldivault_weeth"] = 0xEE4A91F5BFA0Bf54124CF00cc7e144427cCE1162.toBytes32();  
+        values[bartio]["weethOT"] = 0x6218379852D5609870e91f168B81cbB4532f0346.toBytes32();  
+        values[bartio]["weethYT"] = 0x401CBe777E8BE57a426A5B5F13Ca4d73200BD95B.toBytes32();  
     }
 
     function _addSwellValues() private {

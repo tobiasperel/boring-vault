@@ -6638,11 +6638,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Golilocks =========================================
-    function _addGoldiVaultLeafs(ManageLeafp[] memory leafs, address[] memory vaults) internal {
+    function _addGoldiVaultLeafs(ManageLeaf[] memory leafs, address[] memory vaults) internal {
         
         for (uint256 i = 0; i < vaults.length; i++) {
 
-            address depositToken = IGoldiVault(vault).depositToken(); 
+            address depositToken = IGoldiVault(vaults[i]).depositToken(); 
+            address OT = IGoldiVault(vaults[i]).ot(); 
+            address YT = IGoldiVault(vaults[i]).yt(); 
             
             unchecked {
                 leafIndex++;
@@ -6656,6 +6658,34 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = vaults[i];
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                OT,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve ", vm.toString(vaults[i]), " to spend ", ERC20(OT).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = vaults[i];
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                YT,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve ", vm.toString(vaults[i]), " to spend ", ERC20(YT).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = vaults[i];
+
+
 
             unchecked {
                 leafIndex++;
@@ -6704,7 +6734,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 string.concat("Redeem YT in ", ERC20(depositToken).symbol(), " GoldiVault"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            
 
         }
 
@@ -7430,4 +7459,6 @@ interface ISilo {
 
 interface IGoldiVault {
     function depositToken() external view returns (address); 
+    function ot() external view returns (address); 
+    function yt() external view returns (address); 
 }

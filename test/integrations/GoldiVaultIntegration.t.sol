@@ -15,7 +15,7 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
-contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
+contract GoldiVaultIntegration is Test, MerkleTreeHelper {
     using SafeTransferLib for ERC20;
     using FixedPointMathLib for uint256;
     using stdStorage for StdStorage;
@@ -36,7 +36,7 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("bartio");
         // Setup forked environment.
         string memory rpcKey = "BARTIO_RPC_URL";
-        uint256 blockNumber = 9913559;
+        uint256 blockNumber = 9950438;
 
         _startFork(rpcKey, blockNumber);
 
@@ -107,38 +107,206 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
         rolesAuthority.setPublicCapability(address(boringVault), bytes4(0), true);
     }
 
-    function testAaveV3Integration() external {
+    function testGoldiVaultIntegrationRedeemOT() external {
         deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
 
-        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
+        address[] memory vaults = new address[](1); 
+        vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
+
+        _addGoldiVaultLeafs(leafs, vaults);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](5);
         manageLeafs[0] = leafs[0];
         manageLeafs[1] = leafs[1];
+        manageLeafs[2] = leafs[2];
+        manageLeafs[3] = leafs[3];
+        manageLeafs[4] = leafs[4];
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](2);
+        address[] memory targets = new address[](5);
         targets[0] = getAddress(sourceChain, "WEETH");
-        targets[1] = getAddress(sourceChain, "goldivault_weeth");
+        targets[1] = getAddress(sourceChain, "weethOT");
+        targets[2] = getAddress(sourceChain, "weethYT");
+        targets[3] = getAddress(sourceChain, "goldivault_weeth");
+        targets[4] = getAddress(sourceChain, "goldivault_weeth");
 
-        bytes[] memory targetData = new bytes[](2);
+        bytes[] memory targetData = new bytes[](5);
         targetData[0] =
             abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
         targetData[1] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[2] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[3] =
             abi.encodeWithSignature("deposit(uint256)", 10e18);
+        targetData[4] =
+            abi.encodeWithSignature("redeemOwnership(uint256)", 10e18);
 
-        address[] memory decodersAndSanitizers = new address[](2);
+        address[] memory decodersAndSanitizers = new address[](5);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
 
-        uint256[] memory values = new uint256[](2);
+        uint256[] memory values = new uint256[](5);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+        //TODO check balances
+    }
+
+    function testGoldiVaultIntegrationRedeemYT() external {
+        deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        address[] memory vaults = new address[](1); 
+        vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
+        _addGoldiVaultLeafs(leafs, vaults);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
+        manageLeafs[0] = leafs[0];
+        manageLeafs[1] = leafs[1];
+        manageLeafs[2] = leafs[2];
+        manageLeafs[3] = leafs[3];
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](4);
+        targets[0] = getAddress(sourceChain, "WEETH");
+        targets[1] = getAddress(sourceChain, "weethOT");
+        targets[2] = getAddress(sourceChain, "weethYT");
+        targets[3] = getAddress(sourceChain, "goldivault_weeth");
+
+        bytes[] memory targetData = new bytes[](4);
+        targetData[0] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[1] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[2] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[3] =
+            abi.encodeWithSignature("deposit(uint256)", 10e18);
+
+        address[] memory decodersAndSanitizers = new address[](4);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](4);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+
+        //Skip some time
+        skip(5 days); 
+
+        uint256 ct = IGoldiVault(getAddress(sourceChain, "goldivault_weeth")).endTime(); 
+        console.log("CONCLUDE TIME", ct); 
+
+        IGoldiVault(getAddress(sourceChain, "goldivault_weeth")).conclude(); 
+
+        manageLeafs = new ManageLeaf[](1);
+        manageLeafs[0] = leafs[5];
+
+        manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        targets = new address[](1);
+        targets[0] = getAddress(sourceChain, "goldivault_weeth");
+
+        targetData = new bytes[](1);
+        targetData[0] =
+            abi.encodeWithSignature("redeemYield(uint256)", 10e18);
+
+        decodersAndSanitizers = new address[](1);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+
+        values = new uint256[](1);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
+
+    function testGoldiVaultIntegrationCompound() external {
+        deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        address[] memory vaults = new address[](1); 
+        vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
+        _addGoldiVaultLeafs(leafs, vaults);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
+        manageLeafs[0] = leafs[0];
+        manageLeafs[1] = leafs[1];
+        manageLeafs[2] = leafs[2];
+        manageLeafs[3] = leafs[3];
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](4);
+        targets[0] = getAddress(sourceChain, "WEETH");
+        targets[1] = getAddress(sourceChain, "weethOT");
+        targets[2] = getAddress(sourceChain, "weethYT");
+        targets[3] = getAddress(sourceChain, "goldivault_weeth");
+
+        bytes[] memory targetData = new bytes[](4);
+        targetData[0] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[1] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[2] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
+        targetData[3] =
+            abi.encodeWithSignature("deposit(uint256)", 10e18);
+
+        address[] memory decodersAndSanitizers = new address[](4);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](4);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+
+        //Skip some time so we get rewards
+        skip(3 days); 
+
+
+        manageLeafs = new ManageLeaf[](1);
+        manageLeafs[0] = leafs[6];
+
+        manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        targets = new address[](1);
+        targets[0] = getAddress(sourceChain, "goldivault_weeth");
+
+        targetData = new bytes[](1);
+        targetData[0] =
+            abi.encodeWithSignature("compound()");
+
+        decodersAndSanitizers = new address[](1);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+
+        values = new uint256[](1);
+
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
@@ -151,3 +319,9 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
 }
 
 contract FullGoldiVaultDecoderAndSanitizer is GoldiVaultDecoderAndSanitizer {}
+
+interface IGoldiVault {
+    function concludeTime() external view returns (uint256); 
+    function endTime() external view returns (uint256); 
+    function conclude() external; 
+}
