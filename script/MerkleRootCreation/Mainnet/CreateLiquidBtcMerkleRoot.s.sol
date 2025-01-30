@@ -18,7 +18,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
     address public managerAddress = 0xaFa8c08bedB2eC1bbEb64A7fFa44c604e7cca68d;
     address public accountantAddress = 0xEa23aC6D7D11f6b181d6B98174D334478ADAe6b0;
-    address public rawDataDecoderAndSanitizer = 0x87D0f5D319a6703dE0233362C6f0735A51B3F742;
+    address public rawDataDecoderAndSanitizer = 0x453E5dD3b6E851E7ffd3Ad9Bc2f2f88C5b1196D8;
 
     function setUp() external {}
 
@@ -87,8 +87,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](16);
-        SwapKind[] memory kind = new SwapKind[](16);
+        address[] memory assets = new address[](17);
+        SwapKind[] memory kind = new SwapKind[](17);
         assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
@@ -115,12 +115,14 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         kind[11] = SwapKind.Sell;
         assets[12] = getAddress(sourceChain, "MORPHO");
         kind[12] = SwapKind.Sell;
-        assets[13] = getAddress(sourceChain, "USR");
-        kind[13] = SwapKind.BuyAndSell;
-        assets[14] = getAddress(sourceChain, "beraSTONE");
+        assets[13] = getAddress(sourceChain, "ETHFI");
+        kind[13] = SwapKind.Sell;
+        assets[14] = getAddress(sourceChain, "USR");
         kind[14] = SwapKind.BuyAndSell;
-        assets[15] = getAddress(sourceChain, "WETH");
+        assets[15] = getAddress(sourceChain, "beraSTONE");
         kind[15] = SwapKind.BuyAndSell;
+        assets[16] = getAddress(sourceChain, "WETH");
+        kind[16] = SwapKind.BuyAndSell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
@@ -162,9 +164,11 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "LBTC_PT03_LBTC_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "LBTC_PT03_WBTC_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "LBTC_PT03_WBTC_86"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "EBTC_USDC_86"));
 
         // ========================== MorphoRewards ==========================
-
+        _addMorphoRewardWrapperLeafs(leafs);
+        _addMorphoRewardMerkleClaimerLeafs(leafs, 0x330eefa8a787552DC5cAd3C3cA644844B1E61Ddb);
 
         // ========================== Pendle ==========================
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0++_market_01_29_25"), true);
@@ -176,22 +180,28 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_liquidBeraBTC_04_09_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_market_6_25_25"), true);
 
+        // ========================== Native Wrapping ==========================
+         _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
+
+
         // ========================== Teller ==========================
         {
             ERC20[] memory eBTCTellerAssets = new ERC20[](3);
             eBTCTellerAssets[0] = getERC20(sourceChain, "WBTC");
             eBTCTellerAssets[1] = getERC20(sourceChain, "LBTC");
             eBTCTellerAssets[2] = getERC20(sourceChain, "cbBTC");
-            _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCTellerAssets);
+            _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCTellerAssets, false);
 
             ERC20[] memory liquidBeraBTCTellerAssets = new ERC20[](4);
             liquidBeraBTCTellerAssets[0] = getERC20(sourceChain, "WBTC");
             liquidBeraBTCTellerAssets[1] = getERC20(sourceChain, "LBTC");
             liquidBeraBTCTellerAssets[2] = getERC20(sourceChain, "cbBTC");
             liquidBeraBTCTellerAssets[3] = getERC20(sourceChain, "eBTC");
-            _addTellerLeafs(leafs, getAddress(sourceChain, "liquidBeraBTCTeller"), liquidBeraBTCTellerAssets);
+            _addTellerLeafs(leafs, getAddress(sourceChain, "liquidBeraBTCTeller"), liquidBeraBTCTellerAssets, false);
         }
 
+        // ========================== Verify ==========================
+        
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         string memory filePath = "./leafs/Mainnet/LiquidBtcStrategistLeafs.json";
