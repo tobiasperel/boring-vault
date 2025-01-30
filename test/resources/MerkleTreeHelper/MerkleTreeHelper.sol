@@ -6401,7 +6401,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= Royco =========================================
 
-    function _addRoycoWeirollLeafs(ManageLeaf[] memory leafs, ERC20 asset, bytes32 offerHash, address frontendFeeRecipient) internal {
+    function _addRoycoWeirollLeafs(ManageLeaf[] memory leafs, ERC20 asset, bytes32 marketHash, address frontendFeeRecipient) internal {
         unchecked {
             leafIndex++;
         }
@@ -6419,19 +6419,19 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafIndex++;
         }
         
-        address offerHash0 = address(bytes20(bytes16(offerHash)));
-        address offerHash1 = address(bytes20(bytes16(offerHash << 128)));
+        address marketHash0 = address(bytes20(bytes16(marketHash)));
+        address marketHash1 = address(bytes20(bytes16(marketHash << 128)));
 
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "recipeMarketHub"),
             false,
             "fillIPOffers(bytes32[],uint256[],address,address)",
             new address[](4),
-            string.concat("Fill IP Offer using offer hash"),
+            string.concat("Fill IP Offer using market hash"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = offerHash0;  
-        leafs[leafIndex].argumentAddresses[1] = offerHash1;  
+        leafs[leafIndex].argumentAddresses[0] = marketHash0;  
+        leafs[leafIndex].argumentAddresses[1] = marketHash1;  
         leafs[leafIndex].argumentAddresses[2] = address(0); //pull funds from boringVault
         leafs[leafIndex].argumentAddresses[3] = frontendFeeRecipient; 
 
