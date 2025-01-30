@@ -6801,7 +6801,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= BoringVault Teller =========================================
 
-    function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets) internal {
+    function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets, bool hasNativeEth) internal {
         ERC20 boringVault = TellerWithMultiAssetSupport(teller).vault();
 
         for (uint256 i; i < assets.length; ++i) {
@@ -6861,19 +6861,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+    
 
-            unchecked {
-                leafIndex++;
+            if (hasNativeEth) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    teller,
+                    true, //can send value
+                    "deposit(address,uint256,uint256)",
+                    new address[](1),
+                    string.concat("Deposit ETH into ", boringVault.name()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "ETH");
             }
-            leafs[leafIndex] = ManageLeaf(
-                teller,
-                true, //can send value
-                "deposit(address,uint256,uint256)",
-                new address[](1),
-                string.concat("Deposit ETH into ", boringVault.name()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "ETH");
         }
     }
 
