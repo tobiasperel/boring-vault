@@ -87,8 +87,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](13);
-        SwapKind[] memory kind = new SwapKind[](13);
+        address[] memory assets = new address[](14);
+        SwapKind[] memory kind = new SwapKind[](14);
         assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
@@ -115,18 +115,23 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         kind[11] = SwapKind.Sell;
         assets[12] = getAddress(sourceChain, "MORPHO");
         kind[12] = SwapKind.Sell;
+        assets[13] = getAddress(sourceChain, "USR");
+        kind[13] = SwapKind.BuyAndSell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         // ========================== Aave ==========================
-        ERC20[] memory supplyAssets = new ERC20[](3);
+        ERC20[] memory supplyAssets = new ERC20[](5);
         supplyAssets[0] = getERC20(sourceChain, "WBTC");
         supplyAssets[1] = getERC20(sourceChain, "LBTC");
         supplyAssets[2] = getERC20(sourceChain, "cbBTC");
+        supplyAssets[3] = getERC20(sourceChain, "USDC")
+        supplyAssets[4] = getERC20(sourceChain, "USDT")
 
-        ERC20[] memory borrowAssets = new ERC20[](3);
+        ERC20[] memory borrowAssets = new ERC20[](4);
         borrowAssets[0] = getERC20(sourceChain, "USDC");
         borrowAssets[1] = getERC20(sourceChain, "USDT");
         borrowAssets[2] = getERC20(sourceChain, "WBTC");
+        borrowAssets[3] = getERC20(sourceChain, "WETH");
 
         _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
 
@@ -135,6 +140,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "PendleWBTC")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "MCwBTC")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "MCcbBTC")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "MCUSR"))); 
 
         // ========================== MorphoBlue ==========================
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WBTC_USDC_86"));
