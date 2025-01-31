@@ -322,23 +322,21 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](5);
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
         manageLeafs[0] = leafs[0];
         manageLeafs[1] = leafs[1];
         manageLeafs[2] = leafs[2];
         manageLeafs[3] = leafs[7];
-        manageLeafs[4] = leafs[8];
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](5);
+        address[] memory targets = new address[](4);
         targets[0] = getAddress(sourceChain, "WEETH");
         targets[1] = getAddress(sourceChain, "weethOT");
         targets[2] = getAddress(sourceChain, "weethYT");
         targets[3] = getAddress(sourceChain, "goldivault_weeth");
-        targets[4] = getAddress(sourceChain, "goldivault_weeth");
 
-        bytes[] memory targetData = new bytes[](5);
+        bytes[] memory targetData = new bytes[](4);
         targetData[0] =
             abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
         targetData[1] =
@@ -347,17 +345,40 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
             abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
         targetData[3] =
             abi.encodeWithSignature("buyYT(uint256,uint256,uint256)", 10e18, 100e18, 1e18);
-        targetData[4] =
-            abi.encodeWithSignature("sellYT(uint256,uint256,uint256)", 1e18, 1e18, 1e18);
 
-        address[] memory decodersAndSanitizers = new address[](5);
+        address[] memory decodersAndSanitizers = new address[](4);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
-        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
 
-        uint256[] memory values = new uint256[](5);
+        uint256[] memory values = new uint256[](4);
+
+
+        uint256 ytBalBefore = getERC20(sourceChain, "weethYT").balanceOf(address(boringVault)); 
+        console.log("YT BALANCE", ytBalBefore); 
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+        
+        uint256 ytBalAfter = getERC20(sourceChain, "weethYT").balanceOf(address(boringVault)); 
+        console.log("YT BALANCE", ytBalAfter); 
+
+        manageLeafs = new ManageLeaf[](1);
+        manageLeafs[0] = leafs[8];
+
+        manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        targets = new address[](1);
+        targets[0] = getAddress(sourceChain, "goldivault_weeth");
+
+        targetData = new bytes[](1);  
+        targetData[0] = 
+            abi.encodeWithSignature("sellYT(uint256,uint256,uint256)", 100e18, 0.1e18, 1000e18);
+
+        decodersAndSanitizers = new address[](1);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+
+        values = new uint256[](1);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
