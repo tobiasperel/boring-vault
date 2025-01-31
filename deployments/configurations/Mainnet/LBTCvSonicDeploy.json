@@ -4,7 +4,7 @@
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "mainnet",
     "evmVersion": "cancun",
-    "desiredNumberOfDeploymentTxs": 10,
+    "desiredNumberOfDeploymentTxs": 4,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -67,8 +67,8 @@
         ]
       },
       "accountantDeploymentParameters": {
-        "allowedExchangeRateChangeLower": 9900,
-        "allowedExchangeRateChangeUpper": 10000,
+        "allowedExchangeRateChangeLower": 9950,
+        "allowedExchangeRateChangeUpper": 10050,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
           "name": "LBTC"
@@ -100,18 +100,7 @@
           "address": "0x0000000000000000000000000000000000000000",
           "name": "ZRO"
         },
-        "lzChains": [
-          {
-            "chainId": 30332,
-            "allowMessagesFrom": true,
-            "allowMessagesTo": true,
-            "targetTellerOrSelf": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "self": true
-            },
-            "messageGasLimit": 100000
-          }
-        ]
+        "lzChains": []
       }
     }
   },
@@ -156,14 +145,6 @@
     }
   },
   "accountantAssets": [
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "LBTC"
-      },
-      "isPeggedToBase": true,
-      "rateProvider": "0x0000000000000000000000000000000000000000"
-    },
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
