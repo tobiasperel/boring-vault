@@ -593,6 +593,8 @@ contract ChainValues {
         values[mainnet]["LBTC_PT03_WBTC_915"] = 0xa39263bf7275f772863c464ef4e9e972aaa0f1a6a1bf2a47f92bf57a542d2458;
         values[mainnet]["LBTC_PT03_WBTC_86"] = 0x198132864e7974fb451dfebeb098b3b7e7e65566667fb1cf1116db4fb2ad23f9;
         values[mainnet]["EBTC_USDC_86"] = 0xb6f4eebd60871f99bf464ae0b67045a26797cf7ef57c458d57e08c205f84feac;
+        values[mainnet]["wstUSR_PT03_USR_915"] = 0x1e1ae51d4be670307788612599a46a73649ef85e28bab194d3ae00c3cd693ea7;
+        values[mainnet]["WBTC_USR_86"] = 0xf84288cdcf652627f66cd7a6d4c43c3ee43ca7146d9a9cfab3a136a861144d6f;
 
         // MetaMorpho
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();
@@ -729,6 +731,7 @@ contract ChainValues {
 
         values[mainnet]["pendle_liquid_bera_eth_04_09_25"] = 0x46E6b4A950Eb1AbBa159517DEA956Afd01ea9497.toBytes32();
         values[mainnet]["pendle_liquidBeraBTC_04_09_25"] = 0xEbf5c58b74A836F1e51d08e9C909c4A4530AFD41.toBytes32();
+        values[mainnet]["pendle_wstUSR_market_03_26_25"] = 0x353d0B2EFB5B3a7987fB06D30Ad6160522d08426.toBytes32();
 
         // Aave V3 Core
         values[mainnet]["v3Pool"] = 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2.toBytes32();
