@@ -111,6 +111,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
+
         //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("Lombard BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
@@ -124,6 +125,11 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // creationCode = type(PancakeSwapV3FullDecoderAndSanitizer).creationCode;
         // constructorArgs = abi.encode(pancakeswapV3nfpm, pancakeswapV3chef);
         // deployer.deployContract("PancakeSwapV3 Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+
+        //creationCode = type(EtherFiLiquidEthDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager); 
+        //deployer.deployContract("EtherFi Liquid ETH Decoder And Sanitizer V0.8", creationCode, constructorArgs, 0);
+
 
         vm.stopBroadcast();
     }
