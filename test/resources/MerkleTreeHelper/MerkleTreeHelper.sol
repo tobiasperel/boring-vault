@@ -6939,7 +6939,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
-<<<<<<< HEAD
     // ========================================= Dolomite Finance =========================================
 
     function _addDolomiteDepositLeafs(ManageLeaf[] memory leafs, address token) internal {

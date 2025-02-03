@@ -446,3 +446,4 @@ contract DecoderCustomTypes {
         // are you using Protected, Collateral
         uint8 assetType;
     }
+}
