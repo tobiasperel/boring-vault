@@ -1499,18 +1499,21 @@ contract ChainValues {
         values[bartio]["balancerVault"] = address(1).toBytes32();
         values[bartio]["vault"] = address(1).toBytes32();
 
-
         // ERC20s
-        values[bartio]["WBERA"] = 0x7507c1dc16935B82698e4C63f2746A2fCf994dF8.toBytes32(); 
+        values[bartio]["WBERA"] = 0x7507c1dc16935B82698e4C63f2746A2fCf994dF8.toBytes32();
+        values[bartio]["YEET"] = 0x8c245484890a61Eb2d1F81114b1a7216dCe2752b.toBytes32();
         values[bartio]["USDC"] = 0xd6D83aF58a19Cd14eF3CF6fe848C9A4d21e5727c.toBytes32(); 
-        values[bartio]["YEET"] = 0x8c245484890a61Eb2d1F81114b1a7216dCe2752b.toBytes32(); 
-
+        values[bartio]["USDT"] = 0x05D0dD5135E3eF3aDE32a9eF9Cb06e8D37A6795D.toBytes32(); 
+        values[bartio]["DAI"] = 0x806Ef538b228844c73E8E692ADCFa8Eb2fCF729c.toBytes32(); 
 
         // Kodiak
         values[bartio]["kodiakIslandRouterOld"] = 0x5E51894694297524581353bc1813073C512852bf.toBytes32(); //old 
         values[bartio]["kodiakIslandRouterNew"] = 0x35c98A9bA533218155f9324585914e916066A153.toBytes32(); //new
 
         values[bartio]["kodiak_island_WBERA_YEET_1%"] = 0x0001513F4a1f86da0f02e647609E9E2c630B3a14.toBytes32();
+
+        // Honey
+        values[bartio]["honeyFactory"] = 0xAd1782b2a7020631249031618fB1Bd09CD926b31.toBytes32(); 
 
     }
 
