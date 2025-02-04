@@ -1512,6 +1512,7 @@ contract ChainValues {
         values[bartio]["USDT"] = 0x05D0dD5135E3eF3aDE32a9eF9Cb06e8D37A6795D.toBytes32();
         values[bartio]["DAI"] = 0x806Ef538b228844c73E8E692ADCFa8Eb2fCF729c.toBytes32();
         values[bartio]["iBGT"] = 0x46eFC86F0D7455F135CC9df501673739d513E982.toBytes32();
+        values[bartio]["WEETH"] = 0x7Cc43d94818005499D2740975D2aEFD3893E940E.toBytes32();  
 
         // Kodiak
         values[bartio]["kodiakIslandRouterOld"] = 0x5E51894694297524581353bc1813073C512852bf.toBytes32(); //old
@@ -1525,6 +1526,11 @@ contract ChainValues {
 
         // Infrared
         values[bartio]["infrared_kodiak_WBERA_YEET_vault"] = 0x89DAFF790313d0Cc5cC9971472f0C73A19D9C167.toBytes32();
+
+        // Goldilocks
+        values[bartio]["goldivault_weeth"] = 0xEE4A91F5BFA0Bf54124CF00cc7e144427cCE1162.toBytes32();  
+        values[bartio]["weethOT"] = 0x6218379852D5609870e91f168B81cbB4532f0346.toBytes32();  
+        values[bartio]["weethYT"] = 0x401CBe777E8BE57a426A5B5F13Ca4d73200BD95B.toBytes32();  
     }
 
     function _addSwellValues() private {
