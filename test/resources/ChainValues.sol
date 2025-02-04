@@ -23,10 +23,12 @@ contract ChainValues {
     string public constant corn = "corn";
     string public constant swell = "swell";
     string public constant sonicMainnet = "sonicMainnet";
+    string public constant berachain = "berachain";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
     string public constant sonicBlaze = "sonicBlaze";
+    string public constant berachainTestnet = "berachainTestnet";
     string public constant bartio = "bartio"; 
 
     // Bridging constants.
@@ -99,11 +101,13 @@ contract ChainValues {
         _addCornValues();
         _addSwellValues();
         _addSonicMainnetValues();
+        _addBerachainValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
         _addSonicTestnetValues();
         _addSonicBlazeValues();
+        _addBerachainTestnetValues();
         _addBartioValues(); 
     }
 
@@ -1453,7 +1457,9 @@ contract ChainValues {
 
         values[sepolia]["WETH"] = 0xb16F35c0Ae2912430DAc15764477E179D9B9EbEa.toBytes32();
         values[sepolia]["CrispyUSD"] = 0x867F14Da2EcD4B582812d76D94c4B10cB00b507C.toBytes32();
+        values[sepolia]["USDC"] = 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590.toBytes32();
         values[sepolia]["ZRO"] = address(1).toBytes32();
+        values[sepolia]["CrispyCoin"] = 0x0c959E3AA0A74E972d1A8F759c198e660CcCebcB.toBytes32();
 
         values[sepolia]["balancerVault"] = address(1).toBytes32();
 
@@ -1528,5 +1534,36 @@ contract ChainValues {
 
         // ERC20s
         values[swell]["WEETH"] = 0xA6cB988942610f6731e664379D15fFcfBf282b44.toBytes32(); //also OFT
+    }
+
+    function _addBerachainTestnetValues() private {
+        values[berachainTestnet]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[berachainTestnet]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[berachainTestnet]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[berachainTestnet]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        values[berachainTestnet]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
+        values[berachainTestnet]["balancerVault"] = address(1).toBytes32();
+        values[berachainTestnet]["USDC"] = 0x015fd589F4f1A33ce4487E12714e1B15129c9329.toBytes32();
+        values[berachainTestnet]["ZRO"] = address(1).toBytes32();
+
+        // ERC20s
+        values[berachainTestnet]["WEETH"] = 0xA6cB988942610f6731e664379D15fFcfBf282b44.toBytes32(); //also OFT
+
+        values[berachainTestnet]["LayerZeroEndPoint"] = 0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff.toBytes32();
+    }
+
+    function _addBerachainValues() private {
+        values[berachain]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[berachain]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[berachain]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[berachain]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        values[berachain]["WBERA"] = 0x6969696969696969696969696969696969696969.toBytes32();
+        values[berachain]["WETH"] = 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590.toBytes32();
+        values[berachain]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
+        values[berachain]["WBTC"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32();
+
+        values[berachain]["balancerVault"] = address(1).toBytes32();
     }
 }
