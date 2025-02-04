@@ -35,7 +35,7 @@ contract BeraETHIntegrationTest is Test, MerkleTreeHelper {
     function setUp() external {
         setSourceChainName("berachain");
         // Setup forked environment.
-        string memory rpcKey = "BERACHAIN_RPC_URL";
+        string memory rpcKey = "BERA_CHAIN_RPC_URL";
         uint256 blockNumber = 372325;
 
         _startFork(rpcKey, blockNumber);
