@@ -7194,6 +7194,49 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
+    // ========================================= beraETH =========================================
+    function _addBeraETHLeafs(ManageLeaf[] memory leafs) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "WETH"),
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve rberaETH to spend WETH"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "rberaETH");
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "rberaETH"),
+            false,
+            "depositAndWrap(address,uint256,uint256)",
+            new address[](1),
+            string.concat("Deposit and wrap WETH into beraETH"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "WETH");
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "beraETH"),
+            false,
+            "unwrap(uint256)",
+            new address[](0),
+            string.concat("Unwrap beraETH"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+    } 
+
     // ========================================= Infrared  =========================================
     function _addInfraredVaultLeafs(ManageLeaf[] memory leafs, address vault) internal {
         address stakingToken = IInfraredVault(vault).stakingToken();  
@@ -7201,6 +7244,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         unchecked {
             leafIndex++;
         }
+
         leafs[leafIndex] = ManageLeaf(
             stakingToken,
             false,

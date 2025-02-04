@@ -101,7 +101,7 @@ contract ChainValues {
         _addCornValues();
         _addSwellValues();
         _addSonicMainnetValues();
-        _addBerachainValues();
+        _addBerachainValues(); 
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -1517,7 +1517,7 @@ contract ChainValues {
         values[bartio]["kodiakIslandRouterOld"] = 0x5E51894694297524581353bc1813073C512852bf.toBytes32(); //old
         values[bartio]["kodiakIslandRouterNew"] = 0x35c98A9bA533218155f9324585914e916066A153.toBytes32(); //new
 
-        values[bartio]["kodiak_v1_WBERA_YEET"] = 0xE5A2ab5D2fb268E5fF43A5564e44c3309609aFF9.toBytes32(); //old island 
+        values[bartio]["kodiak_v1_WBERA_YEET"] = 0xE5A2ab5D2fb268E5fF43A5564e44c3309609aFF9.toBytes32(); //old island
         values[bartio]["kodiak_island_WBERA_YEET_1%"] = 0x0001513F4a1f86da0f02e647609E9E2c630B3a14.toBytes32(); //new island
 
         // Honey
@@ -1525,7 +1525,6 @@ contract ChainValues {
 
         // Infrared
         values[bartio]["infrared_kodiak_WBERA_YEET_vault"] = 0x89DAFF790313d0Cc5cC9971472f0C73A19D9C167.toBytes32();
-
     }
 
     function _addSwellValues() private {
@@ -1563,12 +1562,16 @@ contract ChainValues {
         values[berachain]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
         values[berachain]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
         values[berachain]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
-
+        
+        // ERC20s
         values[berachain]["WBERA"] = 0x6969696969696969696969696969696969696969.toBytes32();
         values[berachain]["WETH"] = 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590.toBytes32();
         values[berachain]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
         values[berachain]["WBTC"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32();
+        values[berachain]["rberaETH"] = 0x3B0145f3CFA64BC66F5742F512f871665309075d.toBytes32(); //LST 
+        values[berachain]["beraETH"] = 0x6fc6545d5cDE268D5C7f1e476D444F39c995120d.toBytes32(); //wrapped LST 
 
         values[berachain]["balancerVault"] = address(1).toBytes32();
+        values[berachain]["vault"] = address(1).toBytes32();
     }
 }
