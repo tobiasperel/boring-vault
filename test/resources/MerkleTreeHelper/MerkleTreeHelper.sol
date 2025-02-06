@@ -7549,7 +7549,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
             if (
                 !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0][getAddress(
-                    sourceChain, "kodiakIslandRouterNew"
+                    sourceChain, "kodiakIslandRouter"
                 )]
             ) {
                 unchecked {
@@ -7563,15 +7563,15 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Approve Kodiak router to spend ", ERC20(token0).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "kodiakIslandRouterNew");
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "kodiakIslandRouter");
                 ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0][getAddress(
-                    sourceChain, "kodiakIslandRouterNew"
+                    sourceChain, "kodiakIslandRouter"
                 )] = true;
             }
 
             if (
                 !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1][getAddress(
-                    sourceChain, "kodiakIslandRouterNew"
+                    sourceChain, "kodiakIslandRouter"
                 )]
             ) {
                 unchecked {
@@ -7585,15 +7585,15 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Approve Kodiak router to spend ", ERC20(token1).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "kodiakIslandRouterNew");
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "kodiakIslandRouter");
                 ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1][getAddress(
-                    sourceChain, "kodiakIslandRouterNew"
+                    sourceChain, "kodiakIslandRouter"
                 )] = true;
             }
 
             if (
                 !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][islands[i]][getAddress(
-                    sourceChain, "kodiakIslandRouterNew"
+                    sourceChain, "kodiakIslandRouter"
                 )]
             ) {
                 unchecked {
@@ -7607,9 +7607,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Approve Kodiak router to spend ", ERC20(islands[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "kodiakIslandRouterNew");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1][getAddress(
-                    sourceChain, "kodiakIslandRouterNew"
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "kodiakIslandRouter");
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][islands[i]][getAddress(
+                    sourceChain, "kodiakIslandRouter"
                 )] = true;
             }
 
@@ -7617,7 +7617,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "kodiakIslandRouterNew"),
+                getAddress(sourceChain, "kodiakIslandRouter"),
                 false,
                 "addLiquidity(address,uint256,uint256,uint256,uint256,uint256,address)",
                 new address[](2),
@@ -7631,7 +7631,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "kodiakIslandRouterNew"),
+                getAddress(sourceChain, "kodiakIslandRouter"),
                 true,
                 "addLiquidityNative(address,uint256,uint256,uint256,uint256,uint256,address)",
                 new address[](2),
@@ -7645,7 +7645,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "kodiakIslandRouterNew"),
+                getAddress(sourceChain, "kodiakIslandRouter"),
                 false,
                 "removeLiquidity(address,uint256,uint256,uint256,address)",
                 new address[](2),
@@ -7659,7 +7659,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "kodiakIslandRouterNew"),
+                getAddress(sourceChain, "kodiakIslandRouter"),
                 false,
                 "removeLiquidityNative(address,uint256,uint256,uint256,address)",
                 new address[](2),
