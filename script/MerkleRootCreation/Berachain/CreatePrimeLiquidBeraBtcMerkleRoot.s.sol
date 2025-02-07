@@ -18,7 +18,7 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x46fcd35431f5B371224ACC2e2E91732867B1A77e; 
     address public managerAddress = 0x7280E05ccF01066C715aDc936f860BD65510f816;
     address public accountantAddress = 0x4faE50B524e0D05BD73fDF28b273DB7D4A57CCe9;
-    address public rawDataDecoderAndSanitizer = 0x9b0FF5F9625F99Ae64CfFdc85B56e594D520ACcB;
+    address public rawDataDecoderAndSanitizer = 0xeE7391E66246Bb05cb8a7D672a6e7A5613B1Ea92;
 
     function setUp() external {}
 
@@ -37,7 +37,7 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, berachain, "accountantAddress", accountantAddress);
         setAddress(false, berachain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        ManageLeaf[] memory leafs = new ManageLeaf[](128);
         
 
         // ========================== Teller ==========================
@@ -69,8 +69,8 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Dolomite Supply ==========================
 
-        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WBTC"));          
-        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "EBTC"));          
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WBTC"), false);          
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "EBTC"), false);          
 
 
         // ========================== dTokens ==========================
