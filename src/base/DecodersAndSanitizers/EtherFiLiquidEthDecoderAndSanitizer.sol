@@ -40,7 +40,7 @@ import {TreehouseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Proto
 import {FraxDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FraxDecoderAndSanitizer.sol";
 import {TermFinanceDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TermFinanceDecoderAndSanitizer.sol";
 import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol";
-import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol"; 
+import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol";
 
 contract EtherFiLiquidEthDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,

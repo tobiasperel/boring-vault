@@ -2,9 +2,9 @@
   "deploymentParameters": {
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
-    "chainName": "mainnet",
-    "evmVersion": "cancun",
-    "desiredNumberOfDeploymentTxs": 10,
+    "chainName": "sonicMainnet",
+    "evmVersion": "london",
+    "desiredNumberOfDeploymentTxs": 4,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -22,73 +22,69 @@
     },
     "nativeWrapperAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
-      "name": "WETH"
+      "name": "wS"
     },
     "deploymentOwnerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "addresses/Mainnet/SonicUSD.json"
+    "deploymentFileName": "addresses/SonicMainnet/LBTCvSonicDeployment.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "Sonic USD Roles Authority V0.1"
+    "rolesAuthorityDeploymentName": "Bitcoin Sonic Vault RolesAuthority Version 0.0"
   },
   "lensConfiguration": {
-    "lensDeploymentName": "Arctic Architecture Lens V0.1"
+    "lensDeploymentName": "Arctic Architecture Lens V0.0"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "Sonic USD Boring Vault V0.1",
-    "boringVaultName": "Sonic USD",
-    "boringVaultSymbol": "scUSD",
-    "boringVaultDecimals": 6
+    "boringVaultDeploymentName": "Bitcoin Sonic Vault V0.0",
+    "boringVaultName": "Bitcoin Sonic Vault",
+    "boringVaultSymbol": "sonicLBTCv",
+    "boringVaultDecimals": 8
   },
   "managerConfiguration": {
-    "managerDeploymentName": "Sonic USD Manager V0.1",
+    "managerDeploymentName": "Bitcoin Sonic Vault Manager With Merkle Verification V0.0",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "Sonic USD Accountant V0.1",
+    "accountantDeploymentName": "Bitcoin Sonic Vault Accountant With Rate Providers V0.0",
     "accountantParameters": {
       "kind": {
-        "variableRate": false,
-        "fixedRate": true
+        "variableRate": true,
+        "fixedRate": false
       },
       "payoutConfiguration": {
         "payoutTo": "0x0000000000000000000000000000000000000000",
-        "optionalPaymentSplitterName": "Sonic USD Payment Splitter V0.1",
+        "optionalPaymentSplitterName": "Bitcoin Sonic Vault Payment Splitter V0.0",
         "splits": [
           {
             "to": "0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b",
-            "percent": 5000
-          },
-          {
-            "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
-            "percent": 5000
+            "percent": 10000
           }
         ]
       },
       "accountantDeploymentParameters": {
-        "allowedExchangeRateChangeLower": 9900,
-        "allowedExchangeRateChangeUpper": 10000,
+        "allowedExchangeRateChangeLower": 9950,
+        "allowedExchangeRateChangeUpper": 10050,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "USDC"
+          "name": "LBTC"
         },
         "minimumUpateDelayInSeconds": 21600,
-        "performanceFee": 1000,
+        "performanceFee": 0,
         "platformFee": 0,
-        "startingExchangeRate": 1000000
+        "startingExchangeRate": 100000000
       }
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "Sonic USD Teller V0.1",
+    "tellerDeploymentName": "Bitcoin Sonic Vault Teller With Multi Asset Support V0.0",
     "tellerParameters": {
       "allowPublicDeposits": true,
-      "shareLockPeriod": 0,
+      "shareLockPeriod": 86400,
       "kind": {
         "teller": false,
         "tellerWithRemediation": false,
@@ -104,24 +100,13 @@
           "address": "0x0000000000000000000000000000000000000000",
           "name": "ZRO"
         },
-        "lzChains": [
-          {
-            "chainId": 30332,
-            "allowMessagesFrom": true,
-            "allowMessagesTo": true,
-            "targetTellerOrSelf": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "self": true
-            },
-            "messageGasLimit": 100000
-          }
-        ]
+        "lzChains": []
       }
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "Sonic USD Boring Queue V0.1",
-    "boringQueueSolverName": "Sonic USD Boring Solver V0.1",
+    "boringQueueDeploymentName": "Bitcoin Sonic Vault Boring Queue V0.0",
+    "boringQueueSolverName": "Bitcoin Sonic Vault Boring Solver V0.0",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -132,25 +117,17 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "Sonic USD Drone V0.1",
+    "droneDeploymentBaseName": "Bitcoin Sonic Vault Drone V0.0",
     "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
     "shouldDeploy": true,
-    "pauserDeploymentName": "Sonic USD Pauser V0.1",
-    "makeGenericPauser": [
-      "0x0000000000000000000000000000000000000000"
-    ],
-    "makeGenericUnpauser": [
-      "0x0000000000000000000000000000000000000000"
-    ],
-    "makePauseAll": [
-      "0x0000000000000000000000000000000000000000"
-    ],
-    "makeUnpauseAll": [
-      "0x0000000000000000000000000000000000000000"
-    ],
+    "pauserDeploymentName": "Bitcoin Sonic Vault Pauser V0.0",
+    "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
+    "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
+    "makePauseAll": ["0x0000000000000000000000000000000000000000"],
+    "makeUnpauseAll": ["0x0000000000000000000000000000000000000000"],
     "senderToPausable": [
       {
         "sender": "0x0000000000000000000000000000000000000000",
@@ -159,31 +136,19 @@
     ]
   },
   "timelockConfiguration": {
-    "shouldDeploy": true,
-    "timelockDeploymentName": "Sonic USD Timelock V0.1",
+    "shouldDeploy": false,
+    "timelockDeploymentName": "Bitcoin Sonic Vault Timelock V0.0",
     "timelockParameters": {
-      "minDelay": 300,
-      "proposers": [
-        "0x0000000000000000000000000000000000000000"
-      ],
-      "executors": [
-        "0x0000000000000000000000000000000000000000"
-      ]
+      "minDelay": 86400,
+      "proposers": ["0x0000000000000000000000000000000000000000"],
+      "executors": ["0x0000000000000000000000000000000000000000"]
     }
   },
   "accountantAssets": [
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "USDT"
-      },
-      "isPeggedToBase": true,
-      "rateProvider": "0x0000000000000000000000000000000000000000"
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "DAI"
+        "name": "eBTC"
       },
       "isPeggedToBase": true,
       "rateProvider": "0x0000000000000000000000000000000000000000"
@@ -193,7 +158,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "USDC"
+        "name": "LBTC"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -202,16 +167,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "USDT"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 0
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "DAI"
+        "name": "eBTC"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -222,35 +178,13 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "USDC"
+        "name": "LBTC"
       },
       "maxDiscount": 10,
       "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
+      "minimumSecondsToDeadline": 259200,
       "minimumShares": 0,
-      "secondsToMaturity": 60
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "USDT"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
-      "minimumShares": 0,
-      "secondsToMaturity": 60
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "DAI"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
-      "minimumShares": 0,
-      "secondsToMaturity": 60
+      "secondsToMaturity": 172800
     }
   ]
 }

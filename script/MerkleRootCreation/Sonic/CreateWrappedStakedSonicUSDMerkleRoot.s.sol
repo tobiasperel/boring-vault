@@ -45,7 +45,7 @@ contract CreateWrappedStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "scUSD");
-        _addTellerLeafs(leafs, getAddress(sourceChain, "stkscUSDTeller"), tellerAssets);
+        _addTellerLeafs(leafs, getAddress(sourceChain, "stkscUSDTeller"), tellerAssets, false);
 
         // ========================== Fee Claiming ==========================
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "stkscUSDAccountant"), tellerAssets, false);
