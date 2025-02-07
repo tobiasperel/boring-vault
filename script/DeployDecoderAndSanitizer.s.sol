@@ -44,7 +44,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("mainnet");
+        vm.createSelectFork("swell");
     }
 
     function run() external {
@@ -87,9 +87,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //version is not synced w/ current deployed version anymore
         //deployer.deployContract("Staked BTCN Decoder and Sanitizer V0.4", creationCode, constructorArgs, 0);
 
-        //creationCode = type(SwellEtherFiLiquidEthDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(boringVault);
-        //deployer.deployContract("EtherFi Liquid ETH Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
+        creationCode = type(SwellEtherFiLiquidEthDecoderAndSanitizer).creationCode;
+        constructorArgs = hex"";
+        deployer.deployContract("EtherFi Liquid ETH Decoder and Sanitizer V0.3", creationCode, constructorArgs, 0);
 
         //creationCode = type(sBTCNMaizenetDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(boringVault);
@@ -111,6 +111,10 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //creationCode = type(EtherFiLiquidBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        
+        // creationCode = type(EtherFiLiquidEthDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager); 
+        // deployer.deployContract("EtherFi Liquid ETH Decoder And Sanitizer V0.8", creationCode, constructorArgs, 0);
 
         //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
