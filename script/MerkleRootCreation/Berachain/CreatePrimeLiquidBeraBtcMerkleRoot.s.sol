@@ -45,6 +45,45 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         tellerAssets[0] = getERC20(sourceChain, "WBTC"); 
         tellerAssets[1] = getERC20(sourceChain, "LBTC"); 
         _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), tellerAssets, false);    
+
+
+        // ========================== Kodiak Swaps ==========================
+
+        address[] memory token0 = new address[](2);  
+        token0[0] = getAddress(sourceChain, "WBTC");    
+        token0[1] = getAddress(sourceChain, "WBTC");    
+
+        address[] memory token1 = new address[](2);  
+        token1[0] = getAddress(sourceChain, "LBTC");    
+        token1[1] = getAddress(sourceChain, "EBTC");    
+
+        _addUniswapV3Leafs(leafs, token0, token1, false); 
+
+        // ========================== Kodiak Islands ==========================
+
+        address[] memory islands = new address[](3);  
+        islands[0] = getAddress(sourceChain, "kodiak_island_WBTC_EBTC_005%"); 
+        islands[1] = getAddress(sourceChain, "kodiak_island_EBTC_LBTC_005%"); 
+        islands[2] = getAddress(sourceChain, "kodiak_island_EBTC_EBTC_OT_005%"); 
+
+
+        // ========================== Dolomite Supply ==========================
+
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WBTC"));          
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "EBTC"));          
+
+
+        // ========================== dTokens ==========================
+
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "dWBTC")));   
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "dEBTC")));   
+
+        // ========================== Goldilocks ==========================
+
+        address[] memory vaults = new address[](1); 
+        vaults[0] = getAddress(sourceChain, "goldivault_eBTC"); 
+
+        _addGoldiVaultLeafs(leafs, vaults); 
         
 
         // ========================== Verify ==========================
