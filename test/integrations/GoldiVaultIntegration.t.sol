@@ -45,9 +45,7 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(
-            new FullGoldiVaultDecoderAndSanitizer()
-        );
+        rawDataDecoderAndSanitizer = address(new FullGoldiVaultDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -112,8 +110,8 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
 
-        address[] memory vaults = new address[](1); 
-        vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
+        address[] memory vaults = new address[](1);
+        vaults[0] = getAddress(sourceChain, "goldivault_weeth");
 
         _addGoldiVaultLeafs(leafs, vaults);
 
@@ -138,16 +136,17 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         targets[4] = getAddress(sourceChain, "goldivault_weeth");
 
         bytes[] memory targetData = new bytes[](5);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[2] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[3] =
-            abi.encodeWithSignature("deposit(uint256)", 10e18);
-        targetData[4] =
-            abi.encodeWithSignature("redeemOwnership(uint256)", 10e18);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[3] = abi.encodeWithSignature("deposit(uint256)", 10e18);
+        targetData[4] = abi.encodeWithSignature("redeemOwnership(uint256)", 10e18);
 
         address[] memory decodersAndSanitizers = new address[](5);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -167,8 +166,8 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        address[] memory vaults = new address[](1); 
-        vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
+        address[] memory vaults = new address[](1);
+        vaults[0] = getAddress(sourceChain, "goldivault_weeth");
         _addGoldiVaultLeafs(leafs, vaults);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -190,14 +189,16 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         targets[3] = getAddress(sourceChain, "goldivault_weeth");
 
         bytes[] memory targetData = new bytes[](4);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[2] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[3] =
-            abi.encodeWithSignature("deposit(uint256)", 10e18);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[3] = abi.encodeWithSignature("deposit(uint256)", 10e18);
 
         address[] memory decodersAndSanitizers = new address[](4);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -209,14 +210,13 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
-
         //Skip some time
-        skip(5 days); 
+        skip(5 days);
 
-        uint256 ct = IGoldiVault(getAddress(sourceChain, "goldivault_weeth")).endTime(); 
-        console.log("CONCLUDE TIME", ct); 
+        uint256 ct = IGoldiVault(getAddress(sourceChain, "goldivault_weeth")).endTime();
+        console.log("CONCLUDE TIME", ct);
 
-        IGoldiVault(getAddress(sourceChain, "goldivault_weeth")).conclude(); 
+        IGoldiVault(getAddress(sourceChain, "goldivault_weeth")).conclude();
 
         manageLeafs = new ManageLeaf[](1);
         manageLeafs[0] = leafs[5];
@@ -227,8 +227,7 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "goldivault_weeth");
 
         targetData = new bytes[](1);
-        targetData[0] =
-            abi.encodeWithSignature("redeemYield(uint256)", 10e18);
+        targetData[0] = abi.encodeWithSignature("redeemYield(uint256)", 10e18);
 
         decodersAndSanitizers = new address[](1);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -238,13 +237,12 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
-
     function testGoldiVaultIntegrationCompound() external {
         deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        address[] memory vaults = new address[](1); 
-        vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
+        address[] memory vaults = new address[](1);
+        vaults[0] = getAddress(sourceChain, "goldivault_weeth");
         _addGoldiVaultLeafs(leafs, vaults);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -266,14 +264,16 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         targets[3] = getAddress(sourceChain, "goldivault_weeth");
 
         bytes[] memory targetData = new bytes[](4);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[2] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[3] =
-            abi.encodeWithSignature("deposit(uint256)", 10e18);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[3] = abi.encodeWithSignature("deposit(uint256)", 10e18);
 
         address[] memory decodersAndSanitizers = new address[](4);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -285,10 +285,8 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
-
         //Skip some time so we get rewards
-        skip(3 days); 
-
+        skip(3 days);
 
         manageLeafs = new ManageLeaf[](1);
         manageLeafs[0] = leafs[6];
@@ -299,8 +297,7 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "goldivault_weeth");
 
         targetData = new bytes[](1);
-        targetData[0] =
-            abi.encodeWithSignature("compound()");
+        targetData[0] = abi.encodeWithSignature("compound()");
 
         decodersAndSanitizers = new address[](1);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -314,8 +311,8 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "WEETH"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        address[] memory vaults = new address[](1); 
-        vaults[0] = getAddress(sourceChain, "goldivault_weeth"); 
+        address[] memory vaults = new address[](1);
+        vaults[0] = getAddress(sourceChain, "goldivault_weeth");
         _addGoldiVaultLeafs(leafs, vaults);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -337,14 +334,16 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         targets[3] = getAddress(sourceChain, "goldivault_weeth");
 
         bytes[] memory targetData = new bytes[](4);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[2] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max);
-        targetData[3] =
-            abi.encodeWithSignature("buyYT(uint256,uint256,uint256)", 10e18, 100e18, 1e18);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "goldivault_weeth"), type(uint256).max
+        );
+        targetData[3] = abi.encodeWithSignature("buyYT(uint256,uint256,uint256)", 10e18, 100e18, 1e18);
 
         address[] memory decodersAndSanitizers = new address[](4);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -354,14 +353,13 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
 
         uint256[] memory values = new uint256[](4);
 
-
-        uint256 ytBalBefore = getERC20(sourceChain, "weethYT").balanceOf(address(boringVault)); 
-        console.log("YT BALANCE", ytBalBefore); 
+        uint256 ytBalBefore = getERC20(sourceChain, "weethYT").balanceOf(address(boringVault));
+        console.log("YT BALANCE", ytBalBefore);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-        
-        uint256 ytBalAfter = getERC20(sourceChain, "weethYT").balanceOf(address(boringVault)); 
-        console.log("YT BALANCE", ytBalAfter); 
+
+        uint256 ytBalAfter = getERC20(sourceChain, "weethYT").balanceOf(address(boringVault));
+        console.log("YT BALANCE", ytBalAfter);
 
         manageLeafs = new ManageLeaf[](1);
         manageLeafs[0] = leafs[8];
@@ -371,9 +369,8 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         targets = new address[](1);
         targets[0] = getAddress(sourceChain, "goldivault_weeth");
 
-        targetData = new bytes[](1);  
-        targetData[0] = 
-            abi.encodeWithSignature("sellYT(uint256,uint256,uint256)", 100e18, 0.1e18, 1000e18);
+        targetData = new bytes[](1);
+        targetData[0] = abi.encodeWithSignature("sellYT(uint256,uint256,uint256)", 100e18, 0.1e18, 1000e18);
 
         decodersAndSanitizers = new address[](1);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -381,7 +378,6 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         values = new uint256[](1);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
@@ -395,7 +391,7 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
 contract FullGoldiVaultDecoderAndSanitizer is GoldiVaultDecoderAndSanitizer {}
 
 interface IGoldiVault {
-    function concludeTime() external view returns (uint256); 
-    function endTime() external view returns (uint256); 
-    function conclude() external; 
+    function concludeTime() external view returns (uint256);
+    function endTime() external view returns (uint256);
+    function conclude() external;
 }
