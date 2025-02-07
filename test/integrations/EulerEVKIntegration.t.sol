@@ -110,14 +110,14 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18);
         ERC4626 eulerPrimeWETH = ERC4626(getAddress(sourceChain, "eulerPrimeWETH"));
 
-        ERC4626[] memory depositVaults = new ERC4626[](1);  
-        depositVaults[0] = eulerPrimeWETH; 
+        ERC4626[] memory depositVaults = new ERC4626[](1);
+        depositVaults[0] = eulerPrimeWETH;
 
-        address[] memory subaccounts = new address[](1); 
-        subaccounts[0] = address(boringVault); 
+        address[] memory subaccounts = new address[](1);
+        subaccounts[0] = address(boringVault);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addEulerDepositLeafs(leafs, depositVaults, subaccounts); 
+        _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -140,8 +140,9 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         targets[4] = getAddress(sourceChain, "eulerPrimeWETH");
 
         bytes[] memory targetData = new bytes[](5);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "eulerPrimeWETH"), type(uint256).max);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "eulerPrimeWETH"), type(uint256).max
+        );
         targetData[1] = abi.encodeWithSignature("deposit(uint256,address)", 100e18, address(boringVault));
         targetData[2] = abi.encodeWithSignature("mint(uint256,address)", 100, address(boringVault));
         targetData[3] =
@@ -160,8 +161,8 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-        
-        uint256 boringVaultBalance = ERC20(getAddress(sourceChain, "WETH")).balanceOf(address(boringVault)); 
+
+        uint256 boringVaultBalance = ERC20(getAddress(sourceChain, "WETH")).balanceOf(address(boringVault));
         assertApproxEqAbs(boringVaultBalance, 1000e18, 1e2); //shares redeeming rounding error
     }
 
@@ -170,17 +171,17 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         ERC4626 eulerPrimeWETH = ERC4626(getAddress(sourceChain, "eulerPrimeWETH"));
         ERC4626 evkUSDC = ERC4626(getAddress(sourceChain, "evkUSDC"));
 
-        ERC4626[] memory depositVaults = new ERC4626[](1);  
-        depositVaults[0] = eulerPrimeWETH; 
+        ERC4626[] memory depositVaults = new ERC4626[](1);
+        depositVaults[0] = eulerPrimeWETH;
 
-        ERC4626[] memory borrowVaults = new ERC4626[](1);  
-        borrowVaults[0] = evkUSDC; 
+        ERC4626[] memory borrowVaults = new ERC4626[](1);
+        borrowVaults[0] = evkUSDC;
 
-        address[] memory subaccounts = new address[](1); 
-        subaccounts[0] = address(boringVault); 
+        address[] memory subaccounts = new address[](1);
+        subaccounts[0] = address(boringVault);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addEulerDepositLeafs(leafs, depositVaults, subaccounts); 
+        _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
         _addEulerBorrowLeafs(leafs, borrowVaults, subaccounts);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -217,8 +218,9 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         targets[10] = getAddress(sourceChain, "evkUSDC");
 
         bytes[] memory targetData = new bytes[](11);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "eulerPrimeWETH"), type(uint256).max);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "eulerPrimeWETH"), type(uint256).max
+        );
         targetData[1] = abi.encodeWithSignature("deposit(uint256,address)", 1000e18, address(boringVault));
         targetData[2] = abi.encodeWithSignature(
             "withdraw(uint256,address,address)", 100e18, address(boringVault), address(boringVault)
@@ -262,17 +264,17 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         ERC4626 eulerPrimeWETH = ERC4626(getAddress(sourceChain, "eulerPrimeWETH"));
         ERC4626 evkUSDC = ERC4626(getAddress(sourceChain, "evkUSDC"));
 
-        ERC4626[] memory depositVaults = new ERC4626[](1);  
-        depositVaults[0] = eulerPrimeWETH; 
+        ERC4626[] memory depositVaults = new ERC4626[](1);
+        depositVaults[0] = eulerPrimeWETH;
 
-        ERC4626[] memory borrowVaults = new ERC4626[](1);  
-        borrowVaults[0] = evkUSDC; 
+        ERC4626[] memory borrowVaults = new ERC4626[](1);
+        borrowVaults[0] = evkUSDC;
 
-        address[] memory subaccounts = new address[](1); 
-        subaccounts[0] = address(boringVault); 
+        address[] memory subaccounts = new address[](1);
+        subaccounts[0] = address(boringVault);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addEulerDepositLeafs(leafs, depositVaults, subaccounts); 
+        _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
         _addEulerBorrowLeafs(leafs, borrowVaults, subaccounts);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -321,7 +323,6 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
-
     //function testEulerEVKIntegrationEulerPrimeMultipleDeposits() external {
     //    deal(getAddress(sourceChain, "LBTC"), address(boringVault), 1_000e18);
     //    deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e18);
@@ -331,21 +332,21 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
     //    ERC4626 evkUSDC = ERC4626(getAddress(sourceChain, "evkUSDC"));
     //    ERC4626 evkDAI = ERC4626(getAddress(sourceChain, "evkDAI"));
 
-    //    ERC4626[] memory depositVaults = new ERC4626[](2);  
-    //    depositVaults[0] = evkLBTC; 
-    //    depositVaults[1] = evkUSDC; 
+    //    ERC4626[] memory depositVaults = new ERC4626[](2);
+    //    depositVaults[0] = evkLBTC;
+    //    depositVaults[1] = evkUSDC;
 
-    //    ERC4626[] memory borrowVaults = new ERC4626[](2);  
-    //    borrowVaults[0] = evkUSDC; 
-    //    borrowVaults[1] = evkDAI; 
+    //    ERC4626[] memory borrowVaults = new ERC4626[](2);
+    //    borrowVaults[0] = evkUSDC;
+    //    borrowVaults[1] = evkDAI;
 
-    //    address[] memory subaccounts = new address[](2); 
-    //    subaccounts[0] = address(boringVault); 
-    //    subaccounts[1] = address(uint160(address(boringVault)) ^ 0x10); 
+    //    address[] memory subaccounts = new address[](2);
+    //    subaccounts[0] = address(boringVault);
+    //    subaccounts[1] = address(uint160(address(boringVault)) ^ 0x10);
 
     //    ManageLeaf[] memory leafs = new ManageLeaf[](128);
-    //    _addEulerDepositLeafs(leafs, depositVaults, subaccounts); 
-    //    _addEulerBorrowLeafs(leafs, borrowVaults, subaccounts); 
+    //    _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+    //    _addEulerBorrowLeafs(leafs, borrowVaults, subaccounts);
 
     //    bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -369,30 +370,29 @@ contract EulerEVKIntegrationTest is Test, MerkleTreeHelper {
     //    targets[1] = getAddress(sourceChain, "evkLBTC");
 
     //    targets[2] = getAddress(sourceChain, "USDC");
-    //    targets[3] = getAddress(sourceChain, "evkUSDC"); 
+    //    targets[3] = getAddress(sourceChain, "evkUSDC");
 
-    //    targets[4] = getAddress(sourceChain, "evkLBTC");  
-    //    targets[5] = getAddress(sourceChain, "ethereumVaultConnector"); 
+    //    targets[4] = getAddress(sourceChain, "evkLBTC");
+    //    targets[5] = getAddress(sourceChain, "ethereumVaultConnector");
 
     //    bytes[] memory targetData = new bytes[](6);
     //    targetData[0] =
     //        abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "evkLBTC"), type(uint256).max);
     //    targetData[1] = abi.encodeWithSignature("deposit(uint256,address)", 1e8, subaccounts[0]);
 
-    //    targetData[2] = 
+    //    targetData[2] =
     //        abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "evkUSDC"), type(uint256).max);
     //    targetData[3] = abi.encodeWithSignature("deposit(uint256,address)", 100e8, subaccounts[1]);
 
-    //    targetData[4] = 
+    //    targetData[4] =
     //        abi.encodeWithSignature("withdraw(uint256,address,address)", 1e5, subaccounts[0], subaccounts[0]);
-    //    targetData[5] = 
-    //        abi.encodeWithSignature("call(address,address,uint256,bytes)", 
+    //    targetData[5] =
+    //        abi.encodeWithSignature("call(address,address,uint256,bytes)",
     //            getAddress(sourceChain, "evkUSDC"),
     //            subaccounts[1],
     //            0,
     //            abi.encodeWithSignature("withdraw(uint256,address,address)", 1e5, subaccounts[0], subaccounts[1])
     //        );
-
 
     //    uint256[] memory values = new uint256[](6);
 
@@ -422,5 +422,5 @@ interface IEVK {
 }
 
 interface IEVC {
-    function getAccountOwner(address account) external view returns (address); 
+    function getAccountOwner(address account) external view returns (address);
 }

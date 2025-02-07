@@ -8,16 +8,14 @@ import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
-import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
-import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
-import {DelayedWithdraw} from "src/base/Roles/DelayedWithdraw.sol";
+import {BeraETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/BeraETHDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
-contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
+contract BeraETHIntegrationTest is Test, MerkleTreeHelper {
     using SafeTransferLib for ERC20;
     using FixedPointMathLib for uint256;
     using stdStorage for StdStorage;
@@ -33,13 +31,12 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
     uint8 public constant ADMIN_ROLE = 4;
     uint8 public constant BORING_VAULT_ROLE = 5;
     uint8 public constant BALANCER_VAULT_ROLE = 6;
-    uint8 public constant BURNER_ROLE = 8;
 
     function setUp() external {
-        setSourceChainName("mainnet");
+        setSourceChainName("berachain");
         // Setup forked environment.
-        string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 21580030;
+        string memory rpcKey = "BERA_CHAIN_RPC_URL";
+        uint256 blockNumber = 372325;
 
         _startFork(rpcKey, blockNumber);
 
@@ -48,7 +45,7 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(new FullBoringVaultDecoder());
+        rawDataDecoderAndSanitizer = address(new FullBeraETHDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -106,76 +103,46 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
 
         // Allow the boring vault to receive ETH.
         rolesAuthority.setPublicCapability(address(boringVault), bytes4(0), true);
-
-        //eBTC roles authority
-
-        RolesAuthority eBTCAuth =
-            RolesAuthority(address(BoringVault(payable(getAddress(sourceChain, "eBTC"))).authority()));
-        vm.startPrank(eBTCAuth.owner());
-        eBTCAuth.setPublicCapability(
-            getAddress(sourceChain, "eBTCDelayedWithdraw"), DelayedWithdraw.requestWithdraw.selector, true
-        );
-        //eBTCAuth.setUserRole(getAddress(sourceChain, "eBTCDelayedWithdraw"), BURNER_ROLE, true);
-        vm.stopPrank();
     }
 
-    function testBoringOnChainQueueWithdraw() external {
-        deal(getAddress(sourceChain, "eBTC"), address(boringVault), 1_000e18);
-        deal(getAddress(sourceChain, "WBTC"), address(boringVault), 100e8);
+    function testBeraETH() external {
+        deal(getAddress(sourceChain, "WETH"), address(boringVault), 100e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        ERC20[] memory assets = new ERC20[](1);
-        assets[0] = getERC20(sourceChain, "WBTC");
-        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets);
-
-        _addWithdrawQueueLeafs(
-            leafs, getAddress(sourceChain, "eBTCOnChainQueue"), getAddress(sourceChain, "eBTC"), assets
-        );
+        _addBeraETHLeafs(leafs);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        string memory filePath = "./testTEST.json";
-        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
-        manageLeafs[0] = leafs[0]; //approve
-        manageLeafs[1] = leafs[3]; //deposit
-        manageLeafs[2] = leafs[5]; //approve queue
-        manageLeafs[3] = leafs[6]; //withdraw w/ queue
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
+        manageLeafs[0] = leafs[0]; //approve WETH
+        manageLeafs[1] = leafs[1]; //depositAndWrap (deposits WETH into rberaETH, returns beraETH)
+        manageLeafs[2] = leafs[2]; //unwrap beraETH
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](4);
-        targets[0] = getAddress(sourceChain, "WBTC");
-        targets[1] = getAddress(sourceChain, "eBTCTeller");
-        targets[2] = getAddress(sourceChain, "eBTC");
-        targets[3] = getAddress(sourceChain, "eBTCOnChainQueue");
+        address[] memory targets = new address[](3);
+        targets[0] = getAddress(sourceChain, "WETH");
+        targets[1] = getAddress(sourceChain, "rberaETH"); //depositAndWrap
+        targets[2] = getAddress(sourceChain, "beraETH"); //withdraw
 
-        bytes[] memory targetData = new bytes[](4);
+        bytes[] memory targetData = new bytes[](3);
         targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "eBTC"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("deposit(address,uint256,uint256)", getAddress(sourceChain, "WBTC"), 100e8, 0);
-        targetData[2] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "eBTCOnChainQueue"), type(uint256).max
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "rberaETH"), type(uint256).max);
+        targetData[1] = abi.encodeWithSignature(
+            "depositAndWrap(address,uint256,uint256)", getAddress(sourceChain, "WETH"), 10e18, 0
         );
-        targetData[3] = abi.encodeWithSignature(
-            "requestOnChainWithdraw(address,uint128,uint16,uint24)",
-            getAddress(sourceChain, "WBTC"),
-            uint128(100e8),
-            uint16(100),
-            uint24(2592000)
-        );
+        targetData[2] = abi.encodeWithSignature("unwrap(uint256)", 9997638401662115534);
 
-        address[] memory decodersAndSanitizers = new address[](4);
+        address[] memory decodersAndSanitizers = new address[](3);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
-        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
 
-        uint256[] memory values = new uint256[](4);
+        uint256[] memory values = new uint256[](3);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
@@ -188,4 +155,4 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
     }
 }
 
-contract FullBoringVaultDecoder is TellerDecoderAndSanitizer {}
+contract FullBeraETHDecoderAndSanitizer is BeraETHDecoderAndSanitizer {}
