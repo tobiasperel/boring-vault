@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
-
 import {ChainValues} from "test/resources/ChainValues.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 import {ITBPositionDecoderAndSanitizer} from
@@ -126,8 +125,13 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         address kodiakNonFungiblePositionManager = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"); 
         address dolomiteMargin = getAddress(sourceChain, "dolomiteMargin"); 
         creationCode = type(BerachainDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager, dolomiteMargin);
-        deployer.deployContract("Berachain Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
+        constructorArgs = abi.encode(kodiakNonFungiblePositionManager, dolomiteMargin);
+        deployer.deployContract("Berachain Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
+
+        //creationCode = type(EtherFiBtcDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
+        //deployer.deployContract("ether.fi BTC Decoder and Sanitizer V0.2", creationCode, constructorArgs, 0);
+
 
         // address pancakeswapV3nfpm = 0x46A15B0b27311cedF172AB29E4f4766fbE7F4364;
         // address pancakeswapV3chef = 0x556B9306565093C855AEA9AE92A594704c2Cd59e;
@@ -135,9 +139,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // constructorArgs = abi.encode(pancakeswapV3nfpm, pancakeswapV3chef);
         // deployer.deployContract("PancakeSwapV3 Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
 
-
         //creationCode = type(EtherFiLiquidEthDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager); 
+        //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid ETH Decoder And Sanitizer V0.8", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();

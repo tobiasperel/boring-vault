@@ -8,7 +8,8 @@ import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
-import {KodiakIslandDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/KodiakIslandDecoderAndSanitizer.sol";
+import {KodiakIslandDecoderAndSanitizer} from
+    "src/base/DecodersAndSanitizers/Protocols/KodiakIslandDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
@@ -45,9 +46,7 @@ contract KodiakIslandIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(
-            new KodiakDecoderAndSanitizer()
-        );
+        rawDataDecoderAndSanitizer = address(new KodiakDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -189,8 +188,8 @@ contract KodiakIslandIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "YEET"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        address[] memory islands = new address[](1); 
-        islands[0] = getAddress(sourceChain, "kodiak_island_WBERA_YEET_1%"); 
+        address[] memory islands = new address[](1);
+        islands[0] = getAddress(sourceChain, "kodiak_island_WBERA_YEET_1%");
 
         _addKodiakIslandLeafs(leafs, islands);
 
@@ -264,8 +263,8 @@ contract KodiakIslandIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "YEET"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        address[] memory islands = new address[](1); 
-        islands[0] = getAddress(sourceChain, "kodiak_island_WBERA_YEET_1%"); 
+        address[] memory islands = new address[](1);
+        islands[0] = getAddress(sourceChain, "kodiak_island_WBERA_YEET_1%");
 
         _addKodiakIslandLeafs(leafs, islands);
 
@@ -323,10 +322,10 @@ contract KodiakIslandIntegrationTest is Test, MerkleTreeHelper {
         decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
 
         uint256[] memory values = new uint256[](4);
-        values[0] = 0; 
-        values[1] = 0; 
-        values[2] = 100e18; 
-        values[3] = 0; 
+        values[0] = 0;
+        values[1] = 0;
+        values[2] = 100e18;
+        values[3] = 0;
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
@@ -413,6 +412,5 @@ contract KodiakIslandIntegrationTest is Test, MerkleTreeHelper {
         vm.selectFork(forkId);
     }
 }
-
 
 contract KodiakDecoderAndSanitizer is KodiakIslandDecoderAndSanitizer {}
