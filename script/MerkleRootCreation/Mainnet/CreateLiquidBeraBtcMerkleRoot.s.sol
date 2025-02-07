@@ -59,7 +59,7 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         tellerAssets[0] = getERC20(sourceChain, "WBTC");
         tellerAssets[1] = getERC20(sourceChain, "LBTC");
         tellerAssets[2] = getERC20(sourceChain, "cbBTC");
-        _addTellerLeafs(leafs, eBTCTellerLZ, tellerAssets);
+        _addTellerLeafs(leafs, eBTCTellerLZ, tellerAssets, false);
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
