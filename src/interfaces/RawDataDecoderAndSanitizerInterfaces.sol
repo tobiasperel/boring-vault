@@ -81,5 +81,8 @@ interface CamelotNonFungiblePositionManager {
 }
 
 interface IRecipeMarketHub {
-    function offerHashToIPOffer(bytes32 offer) external view returns (uint256, bytes32, address, uint256, uint256, uint256); 
+    function offerHashToIPOffer(bytes32 offer)
+        external
+        view
+        returns (uint256, bytes32, address, uint256, uint256, uint256);
 }

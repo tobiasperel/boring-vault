@@ -10,15 +10,15 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Berachain/CreatePrimeLiquidBeraBtcMerkleRoot.s.sol:CreatePrimeLiquidBeraBtcMerkleRoot --rpc-url $BERA_CHAIN_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Berachain/CreatePrimeLiquidBeraEthMerkleRoot.s.sol:CreatePrimeLiquidBeraEthMerkleRoot --rpc-url $BERA_CHAIN_RPC_URL
  */
-contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
+contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
-    address public boringVault = 0x46fcd35431f5B371224ACC2e2E91732867B1A77e; 
-    address public managerAddress = 0x7280E05ccF01066C715aDc936f860BD65510f816;
-    address public accountantAddress = 0x4faE50B524e0D05BD73fDF28b273DB7D4A57CCe9;
-    address public rawDataDecoderAndSanitizer = 0x9b0FF5F9625F99Ae64CfFdc85B56e594D520ACcB;
+    address public boringVault = 0xB83742330443f7413DBD2aBdfc046dB0474a944e; 
+    address public managerAddress = 0x58d32BCfa335B1EE9E25A291408409ceA890Be6b; 
+    address public accountantAddress = 0x0B24A469d7c155a588C8a4ee24020F9f27090B0d;
+    address public rawDataDecoderAndSanitizer = 0xa53F7911dBbc2078aff59494778e8AD0de5F3D82;
 
     function setUp() external {}
 
@@ -37,7 +37,7 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, berachain, "accountantAddress", accountantAddress);
         setAddress(false, berachain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](64);
+        ManageLeaf[] memory leafs = new ManageLeaf[](128);
         
         // ========================== Kodiak Swaps ==========================
         

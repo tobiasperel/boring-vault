@@ -46,12 +46,10 @@ contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         sonicAssets[0] = getAddress(sonicMainnet, "USDC");
         _addSonicGatewayLeafsSonic(leafs, mainnetAssets, sonicAssets);
 
-        
         // ========================== Fee Claiming ==========================
-        ERC20[] memory feeAssets = new ERC20[](1);   
-        feeAssets[0] = getERC20(sourceChain, "USDC"); 
+        ERC20[] memory feeAssets = new ERC20[](1);
+        feeAssets[0] = getERC20(sourceChain, "USDC");
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true); //add yield claiming
-
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 

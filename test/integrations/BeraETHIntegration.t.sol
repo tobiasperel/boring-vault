@@ -45,9 +45,7 @@ contract BeraETHIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(
-            new FullBeraETHDecoderAndSanitizer()
-        );
+        rawDataDecoderAndSanitizer = address(new FullBeraETHDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -111,7 +109,7 @@ contract BeraETHIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "WETH"), address(boringVault), 100e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addBeraETHLeafs(leafs); 
+        _addBeraETHLeafs(leafs);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -131,14 +129,13 @@ contract BeraETHIntegrationTest is Test, MerkleTreeHelper {
         targets[1] = getAddress(sourceChain, "rberaETH"); //depositAndWrap
         targets[2] = getAddress(sourceChain, "beraETH"); //withdraw
 
-
         bytes[] memory targetData = new bytes[](3);
         targetData[0] =
             abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "rberaETH"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("depositAndWrap(address,uint256,uint256)", getAddress(sourceChain, "WETH"), 10e18, 0);
-        targetData[2] =
-            abi.encodeWithSignature("unwrap(uint256)", 9997638401662115534);
+        targetData[1] = abi.encodeWithSignature(
+            "depositAndWrap(address,uint256,uint256)", getAddress(sourceChain, "WETH"), 10e18, 0
+        );
+        targetData[2] = abi.encodeWithSignature("unwrap(uint256)", 9997638401662115534);
 
         address[] memory decodersAndSanitizers = new address[](3);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -148,7 +145,6 @@ contract BeraETHIntegrationTest is Test, MerkleTreeHelper {
         uint256[] memory values = new uint256[](3);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
