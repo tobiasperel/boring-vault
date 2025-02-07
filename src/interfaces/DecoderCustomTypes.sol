@@ -403,6 +403,15 @@ contract DecoderCustomTypes {
         address purchaseToken;
     }
 
+    // ========================================= Dolomite Finance ==================================
+
+    enum BalanceCheckFlag {
+        Both,
+        From,
+        To,
+        None
+    }
+
     // ========================================= Silo Finance ==================================
     /// @dev There are 2 types of accounting in the system: for non-borrowable collateral deposit called "protected" and
     ///      for borrowable collateral deposit called "collateral". System does
