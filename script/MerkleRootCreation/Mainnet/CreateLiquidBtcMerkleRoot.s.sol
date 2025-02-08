@@ -168,7 +168,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "EBTC_USDC_86"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "wstUSR_PT03_USR_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USR_86"));
-        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "EBTC_USR_86"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "EBTC_USR_86"));
 
         // ========================== MorphoRewards ==========================
         _addMorphoRewardWrapperLeafs(leafs);
