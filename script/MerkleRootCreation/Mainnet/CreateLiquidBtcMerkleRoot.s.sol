@@ -184,6 +184,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_liquidBeraBTC_04_09_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_market_6_25_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_wstUSR_market_03_26_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_tETH_03_28_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_beraSTONE_04_09_2025"), true);
 
         // ========================== Native Wrapping ==========================
          _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
