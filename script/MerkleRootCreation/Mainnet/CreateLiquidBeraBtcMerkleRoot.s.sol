@@ -61,6 +61,7 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         tellerAssets[2] = getERC20(sourceChain, "cbBTC");
         _addTellerLeafs(leafs, eBTCTellerLZ, tellerAssets, false);
 
+
         // ========================== Royco ==========================
         {
 
@@ -73,6 +74,7 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
             _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "LBTC"), lbtcMarketHash, roycoFrontEndFeeRecipientTemp);  
 
         } 
+
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 

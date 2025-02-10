@@ -46,7 +46,8 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(new FullRoycoDecoderAndSaniziter(0x783251f103555068c1E9D755f69458f39eD937c0));
+        rawDataDecoderAndSanitizer =
+            address(new FullRoycoDecoderAndSaniziter(0x783251f103555068c1E9D755f69458f39eD937c0));
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -171,7 +172,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-         _addRoyco4626VaultLeafs(leafs, ERC4626(getAddress(sourceChain, "supplyUSDCAaveWrappedVault")));
+        _addRoyco4626VaultLeafs(leafs, ERC4626(getAddress(sourceChain, "supplyUSDCAaveWrappedVault")));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -203,26 +204,23 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
-        //skip some time 
-        skip(12 weeks); 
+        //skip some time
+        skip(12 weeks);
 
-        manageLeafs[0] = leafs[5]; //claim 
-        manageLeafs[1] = leafs[6]; //claimFees 
+        manageLeafs[0] = leafs[5]; //claim
+        manageLeafs[1] = leafs[6]; //claimFees
 
         manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
         targets[0] = getAddress(sourceChain, "supplyUSDCAaveWrappedVault");
         targets[1] = getAddress(sourceChain, "supplyUSDCAaveWrappedVault");
 
-        targetData[0] = abi.encodeWithSignature(
-            "claim(address)", getAddress(sourceChain, "boringVault")
-        ); 
-        targetData[1] = abi.encodeWithSignature(
-            "claimFees(address)", getAddress(sourceChain, "boringVault")
-        );
+        targetData[0] = abi.encodeWithSignature("claim(address)", getAddress(sourceChain, "boringVault"));
+        targetData[1] = abi.encodeWithSignature("claimFees(address)", getAddress(sourceChain, "boringVault"));
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
+
 
 //    function testRoycoWeirollForfeitIntegration() external {
 //        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
@@ -393,6 +391,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
 //        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 //    }
 
+
     function testRoycoWeirollExecuteWithdrawIntegration() external {
         deal(getAddress(sourceChain, "WBTC"), address(boringVault), 1_000e6);
 
@@ -402,6 +401,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "WBTC"), wbtcMarketHash, getAddress(sourceChain, "boringVault"));
+
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -457,7 +457,5 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
 }
 
 contract FullRoycoDecoderAndSaniziter is RoycoWeirollDecoderAndSanitizer, ERC4626DecoderAndSanitizer {
-
-    constructor(address _recipeMarketHub) RoycoWeirollDecoderAndSanitizer(_recipeMarketHub){}
-
+    constructor(address _recipeMarketHub) RoycoWeirollDecoderAndSanitizer(_recipeMarketHub) {}
 }
