@@ -3011,6 +3011,74 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
+    // ========================================= Uniswap V4 =========================================
+
+    function _addUniswapV4Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1) internal {
+        require(token0.length == token1.length, "Token arrays must be of equal length");
+        for (uint256 i; i < token0.length; ++i) {
+            (token0[i], token1[i]) = token0[i] < token1[i] ? (token0[i], token1[i]) : (token1[i], token0[i]);
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "uniV4PoolManager"
+                )]
+            ) {
+            
+                //approve token0 after sorting
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    token0[i],
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve UniswapV4 Pool Manager to spend ", ERC20(token0[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4PoolManager");
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "uniV4PoolManager"
+                )] = true;
+            } // end if
+
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "uniV4PoolManager"
+                )]
+            ) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    token1[i],
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve UniswapV3 Pool Manager to spend ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4PoolManager");
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "uniV4PoolManager"
+                )] = true;
+            } //end if
+            
+            unchecked {
+                leafIndex++; 
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "uniV4PoolManager"),
+                false,
+                "swap((address,address,uint24,int24,address),(bool,int256,uint160),bytes)",
+                new address[](0),
+                string.concat("Swap tokens"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            //TODO sanitize later, this is just for testing
+
+        }
+    }
+
     // ========================================= Camelot V3 =========================================
 
     function _addCamelotV3Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1) internal {

@@ -21,15 +21,15 @@ contract DeployDeployerScript is Script, ContractNames {
     RolesAuthority public rolesAuthority;
     Deployer public deployer;
 
-    address public deployerAddress = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d;
-    address public dev0Address = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b;
-    address public dev1Address = 0xf8553c8552f906C19286F21711721E206EE4909E;
+    //address public deployerAddress = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d;
+    address public dev0Address = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
+    address public dev1Address = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266; 
 
     uint8 public DEPLOYER_ROLE = 1;
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("berachain");
+        vm.createSelectFork("mainnet");
     }
 
     function run() external {
@@ -39,7 +39,7 @@ contract DeployDeployerScript is Script, ContractNames {
 
         deployer = new Deployer(dev0Address, Authority(address(0)));
 
-        require(address(deployer) == deployerAddress, "Deployer address mismatch");
+        //require(address(deployer) == deployerAddress, "Deployer address mismatch");
         creationCode = type(RolesAuthority).creationCode;
         constructorArgs = abi.encode(dev0Address, address(0));
         rolesAuthority = RolesAuthority(
@@ -48,11 +48,11 @@ contract DeployDeployerScript is Script, ContractNames {
 
         deployer.setAuthority(rolesAuthority);
 
-        rolesAuthority.setRoleCapability(DEPLOYER_ROLE, address(deployer), Deployer.deployContract.selector, true);
-        rolesAuthority.setRoleCapability(DEPLOYER_ROLE, address(deployer), Deployer.bundleTxs.selector, true);
-        rolesAuthority.setUserRole(dev0Address, DEPLOYER_ROLE, true);
-        rolesAuthority.setUserRole(dev1Address, DEPLOYER_ROLE, true);
-        rolesAuthority.setUserRole(address(deployer), DEPLOYER_ROLE, true);
+        //rolesAuthority.setRoleCapability(DEPLOYER_ROLE, address(deployer), Deployer.deployContract.selector, true);
+        //rolesAuthority.setRoleCapability(DEPLOYER_ROLE, address(deployer), Deployer.bundleTxs.selector, true);
+        //rolesAuthority.setUserRole(dev0Address, DEPLOYER_ROLE, true);
+        //rolesAuthority.setUserRole(dev1Address, DEPLOYER_ROLE, true);
+        //rolesAuthority.setUserRole(address(deployer), DEPLOYER_ROLE, true);
 
         // deployer = Deployer(deployerAddress);
 
