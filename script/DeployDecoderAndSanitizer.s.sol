@@ -23,6 +23,7 @@ import {UniBTCDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/UniBTCDe
 import {EdgeCapitalDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EdgeCapitalDecoderAndSanitizer.sol";
 import {EtherFiLiquidBtcDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/EtherFiLiquidBtcDecoderAndSanitizer.sol";
+import {LiquidBeraEthDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidBeraEthDecoderAndSanitizer.sol"; 
 import {SonicMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicEthMainnetDecoderAndSanitizer.sol"; 
 import {SonicIncentivesHandlerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicIncentivesHandlerDecoderAndSanitizer.sol";
 import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AaveV3FullDecoderAndSanitizer.sol";
@@ -114,6 +115,12 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(boringVault, uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
         
+
+        address mainnetRecipeMarketHub = 0x783251f103555068c1E9D755f69458f39eD937c0;  
+        creationCode = type(LiquidBeraEthDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager, mainnetRecipeMarketHub); 
+        deployer.deployContract("Liquid Bera ETH Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+
         // creationCode = type(EtherFiLiquidEthDecoderAndSanitizer).creationCode;
         // constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager); 
         // deployer.deployContract("EtherFi Liquid ETH Decoder And Sanitizer V0.8", creationCode, constructorArgs, 0);
@@ -126,9 +133,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("ether.fi BTC Decoder and Sanitizer V0.2", creationCode, constructorArgs, 0);
 
-        creationCode = type(SymbioticLRTDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
-        deployer.deployContract("Symbiotic LRT Vault Decoder and Sanitizer V0.4", creationCode, constructorArgs, 0);
+        //creationCode = type(SymbioticLRTDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
+        //deployer.deployContract("Symbiotic LRT Vault Decoder and Sanitizer V0.4", creationCode, constructorArgs, 0);
 
         // address pancakeswapV3nfpm = 0x46A15B0b27311cedF172AB29E4f4766fbE7F4364;
         // address pancakeswapV3chef = 0x556B9306565093C855AEA9AE92A594704c2Cd59e;
@@ -139,6 +146,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //creationCode = type(EtherFiLiquidEthDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
         //deployer.deployContract("EtherFi Liquid ETH Decoder And Sanitizer V0.8", creationCode, constructorArgs, 0);
+
 
         vm.stopBroadcast();
     }
