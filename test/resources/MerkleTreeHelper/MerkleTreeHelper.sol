@@ -3019,7 +3019,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             (token0[i], token1[i]) = token0[i] < token1[i] ? (token0[i], token1[i]) : (token1[i], token0[i]);
             if (
                 !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
-                    sourceChain, "uniV4PoolManager"
+                    sourceChain, "uniV4UniversalRouter"
                 )]
             ) {
             
@@ -3035,15 +3035,41 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Approve UniswapV4 Pool Manager to spend ", ERC20(token0[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4PoolManager");
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4UniversalRouter");
                 ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
                     sourceChain, "uniV4PoolManager"
                 )] = true;
+
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    token0[i],
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve UniswapV4 Pool Manager to spend ", ERC20(token0[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2");
+
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "permit2"),
+                    false,
+                    "approve(address,address,uint160,uint48)",
+                    new address[](0),
+                    string.concat("Approve Permit2 to spend ", ERC20(token0[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+
             } // end if
 
             if (
                 !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
-                    sourceChain, "uniV4PoolManager"
+                    sourceChain, "uniV4UniversalRouter"
                 )]
             ) {
                 unchecked {
@@ -3057,10 +3083,35 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Approve UniswapV3 Pool Manager to spend ", ERC20(token1[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4PoolManager");
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4UniversalRouter");
                 ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
-                    sourceChain, "uniV4PoolManager"
+                    sourceChain, "uniV4UniversalRouter"
                 )] = true;
+
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    token1[i],
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve UniswapV4 Pool Manager to spend ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2");
+
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "permit2"),
+                    false,
+                    "approve(address,address,uint160,uint48)",
+                    new address[](0),
+                    string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
             } //end if
             
             unchecked {
@@ -3072,6 +3123,19 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 "swap((address,address,uint24,int24,address),(bool,int256,uint160),bytes)",
                 new address[](0),
                 string.concat("Swap tokens"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            //TODO sanitize later, this is just for testing
+            
+            unchecked {
+                leafIndex++; 
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "uniV4UniversalRouter"),
+                false,
+                "execute(bytes,bytes[],uint256)",
+                new address[](0),
+                string.concat("Call Execute on Universal Router"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             //TODO sanitize later, this is just for testing

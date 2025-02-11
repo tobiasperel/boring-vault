@@ -10,6 +10,7 @@ import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {UniswapV4DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/UniswapV4DecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
+import {Actions, Commands} from "src/interfaces/UniswapV4Actions.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 
@@ -36,7 +37,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 21665883;
+        uint256 blockNumber = 21823652;
 
         _startFork(rpcKey, blockNumber);
 
@@ -45,7 +46,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(new FullUniswapV2DecoderAndSanitizer());
+        rawDataDecoderAndSanitizer = address(new FullUniswapV4DecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -103,12 +104,12 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
     }
 
     function testUniswapV4Swaps() external {
-        deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18);
-        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e18);
+        deal(getAddress(sourceChain, "USDT"), address(boringVault), 1_000_000e6);
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e8);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
         address[] memory token0 = new address[](1);
-        token0[0] = getAddress(sourceChain, "WETH");
+        token0[0] = getAddress(sourceChain, "USDT");
         address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "USDC");
 
@@ -118,38 +119,115 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](5);
-        manageLeafs[0] = leafs[0]; //tokens are sorted, so this is actually leaf 1, token1 becomes token0 during sort since USDC > WETH address
-        manageLeafs[1] = leafs[1]; //approve weth
+        _generateTestLeafs(leafs, manageTree); 
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](7);
+        manageLeafs[0] = leafs[0]; //approve USDC router
+        manageLeafs[1] = leafs[1]; //approve USDC permit2
+        manageLeafs[2] = leafs[2]; //approve USDC permit2 router
+
+        manageLeafs[3] = leafs[3]; //approve USDT router
+        manageLeafs[4] = leafs[4]; //approve USDT permit2
+        manageLeafs[5] = leafs[5]; //approve USDT permit2 router
+
+        manageLeafs[6] = leafs[7]; //execute()
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](5);
-        targets[0] = getAddress(sourceChain, "USDC");
-        targets[1] = getAddress(sourceChain, "WETH");
+        address[] memory targets = new address[](7);
+        targets[0] = getAddress(sourceChain, "USDC"); //approve router
+        targets[1] = getAddress(sourceChain, "USDC"); //approve permit2
+        targets[2] = getAddress(sourceChain, "permit2"); //approve permit2 router
 
-        bytes[] memory targetData = new bytes[](5);
+        targets[3] = getAddress(sourceChain, "USDT"); //approve 
+        targets[4] = getAddress(sourceChain, "USDT"); //approve 
+        targets[5] = getAddress(sourceChain, "permit2"); //approve permit2 router
+
+        targets[6] = getAddress(sourceChain, "uniV4UniversalRouter");
+
+        bytes[] memory targetData = new bytes[](7);
         targetData[0] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "uniV4PoolManager"), type(uint256).max
+            "approve(address,uint256)", getAddress(sourceChain, "uniV4UniversalRouter"), type(uint256).max
         );
         targetData[1] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "uniV4PoolManager"), type(uint256).max
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", getAddress(sourceChain, "USDC"), getAddress(sourceChain, "uniV4UniversalRouter"), 1000e8, block.timestamp + 1000
+        );
+        targetData[3] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV4UniversalRouter"), type(uint256).max
+        );
+        targetData[4] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        targetData[5] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", getAddress(sourceChain, "USDT"), getAddress(sourceChain, "uniV4UniversalRouter"), type(uint160).max, block.timestamp + 1000
         );
         
-        DecoderCustomTypes.PoolKey memory poolKey = DecoderCustomTypes.PoolKey(
-            
+        // Universal Router takes 2 params, commands and inputs. 
+        // Commands == V4_SWAP
+        // Inputs are broken down into smaller things: Actions and Params
+        // Actions help the flow of the swap, and Params are params for the actions
+        // Actions.SWAP_SINGLE would have params of SwapParams, etc
+        // these are then put together in inputs[0] = abi.encode(actions, params); 
+        // and this is used in the `execute()` function
+
+        bytes memory commands = abi.encodePacked(uint8(Commands.V4_SWAP));
+        bytes[] memory inputs = new bytes[](1);
+
+        bytes memory actions = abi.encodePacked(
+            uint8(Actions.SWAP_EXACT_IN_SINGLE),
+            uint8(Actions.SETTLE_ALL),
+            uint8(Actions.TAKE_ALL)
+        );
+
+        DecoderCustomTypes.PoolKey memory key = DecoderCustomTypes.PoolKey(
+            getAddress(sourceChain, "USDC"),
+            getAddress(sourceChain, "USDT"),
+            100,
+            1,
+            address(0) //no hook address?
         );         
 
-        targetData[1] = abi.encodeWithSignature(
-            "swap((address,address,uint24,int24,address),(bool,int256,uint160),bytes)",  
+        uint128 amountIn = 1e8; 
+        uint128 minAmountOut = 0; 
+
+        bytes[] memory params = new bytes[](3);
+        params[0] = abi.encode(
+            DecoderCustomTypes.ExactInputSingleParams({
+                poolKey: key,
+                zeroForOne: true,            // true if we're swapping token0 for token1
+                amountIn: amountIn,          // amount of tokens we're swapping
+                amountOutMinimum: minAmountOut, // minimum amount we expect to receive
+                hookData: bytes("")             // no hook data needed
+            })
+        );
+
+        // Second parameter: specify input tokens for the swap
+        // encode SETTLE_ALL parameters
+        params[1] = abi.encode(key.currency0, amountIn);
+        // Third parameter: specify output tokens from the swap
+        params[2] = abi.encode(key.currency1, minAmountOut);
+        // Combine actions and params into inputs
+        inputs[0] = abi.encode(actions, params);
+
+
+        targetData[6] = abi.encodeWithSignature(
+            "execute(bytes,bytes[],uint256)", commands, inputs, block.timestamp
         );
 
 
-        address[] memory decodersAndSanitizers = new address[](5);
+        address[] memory decodersAndSanitizers = new address[](7);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
 
-        uint256[] memory values = new uint256[](5);
+        uint256[] memory values = new uint256[](7);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }

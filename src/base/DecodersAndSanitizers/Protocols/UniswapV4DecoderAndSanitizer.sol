@@ -2,16 +2,47 @@
 pragma solidity 0.8.21;
 
 import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
+import {Actions, Commands} from "src/interfaces/UniswapV4Actions.sol"; 
 
-abstract contract UniswapV2DecoderAndSanitizer is BaseDecoderAndSanitizer {
+abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
     //============================== ERRORS ===============================
+
+    error UniswapV4DecoderAndSanitizer__NotSwapInput(); 
    
-
+    //TODO bytes are cringe but this might work better for our use case
     //============================== Universal Router ===============================
-    //maybe use? 
+    
+    // @dev in order to sanitize we require that only command be passed in a time. This defeats the ability to batch commands together, but is necessary to avoid having a gajillion leaves for all possible orders that can be used here
+    // @dev inputs can be grouped together based on common things, ie. swaps will always be swap, settle, take, etc. 
+    function execute(bytes calldata commands, bytes[] calldata inputs, uint256 /*deadline*/) external pure returns (bytes memory addressesFound) {
+        // Verify exactly 1 byte
+        require(commands.length == 1, "Invalid commands length");
+        // Extract and verify command
+        uint8 command = uint8(commands[0]);
+        if (command == uint8(V4_SWAP)) {
 
-    //============================== Pool Manager ===============================
-    function swap(DecoderCustomTypes.PoolKey memory /*key*/, DecoderCustomTypes.SwapParams memory /*params*/, bytes calldata /*hookData*/ external pure returns (bytes memory addressesFound) {
-        return addressesFound; 
+            // Extract the path from PoolKey
+            (bytes memory actions, bytes[] memory params) = abi.decode(inputs[0], (bytes, bytes[]));
+
+            if (actions[0] != uint8(Actions.SWAP_EXACT_IN_SINGLE)) revert UniswapV4DecoderAndSanitizer__NotSwapInput(); 
+
+            // Decode the first param which should be our ExactInputSingleParams struct
+            DecoderCustomTypes.ExactInputSingleParams memory swapParams = abi.decode(params[0], (DecoderCustomTypes.ExactInputSingleParams));
+
+            // Extract addresses from poolKey
+            address currency0 = address(swapParams.poolKey.currency0);
+            address currency1 = address(swapParams.poolKey.currency1);
+
+            addressesFound = abi.encodePacked(command, currency0, currency1);  
+        }
     }
+
+    //============================== Permit2 ===============================
+    function approve(address token, address spender, uint160 /*amount*/, uint48 /*expiraton*/) external pure returns (bytes memory addressesFound) {
+        return addressesFound; 
+    } 
+
+    //============================== Position Manager ===============================
+    function modifyLiquidities(
+    
 }

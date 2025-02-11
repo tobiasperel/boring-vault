@@ -117,6 +117,14 @@ contract DecoderCustomTypes {
         address hooks;
     }
 
+    /// @dev comes from IV4 Router
+    struct ExactInputSingleParams {
+        PoolKey poolKey;
+        bool zeroForOne;
+        uint128 amountIn;
+        uint128 amountOutMinimum;
+        bytes hookData;
+    }
 
 
     // ========================================= MORPHO BLUE =========================================
@@ -473,3 +481,4 @@ contract DecoderCustomTypes {
         uint8 assetType;
     }
 }
+
