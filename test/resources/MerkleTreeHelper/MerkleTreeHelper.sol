@@ -7716,7 +7716,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= Dolomite Finance =========================================
 
-    function _addDolomiteDepositLeafs(ManageLeaf[] memory leafs, address token) internal {
+    function _addDolomiteDepositLeafs(ManageLeaf[] memory leafs, address token, bool addNative) internal {
         uint256 marketId = IDolomiteMargin(getAddress(sourceChain, "dolomiteMargin")).getMarketIdByTokenAddress(token);
 
         unchecked {
@@ -7813,57 +7813,59 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = token;
 
         // Native ETH Functions
-        unchecked {
-            leafIndex++;
+        if (addNative) {
+            unchecked {
+                leafIndex++;
+            }
+
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+                true,
+                "depositETH(uint256)",
+                new address[](0),
+                string.concat("Deposit ETH into Dolomite ETH Market"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            unchecked {
+                leafIndex++;
+            }
+
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+                true,
+                "depositETHIntoDefaultAccount()",
+                new address[](0),
+                string.concat("Deposit ETH into Dolomite ETH Market in default account"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            unchecked {
+                leafIndex++;
+            }
+
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+                false,
+                "withdrawETH(uint256,uint256,uint8)",
+                new address[](0),
+                string.concat("Withdraw ETH from Dolomite ETH Market"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            unchecked {
+                leafIndex++;
+            }
+
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
+                false,
+                "withdrawETHFromDefaultAccount(uint256,uint8)",
+                new address[](0),
+                string.concat("Withdraw ETH from Dolomite ETH Market default account"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
         }
-
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
-            true,
-            "depositETH(uint256)",
-            new address[](0),
-            string.concat("Deposit ETH into Dolomite ETH Market"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-
-        unchecked {
-            leafIndex++;
-        }
-
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
-            true,
-            "depositETHIntoDefaultAccount()",
-            new address[](0),
-            string.concat("Deposit ETH into Dolomite ETH Market in default account"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-
-        unchecked {
-            leafIndex++;
-        }
-
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
-            false,
-            "withdrawETH(uint256,uint256,uint8)",
-            new address[](0),
-            string.concat("Withdraw ETH from Dolomite ETH Market"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-
-        unchecked {
-            leafIndex++;
-        }
-
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "dolomiteDepositWithdrawRouter"),
-            false,
-            "withdrawETHFromDefaultAccount(uint256,uint8)",
-            new address[](0),
-            string.concat("Withdraw ETH from Dolomite ETH Market default account"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
 
         // Par Scaled Functions
 

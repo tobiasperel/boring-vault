@@ -61,8 +61,8 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Dolomite Supply ==========================
         
-        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WETH"));          
-        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WEETH"));          
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WETH"), false);          
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WEETH"), false);          
 
 
         // ========================== dTokens ==========================
