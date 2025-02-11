@@ -281,7 +281,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[9] = getERC20(sourceChain, "SFRXETH");
             tellerAssets[10] = getERC20(sourceChain, "ETHX");
             address superSymbioticTeller = 0x99dE9e5a3eC2750a6983C8732E6e795A35e7B861;
-            _addTellerLeafs(leafs, superSymbioticTeller, tellerAssets);
+            _addTellerLeafs(leafs, superSymbioticTeller, tellerAssets, false);
 
             tellerAssets = new ERC20[](13);
             tellerAssets[0] = getERC20(sourceChain, "WETH");
@@ -298,7 +298,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[11] = getERC20(sourceChain, "RSWETH");
             tellerAssets[12] = getERC20(sourceChain, "RSETH");
             address kingKarakTeller = 0x929B44db23740E65dF3A81eA4aAB716af1b88474;
-            _addTellerLeafs(leafs, kingKarakTeller, tellerAssets);
+            _addTellerLeafs(leafs, kingKarakTeller, tellerAssets, false);
         }
 
         // ========================== Fluid Dex ==========================
@@ -319,15 +319,14 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Euler ==========================
         {
-            ERC4626[] memory depositVaults = new ERC4626[](1); 
-            depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerPrimeWETH")); 
-            
-            address[] memory subaccounts = new address[](1); 
-            subaccounts[0] = address(boringVault); 
+            ERC4626[] memory depositVaults = new ERC4626[](1);
+            depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerPrimeWETH"));
 
-            _addEulerDepositLeafs(leafs, depositVaults, subaccounts); 
+            address[] memory subaccounts = new address[](1);
+            subaccounts[0] = address(boringVault);
 
-        }        
+            _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+        }
 
         // ========================== Term ==========================
         {
