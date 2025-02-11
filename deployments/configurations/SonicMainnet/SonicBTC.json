@@ -2,7 +2,7 @@
   "deploymentParameters": {
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
-    "chainName": "mainnet",
+    "chainName": "sonicMainnet",
     "evmVersion": "shanghai",
     "desiredNumberOfDeploymentTxs": 5,
     "txBundlerAddressOrName": {
