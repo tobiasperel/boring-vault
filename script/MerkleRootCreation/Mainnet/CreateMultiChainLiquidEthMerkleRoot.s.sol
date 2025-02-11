@@ -305,7 +305,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         {
             ERC20[] memory supplyTokens = new ERC20[](2);
             supplyTokens[0] = getERC20(sourceChain, "WEETH");
-            supplyTokens[1] = getERC20(sourceChain, "WETH");
+            supplyTokens[1] = getERC20(sourceChain, "ETH");
 
             ERC20[] memory borrowTokens = new ERC20[](1);
             borrowTokens[0] = getERC20(sourceChain, "WSTETH");
@@ -313,7 +313,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             uint256 dexType = 2000;
 
             _addFluidDexLeafs(
-                leafs, getAddress(sourceChain, "weETH_ETHDex_wstETH"), dexType, supplyTokens, borrowTokens
+                leafs, getAddress(sourceChain, "weETH_ETHDex_wstETH"), dexType, supplyTokens, borrowTokens, true
             );
         }
 
