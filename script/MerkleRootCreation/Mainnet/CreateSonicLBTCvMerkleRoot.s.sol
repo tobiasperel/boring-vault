@@ -71,9 +71,9 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
         }
 
         // ========================== LayerZero ==========================
-        address LBTCOFTAdapter = 0x6bc15D7930839Ec18A57F6f7dF72aE1B439D077f;
+        address LBTCSonicOFTAdapter = 0xcFEAc622BC6464acC759ACd9741a6D78F8b0d3Cd;
         _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "LBTC"), LBTCOFTAdapter, layerZeroSonicMainnetEndpointId
+            leafs, getERC20(sourceChain, "LBTC"), LBTCSonicOFTAdapter, layerZeroSonicMainnetEndpointId
         );
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
