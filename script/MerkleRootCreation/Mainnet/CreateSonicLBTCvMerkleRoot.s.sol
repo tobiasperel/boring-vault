@@ -37,7 +37,7 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
 
         leafIndex = type(uint256).max;
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](256);
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
 
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](2);
