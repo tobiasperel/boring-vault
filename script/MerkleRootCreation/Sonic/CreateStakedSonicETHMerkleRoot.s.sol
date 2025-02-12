@@ -18,7 +18,7 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x455d5f11Fea33A8fa9D3e285930b478B6bF85265;
     address public managerAddress = 0xB77F31E02797724021F822181dff29F966A7B2cb;
     address public accountantAddress = 0x61bE1eC20dfE0197c27B80bA0f7fcdb1a6B236E2;
-    address public rawDataDecoderAndSanitizer = 0x8A6790A3665167f3bCdfB9A3EECE92F9443c106c;
+    address public rawDataDecoderAndSanitizer = 0x9a40361334f01F97582667aa475f7Db86D532363;
 
     function setUp() external {}
 
