@@ -24,6 +24,7 @@ contract ChainValues {
     string public constant swell = "swell";
     string public constant sonicMainnet = "sonicMainnet";
     string public constant berachain = "berachain";
+    string public constant bob = "bob";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
@@ -102,6 +103,7 @@ contract ChainValues {
         _addSwellValues();
         _addSonicMainnetValues();
         _addBerachainValues();
+        _addBobValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -1619,4 +1621,27 @@ contract ChainValues {
         values[berachain]["balancerVault"] = address(1).toBytes32();
         values[berachain]["vault"] = address(1).toBytes32();
     }
+
+    function _addBobValues() private {
+        values[bob]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[bob]["deployerAddress2"] = 0xF3d0672a91Fd56C9ef04C79ec67d60c34c6148a0.toBytes32();
+        values[bob]["txBundlerAddress"] = 0xF3d0672a91Fd56C9ef04C79ec67d60c34c6148a0.toBytes32();
+        values[bob]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[bob]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        // ERC20s
+        values[bob]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
+        values[bob]["WBTC"] = 0x03C7054BCB39f7b2e5B2c7AcB37583e32D70Cfa3.toBytes32();
+        values[bob]["solvBTC"] = 0x541FD749419CA806a8bc7da8ac23D346f2dF8B77.toBytes32();
+        values[bob]["solvBTC.BBN"] = 0xCC0966D8418d412c599A6421b760a847eB169A8c.toBytes32();
+        values[bob]["LBTC"] = 0xA45d4121b3D47719FF57a947A9d961539Ba33204.toBytes32();
+
+        values[bob]["balancerVault"] = address(1).toBytes32();
+        values[bob]["vault"] = address(1).toBytes32();
+
+        values[bob]["ZRO"] = address(1).toBytes32(); 
+        values[bob]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
+    }
+
+
 }
