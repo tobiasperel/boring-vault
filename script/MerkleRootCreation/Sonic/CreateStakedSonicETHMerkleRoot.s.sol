@@ -40,7 +40,7 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
 
         // ========================== Beets ==========================
-        _addBalancerLeafs(leafs, getBytes32(sourceChain, "scETH_WETH_PoolId"), address(0)); //address(0) indicates no gauge for staking
+        _addBalancerLeafs(leafs, getBytes32(sourceChain, "scETH_WETH_PoolId"), getAddress(sourceChain, "scETH_WETH_gauge")); 
 
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
