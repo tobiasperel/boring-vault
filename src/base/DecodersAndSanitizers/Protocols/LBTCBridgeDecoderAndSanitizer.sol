@@ -21,10 +21,4 @@ abstract contract LBTCBridgeDecoderAndSanitizer is BaseDecoderAndSanitizer {
         addressesFound = abi.encodePacked(toChain0, toChain1, toAddress0, toAddress1);  
     }
     
-    //TODO pretty sure there is no need to call withdraw, it is done automatically
-    function withdraw(bytes calldata payload) external pure returns (bytes memory addressesFound) {
-        DecoderCustomTypes.DepositBridgeAction memory action = abi.decode(payload, (DecoderCustomTypes.DepositBridgeAction));
-
-        addressesFound = abi.encodePacked(action.fromContract, action.toContract, action.recipient);
-    }
 }
