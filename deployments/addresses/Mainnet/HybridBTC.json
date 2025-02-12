@@ -9,7 +9,7 @@
     "Pauser": "0x66b225BB36fa3984bfb66c45ED6E0fA2608929c7",
     "QueueSolver": "0x64de89Afa7Afbb939F64F1F6265408796eD0a888",
     "RolesAuthority": "0xE62e424DbAf17D702cceba939C9427018DBC19C1",
-    "TellerWithMultiAssetSupport": "0x19ab8c9896728d3A2AE8677711bc852C706616d3",
+    "TellerWithLayerZero": "0x19ab8c9896728d3A2AE8677711bc852C706616d3",
     "Timelock": "0xDbE09a066f6D42935f702F700b7E0E5F56028Df2"
   }
 }
