@@ -19,12 +19,12 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
         require(commands.length == 1, "Invalid commands length");
         // Extract and verify command
         uint8 command = uint8(commands[0]);
-        if (command == uint8(V4_SWAP)) {
+        if (command == uint8(Commands.V4_SWAP)) {
 
             // Extract the path from PoolKey
             (bytes memory actions, bytes[] memory params) = abi.decode(inputs[0], (bytes, bytes[]));
 
-            if (actions[0] != uint8(Actions.SWAP_EXACT_IN_SINGLE)) revert UniswapV4DecoderAndSanitizer__NotSwapInput(); 
+            if (uint8(actions[0]) != uint8(Actions.SWAP_EXACT_IN_SINGLE)) revert UniswapV4DecoderAndSanitizer__NotSwapInput(); 
 
             // Decode the first param which should be our ExactInputSingleParams struct
             DecoderCustomTypes.ExactInputSingleParams memory swapParams = abi.decode(params[0], (DecoderCustomTypes.ExactInputSingleParams));
@@ -33,16 +33,45 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
             address currency0 = address(swapParams.poolKey.currency0);
             address currency1 = address(swapParams.poolKey.currency1);
 
-            addressesFound = abi.encodePacked(command, currency0, currency1);  
+            addressesFound = abi.encodePacked(address(uint160(command)), currency0, currency1);  
         }
     }
 
     //============================== Permit2 ===============================
+    
+    //TODO sanitize 
     function approve(address token, address spender, uint160 /*amount*/, uint48 /*expiraton*/) external pure returns (bytes memory addressesFound) {
         return addressesFound; 
     } 
 
     //============================== Position Manager ===============================
-    function modifyLiquidities(
     
+    //TODO sanitize 
+    function modifyLiquidities(bytes calldata /*unlockData*/, uint256 /*deadline*/) external pure returns (bytes memory addressesFound) { 
+        // First decode the outer tuple (actions, params)
+        //(bytes memory actions, bytes[] memory params) = abi.decode(unlockData, (bytes, bytes[]));
+        //
+        //uint8 action = uint8(bytes1(actions[0]));
+        //if (action == uint8(Actions.MINT_POSITION)) {
+
+        //     (
+        //        DecoderCustomTypes.PoolKey memory poolKey,
+        //        /*int24 tickLower*/,
+        //        /*int24 tickUpper*/,
+        //        /*uint256 liquidity*/,
+        //        /*uint128 amount0Max*/,
+        //        /*uint128 amount1Max*/,
+        //        address recipient,
+        //        /*bytes memory hookData*/
+        //    ) = abi.decode(params[0], (DecoderCustomTypes.PoolKey, int24, int24, uint256, uint128, uint128, address, bytes));
+        //    
+        //    // Ensure we're settling the correct pair 
+        //    (address currency0Settle, address currency1Settle) = abi.decode(params[1], (address, address)); 
+        //      
+        //    addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, recipient, currency0Settle, currency1Settle); 
+        //    
+        //}
+
+        return addressesFound;      
+    }
 }

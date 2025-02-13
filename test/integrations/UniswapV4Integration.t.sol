@@ -37,7 +37,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 21823652;
+        uint256 blockNumber = 21838936;
 
         _startFork(rpcKey, blockNumber);
 
@@ -121,20 +121,24 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
 
         _generateTestLeafs(leafs, manageTree); 
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](7);
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](10);
         manageLeafs[0] = leafs[0]; //approve USDC router
-        manageLeafs[1] = leafs[1]; //approve USDC permit2
-        manageLeafs[2] = leafs[2]; //approve USDC permit2 router
+        manageLeafs[1] = leafs[2]; //approve USDC permit2
+        manageLeafs[2] = leafs[3]; //approve USDC permit2 router
 
-        manageLeafs[3] = leafs[3]; //approve USDT router
-        manageLeafs[4] = leafs[4]; //approve USDT permit2
-        manageLeafs[5] = leafs[5]; //approve USDT permit2 router
+        manageLeafs[3] = leafs[4]; //approve USDT router
+        manageLeafs[4] = leafs[6]; //approve USDT permit2
+        manageLeafs[5] = leafs[7]; //approve USDT permit2 router
 
-        manageLeafs[6] = leafs[7]; //execute()
+        manageLeafs[6] = leafs[8]; //execute() V4_SWAP
+
+        manageLeafs[7] = leafs[1]; //approve positionManager()
+        manageLeafs[8] = leafs[5]; //approve positionManager()
+        manageLeafs[9] = leafs[10]; //modifyLiquidities()
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](7);
+        address[] memory targets = new address[](10);
         targets[0] = getAddress(sourceChain, "USDC"); //approve router
         targets[1] = getAddress(sourceChain, "USDC"); //approve permit2
         targets[2] = getAddress(sourceChain, "permit2"); //approve permit2 router
@@ -145,7 +149,11 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
 
         targets[6] = getAddress(sourceChain, "uniV4UniversalRouter");
 
-        bytes[] memory targetData = new bytes[](7);
+        targets[7] = getAddress(sourceChain, "USDC");  
+        targets[8] = getAddress(sourceChain, "USDT");  
+        targets[9] = getAddress(sourceChain, "uniV4PositionManager");
+
+        bytes[] memory targetData = new bytes[](10);
         targetData[0] = abi.encodeWithSignature(
             "approve(address,uint256)", getAddress(sourceChain, "uniV4UniversalRouter"), type(uint256).max
         );
@@ -217,8 +225,30 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
             "execute(bytes,bytes[],uint256)", commands, inputs, block.timestamp
         );
 
+        targetData[7] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV4PositionManager"), type(uint256).max
+        );
+        targetData[8] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV4PositionManager"), type(uint256).max
+        );
+        
+        //actions
+        bytes memory liquidityActions = abi.encodePacked(uint8(Actions.MINT_POSITION), uint8(Actions.SETTLE_ALL)); 
+        params = new bytes[](2); 
+        params[0] = abi.encode(key, -100, 100, 1e6, 10e8, 10e8, address(boringVault), ""); 
+        params[1] = abi.encode(key.currency0, key.currency1); 
 
-        address[] memory decodersAndSanitizers = new address[](7);
+        console.log("ACTIONS LENGTH: ", liquidityActions.length); 
+        console.log("PARAMS LENGTH: ", params.length); 
+
+        require(liquidityActions.length == params.length, "length mismatch"); 
+
+        targetData[9] = abi.encodeWithSignature(
+            "modifyLiquidities(bytes,uint256)", abi.encode(liquidityActions, params), block.timestamp
+        );
+
+
+        address[] memory decodersAndSanitizers = new address[](10);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
@@ -226,8 +256,11 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[7] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[8] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[9] = rawDataDecoderAndSanitizer;
 
-        uint256[] memory values = new uint256[](7);
+        uint256[] memory values = new uint256[](10);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
