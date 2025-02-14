@@ -10,7 +10,7 @@ import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {UniswapV4DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/UniswapV4DecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
-import {Actions, Commands} from "src/interfaces/UniswapV4Actions.sol";
+import {Actions, Commands, TickMath, LiquidityAmounts, Constants} from "src/interfaces/UniswapV4Actions.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 
@@ -126,15 +126,15 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         manageLeafs[1] = leafs[2]; //approve USDC permit2
         manageLeafs[2] = leafs[3]; //approve USDC permit2 router
 
-        manageLeafs[3] = leafs[4]; //approve USDT router
-        manageLeafs[4] = leafs[6]; //approve USDT permit2
-        manageLeafs[5] = leafs[7]; //approve USDT permit2 router
+        manageLeafs[3] = leafs[5]; //approve USDT router
+        manageLeafs[4] = leafs[7]; //approve USDT permit2
+        manageLeafs[5] = leafs[8]; //approve USDT permit2 router
 
-        manageLeafs[6] = leafs[8]; //execute() V4_SWAP
+        manageLeafs[6] = leafs[10]; //execute() V4_SWAP
 
-        manageLeafs[7] = leafs[1]; //approve positionManager()
-        manageLeafs[8] = leafs[5]; //approve positionManager()
-        manageLeafs[9] = leafs[10]; //modifyLiquidities()
+        manageLeafs[7] = leafs[4]; //approve permit2 for positionManager
+        manageLeafs[8] = leafs[9]; //approve positionManager()
+        manageLeafs[9] = leafs[12]; //modifyLiquidities()
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -149,8 +149,8 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
 
         targets[6] = getAddress(sourceChain, "uniV4UniversalRouter");
 
-        targets[7] = getAddress(sourceChain, "USDC");  
-        targets[8] = getAddress(sourceChain, "USDT");  
+        targets[7] = getAddress(sourceChain, "permit2"); //approve permit2 posm usdc
+        targets[8] = getAddress(sourceChain, "permit2"); //approve permit2 posm usdt 
         targets[9] = getAddress(sourceChain, "uniV4PositionManager");
 
         bytes[] memory targetData = new bytes[](10);
@@ -226,27 +226,44 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         );
 
         targetData[7] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "uniV4PositionManager"), type(uint256).max
+            "approve(address,address,uint160,uint48)", getAddress(sourceChain, "USDC"), getAddress(sourceChain, "uniV4PositionManager"), type(uint160).max, type(uint48).max
         );
         targetData[8] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "uniV4PositionManager"), type(uint256).max
+            "approve(address,address,uint160,uint48)", getAddress(sourceChain, "USDT"), getAddress(sourceChain, "uniV4PositionManager"), type(uint160).max, type(uint48).max
         );
-        
+        { 
         //actions
         bytes memory liquidityActions = abi.encodePacked(uint8(Actions.MINT_POSITION), uint8(Actions.SETTLE_ALL)); 
         params = new bytes[](2); 
-        params[0] = abi.encode(key, -100, 100, 1e6, 10e8, 10e8, address(boringVault), ""); 
+
+        int24 tickLower = TickMath.minUsableTick(key.tickSpacing);
+        int24 tickUpper = TickMath.maxUsableTick(key.tickSpacing);
+        
+        (uint256 amount0, uint256 amount1) = LiquidityAmounts.getAmountsForLiquidity(
+            Constants.SQRT_PRICE_1_1,
+            TickMath.getSqrtPriceAtTick(tickLower),
+            TickMath.getSqrtPriceAtTick(tickUpper),
+            uint128(100e6)
+        );
+
+        params[0] = abi.encode(
+            key, 
+            tickLower,
+            tickUpper,
+            100e6,
+            type(uint256).max,
+            type(uint256).max,
+            address(boringVault),
+            block.timestamp + 1,
+            new bytes(0)
+        ); 
         params[1] = abi.encode(key.currency0, key.currency1); 
 
-        console.log("ACTIONS LENGTH: ", liquidityActions.length); 
-        console.log("PARAMS LENGTH: ", params.length); 
-
-        require(liquidityActions.length == params.length, "length mismatch"); 
 
         targetData[9] = abi.encodeWithSignature(
             "modifyLiquidities(bytes,uint256)", abi.encode(liquidityActions, params), block.timestamp
         );
-
+        }
 
         address[] memory decodersAndSanitizers = new address[](10);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;

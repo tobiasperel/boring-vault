@@ -3077,10 +3077,26 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     getAddress(sourceChain, "permit2"),
                     false,
                     "approve(address,address,uint160,uint48)",
-                    new address[](0),
-                    string.concat("Use Permit2 to approve ", ERC20(token0[i]).symbol()),
+                    new address[](2),
+                    string.concat("Use Permit2 to approve ", ERC20(token0[i]).symbol(), " for Universal Router"),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4UniversalRouter"); 
+
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "permit2"),
+                    false,
+                    "approve(address,address,uint160,uint48)",
+                    new address[](2),
+                    string.concat("Use Permit2 to approve ", ERC20(token0[i]).symbol(), " for POSM"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4PositionManager"); 
 
             } // end if
 
@@ -3097,7 +3113,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     false,
                     "approve(address,uint256)",
                     new address[](1),
-                    string.concat("Approve UniswapV4 Pool Manager to spend ", ERC20(token1[i]).symbol()),
+                    string.concat("Approve UniswapV4 Universal Router to spend ", ERC20(token1[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4UniversalRouter");
@@ -3129,7 +3145,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     false,
                     "approve(address,uint256)",
                     new address[](1),
-                    string.concat("Approve UniswapV4 Pool Manager to spend ", ERC20(token1[i]).symbol()),
+                    string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2");
@@ -3141,10 +3157,27 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     getAddress(sourceChain, "permit2"),
                     false,
                     "approve(address,address,uint160,uint48)",
-                    new address[](0),
+                    new address[](2),
                     string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
+                leafs[leafIndex].argumentAddresses[0] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4UniversalRouter"); 
+
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "permit2"),
+                    false,
+                    "approve(address,address,uint160,uint48)",
+                    new address[](2),
+                    string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol(), " for POSM"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4PositionManager"); 
+
             } //end if
             
             unchecked {

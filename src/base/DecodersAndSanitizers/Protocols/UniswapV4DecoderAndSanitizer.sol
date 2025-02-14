@@ -39,9 +39,8 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
 
     //============================== Permit2 ===============================
     
-    //TODO sanitize 
     function approve(address token, address spender, uint160 /*amount*/, uint48 /*expiraton*/) external pure returns (bytes memory addressesFound) {
-        return addressesFound; 
+        addressesFound = abi.encodePacked(token, spender); 
     } 
 
     //============================== Position Manager ===============================
