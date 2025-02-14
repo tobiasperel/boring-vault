@@ -3209,6 +3209,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             //TODO sanitize later, this is just for testing
             
+            //MINT POSITION LEAVES
             unchecked {
                 leafIndex++; 
             }
@@ -3216,11 +3217,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "uniV4PositionManager"),
                 false,
                 "modifyLiquidities(bytes,uint256)",
-                new address[](0),
-                string.concat("Call Execute on Universal Router"),
+                new address[](5),
+                string.concat("Mint UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            //TODO sanitize later, this is just for testing
+            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+            leafs[leafIndex].argumentAddresses[3] = token0[i]; 
+            leafs[leafIndex].argumentAddresses[4] = token1[i]; 
+               
             
             unchecked {
                 leafIndex++; 
@@ -3229,11 +3235,108 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "uniV4PositionManager"),
                 true,
                 "modifyLiquidities(bytes,uint256)",
-                new address[](0),
-                string.concat("Call Execute on Universal Router"),
+                new address[](5),
+                string.concat("Mint UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            //TODO sanitize later, this is just for testing
+            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+            leafs[leafIndex].argumentAddresses[3] = token0[i]; 
+            leafs[leafIndex].argumentAddresses[4] = token1[i]; 
+
+            //INCREASE LIQUIDITY
+            //all variations of this function give back 2 addressess
+            unchecked {
+                leafIndex++; 
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "uniV4PositionManager"),
+                false,
+                "modifyLiquidities(bytes,uint256)",
+                new address[](2),
+                string.concat("Increase liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+               
+            
+            unchecked {
+                leafIndex++; 
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "uniV4PositionManager"),
+                true,
+                "modifyLiquidities(bytes,uint256)",
+                new address[](2),
+                string.concat("Increase liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+
+            //DECREASE LIQUIDITY
+            unchecked {
+                leafIndex++; 
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "uniV4PositionManager"),
+                false,
+                "modifyLiquidities(bytes,uint256)",
+                new address[](3),
+                string.concat("Decrease liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+
+            unchecked {
+                leafIndex++; 
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "uniV4PositionManager"),
+                true,
+                "modifyLiquidities(bytes,uint256)",
+                new address[](3),
+                string.concat("Decrease liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+
+            //BURN LIQUIDITY
+            unchecked {
+                leafIndex++; 
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "uniV4PositionManager"),
+                false,
+                "modifyLiquidities(bytes,uint256)",
+                new address[](3),
+                string.concat("Burn liquidity position for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+
+            unchecked {
+                leafIndex++; 
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "uniV4PositionManager"),
+                true,
+                "modifyLiquidities(bytes,uint256)",
+                new address[](3),
+                string.concat("Burn liquidity position for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
 
         }
     }
