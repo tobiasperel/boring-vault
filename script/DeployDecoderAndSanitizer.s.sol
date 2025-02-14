@@ -54,10 +54,10 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         bytes memory creationCode;
         bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
-        
-        address sonicUniV3 = getAddress(sourceChain, "uniV3NonFungiblePositionManager"); 
+       
+        address sonicUniV3 = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c; 
         creationCode = type(StakedSonicDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode();
+        constructorArgs = abi.encode(sonicUniV3);
         deployer.deployContract("Staked Sonic Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
 

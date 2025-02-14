@@ -18,7 +18,7 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x455d5f11Fea33A8fa9D3e285930b478B6bF85265;
     address public managerAddress = 0xB77F31E02797724021F822181dff29F966A7B2cb;
     address public accountantAddress = 0x61bE1eC20dfE0197c27B80bA0f7fcdb1a6B236E2;
-    address public rawDataDecoderAndSanitizer = 0x9a40361334f01F97582667aa475f7Db86D532363;
+    address public rawDataDecoderAndSanitizer = 0x594c769681dAdA8E39C630550e03012d11E88234;
 
     function setUp() external {}
 
@@ -37,7 +37,7 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, sonicMainnet, "accountantAddress", accountantAddress);
         setAddress(false, sonicMainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        ManageLeaf[] memory leafs = new ManageLeaf[](128);
 
         // ========================== Beets ==========================
         _addBalancerLeafs(leafs, getBytes32(sourceChain, "scETH_WETH_PoolId"), getAddress(sourceChain, "scETH_WETH_gauge")); 
@@ -61,12 +61,11 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         
         ERC4626[] memory depositVaults = new ERC4626[](2);
         depositVaults[0] = ERC4626(getAddress(sourceChain, "euler_scETH_MEV")); 
-        depositVaults[1] = ERC4626(getAddress(sourceChain, "euler_WETH_MEV"))
+        depositVaults[1] = ERC4626(getAddress(sourceChain, "euler_WETH_MEV")); 
 
         address[] memory subaccounts = new address[](1);
         subaccounts[0] = address(boringVault);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](16);
         _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
        
         // ========================== Verify =========================

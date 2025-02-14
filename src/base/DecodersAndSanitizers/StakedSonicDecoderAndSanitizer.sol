@@ -6,7 +6,7 @@ import {BalancerV2DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Prot
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 import {CurveDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/CurveDecoderAndSanitizer.sol"; 
 import {SiloDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SiloDecoderAndSanitizer.sol"; 
-import {UniswapV3DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/UniswapV3DecoderAndSanitizer.sol"; 
+import {UniswapV3SwapRouter02DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/UniswapV3SwapRouter02DecoderAndSanitizer.sol"; 
 import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ERC4626DecoderAndSanitizer.sol"; 
 import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol"; 
 
@@ -16,10 +16,10 @@ contract StakedSonicDecoderAndSanitizer is
     TellerDecoderAndSanitizer, 
     CurveDecoderAndSanitizer,
     SiloDecoderAndSanitizer,
-    UniswapV3DecoderAndSanitizer,
+    UniswapV3SwapRouter02DecoderAndSanitizer,
     EulerEVKDecoderAndSanitizer
 {
-    constructor(address _nonFungiblePositionManager) UniswapV3DecoderAndSanitizer(_nonFungiblePositionManager) {}
+    constructor(address _nonFungiblePositionManager) UniswapV3SwapRouter02DecoderAndSanitizer(_nonFungiblePositionManager) {}
 
     /**
      * @notice BalancerV2 and Curve all specify a `deposit(uint256,address)`,

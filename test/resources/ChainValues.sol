@@ -1477,10 +1477,11 @@ contract ChainValues {
         values[sonicMainnet]["silo_ETH_wstkscETH_config"] = 0xefA367570B11f8745B403c0D458b9D2EAf424686.toBytes32();
 
         // Curve
-        values[sonicMainnet]["curve_ETH_scETH_pool"] = 0xfF11f56281247EaD18dB76fD23b252156738FA94.toBytes32();
-        values[sonicMainnet]["curve_ETH_scETH_gauge"] = 0x4F7Fc3F5112eAef10495B04b5dd376E50c42dA51.toBytes32();
+        values[sonicMainnet]["curve_WETH_scETH_pool"] = 0xfF11f56281247EaD18dB76fD23b252156738FA94.toBytes32();
+        values[sonicMainnet]["curve_WETH_scETH_gauge"] = 0x4F7Fc3F5112eAef10495B04b5dd376E50c42dA51.toBytes32();
 
         // Euler
+        values[sonicMainnet]["ethereumVaultConnector"] = 0x4860C903f6Ad709c3eDA46D3D502943f184D4315.toBytes32();
         values[sonicMainnet]["euler_scETH_MEV"] = 0x0806af1762Bdd85B167825ab1a64E31CF9497038.toBytes32();
         values[sonicMainnet]["euler_WETH_MEV"] = 0xa5cd24d9792F4F131f5976Af935A505D19c8Db2b.toBytes32();
 
