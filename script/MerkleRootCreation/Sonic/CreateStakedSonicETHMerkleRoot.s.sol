@@ -47,6 +47,30 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         tellerAssets[0] = getERC20(sourceChain, "WETH");
         _addTellerLeafs(leafs, getAddress(sourceChain, "scETHTeller"), tellerAssets, false);
 
+        // ========================== Silo ==========================
+        
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_ETH_config")); 
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_ETH_wstkscETH_config")); 
+
+        // ========================== Curve =========================
+        
+        _addCurveLeafs(leafs, getAddress(sourceChain, "curve_WETH_scETH_pool"), 2, getAddress(sourceChain, "curve_WETH_scETH_gauge")); 
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "curve_WETH_scETH_pool")); 
+
+        // ========================== Euler =========================
+        
+        ERC4626[] memory depositVaults = new ERC4626[](2);
+        depositVaults[0] = ERC4626(getAddress(sourceChain, "euler_scETH_MEV")); 
+        depositVaults[1] = ERC4626(getAddress(sourceChain, "euler_WETH_MEV"))
+
+        address[] memory subaccounts = new address[](1);
+        subaccounts[0] = address(boringVault);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+       
+        // ========================== Verify =========================
+         
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         string memory filePath = "./leafs/Sonic/StakedSonicETHStrategistLeafs.json";
