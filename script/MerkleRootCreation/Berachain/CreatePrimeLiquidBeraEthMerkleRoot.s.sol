@@ -59,7 +59,7 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
         islands[2] = getAddress(sourceChain, "kodiak_island_WEETH_WEETH_OT_005%"); 
         islands[3] = getAddress(sourceChain, "kodiak_island_beraETH_WEETH_005%"); 
 
-        _addKodiakIslandLeafs(leafs, islands); 
+        _addKodiakIslandLeafs(leafs, islands, false); //don't include native leaves
 
         // ========================== Dolomite Supply ==========================
         

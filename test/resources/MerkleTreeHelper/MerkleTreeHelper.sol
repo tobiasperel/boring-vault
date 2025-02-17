@@ -7585,7 +7585,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= Kodiak Finance =========================================
 
-    function _addKodiakIslandLeafs(ManageLeaf[] memory leafs, address[] memory islands) internal {
+    function _addKodiakIslandLeafs(ManageLeaf[] memory leafs, address[] memory islands, bool includeNativeLeaves) internal {
         for (uint256 i = 0; i < islands.length; i++) {
             address token0 = IKodiakIsland(islands[i]).token0();
             address token1 = IKodiakIsland(islands[i]).token1();
@@ -7669,20 +7669,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = islands[i];
             leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-
-            unchecked {
-                leafIndex++;
+            
+            if (includeNativeLeaves) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "kodiakIslandRouter"),
+                    true,
+                    "addLiquidityNative(address,uint256,uint256,uint256,uint256,uint256,address)",
+                    new address[](2),
+                    string.concat("Add Liquidity Native in ", IKodiakIsland(islands[i]).name()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = islands[i];
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
             }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "kodiakIslandRouter"),
-                true,
-                "addLiquidityNative(address,uint256,uint256,uint256,uint256,uint256,address)",
-                new address[](2),
-                string.concat("Add Liquidity Native in ", IKodiakIsland(islands[i]).name()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = islands[i];
-            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
             unchecked {
                 leafIndex++;
@@ -7698,19 +7700,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = islands[i];
             leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
-            unchecked {
-                leafIndex++;
+            if (includeNativeLeaves) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "kodiakIslandRouter"),
+                    false,
+                    "removeLiquidityNative(address,uint256,uint256,uint256,address)",
+                    new address[](2),
+                    string.concat("Remove Liquidity Native from ", IKodiakIsland(islands[i]).name()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = islands[i];
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
             }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "kodiakIslandRouter"),
-                false,
-                "removeLiquidityNative(address,uint256,uint256,uint256,address)",
-                new address[](2),
-                string.concat("Remove Liquidity Native from ", IKodiakIsland(islands[i]).name()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = islands[i];
-            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
         }
     }
 
