@@ -1441,6 +1441,10 @@ contract ChainValues {
         values[sonicMainnet]["balancerVault"] = address(1).toBytes32();
         values[sonicMainnet]["vault"] = address(1).toBytes32();
 
+        // UniswapV3
+        values[sonicMainnet]["uniswapV3NonFungiblePositionManager"] = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c.toBytes32();
+        values[sonicMainnet]["uniV3Router"] = 0xaa52bB8110fE38D0d2d2AF0B85C3A3eE622CA455.toBytes32();
+
         // Beets/Balancer
         values[sonicMainnet]["balancerVault"] = 0xBA12222222228d8Ba445958a75a0704d566BF2C8.toBytes32();
 
@@ -1641,7 +1645,8 @@ contract ChainValues {
 
         values[bob]["ZRO"] = address(1).toBytes32(); 
         values[bob]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
+
+        // OFTs
+        values[berachain]["LBTC_OFT"] = 0x630e12D53D4E041b8C5451aD035Ea841E08391d7.toBytes32();
     }
-
-
 }

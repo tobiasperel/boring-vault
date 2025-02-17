@@ -2784,7 +2784,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         ManageLeaf[] memory leafs,
         address[] memory token0,
         address[] memory token1,
-        bool swap_only
+        bool swap_only,
+        bool swapRouter02
     ) internal {
         require(token0.length == token1.length, "Token arrays must be of equal length");
         for (uint256 i; i < token0.length; ++i) {
@@ -2946,6 +2947,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = token0[i];
             leafs[leafIndex].argumentAddresses[1] = token1[i];
             leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+
             unchecked {
                 leafIndex++;
             }
@@ -2962,6 +2964,43 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = token1[i];
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+            
+            if (swapRouter02) { 
+                //SWAPROUTER02
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV3Router"),
+                    false,
+                    "exactInput((bytes,address,uint256,uint256))",
+                    new address[](3),
+                    string.concat(
+                        "Swap ", ERC20(token0[i]).symbol(), " for ", ERC20(token1[i]).symbol(), " using UniswapV3 router"
+                    ),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV3Router"),
+                    false,
+                    "exactInput((bytes,address,uint256,uint256))",
+                    new address[](3),
+                    string.concat(
+                        "Swap ", ERC20(token1[i]).symbol(), " for ", ERC20(token0[i]).symbol(), " using UniswapV3 router"
+                    ),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token1[i];
+                leafs[leafIndex].argumentAddresses[1] = token0[i];
+                leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+            }
         }
 
         //END FOR LOOP
