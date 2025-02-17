@@ -14,7 +14,7 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer, Test 
     error UniswapV4DecoderAndSanitizer__UnsupportedAction(); 
     error UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
    
-    //TODO bytes are cringe but this might work better for our use case //============================== Universal Router ===============================
+    //============================== Universal Router ===============================
     
     // @dev in order to sanitize we require that only command be passed in a time. This defeats the ability to batch commands together, but is necessary to avoid having a gajillion leaves for all possible orders that can be used here
     // @dev inputs can be grouped together based on common things, ie. swaps will always be swap, settle, take, etc. 
@@ -36,8 +36,9 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer, Test 
             // Extract addresses from poolKey
             address currency0 = address(swapParams.poolKey.currency0);
             address currency1 = address(swapParams.poolKey.currency1);
+            address hook = address(swapParams.poolKey.hooks);
 
-            addressesFound = abi.encodePacked(address(uint160(command)), currency0, currency1);  
+            addressesFound = abi.encodePacked(address(uint160(command)), currency0, currency1, hook);  
         } else {
             //only support v4 swaps via the universal router
             revert UniswapV4DecoderAndSanitizer__NotSwapInput();  
@@ -52,14 +53,12 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer, Test 
 
     //============================== Position Manager ===============================
     
-    //TODO sanitize 
     function modifyLiquidities(bytes calldata unlockData, uint256 /*deadline*/) external view returns (bytes memory addressesFound) { 
         // First decode the outer tuple (actions, params)
         (bytes memory actions, bytes[] memory params) = abi.decode(unlockData, (bytes, bytes[]));
         
         uint8 action = uint8(bytes1(actions[0]));
         if (action == uint8(Actions.MINT_POSITION)) {
-        //TODO do we sanitize the hook address (from pool key)? potentially yes?  
              (
                 DecoderCustomTypes.PoolKey memory poolKey,
                 /*int24 tickLower*/,
@@ -74,7 +73,7 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer, Test 
             // Ensure we're settling the correct pair 
             (address currency0Settle, address currency1Settle) = abi.decode(params[1], (address, address)); 
               
-            addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, recipient, currency0Settle, currency1Settle); 
+            addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, recipient, currency0Settle, currency1Settle); 
             return addressesFound;             
          
         } else if (action == uint8(Actions.INCREASE_LIQUIDITY)) {
@@ -124,7 +123,7 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer, Test 
             }
         } else if (action == uint8(Actions.BURN_POSITION)) {
             
-            //burn requires a TAKE_PAIR but has no params necessary to sanitize as they are all uints or hook data 
+            //burn requires a TAKE_PAIR but has no params necessary to sanitize as they are all uints or hook data bytes
             (address currency0Settle, address currency1Settle, address recipient) = abi.decode(params[1], (address, address, address)); 
 
                 addressesFound = abi.encodePacked(currency0Settle, currency1Settle, recipient); 
