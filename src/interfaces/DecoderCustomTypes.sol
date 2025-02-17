@@ -86,6 +86,13 @@ contract DecoderCustomTypes {
         uint256 amountOutMinimum;
     }
 
+    struct ExactInputParamsRouter02 {
+        bytes path;
+        address recipient;
+        uint256 amountIn;
+        uint256 amountOutMinimum;
+    }
+
     struct PancakeSwapExactInputParams {
         bytes path;
         address recipient;

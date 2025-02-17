@@ -4,10 +4,10 @@
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "mainnet",
     "evmVersion": "cancun",
-    "desiredNumberOfDeploymentTxs": 5,
+    "desiredNumberOfDeploymentTxs": 3,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
-      "name": "txBundlerAddress"
+      "name": "deployerAddress2"
     },
     "setupRoles": true,
     "setupTestUser": true,
@@ -18,7 +18,7 @@
     },
     "deployerContractAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
-      "name": "deployerAddress"
+      "name": "deployerAddress2"
     },
     "nativeWrapperAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
@@ -26,62 +26,57 @@
     },
     "deploymentOwnerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
-      "name": "txBundlerAddress"
+      "name": "deployerAddress2"
     },
-    "deploymentFileName": "addresses/Mainnet/SonicBTC.json"
+    "deploymentFileName": "addresses/Bob/HybridBTC.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "Sonic BTC Roles Authority V0.1"
+    "rolesAuthorityDeploymentName": "Hybrid Bitcoin Roles Authority V0.0"
   },
   "lensConfiguration": {
-    "lensDeploymentName": "Arctic Architecture Lens V0.1"
+    "lensDeploymentName": "Arctic Architecture Lens V0.0"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "Sonic BTC Boring Vault V0.1",
-    "boringVaultName": "Sonic BTC",
-    "boringVaultSymbol": "scBTC",
+    "boringVaultDeploymentName": "Hybrid Bitcoin Boring Vault V0.0",
+    "boringVaultName": "Hybrid Bitcoin",
+    "boringVaultSymbol": "HybridBTC.pendle",
     "boringVaultDecimals": 8
   },
   "managerConfiguration": {
-    "managerDeploymentName": "Sonic BTC Manager V0.1",
+    "managerDeploymentName": "Hybrid Bitcoin Manager V0.0",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "Sonic BTC Accountant V0.1",
+    "accountantDeploymentName": "Hybrid Bitcoin Accountant V0.0",
     "accountantParameters": {
       "kind": {
-        "variableRate": false,
-        "fixedRate": true
+        "variableRate": true,
+        "fixedRate": false
       },
       "payoutConfiguration": {
-        "payoutTo": "0x0000000000000000000000000000000000000001",
-        "optionalPaymentSplitterName": "Sonic BTC Payment Splitter V0.1",
-        "splits": [
-          {
-            "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
-            "percent": 10000
-          }
-        ]
+        "payoutTo": "0xA9962a5BfBea6918E958DeE0647E99fD7863b95A",
+        "optionalPaymentSplitterName": "Hybrid Bitcoin Payment Splitter V0.0",
+        "splits": []
       },
       "accountantDeploymentParameters": {
         "allowedExchangeRateChangeLower": 9950,
         "allowedExchangeRateChangeUpper": 10050,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "LBTC"
+          "name": "WBTC"
         },
         "minimumUpateDelayInSeconds": 21600,
-        "performanceFee": 1000,
+        "performanceFee": 0,
         "platformFee": 0,
         "startingExchangeRate": 100000000
       }
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "Sonic BTC Teller V0.1",
+    "tellerDeploymentName": "Hybrid Bitcoin Teller V0.0",
     "tellerParameters": {
       "allowPublicDeposits": true,
       "shareLockPeriod": 0,
@@ -100,24 +95,13 @@
           "address": "0x0000000000000000000000000000000000000000",
           "name": "ZRO"
         },
-        "lzChains": [
-          {
-            "chainId": 30332,
-            "allowMessagesFrom": true,
-            "allowMessagesTo": true,
-            "targetTellerOrSelf": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "self": true
-            },
-            "messageGasLimit": 100000
-          }
-        ]
+        "lzChains": []
       }
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "Sonic BTC Boring Queue V0.1",
-    "boringQueueSolverName": "Sonic BTC Boring Solver V0.1",
+    "boringQueueDeploymentName": "Hybrid Bitcoin Boring Queue V0.0",
+    "boringQueueSolverName": "Hybrid Bitcoin Boring Solver V0.0",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -128,13 +112,13 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "Sonic BTC Drone V0.1",
+    "droneDeploymentBaseName": "Hybrid Bitcoin Drone V0.0",
     "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
     "shouldDeploy": true,
-    "pauserDeploymentName": "Sonic BTC Pauser V0.1",
+    "pauserDeploymentName": "Hybrid Bitcoin Pauser V0.0",
     "makeGenericPauser": [
       "0x0000000000000000000000000000000000000000"
     ],
@@ -156,14 +140,14 @@
   },
   "timelockConfiguration": {
     "shouldDeploy": true,
-    "timelockDeploymentName": "Sonic BTC Timelock V0.1",
+    "timelockDeploymentName": "Hybrid Bitcoin Timelock V0.0",
     "timelockParameters": {
-      "minDelay": 0,
+      "minDelay": 300,
       "proposers": [
-        "0xf8553c8552f906C19286F21711721E206EE4909E"
+        "0xCEA8039076E35a825854c5C2f85659430b06ec96"
       ],
       "executors": [
-        "0xf8553c8552f906C19286F21711721E206EE4909E"
+        "0xCEA8039076E35a825854c5C2f85659430b06ec96"
       ]
     }
   },
@@ -171,7 +155,23 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "eBTC"
+        "name": "LBTC"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "solvBTC"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "solvBTC.BBN"
       },
       "isPeggedToBase": true,
       "rateProvider": "0x0000000000000000000000000000000000000000"
@@ -181,7 +181,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "eBTC"
+        "name": "WBTC"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -191,6 +191,24 @@
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
         "name": "LBTC"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "solvBTC"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "solvBTC.BBN"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -201,13 +219,13 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "eBTC"
+        "name": "WBTC"
       },
       "maxDiscount": 10,
       "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
+      "minimumSecondsToDeadline": 259200,
       "minimumShares": 0,
-      "secondsToMaturity": 60
+      "secondsToMaturity": 172800
     },
     {
       "addressOrName": {
@@ -216,9 +234,31 @@
       },
       "maxDiscount": 10,
       "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
+      "minimumSecondsToDeadline": 259200,
       "minimumShares": 0,
-      "secondsToMaturity": 60
+      "secondsToMaturity": 172800
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "solvBTC"
+      },
+      "maxDiscount": 10,
+      "minDiscount": 1,
+      "minimumSecondsToDeadline": 259200,
+      "minimumShares": 0,
+      "secondsToMaturity": 172800
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "solvBTC.BBN"
+      },
+      "maxDiscount": 10,
+      "minDiscount": 1,
+      "minimumSecondsToDeadline": 259200,
+      "minimumShares": 0,
+      "secondsToMaturity": 172800
     }
   ]
 }
