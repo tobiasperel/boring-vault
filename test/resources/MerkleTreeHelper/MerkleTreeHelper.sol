@@ -6813,6 +6813,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= BoringVault Teller =========================================
 
+    function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets) internal {
+        _addTellerLeafs(leafs, teller, assets, false); 
+    }
+
     function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets, bool addNativeDeposit) internal {
         ERC20 boringVault = TellerWithMultiAssetSupport(teller).vault();
 
