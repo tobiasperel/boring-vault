@@ -4887,7 +4887,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
-    function _addSymbioticVaultLeafs(ManageLeaf[] memory leafs, address[] memory vaults, ERC20[] memory assets)
+    function _addSymbioticVaultLeafs(ManageLeaf[] memory leafs, address[] memory vaults, ERC20[] memory assets, address[] memory vaultRewards)
         internal
     {
         for (uint256 i; i < assets.length; i++) {
@@ -4961,6 +4961,19 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 "claimBatch(address,uint256[])",
                 new address[](1),
                 string.concat("Claim batch withdraw from Symbiotic Vault ", vm.toString(vaults[i])),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vaultRewards[i],
+                false,
+                "claimRewards(address,address,bytes)",
+                new address[](1),
+                string.concat("Claim rewards from Symbiotic Vault ", vm.toString(vaults[i])),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
@@ -6800,7 +6813,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= BoringVault Teller =========================================
 
-    function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets, bool ethBase) internal {
+    function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets, bool addNativeDeposit) internal {
         ERC20 boringVault = TellerWithMultiAssetSupport(teller).vault();
 
         for (uint256 i; i < assets.length; ++i) {
@@ -6860,19 +6873,19 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
-            
-            if (ethBase) {
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    teller,
-                    true, //can send value
-                    "deposit(address,uint256,uint256)",
-                    new address[](1),
-                    string.concat("Deposit ETH into ", boringVault.name()),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
+
+        if (addNativeDeposit) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                teller,
+                true, //can send value
+                "deposit(address,uint256,uint256)",
+                new address[](1),
+                string.concat("Deposit ETH into ", boringVault.name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "ETH");
             }
         }
@@ -6911,6 +6924,179 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+        }
+    }
+
+    // ========================================= Silo Finance V2 =========================================
+    function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket) internal {
+        (address silo0, address silo1) = ISilo(siloMarket).getSilos();  
+        address[] memory silos = new address[](2); 
+        silos[0] = silo0; 
+        silos[1] = silo1; 
+        
+        for (uint256 i = 0; i < silos.length; i++) {
+            string memory underlyingName = ERC20(ERC4626(silos[i]).asset()).name(); 
+
+            _addERC4626Leafs(leafs, ERC4626(silos[i])); 
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "deposit(uint256,address,uint8)",
+                new address[](1),
+                string.concat("Deposit ", underlyingName, " with type into Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "mint(uint256,address,uint8)",
+                new address[](1),
+                string.concat("Mint ", underlyingName, " with type into Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "withdraw(uint256,address,address,uint8)",
+                new address[](2),
+                string.concat("Withdraw ", underlyingName, " with type from Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "redeem(uint256,address,address,uint8)",
+                new address[](2),
+                string.concat("Redeem ", underlyingName, " with type from Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "borrow(uint256,address,address)",
+                new address[](2),
+                string.concat("Borrow ", underlyingName, " from Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "borrowShares(uint256,address,address)",
+                new address[](2),
+                string.concat("Borrow shares of ", underlyingName, " from Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "borrowSameAsset(uint256,address,address)",
+                new address[](2),
+                string.concat("Borrow same asset ", underlyingName, " from Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "repay(uint256,address)",
+                new address[](1),
+                string.concat("Repay ", underlyingName, " to Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "repayShares(uint256,address)",
+                new address[](1),
+                string.concat("Repay shares of ", underlyingName, " to Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "transitionCollateral(uint256,address,uint8)",
+                new address[](1),
+                string.concat("Transition Collateral in ", underlyingName, " Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "switchCollateralToThisSilo()",
+                new address[](0),
+                string.concat("Switch Collateral to ", underlyingName, " Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                silos[i],
+                false,
+                "accrueInterest()",
+                new address[](0),
+                string.concat("Accrue interest on ", underlyingName, " Silo"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
         }
     }
 
@@ -7215,4 +7401,9 @@ interface VelodromV2Gauge {
 
 interface VaultSupervisor {
     function delegationSupervisor() external view returns (address);
+}
+
+interface ISilo {
+    function SILO_ID() external view returns (uint256); 
+    function getSilos() external view returns (address, address); 
 }
