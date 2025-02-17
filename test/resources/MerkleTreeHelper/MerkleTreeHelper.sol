@@ -3016,328 +3016,376 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     function _addUniswapV4Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1) internal {
         require(token0.length == token1.length, "Token arrays must be of equal length");
         for (uint256 i; i < token0.length; ++i) {
+                
+            console.log("TOKEN 0: ", token0[i]);      
+            console.log("TOKEN 1: ", token1[i]);      
+
+            //after sorting, ETH can only ever be token0, and is always token0 in univ4 pools (iirc)
+            if (token0[i] == getAddress(sourceChain, "ETH")) {
+                token0[i] = address(0); //in univ4, ETH is address(0)
+            }
+
+            if (token1[i] == getAddress(sourceChain, "ETH")) {
+                token1[i] = address(0); //in univ4, ETH is address(0)
+            }
+
             (token0[i], token1[i]) = token0[i] < token1[i] ? (token0[i], token1[i]) : (token1[i], token0[i]);
-            if (
-                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
-                    sourceChain, "uniV4UniversalRouter"
-                )]
-            ) {
-            
-                //approve token0 after sorting
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    token0[i],
-                    false,
-                    "approve(address,uint256)",
-                    new address[](1),
-                    string.concat("Approve UniswapV4 Pool Manager to spend ", ERC20(token0[i]).symbol()),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4UniversalRouter");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
-                    sourceChain, "uniV4PoolManager"
-                )] = true;
 
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    token0[i],
-                    false,
-                    "approve(address,uint256)",
-                    new address[](1),
-                    string.concat("Approve UniswapV4 Position Manager to spend ", ERC20(token0[i]).symbol()),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4PositionManager");
+            if (token0[i] != address(0)) {
+                if (
+                    !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                        sourceChain, "uniV4UniversalRouter"
+                    )]
+                ) {
+                
+                    //approve token0 after sorting
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        token0[i],
+                        false,
+                        "approve(address,uint256)",
+                        new address[](1),
+                        string.concat("Approve UniswapV4 Pool Manager to spend ", ERC20(token0[i]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4UniversalRouter");
+                    ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                        sourceChain, "uniV4PoolManager"
+                    )] = true;
 
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
-                    sourceChain, "uniV4PoolManager"
-                )] = true;
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        token0[i],
+                        false,
+                        "approve(address,uint256)",
+                        new address[](1),
+                        string.concat("Approve UniswapV4 Position Manager to spend ", ERC20(token0[i]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4PositionManager");
 
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    token0[i],
-                    false,
-                    "approve(address,uint256)",
-                    new address[](1),
-                    string.concat("Approve Permit2 to spend ", ERC20(token0[i]).symbol()),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2");
+                    ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                        sourceChain, "uniV4PoolManager"
+                    )] = true;
 
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    getAddress(sourceChain, "permit2"),
-                    false,
-                    "approve(address,address,uint160,uint48)",
-                    new address[](2),
-                    string.concat("Use Permit2 to approve ", ERC20(token0[i]).symbol(), " for Universal Router"),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4UniversalRouter"); 
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        token0[i],
+                        false,
+                        "approve(address,uint256)",
+                        new address[](1),
+                        string.concat("Approve Permit2 to spend ", ERC20(token0[i]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2");
 
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    getAddress(sourceChain, "permit2"),
-                    false,
-                    "approve(address,address,uint160,uint48)",
-                    new address[](2),
-                    string.concat("Use Permit2 to approve ", ERC20(token0[i]).symbol(), " for POSM"),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4PositionManager"); 
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        getAddress(sourceChain, "permit2"),
+                        false,
+                        "approve(address,address,uint160,uint48)",
+                        new address[](2),
+                        string.concat("Use Permit2 to approve ", ERC20(token0[i]).symbol(), " for Universal Router"),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4UniversalRouter"); 
 
-            } // end if
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        getAddress(sourceChain, "permit2"),
+                        false,
+                        "approve(address,address,uint160,uint48)",
+                        new address[](2),
+                        string.concat("Use Permit2 to approve ", ERC20(token0[i]).symbol(), " for POSM"),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4PositionManager"); 
 
-            if (
-                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
-                    sourceChain, "uniV4UniversalRouter"
-                )]
-            ) {
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    token1[i],
-                    false,
-                    "approve(address,uint256)",
-                    new address[](1),
-                    string.concat("Approve UniswapV4 Universal Router to spend ", ERC20(token1[i]).symbol()),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4UniversalRouter");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
-                    sourceChain, "uniV4UniversalRouter"
-                )] = true;
-
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    token1[i],
-                    false,
-                    "approve(address,uint256)",
-                    new address[](1),
-                    string.concat("Approve UniswapV4 Position Manager to spend ", ERC20(token1[i]).symbol()),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4PositionManager");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
-                    sourceChain, "uniV4PositionManager"
-                )] = true;
-
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    token1[i],
-                    false,
-                    "approve(address,uint256)",
-                    new address[](1),
-                    string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol()),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2");
-
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    getAddress(sourceChain, "permit2"),
-                    false,
-                    "approve(address,address,uint160,uint48)",
-                    new address[](2),
-                    string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol()),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4UniversalRouter"); 
-
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    getAddress(sourceChain, "permit2"),
-                    false,
-                    "approve(address,address,uint160,uint48)",
-                    new address[](2),
-                    string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol(), " for POSM"),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4PositionManager"); 
-
-            } //end if
-            
-            unchecked {
-                leafIndex++; 
+                } 
             }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "uniV4UniversalRouter"),
-                false,
-                "execute(bytes,bytes[],uint256)",
-                new address[](3),
-                string.concat("Call Execute on Universal Router"),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = address(0x10);  //V4_SWAP
-            leafs[leafIndex].argumentAddresses[1] = address(token0[i]);  
-            leafs[leafIndex].argumentAddresses[2] = address(token1[i]);  
+            
+            if (token1[i] != address(0)) {
+                if (
+                    !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                        sourceChain, "uniV4UniversalRouter"
+                    )]
+                ) {
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        token1[i],
+                        false,
+                        "approve(address,uint256)",
+                        new address[](1),
+                        string.concat("Approve UniswapV4 Universal Router to spend ", ERC20(token1[i]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4UniversalRouter");
+                    ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                        sourceChain, "uniV4UniversalRouter"
+                    )] = true;
 
-            //
-            unchecked {
-                leafIndex++; 
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        token1[i],
+                        false,
+                        "approve(address,uint256)",
+                        new address[](1),
+                        string.concat("Approve UniswapV4 Position Manager to spend ", ERC20(token1[i]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "uniV4PositionManager");
+                    ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                        sourceChain, "uniV4PositionManager"
+                    )] = true;
+
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        token1[i],
+                        false,
+                        "approve(address,uint256)",
+                        new address[](1),
+                        string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2");
+
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        getAddress(sourceChain, "permit2"),
+                        false,
+                        "approve(address,address,uint160,uint48)",
+                        new address[](2),
+                        string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = token1[i]; 
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4UniversalRouter"); 
+
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        getAddress(sourceChain, "permit2"),
+                        false,
+                        "approve(address,address,uint160,uint48)",
+                        new address[](2),
+                        string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol(), " for POSM"),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = token1[i]; 
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4PositionManager"); 
+
+                } //end if
             }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "uniV4UniversalRouter"),
-                true,
-                "execute(bytes,bytes[],uint256)",
-                new address[](0),
-                string.concat("Call Execute on Universal Router with native ETH"),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            //TODO sanitize later, this is just for testing
+            
+            if (token0[i] != address(0)) {
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4UniversalRouter"),
+                    false,
+                    "execute(bytes,bytes[],uint256)",
+                    new address[](3),
+                    string.concat("Swap ", ERC20(token0[i]).symbol(), " for ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = address(0x10);  //V4_SWAP
+                leafs[leafIndex].argumentAddresses[1] = address(token0[i]);  
+                leafs[leafIndex].argumentAddresses[2] = address(token1[i]);  
+
+            } else {
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4UniversalRouter"),
+                    true,
+                    "execute(bytes,bytes[],uint256)",
+                    new address[](3),
+                    string.concat("Swap ETH for ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+
+                leafs[leafIndex].argumentAddresses[0] = address(0x10);  //V4_SWAP
+                leafs[leafIndex].argumentAddresses[1] = address(token0[i]);  
+                leafs[leafIndex].argumentAddresses[2] = address(token1[i]);  
+
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4UniversalRouter"),
+                    false,
+                    "execute(bytes,bytes[],uint256)",
+                    new address[](3),
+                    string.concat("Swap ", ERC20(token1[i]).symbol(), " for ETH"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+
+                leafs[leafIndex].argumentAddresses[0] = address(0x10);  //V4_SWAP
+                leafs[leafIndex].argumentAddresses[1] = address(token0[i]);  
+                leafs[leafIndex].argumentAddresses[2] = address(token1[i]);  
+            }
             
             //MINT POSITION LEAVES
-            unchecked {
-                leafIndex++; 
-            }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "uniV4PositionManager"),
-                false,
-                "modifyLiquidities(bytes,uint256)",
-                new address[](5),
-                string.concat("Mint UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
-            leafs[leafIndex].argumentAddresses[3] = token0[i]; 
-            leafs[leafIndex].argumentAddresses[4] = token1[i]; 
-               
             
-            unchecked {
-                leafIndex++; 
+            if (token0[i] != address(0)) {
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4PositionManager"),
+                    false,
+                    "modifyLiquidities(bytes,uint256)",
+                    new address[](5),
+                    string.concat("Mint UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+                leafs[leafIndex].argumentAddresses[3] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[4] = token1[i]; 
+            } else { 
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4PositionManager"),
+                    true,
+                    "modifyLiquidities(bytes,uint256)",
+                    new address[](5),
+                    string.concat("Mint UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+                leafs[leafIndex].argumentAddresses[3] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[4] = token1[i]; 
             }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "uniV4PositionManager"),
-                true,
-                "modifyLiquidities(bytes,uint256)",
-                new address[](5),
-                string.concat("Mint UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
-            leafs[leafIndex].argumentAddresses[3] = token0[i]; 
-            leafs[leafIndex].argumentAddresses[4] = token1[i]; 
 
             //INCREASE LIQUIDITY
             //all variations of this function give back 2 addressess
-            unchecked {
-                leafIndex++; 
-            }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "uniV4PositionManager"),
-                false,
-                "modifyLiquidities(bytes,uint256)",
-                new address[](2),
-                string.concat("Increase liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-               
+            if (token0[i] != address(0)) {
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4PositionManager"),
+                    false,
+                    "modifyLiquidities(bytes,uint256)",
+                    new address[](2),
+                    string.concat("Increase liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+            } else {     
             
-            unchecked {
-                leafIndex++; 
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4PositionManager"),
+                    true,
+                    "modifyLiquidities(bytes,uint256)",
+                    new address[](2),
+                    string.concat("Increase liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
             }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "uniV4PositionManager"),
-                true,
-                "modifyLiquidities(bytes,uint256)",
-                new address[](2),
-                string.concat("Increase liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
 
             //DECREASE LIQUIDITY
-            unchecked {
-                leafIndex++; 
-            }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "uniV4PositionManager"),
-                false,
-                "modifyLiquidities(bytes,uint256)",
-                new address[](3),
-                string.concat("Decrease liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+            if (token0[i] != address(0)) {
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4PositionManager"),
+                    false,
+                    "modifyLiquidities(bytes,uint256)",
+                    new address[](3),
+                    string.concat("Decrease liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
 
-            unchecked {
-                leafIndex++; 
+            } else {
+
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4PositionManager"),
+                    true,
+                    "modifyLiquidities(bytes,uint256)",
+                    new address[](3),
+                    string.concat("Decrease liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
             }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "uniV4PositionManager"),
-                true,
-                "modifyLiquidities(bytes,uint256)",
-                new address[](3),
-                string.concat("Decrease liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
 
             //BURN LIQUIDITY
-            unchecked {
-                leafIndex++; 
+            if (token0[i] != address(0)) {
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4PositionManager"),
+                    false,
+                    "modifyLiquidities(bytes,uint256)",
+                    new address[](3),
+                    string.concat("Burn liquidity position for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+            } else {
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4PositionManager"),
+                    true,
+                    "modifyLiquidities(bytes,uint256)",
+                    new address[](3),
+                    string.concat("Burn liquidity position for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
             }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "uniV4PositionManager"),
-                false,
-                "modifyLiquidities(bytes,uint256)",
-                new address[](3),
-                string.concat("Burn liquidity position for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
-
-            unchecked {
-                leafIndex++; 
-            }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "uniV4PositionManager"),
-                true,
-                "modifyLiquidities(bytes,uint256)",
-                new address[](3),
-                string.concat("Burn liquidity position for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-            leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
-
         }
     }
 
