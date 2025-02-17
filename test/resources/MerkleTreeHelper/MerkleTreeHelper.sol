@@ -2779,6 +2779,15 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Uniswap V3 =========================================
+    function _addUniswapV3Leafs(
+        ManageLeaf[] memory leafs,
+        address[] memory token0,
+        address[] memory token1,
+        bool swap_only
+    ) internal {
+        _addUniswapV3Leafs(leafs, token0, token1, swap_only, false); 
+    }
+
 
     function _addUniswapV3Leafs(
         ManageLeaf[] memory leafs,
