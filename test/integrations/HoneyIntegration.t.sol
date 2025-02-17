@@ -45,9 +45,7 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(
-            new FullHoneyDecoderAndSanitizer()
-        );
+        rawDataDecoderAndSanitizer = address(new FullHoneyDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -117,7 +115,7 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3); 
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
         manageLeafs[0] = leafs[0]; //approve USDC
         manageLeafs[1] = leafs[1]; //mint w/ USDC
         manageLeafs[2] = leafs[2]; //redeem w/ USDC
@@ -130,15 +128,23 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
         targets[2] = getAddress(sourceChain, "honeyFactory");
 
         bytes[] memory targetData = new bytes[](3);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "honeyFactory"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("mint(address,uint256,address)", getAddress(sourceChain, "USDC"), 100e6, getAddress(sourceChain, "boringVault"));
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "honeyFactory"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "mint(address,uint256,address)",
+            getAddress(sourceChain, "USDC"),
+            100e6,
+            getAddress(sourceChain, "boringVault")
+        );
 
-        uint256 honeyMinted = 99500000000000000000; 
-        targetData[2] =
-            abi.encodeWithSignature("redeem(address,uint256,address)", getAddress(sourceChain, "USDC"), honeyMinted, getAddress(sourceChain, "boringVault"));
-
+        uint256 honeyMinted = 99500000000000000000;
+        targetData[2] = abi.encodeWithSignature(
+            "redeem(address,uint256,address)",
+            getAddress(sourceChain, "USDC"),
+            honeyMinted,
+            getAddress(sourceChain, "boringVault")
+        );
 
         address[] memory decodersAndSanitizers = new address[](3);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -149,7 +155,7 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
-        uint256 usdcBalance = getERC20(sourceChain, "USDC").balanceOf(address(boringVault)); 
+        uint256 usdcBalance = getERC20(sourceChain, "USDC").balanceOf(address(boringVault));
         assertApproxEqAbs(usdcBalance, 100e6, 1e6); //lose about 1 usdc to fees and share conversion
     }
 
@@ -163,7 +169,7 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3); 
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
         manageLeafs[0] = leafs[3]; //approve USDT
         manageLeafs[1] = leafs[4]; //mint w/ USDT
         manageLeafs[2] = leafs[5]; //redeem w/ USDT
@@ -176,15 +182,23 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
         targets[2] = getAddress(sourceChain, "honeyFactory");
 
         bytes[] memory targetData = new bytes[](3);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "honeyFactory"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("mint(address,uint256,address)", getAddress(sourceChain, "USDT"), 100e6, getAddress(sourceChain, "boringVault"));
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "honeyFactory"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "mint(address,uint256,address)",
+            getAddress(sourceChain, "USDT"),
+            100e6,
+            getAddress(sourceChain, "boringVault")
+        );
 
-        uint256 honeyMinted = 99500000000497742622; 
-        targetData[2] =
-            abi.encodeWithSignature("redeem(address,uint256,address)", getAddress(sourceChain, "USDT"), honeyMinted, getAddress(sourceChain, "boringVault"));
-
+        uint256 honeyMinted = 99500000000497742622;
+        targetData[2] = abi.encodeWithSignature(
+            "redeem(address,uint256,address)",
+            getAddress(sourceChain, "USDT"),
+            honeyMinted,
+            getAddress(sourceChain, "boringVault")
+        );
 
         address[] memory decodersAndSanitizers = new address[](3);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -195,56 +209,63 @@ contract AaveV3IntegrationTest is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
-        uint256 usdtBalance = getERC20(sourceChain, "USDT").balanceOf(address(boringVault)); 
+        uint256 usdtBalance = getERC20(sourceChain, "USDT").balanceOf(address(boringVault));
         assertApproxEqAbs(usdtBalance, 100e6, 1e6); //lose about 1 usdc to fees and share conversion
     }
 
     function testHoneyMintAndRedeemWithDAI() external {
         deal(getAddress(sourceChain, "DAI"), address(boringVault), 100e18);
-    
+
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
         _addHoneyLeafs(leafs);
-    
+
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
-    
+
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
-    
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3); 
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
         manageLeafs[0] = leafs[6]; //approve USDT
         manageLeafs[1] = leafs[7]; //mint w/ USDT
         manageLeafs[2] = leafs[8]; //redeem w/ USDT
-    
+
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
-    
+
         address[] memory targets = new address[](3);
         targets[0] = getAddress(sourceChain, "DAI");
         targets[1] = getAddress(sourceChain, "honeyFactory");
         targets[2] = getAddress(sourceChain, "honeyFactory");
-    
+
         bytes[] memory targetData = new bytes[](3);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "honeyFactory"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("mint(address,uint256,address)", getAddress(sourceChain, "DAI"), 100e18, getAddress(sourceChain, "boringVault"));
-    
-        uint256 honeyMinted = 99500000000000000000; 
-        targetData[2] =
-            abi.encodeWithSignature("redeem(address,uint256,address)", getAddress(sourceChain, "DAI"), honeyMinted, getAddress(sourceChain, "boringVault"));
-    
-    
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "honeyFactory"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "mint(address,uint256,address)",
+            getAddress(sourceChain, "DAI"),
+            100e18,
+            getAddress(sourceChain, "boringVault")
+        );
+
+        uint256 honeyMinted = 99500000000000000000;
+        targetData[2] = abi.encodeWithSignature(
+            "redeem(address,uint256,address)",
+            getAddress(sourceChain, "DAI"),
+            honeyMinted,
+            getAddress(sourceChain, "boringVault")
+        );
+
         address[] memory decodersAndSanitizers = new address[](3);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
-    
+
         uint256[] memory values = new uint256[](3);
-    
+
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-    
-        uint256 usdtBalance = getERC20(sourceChain, "DAI").balanceOf(address(boringVault)); 
+
+        uint256 usdtBalance = getERC20(sourceChain, "DAI").balanceOf(address(boringVault));
         assertApproxEqAbs(usdtBalance, 100e18, 1e18); //lose about 1 usdc to fees and share conversion
     }
-
 
     // ========================================= HELPER FUNCTIONS =========================================
 
