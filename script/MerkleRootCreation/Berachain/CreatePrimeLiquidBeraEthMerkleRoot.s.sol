@@ -53,10 +53,11 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Kodiak Islands ==========================
         
-        address[] memory islands = new address[](3);  
+        address[] memory islands = new address[](4);  
         islands[0] = getAddress(sourceChain, "kodiak_island_WETH_WEETH_005%"); 
         islands[1] = getAddress(sourceChain, "kodiak_island_WETH_beraETH_005%"); 
         islands[2] = getAddress(sourceChain, "kodiak_island_WEETH_WEETH_OT_005%"); 
+        islands[3] = getAddress(sourceChain, "kodiak_island_beraETH_WEETH_005%"); 
 
         _addKodiakIslandLeafs(leafs, islands); 
 
