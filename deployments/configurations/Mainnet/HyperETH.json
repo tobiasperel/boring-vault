@@ -197,8 +197,8 @@
         "address": "0x0000000000000000000000000000000000000000",
         "name": "RSETH"
       },
-      "isPeggedToBase": true,
-      "rateProvider": "0x0000000000000000000000000000000000000000"
+      "isPeggedToBase": false,
+      "rateProvider": "0xf1b71B1Ce00e0f91ac92bD5a0d24eB75F0cA69Ad"
     }
   ],
   "depositAssets": [

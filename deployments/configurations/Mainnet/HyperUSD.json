@@ -71,7 +71,7 @@
         "minimumUpateDelayInSeconds": 21600,
         "performanceFee": 1000,
         "platformFee": 0,
-        "startingExchangeRate": 100000000
+        "startingExchangeRate": 1000000
       }
     }
   },

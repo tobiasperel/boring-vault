@@ -238,6 +238,8 @@ contract ChainValues {
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
         values[mainnet]["ETHX_RATE_PROVIDER"] = 0xAAE054B9b822554dd1D9d1F48f892B4585D3bbf0.toBytes32();
         values[mainnet]["UNIETH_RATE_PROVIDER"] = 0x2c3b8c5e98A6e89AAAF21Deebf5FF9d08c4A9FF7.toBytes32();
+        values[mainnet]["WSTETH_RATE_PROVIDER"] = 0x06FF289EdCE4b9021d7eCbF9FE01198cfc4E1282.toBytes32();
+        values[mainnet]["RSETH_RATE_PROVIDER"] = 0xf1b71B1Ce00e0f91ac92bD5a0d24eB75F0cA69Ad.toBytes32();
 
         // Chainlink Datafeeds
         values[mainnet]["WETH_USD_FEED"] = 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419.toBytes32();
