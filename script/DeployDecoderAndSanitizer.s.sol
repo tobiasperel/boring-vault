@@ -30,6 +30,7 @@ import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Aave
 import {LombardBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LombardBtcDecoderAndSanitizer.sol";
 import {EtherFiBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiBtcDecoderAndSanitizer.sol";
 import {SymbioticLRTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SymbioticLRTDecoderAndSanitizer.sol";
+import {eBTCBerachainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/eBTCBerachainDecoderAndSanitizer.sol"; 
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -54,15 +55,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
 
-        // creationCode = type(AerodromeDecoderAndSanitizer).creationCode;
-        // constructorArgs =
-        //     abi.encode(0xf0bb20865277aBd641a307eCe5Ee04E79073416C, 0x416b433906b1B72FA758e166e239c43d68dC6F29);
-        // deployer.deployContract(EtherFiLiquidEthAerodromeDecoderAndSanitizerName, creationCode, constructorArgs, 0);
-
         creationCode = type(SonicMainnetDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
         deployer.deployContract("Sonic BTC Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
-
 
         vm.stopBroadcast();
     }
