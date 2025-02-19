@@ -8432,7 +8432,301 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[1] = toChain1; 
         leafs[leafIndex].argumentAddresses[2] = toAddress0; 
         leafs[leafIndex].argumentAddresses[3] = toAddress1; 
+    }
+
+    // ========================================= Spectra Finance =========================================
+   
+    function _addSpectraLeafs(
+        ManageLeaf[] memory leafs, 
+        address spectraPool, //curve pool
+        address PT, 
+        address YT, 
+        address swToken //spectra wrapped erc4626
+    ) internal {
+        address asset = address(ERC4626(swToken).asset()); 
+        address vaultShare = address(ISpectraVault(swToken).vaultShare()); 
         
+        // approvals
+        // asset -> swToken (wrap, unwrap)
+        // vaultShare -> PT (IBT functions)
+        // swToken -> approve curve pool
+        // ptToken -> approve curve pool
+                
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            asset,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve ", ERC4626(PT).symbol(), " to spend ", ERC20(asset).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = PT;  
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "lbtcBridge"),
+            true,
+            "deposit(bytes32,bytes32,uint64)",
+            new address[](4),
+            string.concat("Deposit LBTC to ChainID: ", vm.toString(toChain)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = swToken;  
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vaultShare,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve ", ERC20(PT).symbol(), " to spend IBT ", ERC20(vaultShare).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = PT;  
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            swToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve ", ERC20(PT).symbol(), " to spend IBT ", ERC20(swToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = PT;  
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            swToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Spectra Curve Pool to spend ", ERC20(swToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = spectraPool;  
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Spectra Curve Pool to spend ", ERC20(PT).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = spectraPool;  
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            swToken,
+            false,
+            "wrap(uint256,address)",
+            new address[](1),
+            string.concat("Wrap ", ERC20(asset).symbol(), " into ", ERC4626(swToken).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            swToken,
+            false,
+            "unwrap(uint256,address,address)",
+            new address[](2),
+            string.concat("Unwrap ", ERC20(asset).symbol(), " from ", ERC4626(swToken).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "deposit(uint256,address)",
+            new address[](1),
+            string.concat("Deposit ", ERC20(asset).symbol(), " into ", ERC4626(PT).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "depositIBT(uint256,address)",
+            new address[](1),
+            string.concat("Deposit ", ERC20(vaultShare).symbol(), " into ", ERC4626(PT).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "depositIBT(uint256,address,address,uint256)",
+            new address[](2),
+            string.concat("Deposit ", ERC20(vaultShare).symbol(), " into ", ERC4626(PT).name(), " with slippage check"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "redeemForIBT(uint256,address,address)",
+            new address[](2),
+            string.concat("Redeem ", ERC4626(PT).name(), " for ",  ERC20(vaultShare).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "redeemForIBT(uint256,address,address,uint256)",
+            new address[](2),
+            string.concat("Redeem ", ERC4626(PT).name(), " for ",  ERC20(vaultShare).symbol(), " with slippage check"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "withdrawIBT(uint256,address,address)",
+            new address[](2),
+            string.concat("Withdraw ", ERC20(vaultShare).symbol(), " from ", ERC4626(PT).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "withdrawIBT(uint256,address,address,uint256)",
+            new address[](2),
+            string.concat("Withdraw ", ERC20(vaultShare).symbol(), " from ", ERC4626(PT).name(), " with slippage check"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "updateYield(address)",
+            new address[](1),
+            string.concat("Update yield for Boring Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "claimYield(address,uint256)",
+            new address[](1),
+            string.concat("Claim yield for Boring Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            YT,
+            false,
+            "burn(uint256)",
+            new address[](0),
+            string.concat("Claim yield for Boring Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            spectraPool,
+            false,
+            "exchange(uint256,uint256,uint256,uint256)",
+            new address[](0),
+            string.concat("Exchange tokens in Spectra Pool"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            spectraPool,
+            false,
+            "add_liquidity(uint256[2],uint256)",
+            new address[](0),
+            string.concat("Exchange tokens in Spectra Pool"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            spectraPool,
+            false,
+            "remove_liquidity(uint256,uint256[2])",
+            new address[](0),
+            string.concat("Exchange tokens in Spectra Pool"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
     }
 
     // ========================================= JSON FUNCTIONS =========================================
