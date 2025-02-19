@@ -319,15 +319,14 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Euler ==========================
         {
-            ERC4626[] memory depositVaults = new ERC4626[](1); 
-            depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerPrimeWETH")); 
-            
-            address[] memory subaccounts = new address[](1); 
-            subaccounts[0] = address(boringVault); 
+            ERC4626[] memory depositVaults = new ERC4626[](1);
+            depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerPrimeWETH"));
 
-            _addEulerDepositLeafs(leafs, depositVaults, subaccounts); 
+            address[] memory subaccounts = new address[](1);
+            subaccounts[0] = address(boringVault);
 
-        }        
+            _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+        }
 
         // ========================== Term ==========================
         {
@@ -417,6 +416,20 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
                 getAddress(sourceChain, "basePortal"),
                 localTokens,
                 remoteTokens
+            );
+
+            ERC20[] memory swellLocalTokens = new ERC20[](0);
+            ERC20[] memory swellRemoteTokens = new ERC20[](0);
+
+            _addStandardBridgeLeafs(
+                leafs,
+                swell,
+                getAddress(swell, "crossDomainMessenger"),
+                getAddress(sourceChain, "swellResolvedDelegate"),
+                getAddress(sourceChain, "swellStandardBridge"),
+                getAddress(sourceChain, "swellPortal"),
+                swellLocalTokens,
+                swellRemoteTokens
             );
         }
 

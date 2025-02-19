@@ -13,7 +13,6 @@ import "forge-std/Script.sol";
  */
 contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
-
     address public boringVault = 0xbc0f3B23930fff9f4894914bD745ABAbA9588265;
     address public rawDataDecoderAndSanitizer = 0x4Cb75353D930C212Bbb800eE9e52B28A16684931;
     address public managerAddress = 0x4f81c27e750A453d6206C2d10548d6566F60886C;
@@ -47,18 +46,20 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, false);
 
         // ========================== Aave V3 ==========================
-        ERC20[] memory aaveSupplyAssets = new ERC20[](5);
+        ERC20[] memory aaveSupplyAssets = new ERC20[](6);
         aaveSupplyAssets[0] = getERC20(sourceChain, "USDC");
         aaveSupplyAssets[1] = getERC20(sourceChain, "USDT");
         aaveSupplyAssets[2] = getERC20(sourceChain, "DAI");
         aaveSupplyAssets[3] = getERC20(sourceChain, "WEETH");
         aaveSupplyAssets[4] = getERC20(sourceChain, "WSTETH");
-        ERC20[] memory aaveBorrowAssets = new ERC20[](5);
+        aaveSupplyAssets[5] = getERC20(sourceChain, "USDS");
+        ERC20[] memory aaveBorrowAssets = new ERC20[](6);
         aaveBorrowAssets[0] = getERC20(sourceChain, "USDC");
         aaveBorrowAssets[1] = getERC20(sourceChain, "USDT");
         aaveBorrowAssets[2] = getERC20(sourceChain, "DAI");
         aaveBorrowAssets[3] = getERC20(sourceChain, "WETH");
         aaveBorrowAssets[4] = getERC20(sourceChain, "WSTETH");
+        aaveBorrowAssets[5] = getERC20(sourceChain, "GHO");
         _addAaveV3Leafs(leafs, aaveSupplyAssets, aaveBorrowAssets);
 
         // ========================== SparkLend ==========================
@@ -106,13 +107,15 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_03_26_2025"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_04_23_2025"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_06_25_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_wstUSR_market_03_26_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USDe_03_26_25"), true);
 
         // ========================== 1inch ==========================
         /*
          *
          */
-        address[] memory oneInchAssets = new address[](19);
-        SwapKind[] memory oneInchKind = new SwapKind[](19);
+        address[] memory oneInchAssets = new address[](21);
+        SwapKind[] memory oneInchKind = new SwapKind[](21);
         oneInchAssets[0] = getAddress(sourceChain, "USDC");
         oneInchKind[0] = SwapKind.BuyAndSell;
         oneInchAssets[1] = getAddress(sourceChain, "USDT");
@@ -151,6 +154,10 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         oneInchKind[17] = SwapKind.Sell;
         oneInchAssets[18] = getAddress(sourceChain, "ETHFI");
         oneInchKind[18] = SwapKind.Sell;
+        oneInchAssets[19] = getAddress(sourceChain, "USR");
+        oneInchKind[19] = SwapKind.BuyAndSell;
+        oneInchAssets[20] = getAddress(sourceChain, "GHO");
+        oneInchKind[20] = SwapKind.BuyAndSell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
 
@@ -414,6 +421,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_03_26_2025"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_04_23_2025"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_06_25_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_wstUSR_market_03_26_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USDe_03_26_25"), true);
 
         // ========================== 1inch ==========================
         /*

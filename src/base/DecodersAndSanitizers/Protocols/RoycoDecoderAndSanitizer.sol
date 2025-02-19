@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
+
 import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 import {IRecipeMarketHub} from "src/interfaces/RawDataDecoderAndSanitizerInterfaces.sol";
 
@@ -9,22 +10,22 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
     error RoycoWeirollDecoderAndSanitizer__TooManyOfferHashes();
 
     //============================== IMMUTABLES ===============================
-    
-    IRecipeMarketHub internal immutable recipeMarketHub; 
+
+    IRecipeMarketHub internal immutable recipeMarketHub;
 
     constructor(address _recipeMarketHub) {
-        recipeMarketHub = IRecipeMarketHub(_recipeMarketHub); 
+        recipeMarketHub = IRecipeMarketHub(_recipeMarketHub);
     }
 
     function fillIPOffers(
         bytes32[] calldata ipOfferHashes,
         uint256[] calldata, /*fillAmounts*/
-        address fundingVault, 
+        address fundingVault,
         address frontendFeeRecipient
     ) external view virtual returns (bytes memory addressesFound) {
-        if (ipOfferHashes.length != 1) revert RoycoWeirollDecoderAndSanitizer__TooManyOfferHashes(); 
+        if (ipOfferHashes.length != 1) revert RoycoWeirollDecoderAndSanitizer__TooManyOfferHashes();
 
-        (, bytes32 marketHash, , , , ) = recipeMarketHub.offerHashToIPOffer(ipOfferHashes[0]);      
+        (, bytes32 marketHash,,,,) = recipeMarketHub.offerHashToIPOffer(ipOfferHashes[0]);
 
         address marketHash0 = address(bytes20(bytes16(marketHash)));
         address marketHash1 = address(bytes20(bytes16(marketHash << 128)));
@@ -59,22 +60,22 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
         address owner = IWeirollWalletHelper(weirollWallet).owner();
         addressesFound = abi.encodePacked(owner, to);
     }
-    
+
     function claim(address to) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(to); 
+        addressesFound = abi.encodePacked(to);
     }
 
     function merkleWithdraw() external pure virtual returns (bytes memory addressesFound) {
-        return addressesFound; 
+        return addressesFound;
     }
 
-     function withdrawMerkleDeposit(
+    function withdrawMerkleDeposit(
         address _weirollWallet,
-        uint256 /*_merkleDepositNonce*/,
-        uint256 /*_amountDepositedOnSource*/,
+        uint256, /*_merkleDepositNonce*/
+        uint256, /*_amountDepositedOnSource*/
         bytes32[] calldata /*_merkleProof*/
     ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_weirollWallet);  
+        addressesFound = abi.encodePacked(_weirollWallet);
     }
 }
 

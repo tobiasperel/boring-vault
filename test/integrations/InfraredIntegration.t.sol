@@ -45,9 +45,7 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(
-            new FullInfraredDecoderAndSanitizer()
-        );
+        rawDataDecoderAndSanitizer = address(new FullInfraredDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -111,7 +109,7 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "kodiak_v1_WBERA_YEET"), address(boringVault), 100e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault")); 
+        _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault"));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -129,12 +127,11 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "kodiak_v1_WBERA_YEET");
         targets[1] = getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault");
 
-
         bytes[] memory targetData = new bytes[](2);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("stake(uint256)", 100e18);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature("stake(uint256)", 100e18);
 
         address[] memory decodersAndSanitizers = new address[](2);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -144,8 +141,7 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
-
-        skip(10 days); 
+        skip(10 days);
 
         manageLeafs = new ManageLeaf[](1);
         manageLeafs[0] = leafs[4]; //getReward
@@ -156,8 +152,7 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault");
 
         targetData = new bytes[](1);
-        targetData[0] =
-            abi.encodeWithSignature("getReward()");
+        targetData[0] = abi.encodeWithSignature("getReward()");
 
         decodersAndSanitizers = new address[](1);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -165,10 +160,10 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         values = new uint256[](1);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-        
+
         //check reward balance of boring vault
-        uint256 rewardsBalance = getERC20(sourceChain, "iBGT").balanceOf(address(boringVault));  
-        assertGt(rewardsBalance, 0); 
+        uint256 rewardsBalance = getERC20(sourceChain, "iBGT").balanceOf(address(boringVault));
+        assertGt(rewardsBalance, 0);
 
         manageLeafs = new ManageLeaf[](1);
         manageLeafs[0] = leafs[2]; //withdraw
@@ -179,8 +174,7 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault");
 
         targetData = new bytes[](1);
-        targetData[0] =
-            abi.encodeWithSignature("withdraw(uint256)", 100e18);
+        targetData[0] = abi.encodeWithSignature("withdraw(uint256)", 100e18);
 
         decodersAndSanitizers = new address[](1);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -188,18 +182,16 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         values = new uint256[](1);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-        
-        
-        uint256 lpBalance = getERC20(sourceChain, "kodiak_v1_WBERA_YEET").balanceOf(address(boringVault)); 
-        assertEq(lpBalance, 100e18); 
 
+        uint256 lpBalance = getERC20(sourceChain, "kodiak_v1_WBERA_YEET").balanceOf(address(boringVault));
+        assertEq(lpBalance, 100e18);
     }
 
     function testInfraredStakingExit() external {
         deal(getAddress(sourceChain, "kodiak_v1_WBERA_YEET"), address(boringVault), 100e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault")); 
+        _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault"));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -217,12 +209,11 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "kodiak_v1_WBERA_YEET");
         targets[1] = getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault");
 
-
         bytes[] memory targetData = new bytes[](2);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("stake(uint256)", 100e18);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature("stake(uint256)", 100e18);
 
         address[] memory decodersAndSanitizers = new address[](2);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -232,8 +223,7 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
-
-        skip(10 days); 
+        skip(10 days);
 
         manageLeafs = new ManageLeaf[](1);
         manageLeafs[0] = leafs[5]; //exit (get reward + withdraw)
@@ -244,8 +234,7 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault");
 
         targetData = new bytes[](1);
-        targetData[0] =
-            abi.encodeWithSignature("exit()");
+        targetData[0] = abi.encodeWithSignature("exit()");
 
         decodersAndSanitizers = new address[](1);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -253,19 +242,18 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         values = new uint256[](1);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-        
-        uint256 lpBalance = getERC20(sourceChain, "kodiak_v1_WBERA_YEET").balanceOf(address(boringVault)); 
-        assertEq(lpBalance, 100e18); 
-        uint256 rewardsBalance = getERC20(sourceChain, "iBGT").balanceOf(address(boringVault));  
-        assertGt(rewardsBalance, 0); 
 
+        uint256 lpBalance = getERC20(sourceChain, "kodiak_v1_WBERA_YEET").balanceOf(address(boringVault));
+        assertEq(lpBalance, 100e18);
+        uint256 rewardsBalance = getERC20(sourceChain, "iBGT").balanceOf(address(boringVault));
+        assertGt(rewardsBalance, 0);
     }
 
     function testInfraredStakingGetRewardForUser() external {
         deal(getAddress(sourceChain, "kodiak_v1_WBERA_YEET"), address(boringVault), 100e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault")); 
+        _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault"));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -283,12 +271,11 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "kodiak_v1_WBERA_YEET");
         targets[1] = getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault");
 
-
         bytes[] memory targetData = new bytes[](2);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("stake(uint256)", 100e18);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature("stake(uint256)", 100e18);
 
         address[] memory decodersAndSanitizers = new address[](2);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -298,8 +285,7 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
-
-        skip(10 days); 
+        skip(10 days);
 
         manageLeafs = new ManageLeaf[](1);
         manageLeafs[0] = leafs[3]; //exit (get reward + withdraw)
@@ -310,8 +296,7 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault");
 
         targetData = new bytes[](1);
-        targetData[0] =
-            abi.encodeWithSignature("getRewardForUser(address)", address(boringVault));
+        targetData[0] = abi.encodeWithSignature("getRewardForUser(address)", address(boringVault));
 
         decodersAndSanitizers = new address[](1);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -320,10 +305,8 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
-        
-        uint256 rewardsBalance = getERC20(sourceChain, "iBGT").balanceOf(address(boringVault));  
-        assertGt(rewardsBalance, 0); 
-
+        uint256 rewardsBalance = getERC20(sourceChain, "iBGT").balanceOf(address(boringVault));
+        assertGt(rewardsBalance, 0);
 
         manageLeafs = new ManageLeaf[](1);
         manageLeafs[0] = leafs[2]; //withdraw
@@ -334,8 +317,7 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "infrared_kodiak_WBERA_YEET_vault");
 
         targetData = new bytes[](1);
-        targetData[0] =
-            abi.encodeWithSignature("withdraw(uint256)", 100e18);
+        targetData[0] = abi.encodeWithSignature("withdraw(uint256)", 100e18);
 
         decodersAndSanitizers = new address[](1);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -343,11 +325,9 @@ contract InfraredIntegratonTest is Test, MerkleTreeHelper {
         values = new uint256[](1);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-        
-        
-        uint256 lpBalance = getERC20(sourceChain, "kodiak_v1_WBERA_YEET").balanceOf(address(boringVault)); 
-        assertEq(lpBalance, 100e18); 
 
+        uint256 lpBalance = getERC20(sourceChain, "kodiak_v1_WBERA_YEET").balanceOf(address(boringVault));
+        assertEq(lpBalance, 100e18);
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
