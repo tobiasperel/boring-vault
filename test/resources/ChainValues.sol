@@ -221,6 +221,7 @@ contract ChainValues {
         values[mainnet]["BTCN"] = 0x386E7A3a0c0919c9d53c3b04FF67E73Ff9e45Fb6.toBytes32();
         values[mainnet]["sUSDs"] = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD.toBytes32();
         values[mainnet]["USR"] = 0x66a1E37c9b0eAddca17d3662D6c05F4DECf3e110.toBytes32();
+        values[mainnet]["WSTUSR"] = 0x1202F5C7b4B9E47a1A484E8B270be34dbbC75055.toBytes32();
         values[mainnet]["USUAL"] = 0xC4441c2BE5d8fA8126822B9929CA0b81Ea0DE38E.toBytes32();
         values[mainnet]["MORPHO"] = 0x58D97B57BB95320F9a05dC918Aef65434969c2B2.toBytes32();
         values[mainnet]["ETHFI"] = 0xFe0c30065B384F05761f15d0CC899D4F9F9Cc0eB.toBytes32(); 
@@ -228,12 +229,18 @@ contract ChainValues {
         values[mainnet]["beraSTONE"] = 0x97Ad75064b20fb2B2447feD4fa953bF7F007a706.toBytes32(); 
         values[mainnet]["solvBTC"] = 0x7A56E1C57C7475CCf742a1832B028F0456652F97.toBytes32(); 
         values[mainnet]["solvBTC.BBN"] = 0xd9D920AA40f578ab794426F5C90F6C731D159DEf.toBytes32(); 
+        values[mainnet]["STONE"] = 0x7122985656e38BDC0302Db86685bb972b145bD3C.toBytes32(); 
+        values[mainnet]["SWBTC"] = 0x8DB2350D78aBc13f5673A411D4700BCF87864dDE.toBytes32(); 
+        values[mainnet]["enzoBTC"] = 0x6A9A65B84843F5fD4aC9a0471C4fc11AFfFBce4a.toBytes32(); 
+        values[mainnet]["SBTC"] = 0x094c0e36210634c3CfA25DC11B96b562E0b07624.toBytes32(); 
 
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
         values[mainnet]["ETHX_RATE_PROVIDER"] = 0xAAE054B9b822554dd1D9d1F48f892B4585D3bbf0.toBytes32();
         values[mainnet]["UNIETH_RATE_PROVIDER"] = 0x2c3b8c5e98A6e89AAAF21Deebf5FF9d08c4A9FF7.toBytes32();
+        values[mainnet]["WSTETH_RATE_PROVIDER"] = 0x06FF289EdCE4b9021d7eCbF9FE01198cfc4E1282.toBytes32();
+        values[mainnet]["RSETH_RATE_PROVIDER"] = 0xf1b71B1Ce00e0f91ac92bD5a0d24eB75F0cA69Ad.toBytes32();
 
         // Chainlink Datafeeds
         values[mainnet]["WETH_USD_FEED"] = 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419.toBytes32();
