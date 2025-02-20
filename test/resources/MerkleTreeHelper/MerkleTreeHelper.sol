@@ -6964,6 +6964,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         _addResolvUsrExternalRequestsManagerLeafs(leafs);
         _addResolvStUSRLeafs(leafs);
         _addResolvWstUSRLeafs(leafs);
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "wstUSR"))); 
     }
 
     function _addResolvUsrExternalRequestsManagerLeafs(ManageLeaf[] memory leafs) internal {

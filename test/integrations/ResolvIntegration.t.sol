@@ -117,7 +117,7 @@ contract ResolvIntegrationTest is Test, MerkleTreeHelper {
         IStUSR(getAddress(sourceChain,"stUSR")).transferShares(address(boringVault), 100_000e18);
         deal(getAddress(sourceChain, "wstUSR"), address(boringVault), 100_000e18);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
         _addAllResolvLeafs(leafs);
 
         //string memory filePath = "./TestTEST.json";
