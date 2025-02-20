@@ -32,6 +32,7 @@ import {EtherFiBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Ethe
 import {SymbioticLRTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SymbioticLRTDecoderAndSanitizer.sol";
 import {StakedSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/StakedSonicDecoderAndSanitizer.sol";
 
+
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
 import "forge-std/Script.sol";
@@ -59,7 +60,6 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         creationCode = type(StakedSonicDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(sonicUniV3);
         deployer.deployContract("Staked Sonic Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
-
 
         vm.stopBroadcast();
     }

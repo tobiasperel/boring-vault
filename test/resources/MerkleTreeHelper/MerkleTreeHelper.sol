@@ -2779,6 +2779,15 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Uniswap V3 =========================================
+    function _addUniswapV3Leafs(
+        ManageLeaf[] memory leafs,
+        address[] memory token0,
+        address[] memory token1,
+        bool swap_only
+    ) internal {
+        _addUniswapV3Leafs(leafs, token0, token1, swap_only, false); 
+    }
+
 
     function _addUniswapV3Leafs(
         ManageLeaf[] memory leafs,
@@ -5919,7 +5928,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "claim(address[],address[],uint256[],bytes32[][])",
                 new address[](2),
-                string.concat("Claim merkl", tokensToClaim[i].symbol(), " rewards"),
+                string.concat("Claim merkl ", tokensToClaim[i].symbol(), " rewards"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
@@ -8382,6 +8391,48 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
         }
+    }
+
+    // ========================================= LBTC Bridge =========================================
+    function _addLBTCBridgeLeafs(ManageLeaf[] memory leafs, bytes32 toChain) internal {
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "LBTC"),
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve LBTC Bridge Wrapper to spend LBTC"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "lbtcBridge"); 
+
+        address toChain0 = address(bytes20(bytes16(toChain)));
+        address toChain1 = address(bytes20(bytes16(toChain << 128)));
+        
+        //kinda scuffed, can maybe just use one address? 
+        bytes32 boringVaultBytes = getBytes32(sourceChain, "boringVault"); 
+        address toAddress0 = address(bytes20(bytes16(boringVaultBytes)));
+        address toAddress1 = address(bytes20(bytes16(boringVaultBytes << 128)));
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "lbtcBridge"),
+            true,
+            "deposit(bytes32,bytes32,uint64)",
+            new address[](4),
+            string.concat("Deposit LBTC to ChainID: ", vm.toString(toChain)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = toChain0; 
+        leafs[leafIndex].argumentAddresses[1] = toChain1; 
+        leafs[leafIndex].argumentAddresses[2] = toAddress0; 
+        leafs[leafIndex].argumentAddresses[3] = toAddress1; 
+        
     }
 
     // ========================================= JSON FUNCTIONS =========================================
