@@ -6960,6 +6960,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Resolv =========================================
+   
     function _addAllResolvLeafs(ManageLeaf[] memory leafs) internal {
         _addResolvUsrExternalRequestsManagerLeafs(leafs);
         _addResolvStUSRLeafs(leafs);
