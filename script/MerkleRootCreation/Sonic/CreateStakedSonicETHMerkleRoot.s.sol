@@ -41,9 +41,10 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Beets ==========================
         _addBalancerLeafs(leafs, getBytes32(sourceChain, "scETH_WETH_PoolId"), getAddress(sourceChain, "scETH_WETH_gauge")); 
-        _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_stS_PoolId")); //USDC, stS
-        _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_wS_PoolId")); //USDC, wS
+        _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_stS_PoolId")); //sell stS for USDC
+        _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_wS_PoolId")); //sell wS for USDC
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "stS_BEETS_PoolId")); //stS, BEETS (swap BEETS for stS, then USDC, swap function leaves only support 2 token pools atm)
+        _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_WETH_PoolId")); //USDC -> WETH and then can deposit for scETH
 
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
