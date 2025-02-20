@@ -18,7 +18,7 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba;
     address public managerAddress = 0x5F7f5205A3E7c63c3bd287EecBe7879687D4c698;
     address public accountantAddress = 0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034;
-    address public rawDataDecoderAndSanitizer = 0x594c769681dAdA8E39C630550e03012d11E88234;
+    address public rawDataDecoderAndSanitizer = 0xf1BeC14BB66F5349Fe42C14fEb66BA1fa53F869b;
 
     function setUp() external {}
 
@@ -74,6 +74,9 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         subaccounts[0] = address(boringVault);
 
         _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+
+        // ========================== Native =========================
+        _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));  
 
         // ========================== Verify =========================
 
