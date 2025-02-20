@@ -37,7 +37,16 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, sonicMainnet, "accountantAddress", accountantAddress);
         setAddress(false, sonicMainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](128);
+        ManageLeaf[] memory leafs = new ManageLeaf[](256);
+
+        // ========================== UniswapV3 ==========================
+        address[] memory token0 = new address[](1);
+        token0[0] = getAddress(sourceChain, "wS");
+
+        address[] memory token1 = new address[](1);
+        token1[0] = getAddress(sourceChain, "WETH");
+
+        _addUniswapV3Leafs(leafs, token0, token1, false, true); //use router02  
 
         // ========================== Beets ==========================
         _addBalancerLeafs(leafs, getBytes32(sourceChain, "scETH_WETH_PoolId"), getAddress(sourceChain, "scETH_WETH_gauge")); 
