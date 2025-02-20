@@ -37,7 +37,7 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, sonicMainnet, "accountantAddress", accountantAddress);
         setAddress(false, sonicMainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](256);
+        ManageLeaf[] memory leafs = new ManageLeaf[](128);
 
         // ========================== Beets ==========================
         _addBalancerLeafs(leafs, getBytes32(sourceChain, "scETH_WETH_PoolId"), getAddress(sourceChain, "scETH_WETH_gauge")); 
