@@ -198,7 +198,7 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
             "approve(address,uint256)", getAddress(sourceChain, "spectra_stkGHO_PT"), type(uint256).max
         );
         targetData[1] =
-            abi.encodeWithSignature("deposit(uint256,address)", 100e18, getAddress(sourceChain, "boringVault"));
+            abi.encodeWithSignature("deposit(uint256,address,address,uint256)", 100e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"), 0);
 
 
         address[] memory decodersAndSanitizers = new address[](2);
@@ -235,11 +235,11 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](7);
         manageLeafs[0] = leafs[3]; //approve PT to spend swIBT
         manageLeafs[1] = leafs[9]; //depositIBT
-        manageLeafs[2] = leafs[11]; //redeemForIBT
-        manageLeafs[3] = leafs[13]; //withdrawIBT
-        manageLeafs[4] = leafs[15]; //updateYield
-        manageLeafs[5] = leafs[16]; //claimYield
-        manageLeafs[6] = leafs[17]; //burn (YT)
+        manageLeafs[2] = leafs[12]; //redeemForIBT
+        manageLeafs[3] = leafs[15]; //withdrawIBT
+        manageLeafs[4] = leafs[17]; //updateYield
+        manageLeafs[5] = leafs[18]; //claimYield
+        manageLeafs[6] = leafs[19]; //burn (YT)
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -306,12 +306,11 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
         
-        // withdraw(), mint(), and redeem() are not implemented in this Spectra contract
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
         manageLeafs[0] = leafs[1]; //approve swGHO
         manageLeafs[1] = leafs[6]; //wrap
         manageLeafs[2] = leafs[4]; //approve swToken swap in Curve Pool
-        manageLeafs[3] = leafs[18]; //exchange() (sell swGHO for stkGHO_PT, fixing the rate)
+        manageLeafs[3] = leafs[20]; //exchange() (sell swGHO for stkGHO_PT, fixing the rate)
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -367,7 +366,7 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        _generateTestLeafs(leafs, manageTree); 
+        //_generateTestLeafs(leafs, manageTree); 
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
         
@@ -375,8 +374,8 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
         manageLeafs[0] = leafs[4]; //approve swGHO in curve pool
         manageLeafs[1] = leafs[5]; //approve swGHO_PT in curve pool
-        manageLeafs[2] = leafs[19]; //add_liquidity
-        manageLeafs[3] = leafs[20]; //remove_liqudity
+        manageLeafs[2] = leafs[21]; //add_liquidity
+        manageLeafs[3] = leafs[22]; //remove_liqudity
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -457,7 +456,7 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
             "approve(address,uint256)", getAddress(sourceChain, "spectra_lvlUSD_PT"), type(uint256).max
         );
         targetData[1] =
-            abi.encodeWithSignature("deposit(uint256,address)", 100e18, getAddress(sourceChain, "boringVault"));
+            abi.encodeWithSignature("deposit(uint256,address,address,uint256)", 100e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"), 0);
 
 
         address[] memory decodersAndSanitizers = new address[](2);
@@ -473,6 +472,39 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "lvlUSD"), address(boringVault), 100_000e18);
         deal(getAddress(sourceChain, "slvlUSD"), address(boringVault), 100_000e18);
         deal(getAddress(sourceChain, "spectra_lvlUSD_IBT"), address(boringVault), 1000e18);
+            
+        uint256 COOLDOWN_DURATION_SLOT = 14;
+
+        uint256 expectedCooldown = 604800; // 0x00093a80
+        address expectedSilo = 0x96948ca569fFAEf0CE0f05B79aA9CDe073690CEd;
+
+        for (uint256 slot = 0; slot < 100; slot++) {  // Search first 100 slots
+            bytes32 slotValue = vm.load(getAddress(sourceChain, "slvlUSD"), bytes32(slot));
+
+            uint24 cooldown = uint24(uint256(slotValue));  // Lower 3 bytes
+            address storedSilo = address(uint160(uint256(slotValue) >> 24));  // Shift right by 24 bits
+
+            console.log("Checking Slot:", slot);
+            console.log("Cooldown:", cooldown);
+            console.log("Silo Address:", storedSilo);
+
+            if (cooldown == expectedCooldown && storedSilo == expectedSilo) {
+                console.log("Found correct slot:", slot);
+                break;
+            }
+        }
+    
+         // To set via forge:
+         vm.store(
+             getAddress(sourceChain, "slvlUSD"),
+             bytes32(COOLDOWN_DURATION_SLOT),
+             bytes32(uint256(0))
+         );
+
+
+         uint24 d = ILvlUSD(getAddress(sourceChain, "slvlUSD")).cooldownDuration(); 
+
+         console.log("SLOT STORED, ", d); 
 
         ManageLeaf[] memory leafs = new ManageLeaf[](32);
         _addSpectraLeafs(
@@ -492,12 +524,12 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
         // withdraw(), mint(), and redeem() are not implemented in this Spectra contract
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](7);
         manageLeafs[0] = leafs[3]; //approve PT to spend swIBT
-        manageLeafs[1] = leafs[9]; //depositIBT
-        manageLeafs[2] = leafs[11]; //redeemForIBT
-        manageLeafs[3] = leafs[13]; //withdrawIBT
-        manageLeafs[4] = leafs[15]; //updateYield
-        manageLeafs[5] = leafs[16]; //claimYield
-        manageLeafs[6] = leafs[17]; //burn (YT)
+        manageLeafs[1] = leafs[9]; //depositIBT w/ slippage
+        manageLeafs[2] = leafs[11]; //redeem w/ slippage
+        manageLeafs[3] = leafs[14]; //withdraw w/ slippage
+        manageLeafs[4] = leafs[17]; //updateYield
+        manageLeafs[5] = leafs[18]; //claimYield
+        manageLeafs[6] = leafs[19]; //burn (YT)
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -517,9 +549,9 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
         targetData[1] =
             abi.encodeWithSignature("depositIBT(uint256,address)", 100e18, getAddress(sourceChain, "boringVault"));
         targetData[2] =
-            abi.encodeWithSignature("redeemForIBT(uint256,address,address)", 50e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"));
+            abi.encodeWithSignature("redeem(uint256,address,address,uint256)", 50e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"), 0);
         targetData[3] =
-            abi.encodeWithSignature("withdrawIBT(uint256,address,address)", 1e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"));
+            abi.encodeWithSignature("withdraw(uint256,address,address,uint256)", 1e18, getAddress(sourceChain, "boringVault"), getAddress(sourceChain, "boringVault"), 100e18);
         targetData[4] =
             abi.encodeWithSignature("updateYield(address)", getAddress(sourceChain, "boringVault"));
         targetData[5] =
@@ -566,7 +598,7 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
         // withdraw(), mint(), and redeem() are not implemented in this Spectra contract
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
         manageLeafs[0] = leafs[4]; //approve swToken swap in Curve Pool
-        manageLeafs[1] = leafs[18]; //exchange() (sell swGHO for stkGHO_PT, fixing the rate)
+        manageLeafs[1] = leafs[20]; //exchange() (sell swGHO for stkGHO_PT, fixing the rate)
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -621,8 +653,8 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
         manageLeafs[0] = leafs[4]; //approve swGHO in curve pool
         manageLeafs[1] = leafs[5]; //approve swGHO_PT in curve pool
-        manageLeafs[2] = leafs[19]; //add_liquidity
-        manageLeafs[3] = leafs[20]; //remove_liqudity
+        manageLeafs[2] = leafs[21]; //add_liquidity
+        manageLeafs[3] = leafs[22]; //remove_liqudity
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -678,3 +710,7 @@ contract SpectraIntegrationTest is Test, MerkleTreeHelper {
 
 
 contract FullSpectraFinanceDecoderAndSanitizer is SpectraDecoderAndSanitizer {}
+
+interface ILvlUSD {
+    function cooldownDuration() external view returns (uint24); 
+}

@@ -14,7 +14,7 @@ import "forge-std/Script.sol";
 contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
     address public boringVault = 0xbc0f3B23930fff9f4894914bD745ABAbA9588265;
-    address public rawDataDecoderAndSanitizer = 0x5120a22E6b195EEda2568e1dF168D9013eAf9FB6;
+    address public rawDataDecoderAndSanitizer = 0x31331e50eCD9982E1E756f4ee468EA7F0E58243e;
     address public managerAddress = 0x4f81c27e750A453d6206C2d10548d6566F60886C;
     address public accountantAddress = 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe;
     address public drone = 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De;

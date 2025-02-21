@@ -8655,7 +8655,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         try ISpectraVault(swToken).vaultShare() returns (address share) {
             vaultShare = share;
         } catch {
-            vaultShare = asset;  
+            vaultShare = swToken;  
         }
         
         // approvals
@@ -8775,12 +8775,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             PT,
             false,
-            "deposit(uint256,address)",
-            new address[](1),
-            string.concat("Deposit ", ERC20(asset).symbol(), " into ", ERC4626(PT).name()),
+            "deposit(uint256,address,address,uint256)",
+            new address[](2),
+            string.concat("Deposit ", ERC20(asset).symbol(), " into ", ERC4626(PT).name(), " with slippage check"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
 
         unchecked {
             leafIndex++;
@@ -8804,6 +8805,20 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             "depositIBT(uint256,address,address,uint256)",
             new address[](2),
             string.concat("Deposit ", ERC20(vaultShare).symbol(), " into ", ERC4626(PT).name(), " with slippage check"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "redeem(uint256,address,address,uint256)",
+            new address[](2),
+            string.concat("Redeem ", ERC4626(PT).name(), " for ",  ERC20(asset).symbol(), " with slippage check"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
@@ -8836,6 +8851,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
         leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            PT,
+            false,
+            "withdraw(uint256,address,address,uint256)",
+            new address[](2),
+            string.concat("Withdraw ", ERC20(asset).symbol(), " from ", ERC4626(PT).name(), " with slippage check"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+
 
         unchecked {
             leafIndex++;

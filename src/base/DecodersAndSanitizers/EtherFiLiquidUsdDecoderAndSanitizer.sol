@@ -69,7 +69,7 @@ contract EtherFiLiquidUsdDecoderAndSanitizer is
     function deposit(uint256, address receiver)
         external
         pure
-        override(BalancerV2DecoderAndSanitizer, ERC4626DecoderAndSanitizer, CurveDecoderAndSanitizer, SpectraDecoderAndSanitizer)
+        override(BalancerV2DecoderAndSanitizer, ERC4626DecoderAndSanitizer, CurveDecoderAndSanitizer)
         returns (bytes memory addressesFound)
     {
         addressesFound = abi.encodePacked(receiver);
@@ -176,4 +176,29 @@ contract EtherFiLiquidUsdDecoderAndSanitizer is
         return addressesFound;
     }
 
+    /**
+     * @notice Spectra, and FluidFToken all specify a `redeem(uint256,address,address,uint256)`,
+     *         all cases are handled the same way.
+     */
+    function redeem(uint256,address a, address b, uint256)
+        external
+        pure
+        override(SpectraDecoderAndSanitizer, FluidFTokenDecoderAndSanitizer)
+        returns (bytes memory addressesFound)
+    {
+        addressesFound = abi.encodePacked(a, b); 
+    }
+
+    /**
+     * @notice Spectra, and FluidFToken all specify a `withdraw(uint256,address,address,uint256)`,
+     *         all cases are handled the same way.
+     */
+    function withdraw(uint256,address a, address b, uint256)
+        external
+        pure
+        override(SpectraDecoderAndSanitizer, FluidFTokenDecoderAndSanitizer)
+        returns (bytes memory addressesFound)
+    {
+        addressesFound = abi.encodePacked(a, b); 
+    }
 }
