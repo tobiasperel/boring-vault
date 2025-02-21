@@ -41,13 +41,15 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
         
         // ========================== Kodiak Swaps ==========================
         
-        address[] memory token0 = new address[](2);  
+        address[] memory token0 = new address[](3);  
         token0[0] = getAddress(sourceChain, "WETH");    
         token0[1] = getAddress(sourceChain, "WETH");    
+        token0[2] = getAddress(sourceChain, "beraETH");    
 
-        address[] memory token1 = new address[](2);  
+        address[] memory token1 = new address[](3);  
         token1[0] = getAddress(sourceChain, "WEETH");    
-        token1[1] = getAddress(sourceChain, "beraETH");    
+        token1[1] = getAddress(sourceChain, "beraETH"); 
+        token1[2] = getAddress(sourceChain, "WEETH");   
         
         _addUniswapV3Leafs(leafs, token0, token1, false); 
 
