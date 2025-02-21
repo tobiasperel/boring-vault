@@ -7,7 +7,8 @@ import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
-import {SonicDepositDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SonicDepositDecoderAndSanitizer.sol";
+import {SonicDepositDecoderAndSanitizer} from
+    "src/base/DecodersAndSanitizers/Protocols/SonicDepositDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
@@ -44,9 +45,7 @@ contract RingsVoterIntegration is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(
-            new FullRingsDecoderAndSanitizer()
-        );
+        rawDataDecoderAndSanitizer = address(new FullRingsDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -110,7 +109,7 @@ contract RingsVoterIntegration is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "scUSD"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](2);
-        _addRingsVoterLeafs(leafs, getAddress(sourceChain, "scUSDVoter"), getERC20(sourceChain, "scUSD"));     
+        _addRingsVoterLeafs(leafs, getAddress(sourceChain, "scUSDVoter"), getERC20(sourceChain, "scUSD"));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -127,10 +126,10 @@ contract RingsVoterIntegration is Test, MerkleTreeHelper {
         targets[1] = getAddress(sourceChain, "scUSDVoter");
 
         bytes[] memory targetData = new bytes[](2);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "scUSDVoter"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("depositBudget(uint256)", 100e8);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "scUSDVoter"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature("depositBudget(uint256)", 100e8);
 
         address[] memory decodersAndSanitizers = new address[](2);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -144,7 +143,7 @@ contract RingsVoterIntegration is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "scETH"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](2);
-        _addRingsVoterLeafs(leafs, getAddress(sourceChain, "scETHVoter"), getERC20(sourceChain, "scETH"));     
+        _addRingsVoterLeafs(leafs, getAddress(sourceChain, "scETHVoter"), getERC20(sourceChain, "scETH"));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -161,10 +160,10 @@ contract RingsVoterIntegration is Test, MerkleTreeHelper {
         targets[1] = getAddress(sourceChain, "scETHVoter");
 
         bytes[] memory targetData = new bytes[](2);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "scETHVoter"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("depositBudget(uint256)", 100e8);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "scETHVoter"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature("depositBudget(uint256)", 100e8);
 
         address[] memory decodersAndSanitizers = new address[](2);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -180,6 +179,5 @@ contract RingsVoterIntegration is Test, MerkleTreeHelper {
         vm.selectFork(forkId);
     }
 }
-
 
 contract FullRingsDecoderAndSanitizer is SonicDepositDecoderAndSanitizer {}
