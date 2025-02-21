@@ -39,21 +39,26 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](256);
 
+        // ========================== Fee Claiming ==========================
+        ERC20[] memory feeAssets = new ERC20[](2);
+        feeAssets[0] = getERC20(sourceChain, "USDC");
+        feeAssets[1] = getERC20(sourceChain, "scUSD");
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true);
+
         // ========================== Beets ==========================
         _addBalancerLeafs(
             leafs, getBytes32(sourceChain, "scUSD_USDC_PoolId"), getAddress(sourceChain, "scUSD_USDC_gauge")
         );
-        _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_stS_PoolId")); //USDC, stS 
+        _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_stS_PoolId")); //USDC, stS
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_wS_PoolId")); //USDC, wS
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "stS_BEETS_PoolId")); //stS, BEETS (swap BEETS for stS, then USDC, swap function leaves only support 2 token pools atm)
-
 
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "USDC");
         _addTellerLeafs(leafs, getAddress(sourceChain, "scUSDTeller"), tellerAssets, false);
 
-         // ========================== Silo ==========================
+        // ========================== Silo ==========================
 
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id8_config"));
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"));
@@ -61,7 +66,12 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Curve =========================
 
-        _addCurveLeafs(leafs, getAddress(sourceChain, "curve_USDC_scUSD_pool"), 2, getAddress(sourceChain, "curve_USDC_scUSD_gauge"));
+        _addCurveLeafs(
+            leafs,
+            getAddress(sourceChain, "curve_USDC_scUSD_pool"),
+            2,
+            getAddress(sourceChain, "curve_USDC_scUSD_gauge")
+        );
         _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "curve_USDC_scUSD_pool"));
 
         // ========================== Euler =========================
@@ -76,7 +86,7 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
 
         // ========================== Native =========================
-        _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));  
+        _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));
 
         // ========================== Verify =========================
 
