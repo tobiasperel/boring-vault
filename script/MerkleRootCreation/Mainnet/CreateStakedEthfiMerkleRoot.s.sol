@@ -31,7 +31,7 @@ contract CreateStakedEthfiMerkleRootScript is Script, MerkleTreeHelper {
 
     address operator0 = 0xDd777e5158Cb11DB71B4AF93C75A96eA11A2A615; 
     address operator1 = 0x2c7cB7d5dC4aF9caEE654553a144C76F10D4b320;  
-    address operator2 = 0x72F4EDd19a96Bcd796d2ba49C6AC534680785619; 
+    address operator2 = 0x2692fEe60fF9037F1b73EF5A5C263539221e8085; 
 
     function setUp() external {}
 
