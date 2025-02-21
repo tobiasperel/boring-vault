@@ -8651,7 +8651,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         address swToken //spectra wrapped erc4626
     ) internal {
         address asset = address(ERC4626(swToken).asset()); 
-        address vaultShare = address(ISpectraVault(swToken).vaultShare()); 
+        address vaultShare;
+        try ISpectraVault(swToken).vaultShare() returns (address share) {
+            vaultShare = share;
+        } catch {
+            vaultShare = asset;  
+        }
         
         // approvals
         // asset -> swToken (wrap, unwrap)
@@ -8676,11 +8681,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafIndex++;
         }
         leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "lbtcBridge"),
-            true,
-            "deposit(bytes32,bytes32,uint64)",
-            new address[](4),
-            string.concat("Deposit LBTC to ChainID: ", vm.toString(toChain)),
+            vaultShare,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve ", ERC4626(swToken).symbol(), " to spend ", ERC20(vaultShare).symbol()),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = swToken;  
@@ -9266,4 +9271,9 @@ interface IGoldiVault {
     function depositToken() external view returns (address);
     function ot() external view returns (address);
     function yt() external view returns (address);
+}
+
+interface ISpectraVault {
+    function vaultShare() external view returns (address);
+    function underlying() external view returns (address);
 }

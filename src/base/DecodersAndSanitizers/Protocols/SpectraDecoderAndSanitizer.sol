@@ -72,7 +72,7 @@ abstract contract SpectraDecoderAndSanitizer is BaseDecoderAndSanitizer {
     
     //============================== Yield Token ===============================
     
-    function burn(uint256 /*amount*/) external pure returns (bytes memory addressesFound) {
+    function burn(uint256 /*amount*/) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound; 
     }
 

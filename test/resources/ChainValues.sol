@@ -236,6 +236,9 @@ contract ChainValues {
         values[mainnet]["USR"] = 0x66a1E37c9b0eAddca17d3662D6c05F4DECf3e110.toBytes32();
         values[mainnet]["stUSR"] = 0x6c8984bc7DBBeDAf4F6b2FD766f16eBB7d10AAb4.toBytes32();
         values[mainnet]["wstUSR"] = 0x1202F5C7b4B9E47a1A484E8B270be34dbbC75055.toBytes32();
+        values[mainnet]["stkGHO"] = 0x1a88Df1cFe15Af22B3c4c783D4e6F7F9e0C1885d.toBytes32();
+        values[mainnet]["lvlUSD"] = 0x7C1156E515aA1A2E851674120074968C905aAF37.toBytes32();
+        values[mainnet]["slvlUSD"] = 0x4737D9b4592B40d51e110b94c9C043c6654067Ae.toBytes32();
 
 
         // Rate providers
@@ -1019,6 +1022,29 @@ contract ChainValues {
 
         // Lombard 
         values[mainnet]["lbtcBridge"] = 0xA869817b48b25EeE986bdF4bE04062e6fd2C418B.toBytes32();
+
+        // Spectra
+        values[mainnet]["ysUSDC"] = 0xF7DE3c70F2db39a188A81052d2f3C8e3e217822a.toBytes32(); //SuperUSDC Vault
+        values[mainnet]["ysUSDC_PT"] = 0x3b9739eE0c3b5bD7b392a801DEaC1dc68cfB0C48.toBytes32();
+        values[mainnet]["ysUSDC_YT"] = 0x9b9968Ba66B06c4340e60cB4dEa237CC6e3E5999.toBytes32();
+        values[mainnet]["ysUSDC_Pool"] = 0xd7e163a91D11cfa2B4059f1626cCd6e33b143cbc.toBytes32();
+        values[mainnet]["sRLP_Pool"] = 0x75c91a79Faf0fe64AcCdBd51e3fA6321d8952D84.toBytes32();
+        values[mainnet]["sRLP_PT"] = 0x1F7Aa7104db822987E1F44A66dF709A8C4Fb301a.toBytes32();
+        values[mainnet]["sRLP_YT"] = 0xC07cF8e6D7F6F47E196D36a4c18287E86f76b046.toBytes32();
+        values[mainnet]["sRLP"] = 0x4eaFef6149C5B0c3E42fF444F79675B3E3125cb7.toBytes32();
+        values[mainnet]["spectra_stkGHO_Pool"] = 0x9429E06FFD09Cf97007791B8bF3845171f1425E8.toBytes32();
+        values[mainnet]["spectra_stkGHO_PT"] = 0x0F7454c4537AFe1243df65842C7919b5d6d6198C.toBytes32();
+        values[mainnet]["spectra_stkGHO_YT"] = 0xdfB8D94C25C8Cfc4df171077fAd479AdAaef51c9.toBytes32();
+        values[mainnet]["spectra_stkGHO"] = 0xa94ec39c91DF334DCAb55aDaA8EdD9C1dAF67cA7.toBytes32();
+        values[mainnet]["spectra_lvlUSD_Pool"] = 0xAd6Cd1Aceb6E919E4C4918503C22a3F531cf8276.toBytes32();
+        values[mainnet]["spectra_lvlUSD_PT"] = 0xBC30e564052a622d6b50170b73fF14ee49eEaDE0.toBytes32();
+        values[mainnet]["spectra_lvlUSD_YT"] = 0xA6676B5d6D56F905d084914b70B2cC9C383f1A23.toBytes32();
+        values[mainnet]["spectra_lvlUSD_IBT"] = 0x4737D9b4592B40d51e110b94c9C043c6654067Ae.toBytes32();
+        values[mainnet]["spectra_sdeUSD_Pool"] = 0xFb7c3C95f4C2C05F6eC7dcFE3e368a40eB338603.toBytes32();
+        values[mainnet]["spectra_sdeUSD_PT"] = 0xb4B8925c4CBce692F37C9D946883f2E330a042a9.toBytes32();
+        values[mainnet]["spectra_sdeUSD_YT"] = 0xE9677Bfde5830B100281178681C7e78c7d861D1C.toBytes32();
+        values[mainnet]["spectra_sdeUSD_IBT"] = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326.toBytes32();
+
     }
 
     function _addBaseValues() private {
