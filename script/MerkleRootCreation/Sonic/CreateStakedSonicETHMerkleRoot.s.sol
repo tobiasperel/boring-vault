@@ -39,6 +39,13 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](256);
 
+
+        // ========================== Fee Claiming ==========================
+        ERC20[] memory feeAssets = new ERC20[](2);
+        feeAssets[0] = getERC20(sourceChain, "WETH");
+        feeAssets[1] = getERC20(sourceChain, "scETH");
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true);
+
         // ========================== UniswapV3 ==========================
         address[] memory token0 = new address[](1);
         token0[0] = getAddress(sourceChain, "wS");
