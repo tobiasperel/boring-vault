@@ -28,60 +28,55 @@
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "addresses/Mainnet/SonicBTC.json"
+    "deploymentFileName": "addresses/Mainnet/HyperUSD.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "Sonic BTC Roles Authority V0.1"
+    "rolesAuthorityDeploymentName": "HyperUSD Roles Authority V0.0"
   },
   "lensConfiguration": {
-    "lensDeploymentName": "Arctic Architecture Lens V0.1"
+    "lensDeploymentName": "Arctic Architecture Lens V0.0"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "Sonic BTC Boring Vault V0.1",
-    "boringVaultName": "Sonic BTC",
-    "boringVaultSymbol": "scBTC",
-    "boringVaultDecimals": 8
+    "boringVaultDeploymentName": "HyperUSD Boring Vault V0.0",
+    "boringVaultName": "HyperUSD Vault",
+    "boringVaultSymbol": "hypeUSD",
+    "boringVaultDecimals": 6
   },
   "managerConfiguration": {
-    "managerDeploymentName": "Sonic BTC Manager V0.1",
+    "managerDeploymentName": "HyperUSD Manager V0.0",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "Sonic BTC Accountant V0.1",
+    "accountantDeploymentName": "HyperUSD Accountant V0.0",
     "accountantParameters": {
       "kind": {
-        "variableRate": false,
-        "fixedRate": true
+        "variableRate": true,
+        "fixedRate": false
       },
       "payoutConfiguration": {
-        "payoutTo": "0x0000000000000000000000000000000000000001",
-        "optionalPaymentSplitterName": "Sonic BTC Payment Splitter V0.1",
-        "splits": [
-          {
-            "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
-            "percent": 10000
-          }
-        ]
+        "payoutTo": "0x0000000000000000000000000000000000000000",
+        "optionalPaymentSplitterName": "HyperUSD Payment Splitter V0.0",
+        "splits": []
       },
       "accountantDeploymentParameters": {
-        "allowedExchangeRateChangeLower": 9950,
-        "allowedExchangeRateChangeUpper": 10050,
+        "allowedExchangeRateChangeLower": 9900,
+        "allowedExchangeRateChangeUpper": 10000,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "LBTC"
+          "name": "USDC"
         },
         "minimumUpateDelayInSeconds": 21600,
         "performanceFee": 1000,
         "platformFee": 0,
-        "startingExchangeRate": 100000000
+        "startingExchangeRate": 1000000
       }
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "Sonic BTC Teller V0.1",
+    "tellerDeploymentName": "HyperUSD Teller V0.0",
     "tellerParameters": {
       "allowPublicDeposits": true,
       "shareLockPeriod": 0,
@@ -100,24 +95,13 @@
           "address": "0x0000000000000000000000000000000000000000",
           "name": "ZRO"
         },
-        "lzChains": [
-          {
-            "chainId": 30332,
-            "allowMessagesFrom": true,
-            "allowMessagesTo": true,
-            "targetTellerOrSelf": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "self": true
-            },
-            "messageGasLimit": 100000
-          }
-        ]
+        "lzChains": []
       }
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "Sonic BTC Boring Queue V0.1",
-    "boringQueueSolverName": "Sonic BTC Boring Solver V0.1",
+    "boringQueueDeploymentName": "HyperUSD Boring Queue V0.0",
+    "boringQueueSolverName": "HyperUSD Boring Solver V0.0",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -128,13 +112,13 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "Sonic BTC Drone V0.1",
+    "droneDeploymentBaseName": "HyperUSD Drone V0.0",
     "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
     "shouldDeploy": true,
-    "pauserDeploymentName": "Sonic BTC Pauser V0.1",
+    "pauserDeploymentName": "HyperUSD Pauser V0.0",
     "makeGenericPauser": [
       "0x0000000000000000000000000000000000000000"
     ],
@@ -156,14 +140,14 @@
   },
   "timelockConfiguration": {
     "shouldDeploy": true,
-    "timelockDeploymentName": "Sonic BTC Timelock V0.1",
+    "timelockDeploymentName": "HyperUSD Timelock V0.0",
     "timelockParameters": {
-      "minDelay": 0,
+      "minDelay": 300,
       "proposers": [
-        "0xf8553c8552f906C19286F21711721E206EE4909E"
+        "0x0000000000000000000000000000000000000000"
       ],
       "executors": [
-        "0xf8553c8552f906C19286F21711721E206EE4909E"
+        "0x0000000000000000000000000000000000000000"
       ]
     }
   },
@@ -171,7 +155,23 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "eBTC"
+        "name": "USDT"
+      },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USR"
+        },
+      "isPeggedToBase": true,
+      "rateProvider": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "WSTUSR"
       },
       "isPeggedToBase": true,
       "rateProvider": "0x0000000000000000000000000000000000000000"
@@ -181,7 +181,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "eBTC"
+        "name": "USDC"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -190,7 +190,25 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "LBTC"
+        "name": "USDT"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USR"
+      },
+      "allowDeposits": true,
+      "allowWithdraws": true,
+      "sharePremium": 0
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "WSTUSR"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -201,24 +219,46 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "eBTC"
+        "name": "USDC"
       },
       "maxDiscount": 10,
       "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
+      "minimumSecondsToDeadline": 259200,
       "minimumShares": 0,
-      "secondsToMaturity": 60
+      "secondsToMaturity": 172800
     },
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "LBTC"
+        "name": "USDT"
       },
       "maxDiscount": 10,
       "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
+      "minimumSecondsToDeadline": 259200,
       "minimumShares": 0,
-      "secondsToMaturity": 60
+      "secondsToMaturity": 172800
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "USR"
+      },
+      "maxDiscount": 10,
+      "minDiscount": 1,
+      "minimumSecondsToDeadline": 259200,
+      "minimumShares": 0,
+      "secondsToMaturity": 172800
+    },
+    {
+      "addressOrName": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "name": "WSTUSR"
+      },
+      "maxDiscount": 10,
+      "minDiscount": 1,
+      "minimumSecondsToDeadline": 259200,
+      "minimumShares": 0,
+      "secondsToMaturity": 172800
     }
   ]
 }
