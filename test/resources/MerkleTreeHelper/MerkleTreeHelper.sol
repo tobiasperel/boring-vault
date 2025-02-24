@@ -2785,9 +2785,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         address[] memory token1,
         bool swap_only
     ) internal {
-        _addUniswapV3Leafs(leafs, token0, token1, swap_only, false); 
+        _addUniswapV3Leafs(leafs, token0, token1, swap_only, false);
     }
-
 
     function _addUniswapV3Leafs(
         ManageLeaf[] memory leafs,
@@ -2973,8 +2972,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = token1[i];
             leafs[leafIndex].argumentAddresses[1] = token0[i];
             leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
-            
-            if (swapRouter02) { 
+
+            if (swapRouter02) {
                 //SWAPROUTER02
                 unchecked {
                     leafIndex++;
@@ -2985,7 +2984,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     "exactInput((bytes,address,uint256,uint256))",
                     new address[](3),
                     string.concat(
-                        "Swap ", ERC20(token0[i]).symbol(), " for ", ERC20(token1[i]).symbol(), " using UniswapV3 router"
+                        "Swap ",
+                        ERC20(token0[i]).symbol(),
+                        " for ",
+                        ERC20(token1[i]).symbol(),
+                        " using UniswapV3 router"
                     ),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
@@ -3002,7 +3005,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     "exactInput((bytes,address,uint256,uint256))",
                     new address[](3),
                     string.concat(
-                        "Swap ", ERC20(token1[i]).symbol(), " for ", ERC20(token0[i]).symbol(), " using UniswapV3 router"
+                        "Swap ",
+                        ERC20(token1[i]).symbol(),
+                        " for ",
+                        ERC20(token0[i]).symbol(),
+                        " using UniswapV3 router"
                     ),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
@@ -5756,7 +5763,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Transfer =========================================
-    
+
     function _addTransferLeafs(ManageLeaf[] memory leafs, ERC20 token, address to) internal {
         unchecked {
             leafIndex++;
@@ -5790,7 +5797,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     // ========================================= Rings Voter =========================================
 
     function _addRingsVoterLeafs(ManageLeaf[] memory leafs, address ringsVoterContract, ERC20 underlying) internal {
-
         unchecked {
             leafIndex++;
         }
@@ -5816,7 +5822,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Deposit Budget of ", underlying.symbol(), " into ", vm.toString(ringsVoterContract)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-
     }
 
     // ========================================= LayerZero =========================================
@@ -7024,12 +7029,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Resolv =========================================
-   
+
     function _addAllResolvLeafs(ManageLeaf[] memory leafs) internal {
         _addResolvUsrExternalRequestsManagerLeafs(leafs);
         _addResolvStUSRLeafs(leafs);
         _addResolvWstUSRLeafs(leafs);
-        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "wstUSR"))); 
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "wstUSR")));
     }
 
     function _addResolvUsrExternalRequestsManagerLeafs(ManageLeaf[] memory leafs) internal {
@@ -7123,7 +7128,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDT");
-
     }
 
     function _addResolvStUSRLeafs(ManageLeaf[] memory leafs) internal {
@@ -7643,7 +7647,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= BoringVault Teller =========================================
 
-
     function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets, bool addNativeDeposit)
         internal
     {
@@ -7706,12 +7709,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
-            
-            
-          if (addNativeDeposit) {
-            unchecked {
-                leafIndex++;
-            }
+
+            if (addNativeDeposit) {
+                unchecked {
+                    leafIndex++;
+                }
                 leafs[leafIndex] = ManageLeaf(
                     teller,
                     true, //can send value
@@ -7721,7 +7723,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "ETH");
-
             }
         }
     }
@@ -8675,7 +8676,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= LBTC Bridge =========================================
     function _addLBTCBridgeLeafs(ManageLeaf[] memory leafs, bytes32 toChain) internal {
-
         unchecked {
             leafIndex++;
         }
@@ -8687,13 +8687,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Approve LBTC Bridge Wrapper to spend LBTC"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "lbtcBridge"); 
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "lbtcBridge");
 
         address toChain0 = address(bytes20(bytes16(toChain)));
         address toChain1 = address(bytes20(bytes16(toChain << 128)));
-        
-        //kinda scuffed, can maybe just use one address? 
-        bytes32 boringVaultBytes = getBytes32(sourceChain, "boringVault"); 
+
+        //kinda scuffed, can maybe just use one address?
+        bytes32 boringVaultBytes = getBytes32(sourceChain, "boringVault");
         address toAddress0 = address(bytes20(bytes16(boringVaultBytes)));
         address toAddress1 = address(bytes20(bytes16(boringVaultBytes << 128)));
 

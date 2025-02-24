@@ -114,7 +114,7 @@ contract ResolvIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "USR"), address(boringVault), 100_000e18);
         //deal(getAddress(sourceChain, "stUSR"), address(boringVault), 100_000e18); deal doesnt work well for this token
         vm.prank(0x00B8dF76c223eb4b05123389330b4afD157152b8);
-        IStUSR(getAddress(sourceChain,"stUSR")).transferShares(address(boringVault), 100_000e18);
+        IStUSR(getAddress(sourceChain, "stUSR")).transferShares(address(boringVault), 100_000e18);
         deal(getAddress(sourceChain, "wstUSR"), address(boringVault), 100_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](32);
@@ -165,40 +165,39 @@ contract ResolvIntegrationTest is Test, MerkleTreeHelper {
         targets[14] = getAddress(sourceChain, "wstUSR"); //unwrap wstUSR to stUSR
 
         bytes[] memory targetData = new bytes[](15);
-        targetData[0] =
-            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "UsrExternalRequestsManager"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "UsrExternalRequestsManager"), type(uint256).max);
-        targetData[2] =
-            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "UsrExternalRequestsManager"), type(uint256).max);
-        targetData[3] =
-            abi.encodeWithSignature("requestMint(address,uint256,uint256)", getAddress(sourceChain, "USDC"), 100e6, 99e18);
-        targetData[4] =
-            abi.encodeWithSignature("requestBurn(uint256,address,uint256)", 100e18 ,getAddress(sourceChain, "USDC"), 99e6);
-        targetData[5] =
-            abi.encodeWithSignature("requestMint(address,uint256,uint256)", getAddress(sourceChain, "USDT"), 100e6, 99e18);
-        targetData[6] =
-            abi.encodeWithSignature("requestBurn(uint256,address,uint256)", 100e18, getAddress(sourceChain, "USDT"), 99e6);
-        targetData[7] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "stUSR"), type(uint256).max
+        targetData[0] = abi.encodeWithSelector(
+            ERC20.approve.selector, getAddress(sourceChain, "UsrExternalRequestsManager"), type(uint256).max
         );
-        targetData[8] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "stUSR"), type(uint256).max
+        targetData[1] = abi.encodeWithSelector(
+            ERC20.approve.selector, getAddress(sourceChain, "UsrExternalRequestsManager"), type(uint256).max
         );
-        targetData[9] =
-            abi.encodeWithSignature("deposit(uint256)", 100e18);
-        targetData[10] =
-            abi.encodeWithSignature("withdraw(uint256)", 100e18);
-        targetData[11] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "wstUSR"), type(uint256).max
+        targetData[2] = abi.encodeWithSelector(
+            ERC20.approve.selector, getAddress(sourceChain, "UsrExternalRequestsManager"), type(uint256).max
         );
-        targetData[12] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "wstUSR"), type(uint256).max
+        targetData[3] = abi.encodeWithSignature(
+            "requestMint(address,uint256,uint256)", getAddress(sourceChain, "USDC"), 100e6, 99e18
         );
-        targetData[13] =
-            abi.encodeWithSignature("wrap(uint256)", 100e18);
-        targetData[14] =
-            abi.encodeWithSignature("unwrap(uint256)", 100e18);
+        targetData[4] = abi.encodeWithSignature(
+            "requestBurn(uint256,address,uint256)", 100e18, getAddress(sourceChain, "USDC"), 99e6
+        );
+        targetData[5] = abi.encodeWithSignature(
+            "requestMint(address,uint256,uint256)", getAddress(sourceChain, "USDT"), 100e6, 99e18
+        );
+        targetData[6] = abi.encodeWithSignature(
+            "requestBurn(uint256,address,uint256)", 100e18, getAddress(sourceChain, "USDT"), 99e6
+        );
+        targetData[7] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "stUSR"), type(uint256).max);
+        targetData[8] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "stUSR"), type(uint256).max);
+        targetData[9] = abi.encodeWithSignature("deposit(uint256)", 100e18);
+        targetData[10] = abi.encodeWithSignature("withdraw(uint256)", 100e18);
+        targetData[11] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "wstUSR"), type(uint256).max);
+        targetData[12] =
+            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "wstUSR"), type(uint256).max);
+        targetData[13] = abi.encodeWithSignature("wrap(uint256)", 100e18);
+        targetData[14] = abi.encodeWithSignature("unwrap(uint256)", 100e18);
 
         uint256[] memory values = new uint256[](15);
 
