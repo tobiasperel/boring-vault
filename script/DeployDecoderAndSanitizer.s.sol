@@ -58,18 +58,17 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("berachain");
-        setSourceChainName("berachain"); 
+        vm.createSelectFork("mainnet");
+        setSourceChainName("mainnet"); 
     }
 
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
-
-        address sonicUniV3 = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c; 
-        creationCode = type(StakedSonicDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(sonicUniV3);
-        deployer.deployContract("Staked Sonic Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+       
+        creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
+        deployer.deployContract("EtherFi Liquid USD Decoder And Sanitizer V0.6", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
