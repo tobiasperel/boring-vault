@@ -46,7 +46,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(new FullUniswapV4DecoderAndSanitizer());
+        rawDataDecoderAndSanitizer = address(new FullUniswapV4DecoderAndSanitizer(getAddress(sourceChain, "uniV4PositionManager")));
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -132,7 +132,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         manageLeafs[4] = leafs[7]; //approve USDT permit2
         manageLeafs[5] = leafs[8]; //approve USDT permit2 router
 
-        manageLeafs[6] = leafs[10]; //execute() V4_SWAP
+        manageLeafs[6] = leafs[10]; //execute() V4_SWAP token0 -> token1
 
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
@@ -233,6 +233,399 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, new uint256[](7));
 
     }
+
+    function testUniswapV4SwapsToken1ForToken0() external {
+        deal(getAddress(sourceChain, "USDT"), address(boringVault), 1_000_000e6);
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e8);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        address[] memory token0 = new address[](1);
+        token0[0] = getAddress(sourceChain, "USDT");
+        address[] memory token1 = new address[](1);
+        token1[0] = getAddress(sourceChain, "USDC");
+        address[] memory hooks = new address[](1);  
+        hooks[0] = address(0); 
+
+        _addUniswapV4Leafs(leafs, token0, token1, hooks);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        //_generateTestLeafs(leafs, manageTree); 
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](7);
+        manageLeafs[0] = leafs[0]; //approve USDC router
+        manageLeafs[1] = leafs[2]; //approve USDC permit2
+        manageLeafs[2] = leafs[3]; //approve USDC permit2 router
+
+        manageLeafs[3] = leafs[5]; //approve USDT router
+        manageLeafs[4] = leafs[7]; //approve USDT permit2
+        manageLeafs[5] = leafs[8]; //approve USDT permit2 router
+
+        manageLeafs[6] = leafs[11]; //execute() V4_SWAP token1 -> token0
+
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](7);
+        targets[0] = getAddress(sourceChain, "USDC"); //approve router
+        targets[1] = getAddress(sourceChain, "USDC"); //approve permit2
+        targets[2] = getAddress(sourceChain, "permit2"); //approve permit2 router
+
+        targets[3] = getAddress(sourceChain, "USDT"); //approve 
+        targets[4] = getAddress(sourceChain, "USDT"); //approve 
+        targets[5] = getAddress(sourceChain, "permit2"); //approve permit2 router
+
+        targets[6] = getAddress(sourceChain, "uniV4UniversalRouter");
+
+
+        bytes[] memory targetData = new bytes[](7);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV4UniversalRouter"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", getAddress(sourceChain, "USDC"), getAddress(sourceChain, "uniV4UniversalRouter"), 1000e8, block.timestamp + 1000
+        );
+        targetData[3] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV4UniversalRouter"), type(uint256).max
+        );
+        targetData[4] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        targetData[5] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", getAddress(sourceChain, "USDT"), getAddress(sourceChain, "uniV4UniversalRouter"), type(uint160).max, block.timestamp + 1000
+        );
+        
+        // Universal Router takes 2 params, commands and inputs. 
+        // Commands == V4_SWAP
+        // Inputs are broken down into smaller things: Actions and Params
+        // Actions help the flow of the swap, and Params are params for the actions
+        // Actions.SWAP_SINGLE would have params of SwapParams, etc
+        // these are then put together in inputs[0] = abi.encode(actions, params); 
+        // and this is used in the `execute()` function
+
+        bytes memory commands = abi.encodePacked(uint8(Commands.V4_SWAP));
+        bytes[] memory inputs = new bytes[](1);
+
+        bytes memory actions = abi.encodePacked(
+            uint8(Actions.SWAP_EXACT_IN_SINGLE),
+            uint8(Actions.SETTLE_ALL),
+            uint8(Actions.TAKE_ALL)
+        );
+
+        DecoderCustomTypes.PoolKey memory key = DecoderCustomTypes.PoolKey(
+            getAddress(sourceChain, "USDC"),
+            getAddress(sourceChain, "USDT"),
+            100,
+            1,
+            address(0) //no hook address?
+        );         
+
+        uint128 amountIn = 1e8; 
+        uint128 minAmountOut = 0; 
+
+        bytes[] memory params = new bytes[](3);
+        params[0] = abi.encode(
+            DecoderCustomTypes.ExactInputSingleParams({
+                poolKey: key,
+                zeroForOne: false,            // true if we're swapping token0 for token1
+                amountIn: amountIn,          // amount of tokens we're swapping
+                amountOutMinimum: minAmountOut, // minimum amount we expect to receive
+                hookData: bytes("")             // no hook data needed
+            })
+        );
+
+        // Second parameter: specify input tokens for the swap
+        // encode SETTLE_ALL parameters
+        params[1] = abi.encode(key.currency1, amountIn);
+        // Third parameter: specify output tokens from the swap
+        params[2] = abi.encode(key.currency0, minAmountOut);
+        // Combine actions and params into inputs
+        inputs[0] = abi.encode(actions, params);
+
+
+        targetData[6] = abi.encodeWithSignature(
+            "execute(bytes,bytes[],uint256)", commands, inputs, block.timestamp
+        );
+
+        address[] memory decodersAndSanitizers = new address[](7);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, new uint256[](7));
+
+    }
+
+    function testUniswapV4SwapsToken0ForToken1ExactOutput() external {
+        deal(getAddress(sourceChain, "USDT"), address(boringVault), 1_000_000e6);
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e8);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        address[] memory token0 = new address[](1);
+        token0[0] = getAddress(sourceChain, "USDT");
+        address[] memory token1 = new address[](1);
+        token1[0] = getAddress(sourceChain, "USDC");
+        address[] memory hooks = new address[](1);  
+        hooks[0] = address(0); 
+
+        _addUniswapV4Leafs(leafs, token0, token1, hooks);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        //_generateTestLeafs(leafs, manageTree); 
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](7);
+        manageLeafs[0] = leafs[0]; //approve USDC router
+        manageLeafs[1] = leafs[2]; //approve USDC permit2
+        manageLeafs[2] = leafs[3]; //approve USDC permit2 router
+
+        manageLeafs[3] = leafs[5]; //approve USDT router
+        manageLeafs[4] = leafs[7]; //approve USDT permit2
+        manageLeafs[5] = leafs[8]; //approve USDT permit2 router
+
+        manageLeafs[6] = leafs[10]; //execute() V4_SWAP token1 -> token0
+
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](7);
+        targets[0] = getAddress(sourceChain, "USDC"); //approve router
+        targets[1] = getAddress(sourceChain, "USDC"); //approve permit2
+        targets[2] = getAddress(sourceChain, "permit2"); //approve permit2 router
+
+        targets[3] = getAddress(sourceChain, "USDT"); //approve 
+        targets[4] = getAddress(sourceChain, "USDT"); //approve 
+        targets[5] = getAddress(sourceChain, "permit2"); //approve permit2 router
+
+        targets[6] = getAddress(sourceChain, "uniV4UniversalRouter");
+
+
+        bytes[] memory targetData = new bytes[](7);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV4UniversalRouter"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", getAddress(sourceChain, "USDC"), getAddress(sourceChain, "uniV4UniversalRouter"), 1000e8, block.timestamp + 1000
+        );
+        targetData[3] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV4UniversalRouter"), type(uint256).max
+        );
+        targetData[4] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        targetData[5] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", getAddress(sourceChain, "USDT"), getAddress(sourceChain, "uniV4UniversalRouter"), type(uint160).max, block.timestamp + 1000
+        );
+        
+        // Universal Router takes 2 params, commands and inputs. 
+        // Commands == V4_SWAP
+        // Inputs are broken down into smaller things: Actions and Params
+        // Actions help the flow of the swap, and Params are params for the actions
+        // Actions.SWAP_SINGLE would have params of SwapParams, etc
+        // these are then put together in inputs[0] = abi.encode(actions, params); 
+        // and this is used in the `execute()` function
+
+        bytes memory commands = abi.encodePacked(uint8(Commands.V4_SWAP));
+        bytes[] memory inputs = new bytes[](1);
+
+        bytes memory actions = abi.encodePacked(
+            uint8(Actions.SWAP_EXACT_OUT_SINGLE),
+            uint8(Actions.SETTLE_ALL),
+            uint8(Actions.TAKE_ALL)
+        );
+
+        DecoderCustomTypes.PoolKey memory key = DecoderCustomTypes.PoolKey(
+            getAddress(sourceChain, "USDC"),
+            getAddress(sourceChain, "USDT"),
+            100,
+            1,
+            address(0) //no hook address?
+        );         
+
+        uint128 amountOut = 1e8; 
+        uint128 amountInMax = 100e8; 
+
+        bytes[] memory params = new bytes[](3);
+        params[0] = abi.encode(
+            DecoderCustomTypes.ExactOutputSingleParams({
+                poolKey: key,
+                zeroForOne: true,            // true if we're swapping token0 for token1
+                amountOut: amountOut,          // amount of tokens we're swapping for
+                amountInMaximum: amountInMax, // max amount we expect to spend
+                hookData: bytes("")             // no hook data needed
+            })
+        );
+
+        // Second parameter: specify input tokens for the swap
+        // encode SETTLE_ALL parameters
+        params[1] = abi.encode(key.currency0, amountInMax);
+        // Third parameter: specify output tokens from the swap
+        params[2] = abi.encode(key.currency1, amountOut);
+        // Combine actions and params into inputs
+        inputs[0] = abi.encode(actions, params);
+
+
+        targetData[6] = abi.encodeWithSignature(
+            "execute(bytes,bytes[],uint256)", commands, inputs, block.timestamp
+        );
+
+        address[] memory decodersAndSanitizers = new address[](7);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, new uint256[](7));
+
+    }
+
+    function testUniswapV4SwapsToken1ForToken0ExactOutput() external {
+        deal(getAddress(sourceChain, "USDT"), address(boringVault), 1_000_000e6);
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e8);
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        address[] memory token0 = new address[](1);
+        token0[0] = getAddress(sourceChain, "USDT");
+        address[] memory token1 = new address[](1);
+        token1[0] = getAddress(sourceChain, "USDC");
+        address[] memory hooks = new address[](1);  
+        hooks[0] = address(0); 
+
+        _addUniswapV4Leafs(leafs, token0, token1, hooks);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        _generateTestLeafs(leafs, manageTree); 
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](7);
+        manageLeafs[0] = leafs[0]; //approve USDC router
+        manageLeafs[1] = leafs[2]; //approve USDC permit2
+        manageLeafs[2] = leafs[3]; //approve USDC permit2 router
+
+        manageLeafs[3] = leafs[5]; //approve USDT router
+        manageLeafs[4] = leafs[7]; //approve USDT permit2
+        manageLeafs[5] = leafs[8]; //approve USDT permit2 router
+
+        manageLeafs[6] = leafs[11]; //execute() V4_SWAP token1 -> token0 (EXACT_OUT_SINGLE)
+
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](7);
+        targets[0] = getAddress(sourceChain, "USDC"); //approve router
+        targets[1] = getAddress(sourceChain, "USDC"); //approve permit2
+        targets[2] = getAddress(sourceChain, "permit2"); //approve permit2 router
+
+        targets[3] = getAddress(sourceChain, "USDT"); //approve 
+        targets[4] = getAddress(sourceChain, "USDT"); //approve 
+        targets[5] = getAddress(sourceChain, "permit2"); //approve permit2 router
+
+        targets[6] = getAddress(sourceChain, "uniV4UniversalRouter");
+
+
+        bytes[] memory targetData = new bytes[](7);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV4UniversalRouter"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", getAddress(sourceChain, "USDC"), getAddress(sourceChain, "uniV4UniversalRouter"), 1000e8, block.timestamp + 1000
+        );
+        targetData[3] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "uniV4UniversalRouter"), type(uint256).max
+        );
+        targetData[4] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        targetData[5] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", getAddress(sourceChain, "USDT"), getAddress(sourceChain, "uniV4UniversalRouter"), type(uint160).max, block.timestamp + 1000
+        );
+        
+        // Universal Router takes 2 params, commands and inputs. 
+        // Commands == V4_SWAP
+        // Inputs are broken down into smaller things: Actions and Params
+        // Actions help the flow of the swap, and Params are params for the actions
+        // Actions.SWAP_SINGLE would have params of SwapParams, etc
+        // these are then put together in inputs[0] = abi.encode(actions, params); 
+        // and this is used in the `execute()` function
+
+        bytes memory commands = abi.encodePacked(uint8(Commands.V4_SWAP));
+        bytes[] memory inputs = new bytes[](1);
+
+        bytes memory actions = abi.encodePacked(
+            uint8(Actions.SWAP_EXACT_OUT_SINGLE),
+            uint8(Actions.SETTLE_ALL),
+            uint8(Actions.TAKE_ALL)
+        );
+
+        DecoderCustomTypes.PoolKey memory key = DecoderCustomTypes.PoolKey(
+            getAddress(sourceChain, "USDC"),
+            getAddress(sourceChain, "USDT"),
+            100,
+            1,
+            address(0) //no hook address?
+        );         
+
+        uint128 amountOut = 1e8; 
+        uint128 amountInMax = 100e8; 
+
+        bytes[] memory params = new bytes[](3);
+        params[0] = abi.encode(
+            DecoderCustomTypes.ExactOutputSingleParams({
+                poolKey: key,
+                zeroForOne: false,            // true if we're swapping token0 for token1
+                amountOut: amountOut,          // amount of tokens we're swapping for
+                amountInMaximum: amountInMax, // max amount we expect to spend
+                hookData: bytes("")             // no hook data needed
+            })
+        );
+
+        // Second parameter: specify input tokens for the swap
+        // encode SETTLE_ALL parameters
+        params[1] = abi.encode(key.currency1, amountInMax);
+        // Third parameter: specify output tokens from the swap
+        params[2] = abi.encode(key.currency0, amountOut);
+        // Combine actions and params into inputs
+        inputs[0] = abi.encode(actions, params);
+
+
+        targetData[6] = abi.encodeWithSignature(
+            "execute(bytes,bytes[],uint256)", commands, inputs, block.timestamp
+        );
+
+        address[] memory decodersAndSanitizers = new address[](7);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, new uint256[](7));
+
+    }
         
     function testUniswapV4LiquidityFunctions() external {
         deal(getAddress(sourceChain, "USDT"), address(boringVault), 1_000_000e6);
@@ -259,10 +652,10 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         manageLeafs[1] = leafs[7]; //approve usdt permit2
         manageLeafs[2] = leafs[4]; //approve usdc permit2 for positionManager
         manageLeafs[3] = leafs[9]; //approve usdt positionManager()
-        manageLeafs[4] = leafs[11]; //modifyLiquidities() mint
-        manageLeafs[5] = leafs[12]; //modifyLiquidities() increase via SETTLE
-        manageLeafs[6] = leafs[13]; //modifyLiquidities() decrease
-        manageLeafs[7] = leafs[13]; //modifyLiquidities() collect (same leaf as decrease)
+        manageLeafs[4] = leafs[12]; //modifyLiquidities() mint
+        manageLeafs[5] = leafs[13]; //modifyLiquidities() increase via SETTLE
+        manageLeafs[6] = leafs[14]; //modifyLiquidities() decrease
+        manageLeafs[7] = leafs[14]; //modifyLiquidities() collect (same leaf as decrease)
 
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
@@ -385,7 +778,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         skip(1 days);  
 
         manageLeafs = new ManageLeaf[](1);
-        manageLeafs[0] = leafs[15]; 
+        manageLeafs[0] = leafs[16]; 
 
         manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -435,17 +828,17 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        _generateTestLeafs(leafs, manageTree); 
+        //_generateTestLeafs(leafs, manageTree); 
 
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](8);
         manageLeafs[0] = leafs[2]; //approve usdc permit2 
         manageLeafs[1] = leafs[7]; //approve usdt permit2
         manageLeafs[2] = leafs[4]; //approve usdc permit2 for positionManager
         manageLeafs[3] = leafs[9]; //approve usdt positionManager()
-        manageLeafs[4] = leafs[11]; //modifyLiquidities() mint
-        manageLeafs[5] = leafs[12]; //modifyLiquidities() increase via CLOSE_CURRENCY
-        manageLeafs[6] = leafs[14]; //modifyLiquidities() decrease via CLOSE_CURRENCY
-        manageLeafs[7] = leafs[13]; //modifyLiquidities() collect (same leaf as decrease)
+        manageLeafs[4] = leafs[12]; //modifyLiquidities() mint
+        manageLeafs[5] = leafs[13]; //modifyLiquidities() increase via CLOSE_CURRENCY
+        manageLeafs[6] = leafs[15]; //modifyLiquidities() decrease via CLOSE_CURRENCY
+        manageLeafs[7] = leafs[14]; //modifyLiquidities() collect (same leaf as decrease)
 
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
@@ -571,7 +964,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         skip(1 days);  
 
         manageLeafs = new ManageLeaf[](1);
-        manageLeafs[0] = leafs[15]; 
+        manageLeafs[0] = leafs[16]; 
 
         manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -603,7 +996,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
 
     }
 
-    function testUniswapV4SwapsNativeForToken0() external {
+    function testUniswapV4SwapsNativeForToken1() external {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e8);
         deal(address(boringVault), 1_000_000e18);
 
@@ -721,7 +1114,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
 
     }
 
-    function testUniswapV4SwapsToken0ForNative() external {
+    function testUniswapV4SwapsToken1ForNative() external {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e8);
         deal(address(boringVault), 1_000_000e18);
 
@@ -1027,7 +1420,9 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
     }
 }
 
-contract FullUniswapV4DecoderAndSanitizer is UniswapV4DecoderAndSanitizer {}
+contract FullUniswapV4DecoderAndSanitizer is UniswapV4DecoderAndSanitizer {
+    constructor(address _posm) UniswapV4DecoderAndSanitizer(_posm){} 
+}
 
 interface IUniswapV2Factory {
     function getPair(address token0, address token1) external view returns (address);
