@@ -135,8 +135,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         supplyAssets[0] = getERC20(sourceChain, "WBTC");
         supplyAssets[1] = getERC20(sourceChain, "LBTC");
         supplyAssets[2] = getERC20(sourceChain, "cbBTC");
-        supplyAssets[3] = getERC20(sourceChain, "USDC"); 
-        supplyAssets[4] = getERC20(sourceChain, "USDT"); 
+        supplyAssets[3] = getERC20(sourceChain, "USDC");
+        supplyAssets[4] = getERC20(sourceChain, "USDT");
 
         ERC20[] memory borrowAssets = new ERC20[](4);
         borrowAssets[0] = getERC20(sourceChain, "USDC");
@@ -151,7 +151,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "PendleWBTC")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "MCwBTC")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "MCcbBTC")));
-        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "MCUSR"))); 
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "MCUSR")));
 
         // ========================== MorphoBlue ==========================
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WBTC_USDC_86"));
@@ -196,8 +196,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_beraSTONE_04_09_2025"), true);
 
         // ========================== Native Wrapping ==========================
-         _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
-
+        _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
 
         // ========================== Teller ==========================
         {
@@ -219,7 +218,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addAllResolvLeafs(leafs);  
 
         // ========================== Verify ==========================
-        
+
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         string memory filePath = "./leafs/Mainnet/LiquidBtcStrategistLeafs.json";

@@ -1,4 +1,3 @@
-
 pragma solidity 0.8.21;
 
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
@@ -40,32 +39,31 @@ contract CreateSonicIncentiveHandlerMerkleRoot is Script, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](32);
 
         // ========================== Fee and Yield Claiming ==========================
-            //scUSD
-            ERC20[] memory scUSDFeeAssets = new ERC20[](1); 
-            scUSDFeeAssets[0] = getERC20(sourceChain, "USDC"); 
-            _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "scUSDAccountant"), scUSDFeeAssets, true); //true to claim yield
+        //scUSD
+        ERC20[] memory scUSDFeeAssets = new ERC20[](1);
+        scUSDFeeAssets[0] = getERC20(sourceChain, "USDC");
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "scUSDAccountant"), scUSDFeeAssets, true); //true to claim yield
 
-            //scETH
-            ERC20[] memory scETHFeeAssets = new ERC20[](1); 
-            scETHFeeAssets[0] = getERC20(sourceChain, "WETH"); 
-            _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "scETHAccountant"), scETHFeeAssets, true); //true to claim yield
-        
+        //scETH
+        ERC20[] memory scETHFeeAssets = new ERC20[](1);
+        scETHFeeAssets[0] = getERC20(sourceChain, "WETH");
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "scETHAccountant"), scETHFeeAssets, true); //true to claim yield
+
         // ========================== Tellers ==========================
-            ERC20[] memory tellerAssetsUSD = new ERC20[](1);
-            tellerAssetsUSD[0] = getERC20(sourceChain, "USDC");
-            _addTellerLeafs(leafs, getAddress(sourceChain, "scUSDTeller"), tellerAssetsUSD, false);
+        ERC20[] memory tellerAssetsUSD = new ERC20[](1);
+        tellerAssetsUSD[0] = getERC20(sourceChain, "USDC");
+        _addTellerLeafs(leafs, getAddress(sourceChain, "scUSDTeller"), tellerAssetsUSD, false);
 
-            ERC20[] memory tellerAssetsETH = new ERC20[](1);
-            tellerAssetsETH[0] = getERC20(sourceChain, "WETH");
-            _addTellerLeafs(leafs, getAddress(sourceChain, "scETHTeller"), tellerAssetsETH, false);
+        ERC20[] memory tellerAssetsETH = new ERC20[](1);
+        tellerAssetsETH[0] = getERC20(sourceChain, "WETH");
+        _addTellerLeafs(leafs, getAddress(sourceChain, "scETHTeller"), tellerAssetsETH, false);
 
         // ========================== Rings Voter Contracts ==========================
-            //scUSD Voter
-            _addRingsVoterLeafs(leafs, getAddress(sourceChain, "scUSDVoter"), getERC20(sourceChain, "scUSD"));  
+        //scUSD Voter
+        _addRingsVoterLeafs(leafs, getAddress(sourceChain, "scUSDVoter"), getERC20(sourceChain, "scUSD"));
 
-            //scETH Voter
-            _addRingsVoterLeafs(leafs, getAddress(sourceChain, "scETHVoter"), getERC20(sourceChain, "scETH")); 
-
+        //scETH Voter
+        _addRingsVoterLeafs(leafs, getAddress(sourceChain, "scETHVoter"), getERC20(sourceChain, "scETH"));
 
         // ========================== Veriy and Run ==========================
 
@@ -78,4 +76,3 @@ contract CreateSonicIncentiveHandlerMerkleRoot is Script, MerkleTreeHelper {
         _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
     }
 }
-

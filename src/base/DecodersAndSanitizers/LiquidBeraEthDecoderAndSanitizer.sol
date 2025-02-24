@@ -38,7 +38,7 @@ import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocol
 import {KarakDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/KarakDecoderAndSanitizer.sol";
 import {TreehouseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TreehouseDecoderAndSanitizer.sol";
 import {FraxDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FraxDecoderAndSanitizer.sol";
-import {RoycoWeirollDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/RoycoDecoderAndSanitizer.sol"; 
+import {RoycoWeirollDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/RoycoDecoderAndSanitizer.sol";
 
 contract LiquidBeraEthDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -97,11 +97,11 @@ contract LiquidBeraEthDecoderAndSanitizer is
     function deposit(address a, uint256, uint256)
         external
         pure
-        override(KarakDecoderAndSanitizer, TellerDecoderAndSanitizer) 
+        override(KarakDecoderAndSanitizer, TellerDecoderAndSanitizer)
         returns (bytes memory addressesFound)
     {
-        addressesFound = abi.encodePacked(a); 
-    }  
+        addressesFound = abi.encodePacked(a);
+    }
 
     /**
      * @notice EtherFi, NativeWrapper all specify a `deposit()`,
