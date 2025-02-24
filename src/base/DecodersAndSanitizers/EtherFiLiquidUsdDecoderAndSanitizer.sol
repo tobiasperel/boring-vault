@@ -183,7 +183,7 @@ contract EtherFiLiquidUsdDecoderAndSanitizer is
     function redeem(uint256,address a, address b, uint256)
         external
         pure
-        override(SpectraDecoderAndSanitizer, FluidFTokenDecoderAndSanitizer)
+        override(SpectraDecoderAndSanitizer, FluidFTokenDecoderAndSanitizer, ResolvDecoderAndSanitizer)
         returns (bytes memory addressesFound)
     {
         addressesFound = abi.encodePacked(a, b); 

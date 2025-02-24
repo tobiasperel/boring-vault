@@ -169,6 +169,19 @@ contract LombardBtcDecoderAndSanitizer is
     {
         addressesFound = abi.encodePacked(_token, _receiver);
     }
+    
+    /**
+     * @notice Resolv, and FluidFToken all specify a `redeem(uint256,address,address,uint256)`,
+     *         all cases are handled the same way.
+     */
+    function redeem(uint256, address a, address b, uint256)
+        external
+        pure
+        override(FluidFTokenDecoderAndSanitizer, ResolvDecoderAndSanitizer)
+        returns (bytes memory addressesFound)
+    {
+        addressesFound = abi.encodePacked(a, b); 
+    }
 
     function wrap(uint256)
         external
