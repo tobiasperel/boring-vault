@@ -126,6 +126,15 @@ contract DecoderCustomTypes {
         bytes hookData;
     }
 
+     /// @notice Parameters for a single-hop exact-output swap
+    struct ExactOutputSingleParams {
+        PoolKey poolKey;
+        bool zeroForOne;
+        uint128 amountOut;
+        uint128 amountInMaximum;
+        bytes hookData;
+    }
+
 
     // ========================================= MORPHO BLUE =========================================
 

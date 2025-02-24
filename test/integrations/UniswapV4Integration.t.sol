@@ -385,7 +385,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         skip(1 days);  
 
         manageLeafs = new ManageLeaf[](1);
-        manageLeafs[0] = leafs[14]; 
+        manageLeafs[0] = leafs[15]; 
 
         manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -435,7 +435,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        //_generateTestLeafs(leafs, manageTree); 
+        _generateTestLeafs(leafs, manageTree); 
 
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](8);
         manageLeafs[0] = leafs[2]; //approve usdc permit2 
@@ -444,7 +444,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         manageLeafs[3] = leafs[9]; //approve usdt positionManager()
         manageLeafs[4] = leafs[11]; //modifyLiquidities() mint
         manageLeafs[5] = leafs[12]; //modifyLiquidities() increase via CLOSE_CURRENCY
-        manageLeafs[6] = leafs[13]; //modifyLiquidities() decrease via CLOSE_CURRENCY
+        manageLeafs[6] = leafs[14]; //modifyLiquidities() decrease via CLOSE_CURRENCY
         manageLeafs[7] = leafs[13]; //modifyLiquidities() collect (same leaf as decrease)
 
 
@@ -504,8 +504,8 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         );
 
         //increase liquidity
-        liquidityActions = abi.encodePacked(uint8(Actions.INCREASE_LIQUIDITY), uint8(Actions.CLOSE_CURRENCY));
-        params = new bytes[](2);
+        liquidityActions = abi.encodePacked(uint8(Actions.INCREASE_LIQUIDITY), uint8(Actions.CLOSE_CURRENCY), uint8(Actions.CLOSE_CURRENCY));
+        params = new bytes[](3);
         params[0] = abi.encode(
             2345, 
             100e6,
@@ -513,15 +513,16 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
             type(uint128).max,
             new bytes(0)
         ); 
-        params[1] = abi.encode(key.currency0, key.currency1);
+        params[1] = abi.encode(key.currency0);
+        params[2] = abi.encode(key.currency1);
         
         targetData[5] = abi.encodeWithSignature(
             "modifyLiquidities(bytes,uint256)", abi.encode(liquidityActions, params), block.timestamp
         );
 
         //decrease liquidity
-        liquidityActions = abi.encodePacked(uint8(Actions.DECREASE_LIQUIDITY), uint8(Actions.TAKE_PAIR));
-        params = new bytes[](2);
+        liquidityActions = abi.encodePacked(uint8(Actions.DECREASE_LIQUIDITY), uint8(Actions.CLEAR_OR_TAKE), uint8(Actions.CLEAR_OR_TAKE));
+        params = new bytes[](3);
         params[0] = abi.encode(
             2345, 
             50e6,
@@ -529,7 +530,9 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
             0,            
             new bytes(0)
         ); 
-        params[1] = abi.encode(key.currency0, key.currency1, address(boringVault));
+        params[1] = abi.encode(key.currency0, 0);
+        params[2] = abi.encode(key.currency1, 0);
+        
         
         targetData[6] = abi.encodeWithSignature(
             "modifyLiquidities(bytes,uint256)", abi.encode(liquidityActions, params), block.timestamp
@@ -568,7 +571,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
         skip(1 days);  
 
         manageLeafs = new ManageLeaf[](1);
-        manageLeafs[0] = leafs[14]; 
+        manageLeafs[0] = leafs[15]; 
 
         manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -854,7 +857,7 @@ contract UniswapV4IntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        _generateTestLeafs(leafs, manageTree); 
+        //_generateTestLeafs(leafs, manageTree); 
 
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](6);
         manageLeafs[0] = leafs[2]; //approve usdc permit2 
