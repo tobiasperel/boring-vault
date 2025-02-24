@@ -1691,6 +1691,10 @@ contract ChainValues {
         values[berachain]["beraETH"] = 0x6fc6545d5cDE268D5C7f1e476D444F39c995120d.toBytes32(); //wrapped LST
 
         values[berachain]["balancerVault"] = address(1).toBytes32();
+
+        // Tellers
+        values[berachain]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32(); 
+
         values[berachain]["vault"] = address(1).toBytes32();
     }
 
