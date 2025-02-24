@@ -67,16 +67,16 @@
         ]
       },
       "accountantDeploymentParameters": {
-        "allowedExchangeRateChangeLower": 9900,
-        "allowedExchangeRateChangeUpper": 10000,
+        "allowedExchangeRateChangeLower": 9950,
+        "allowedExchangeRateChangeUpper": 10050,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "WBTC"
+          "name": "LBTC"
         },
         "minimumUpateDelayInSeconds": 21600,
         "performanceFee": 1000,
         "platformFee": 0,
-        "startingExchangeRate": 1000000000000000000
+        "startingExchangeRate": 100000000
       }
     }
   },
@@ -158,12 +158,12 @@
     "shouldDeploy": true,
     "timelockDeploymentName": "Sonic BTC Timelock V0.1",
     "timelockParameters": {
-      "minDelay": 300,
+      "minDelay": 0,
       "proposers": [
-        "0x0000000000000000000000000000000000000000"
+        "0xf8553c8552f906C19286F21711721E206EE4909E"
       ],
       "executors": [
-        "0x0000000000000000000000000000000000000000"
+        "0xf8553c8552f906C19286F21711721E206EE4909E"
       ]
     }
   },
@@ -175,26 +175,9 @@
       },
       "isPeggedToBase": true,
       "rateProvider": "0x0000000000000000000000000000000000000000"
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "LBTC"
-      },
-      "isPeggedToBase": false,
-      "rateProvider": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee"
     }
   ],
   "depositAssets": [
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "WBTC"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 0
-    },
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
@@ -215,17 +198,6 @@
     }
   ],
   "withdrawAssets": [
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "WBTC"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
-      "minimumShares": 0,
-      "secondsToMaturity": 60
-    },
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
