@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
-
+import {ChainValues} from "test/resources/ChainValues.sol";
+import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 import {ITBPositionDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/ITB/ITBPositionDecoderAndSanitizer.sol";
 import {EtherFiLiquidUsdDecoderAndSanitizer} from
@@ -34,6 +35,7 @@ import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Aave
 import {LombardBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LombardBtcDecoderAndSanitizer.sol";
 import {EtherFiBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiBtcDecoderAndSanitizer.sol";
 import {SymbioticLRTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SymbioticLRTDecoderAndSanitizer.sol";
+import {BerachainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BerachainDecoderAndSanitizer.sol"; 
 import {PrimeLiquidBeraBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PrimeLiquidBeraBtcDecoderAndSanitizer.sol"; 
 import {StakedSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/StakedSonicDecoderAndSanitizer.sol";
 
@@ -47,20 +49,23 @@ import "forge-std/StdJson.sol";
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
 
-contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddresses {
+contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddresses, MerkleTreeHelper {
     uint256 public privateKey;
     Deployer public deployer = Deployer(deployerAddress);
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
+<<<<<<< HEAD
+        vm.createSelectFork("berachain");
+        setSourceChainName("berachain"); 
+=======
         vm.createSelectFork("sonicMainnet");
+>>>>>>> dev/jan-2025
     }
 
     function run() external {
-        bytes memory creationCode;
-        bytes memory constructorArgs;
+        bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
-
        
         address sonicUniV3 = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c; 
         creationCode = type(StakedSonicDecoderAndSanitizer).creationCode;
