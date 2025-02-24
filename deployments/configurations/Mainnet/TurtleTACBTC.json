@@ -2,8 +2,8 @@
   "deploymentParameters": {
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
-    "chainName": "sonicMainnet",
-    "evmVersion": "shanghai",
+    "chainName": "mainnet",
+    "evmVersion": "cancun",
     "desiredNumberOfDeploymentTxs": 5,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
@@ -22,56 +22,51 @@
     },
     "nativeWrapperAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
-      "name": "wS"
+      "name": "WETH"
     },
     "deploymentOwnerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "addresses/SonicMainnet/SonicBTC.json"
+    "deploymentFileName": "addresses/Mainnet/TurtleTACBTC.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "Sonic BTC Roles Authority V0.1"
+    "rolesAuthorityDeploymentName": "Turtle TAC BTC Roles Authority V0.0"
   },
   "lensConfiguration": {
-    "lensDeploymentName": "Arctic Architecture Lens V0.1"
+    "lensDeploymentName": "Arctic Architecture Lens V0.0"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "Sonic BTC Boring Vault V0.1",
-    "boringVaultName": "Sonic BTC",
-    "boringVaultSymbol": "scBTC",
+    "boringVaultDeploymentName": "Turtle TAC BTC Boring Vault V0.0",
+    "boringVaultName": "Turtle TAC BTC Vault",
+    "boringVaultSymbol": "tacBTC",
     "boringVaultDecimals": 8
   },
   "managerConfiguration": {
-    "managerDeploymentName": "Sonic BTC Manager V0.1",
+    "managerDeploymentName": "Turtle TAC BTC Manager V0.0",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "Sonic BTC Accountant V0.1",
+    "accountantDeploymentName": "Turtle TAC BTC Accountant V0.0",
     "accountantParameters": {
       "kind": {
-        "variableRate": false,
-        "fixedRate": true
+        "variableRate": true,
+        "fixedRate": false
       },
       "payoutConfiguration": {
-        "payoutTo": "0x0000000000000000000000000000000000000001",
-        "optionalPaymentSplitterName": "Sonic BTC Payment Splitter V0.1",
-        "splits": [
-          {
-            "to": "0xf8553c8552f906C19286F21711721E206EE4909E",
-            "percent": 10000
-          }
-        ]
+        "payoutTo": "0x0000000000000000000000000000000000000000",
+        "optionalPaymentSplitterName": "Turtle TAC BTC Payment Splitter V0.0",
+        "splits": []
       },
       "accountantDeploymentParameters": {
-        "allowedExchangeRateChangeLower": 9950,
-        "allowedExchangeRateChangeUpper": 10050,
+        "allowedExchangeRateChangeLower": 9900,
+        "allowedExchangeRateChangeUpper": 10000,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "LBTC"
+          "name": "WBTC"
         },
         "minimumUpateDelayInSeconds": 21600,
         "performanceFee": 1000,
@@ -81,7 +76,7 @@
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "Sonic BTC Teller V0.1",
+    "tellerDeploymentName": "Turtle TAC BTC Teller V0.0",
     "tellerParameters": {
       "allowPublicDeposits": true,
       "shareLockPeriod": 0,
@@ -100,24 +95,13 @@
           "address": "0x0000000000000000000000000000000000000000",
           "name": "ZRO"
         },
-        "lzChains": [
-          {
-            "chainId": 30101,
-            "allowMessagesFrom": true,
-            "allowMessagesTo": true,
-            "targetTellerOrSelf": {
-              "address": "0x0000000000000000000000000000000000000000",
-              "self": true
-            },
-            "messageGasLimit": 100000
-          }
-        ]
+        "lzChains": []
       }
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "Sonic BTC Boring Queue V0.1",
-    "boringQueueSolverName": "Sonic BTC Boring Solver V0.1",
+    "boringQueueDeploymentName": "Turtle TAC BTC Boring Queue V0.0",
+    "boringQueueSolverName": "Turtle TAC BTC Boring Solver V0.0",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -128,13 +112,13 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "Sonic BTC Drone V0.1",
+    "droneDeploymentBaseName": "Turtle TAC BTC Drone V0.0",
     "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
     "shouldDeploy": true,
-    "pauserDeploymentName": "Sonic BTC Pauser V0.1",
+    "pauserDeploymentName": "Turtle TAC BTC Pauser V0.0",
     "makeGenericPauser": [
       "0x0000000000000000000000000000000000000000"
     ],
@@ -156,14 +140,14 @@
   },
   "timelockConfiguration": {
     "shouldDeploy": true,
-    "timelockDeploymentName": "Sonic BTC Timelock V0.1",
+    "timelockDeploymentName": "Turtle TAC BTC Timelock V0.0",
     "timelockParameters": {
-      "minDelay": 0,
+      "minDelay": 300,
       "proposers": [
-        "0xf8553c8552f906C19286F21711721E206EE4909E"
+        "0x0000000000000000000000000000000000000000"
       ],
       "executors": [
-        "0xf8553c8552f906C19286F21711721E206EE4909E"
+        "0x0000000000000000000000000000000000000000"
       ]
     }
   },
@@ -171,7 +155,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "eBTC"
+        "name": "cbBTC"
       },
       "isPeggedToBase": true,
       "rateProvider": "0x0000000000000000000000000000000000000000"
@@ -181,16 +165,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "eBTC"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 0
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "LBTC"
+        "name": "cbBTC"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -201,24 +176,13 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "eBTC"
+        "name": "cbBTC"
       },
       "maxDiscount": 10,
       "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
+      "minimumSecondsToDeadline": 259200,
       "minimumShares": 0,
-      "secondsToMaturity": 60
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "LBTC"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 3600,
-      "minimumShares": 0,
-      "secondsToMaturity": 60
+      "secondsToMaturity": 172800
     }
   ]
 }
