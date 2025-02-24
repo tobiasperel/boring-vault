@@ -13,18 +13,18 @@ import "forge-std/Script.sol";
  */
 contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
-    
+
     //standard
     address public boringVault = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C;
     address public rawDataDecoderAndSanitizer = 0x67cD2b7D6666B9aa68fd9AaCe34473eA88111944;
     address public managerAddress = 0xcFF411d5C54FE0583A984beE1eF43a4776854B9A;
     address public accountantAddress = 0xc315D6e14DDCDC7407784e2Caf815d131Bc1D3E7;
-    
+
     //one offs
     address public symbioticDecoderAndSanitizer = 0xdaEfE2146908BAd73A1C45f75eB2B8E46935c781;
     address public pancakeSwapDataDecoderAndSanitizer = 0xfdC73Fc6B60e4959b71969165876213918A443Cd;
     address public aaveV3DecoderAndSanitizer = 0x159Af850c18a83B67aeEB9597409f6C4Aa07ACb3;
-    
+
     //itb
     address public itbAaveV3Usdc = 0xa6c9A887F5Ae28A70E457178AABDd153859B572b;
     address public itbAaveV3Usdt = 0x9c62cB41eACe893E5cc72C0C933E14B299C520A8;
@@ -196,6 +196,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USDe_karak_01_29_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USDe_03_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_05_28_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_wstUSR_market_03_26_25"), true);
 
         // ========================== Ethena ==========================
         /**
@@ -295,8 +296,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
          * Swap PYUSD <-> FRAX
          * Swap PYUSD <-> crvUSD
          */
-        address[] memory assets = new address[](23);
-        SwapKind[] memory kind = new SwapKind[](23);
+        address[] memory assets = new address[](24);
+        SwapKind[] memory kind = new SwapKind[](24);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -343,6 +344,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         kind[21] = SwapKind.Sell;
         assets[22] = getAddress(sourceChain, "USUAL");
         kind[22] = SwapKind.Sell;
+        assets[23] = getAddress(sourceChain, "USR");
+        kind[23] = SwapKind.BuyAndSell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "PENDLE_wETH_30"));
@@ -635,22 +638,26 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Term ==========================
         {
-            ERC20[] memory purchaseTokens = new ERC20[](3);
+            ERC20[] memory purchaseTokens = new ERC20[](4);
             purchaseTokens[0] = getERC20(sourceChain, "USDC");
             purchaseTokens[1] = getERC20(sourceChain, "USDC");
             purchaseTokens[2] = getERC20(sourceChain, "USDC");
-            address[] memory termAuctionOfferLockerAddresses = new address[](3);
+            purchaseTokens[3] = getERC20(sourceChain, "USDC");
+            address[] memory termAuctionOfferLockerAddresses = new address[](4);
             termAuctionOfferLockerAddresses[0] = 0x55580a11c5C111EE2e36e24aef04443Bf130F092;
             termAuctionOfferLockerAddresses[1] = 0x35ff5064C57d7E9531d9E70e36a49703aBDa3Df4;
             termAuctionOfferLockerAddresses[2] = 0xA78Cd93714748fA4Af847f43647E8D56A356b5Ef;
-            address[] memory termRepoLockers = new address[](3);
+            termAuctionOfferLockerAddresses[3] = 0xb37254D280f1E465ACe3Da80161F8E31e5549299;
+            address[] memory termRepoLockers = new address[](4);
             termRepoLockers[0] = 0xDFC8271C70303B0d98819267f93F86EfFe9BC3AD;
             termRepoLockers[1] = 0xF8FdFAD735e9A8fD8f5e7B8e2073A25F812168A1;
             termRepoLockers[2] = 0x93b6130393973ECAB1CBAd23c62eFC9325450787;
-            address[] memory termRepoServicers = new address[](3);
+            termRepoLockers[3] = 0x9c73873006F407833548a1F649c1E3b5a7341746;
+            address[] memory termRepoServicers = new address[](4);
             termRepoServicers[0] = 0x65Cc6CD9d99f497053C3978b8724B05d2aE03D17;
             termRepoServicers[1] = 0x648C24e31b0FC9c8652d7DA7133498A48E03Bd25;
             termRepoServicers[2] = 0x4279d7545821ea854b9EECc8da2f271cFAf5cAF4;
+            termRepoServicers[3] = 0x636438924C6b9669F0fb1ca64819986854b7CcBb;
             _addTermFinanceLockOfferLeafs(leafs, purchaseTokens, termAuctionOfferLockerAddresses, termRepoLockers);
             _addTermFinanceUnlockOfferLeafs(leafs, termAuctionOfferLockerAddresses);
             _addTermFinanceRevealOfferLeafs(leafs, termAuctionOfferLockerAddresses);
