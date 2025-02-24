@@ -44,6 +44,7 @@ contract DeployGenericRateProvider is Script, ContractNames, Test {
         address createdAddress = deployer.deployContract("Stone Exchange Rate Provider V0.0", creationCode, constructorArgs, 0); 
         console.log("DEPLOYED ADDRESS: ", createdAddress); 
         require(createdAddress == 0x983dC32F0F022F1e114Bf54c280B3575A512BF4f, "not premined"); 
+        require(GenericRateProvider(createdAddress).getRate() == 1038891179797110067, "bad price"); 
 
     }
 
