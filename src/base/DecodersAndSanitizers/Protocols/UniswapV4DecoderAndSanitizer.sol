@@ -28,17 +28,22 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer, Test 
             // Extract the path from PoolKey
             (bytes memory actions, bytes[] memory params) = abi.decode(inputs[0], (bytes, bytes[]));
 
-            if (uint8(actions[0]) != uint8(Actions.SWAP_EXACT_IN_SINGLE)) revert UniswapV4DecoderAndSanitizer__NotSwapInput(); 
+            if (uint8(actions[0]) == uint8(Actions.SWAP_EXACT_IN_SINGLE)) { 
 
-            // Decode the first param which should be our ExactInputSingleParams struct
-            DecoderCustomTypes.ExactInputSingleParams memory swapParams = abi.decode(params[0], (DecoderCustomTypes.ExactInputSingleParams));
+                // Decode the first param which should be our ExactInputSingleParams struct
+                DecoderCustomTypes.ExactInputSingleParams memory swapParams = abi.decode(params[0], (DecoderCustomTypes.ExactInputSingleParams));
 
-            // Extract addresses from poolKey
-            address currency0 = address(swapParams.poolKey.currency0);
-            address currency1 = address(swapParams.poolKey.currency1);
-            address hook = address(swapParams.poolKey.hooks);
+                // Extract addresses from poolKey
+                address currency0 = address(swapParams.poolKey.currency0);
+                address currency1 = address(swapParams.poolKey.currency1);
+                address hook = address(swapParams.poolKey.hooks);
 
-            addressesFound = abi.encodePacked(address(uint160(command)), currency0, currency1, hook);  
+                addressesFound = abi.encodePacked(address(uint160(command)), currency0, currency1, hook);  
+            } else if (uint8(actions[1]) == uint8(Actions.SWAP_EXACT_OUT_SINGLE)) {
+                 
+            } else {
+                revert UniswapV4DecoderAndSanitizer__NotSwapInput(); 
+            }
         } else {
             //only support v4 swaps via the universal router
             revert UniswapV4DecoderAndSanitizer__NotSwapInput();  
@@ -70,33 +75,50 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer, Test 
                 /*bytes memory hookData*/
             ) = abi.decode(params[0], (DecoderCustomTypes.PoolKey, int24, int24, uint256, uint128, uint128, address, bytes));
             
-            // Ensure we're settling the correct pair 
+            // Ensure we're settling next, and then settling the correct pair 
+            uint8 action1 = uint8(bytes1(actions[1]));
+            if (action1 != uint8(Actions.SETTLE_PAIR)) revert UniswapV4DecoderAndSanitizer__UnsupportedAction(); 
+
             (address currency0Settle, address currency1Settle) = abi.decode(params[1], (address, address)); 
               
             addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, recipient, currency0Settle, currency1Settle); 
             return addressesFound;             
          
         } else if (action == uint8(Actions.INCREASE_LIQUIDITY)) {
-           //params0 we don't care about here, but we need to check if we are settling, closing, or clearing and taking 
+            //params0 we don't care about here, but we need to check if we are settling, closing, or clearing and taking 
             uint8 subAction = uint8(bytes1(actions[1])); 
+            
+            uint8 subAction1;  
+            if (actions.length > 2) {
+                subAction1 = uint8(bytes1(actions[2])); 
+            }
+            
             if (subAction == uint8(Actions.SETTLE_PAIR)) {
                 (address currency0Settle, address currency1Settle) = abi.decode(params[1], (address, address)); 
                 
-                addressesFound = abi.encodePacked(currency0Settle, currency1Settle); 
+                return addressesFound = abi.encodePacked(currency0Settle, currency1Settle); 
             } else if (subAction == uint8(Actions.CLOSE_CURRENCY)) {
                 (address currency0Settle) = abi.decode(params[1], (address)); 
-                (address currency1Settle) = abi.decode(params[2], (address)); 
                 
-                addressesFound = abi.encodePacked(currency0Settle, currency1Settle); 
+                if (actions.length =< 2) {
+                    return addressesFound = abi.encodePacked(currency0Settle); 
+                }
 
+                if (subAction1 == uint8(Actions.CLOSE_CURRENCY)) {
+                    (address currency1Settle) = abi.decode(params[2], (address)); 
+                    return addressesFound = abi.encodePacked(currency0Settle, currency1Settle); 
+                } else {
+                    revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction();     
+                } 
             } else if (subAction == uint8(Actions.CLEAR_OR_TAKE)) {
                 (address currency0Settle, ) = abi.decode(params[1], (address, uint256)); 
                 (address currency1Settle, ) = abi.decode(params[2], (address, uint256)); 
 
-                addressesFound = abi.encodePacked(currency0Settle, currency1Settle); 
+                return addressesFound = abi.encodePacked(currency0Settle, currency1Settle); 
             } else {
                 revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
             }
+
         } else if (action == uint8(Actions.DECREASE_LIQUIDITY)) {
 
             uint8 subAction = uint8(bytes1(actions[1])); 
@@ -104,9 +126,13 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer, Test 
                
                 (address currency0Settle, address currency1Settle, address recipient) = abi.decode(params[1], (address, address, address)); 
 
-                addressesFound = abi.encodePacked(currency0Settle, currency1Settle, recipient); 
+                return addressesFound = abi.encodePacked(currency0Settle, currency1Settle, recipient); 
 
             } else if (subAction == uint8(Actions.CLOSE_CURRENCY)) {
+
+                //uint8 subAction1 = uint8(bytes1(actions[2])); 
+                //if (subAction1 == uint8(Actions.CLOSE_CURRENCY)) {
+
                 (address currency0Settle) = abi.decode(params[1], (address)); 
                 (address currency1Settle) = abi.decode(params[2], (address)); 
                 
