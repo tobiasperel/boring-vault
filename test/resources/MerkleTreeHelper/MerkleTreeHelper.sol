@@ -7217,7 +7217,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "compound()",
                 new address[](0),
-                string.concat("Redeem YT in ", ERC20(depositToken).symbol(), " GoldiVault"),
+                string.concat("Compound rewards in ", ERC20(depositToken).symbol(), " GoldiVault"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
 
@@ -7670,6 +7670,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Kodiak Finance =========================================
+    function _addKodiakIslandLeafs(ManageLeaf[] memory leafs, address[] memory islands) internal {
+        _addKodiakIslandLeafs(leafs, islands, false); 
+    }
 
     function _addKodiakIslandLeafs(ManageLeaf[] memory leafs, address[] memory islands, bool includeNativeLeaves) internal {
         for (uint256 i = 0; i < islands.length; i++) {
@@ -7737,7 +7740,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "kodiakIslandRouter");
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][islands[i]][getAddress(
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1][getAddress(
                     sourceChain, "kodiakIslandRouter"
                 )] = true;
             }
@@ -7969,7 +7972,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             "depositPar(uint256,uint256,uint256)",
             new address[](1),
             string.concat(
-                "Deposit Par scaled",
+                "Deposit Par scaled ",
                 ERC20(token).symbol(),
                 " into Dolomite DepositWithdraw Router Market ID: ",
                 vm.toString(marketId)
@@ -7988,7 +7991,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             "depositParIntoDefaultAccount(uint256,uint256)",
             new address[](1),
             string.concat(
-                "Deposit Par scaled",
+                "Deposit Par scaled ",
                 ERC20(token).symbol(),
                 " into Dolomite DepositWithdraw Router Market ID: ",
                 vm.toString(marketId),
@@ -8008,7 +8011,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             "withdrawPar(uint256,uint256,uint256,uint8)",
             new address[](1),
             string.concat(
-                "Withdraw Par scaled",
+                "Withdraw Par scaled ",
                 ERC20(token).symbol(),
                 " from Dolomite DepositWithdraw Router Market ID: ",
                 vm.toString(marketId)

@@ -189,7 +189,7 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "USDC"));
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "USDC"), true);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -291,7 +291,7 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](32);
-        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "USDC"));
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "USDC"), true);
         _addDolomiteBorrowLeafs(leafs, getAddress(sourceChain, "WETH"));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -365,7 +365,7 @@ contract DolomiteFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WETH")); 
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WETH"), true); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 

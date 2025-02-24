@@ -18,7 +18,7 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x46fcd35431f5B371224ACC2e2E91732867B1A77e; 
     address public managerAddress = 0x7280E05ccF01066C715aDc936f860BD65510f816;
     address public accountantAddress = 0x4faE50B524e0D05BD73fDF28b273DB7D4A57CCe9;
-    address public rawDataDecoderAndSanitizer = 0x9b0FF5F9625F99Ae64CfFdc85B56e594D520ACcB;
+    address public rawDataDecoderAndSanitizer = 0xeE7391E66246Bb05cb8a7D672a6e7A5613B1Ea92;
 
     function setUp() external {}
 
@@ -37,7 +37,7 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, berachain, "accountantAddress", accountantAddress);
         setAddress(false, berachain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        ManageLeaf[] memory leafs = new ManageLeaf[](128);
         
 
         // ========================== Teller ==========================
@@ -45,6 +45,45 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         tellerAssets[0] = getERC20(sourceChain, "WBTC"); 
         tellerAssets[1] = getERC20(sourceChain, "LBTC"); 
         _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), tellerAssets, false);    
+
+
+        // ========================== Kodiak Swaps ==========================
+
+        address[] memory token0 = new address[](2);  
+        token0[0] = getAddress(sourceChain, "WBTC");    
+        token0[1] = getAddress(sourceChain, "WBTC");    
+
+        address[] memory token1 = new address[](2);  
+        token1[0] = getAddress(sourceChain, "LBTC");    
+        token1[1] = getAddress(sourceChain, "EBTC");    
+
+        _addUniswapV3Leafs(leafs, token0, token1, false); 
+
+        // ========================== Kodiak Islands ==========================
+
+        address[] memory islands = new address[](3);  
+        islands[0] = getAddress(sourceChain, "kodiak_island_WBTC_EBTC_005%"); 
+        islands[1] = getAddress(sourceChain, "kodiak_island_EBTC_LBTC_005%"); 
+        islands[2] = getAddress(sourceChain, "kodiak_island_EBTC_EBTC_OT_005%"); 
+
+
+        // ========================== Dolomite Supply ==========================
+
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WBTC"), false);          
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "EBTC"), false);          
+
+
+        // ========================== dTokens ==========================
+
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "dWBTC")));   
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "dEBTC")));   
+
+        // ========================== Goldilocks ==========================
+
+        address[] memory vaults = new address[](1); 
+        vaults[0] = getAddress(sourceChain, "goldivault_eBTC"); 
+
+        _addGoldiVaultLeafs(leafs, vaults); 
         
 
         // ========================== Verify ==========================

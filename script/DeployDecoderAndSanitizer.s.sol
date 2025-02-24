@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
+
+
 import {ChainValues} from "test/resources/ChainValues.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 import {ITBPositionDecoderAndSanitizer} from
@@ -55,18 +57,14 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-<<<<<<< HEAD
         vm.createSelectFork("berachain");
         setSourceChainName("berachain"); 
-=======
-        vm.createSelectFork("sonicMainnet");
->>>>>>> dev/jan-2025
     }
 
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
-       
+
         address sonicUniV3 = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c; 
         creationCode = type(StakedSonicDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(sonicUniV3);

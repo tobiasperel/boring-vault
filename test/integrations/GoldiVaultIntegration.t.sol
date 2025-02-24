@@ -290,8 +290,6 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
         //Skip some time
         skip(5 days);
 
-        uint256 ct = IGoldiVault(getAddress(sourceChain, "goldivault_weeth")).endTime();
-
         IGoldiVault(getAddress(sourceChain, "goldivault_weeth")).conclude();
 
         manageLeafs = new ManageLeaf[](1);
@@ -433,11 +431,7 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
 
         uint256[] memory values = new uint256[](4);
 
-        uint256 ytBalBefore = getERC20(sourceChain, "weethYT").balanceOf(address(boringVault));
-
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-
-        uint256 ytBalAfter = getERC20(sourceChain, "weethYT").balanceOf(address(boringVault));
 
         manageLeafs = new ManageLeaf[](1);
         manageLeafs[0] = leafs[8];
@@ -567,8 +561,6 @@ contract GoldiVaultIntegration is Test, MerkleTreeHelper {
 
         //Skip some time
         skip(90 days);
-
-        uint256 ct = IGoldiVault(getAddress(sourceChain, "goldivault_weETH")).endTime();
 
         IGoldiVault(getAddress(sourceChain, "goldivault_weETH")).conclude();
 
