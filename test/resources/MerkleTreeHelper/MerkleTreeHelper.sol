@@ -3012,7 +3012,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Uniswap V4 =========================================
-
+    
+    /// @dev NOTE that for decreasing and burning positions, the decoder has the option to include a SWEEP, but isn't needed for regular functionality and thus 
+    /// is not included in the leaves at this time
+    /// -- if in the future it is required for a specific hook, these leaves could be added, but as no ETH is sent during these calls, SWEEP shouldn't be needed
     function _addUniswapV4Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1, address[] memory hooks) internal {
         require(token0.length == token1.length, "Token arrays must be of equal length");
         require(token1.length == hooks.length, "Token and hook arrays must be of equal length");
@@ -3242,7 +3245,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     getAddress(sourceChain, "uniV4UniversalRouter"),
                     true,
                     "execute(bytes,bytes[],uint256)",
-                    new address[](5),
+                    new address[](7),
                     string.concat("Swap ETH for ", ERC20(token1[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
@@ -3252,6 +3255,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
                 leafs[leafIndex].argumentAddresses[3] = address(token0[i]);  
                 leafs[leafIndex].argumentAddresses[4] = address(token1[i]); 
+                leafs[leafIndex].argumentAddresses[5] = address(token0[i]); //should be ETH
+                leafs[leafIndex].argumentAddresses[6] = getAddress(sourceChain, "boringVault"); 
 
                 unchecked {
                     leafIndex++; 
@@ -3300,7 +3305,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     getAddress(sourceChain, "uniV4PositionManager"),
                     true,
                     "modifyLiquidities(bytes,uint256)",
-                    new address[](6),
+                    new address[](8),
                     string.concat("Mint UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
@@ -3310,6 +3315,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
                 leafs[leafIndex].argumentAddresses[4] = token0[i]; 
                 leafs[leafIndex].argumentAddresses[5] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[6] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[7] = getAddress(sourceChain, "boringVault");  
             }
 
             //INCREASE LIQUIDITY
@@ -3340,7 +3347,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     getAddress(sourceChain, "uniV4PositionManager"),
                     true,
                     "modifyLiquidities(bytes,uint256)",
-                    new address[](4),
+                    new address[](6),
                     string.concat("Increase liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
@@ -3348,6 +3355,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafs[leafIndex].argumentAddresses[1] = token1[i]; 
                 leafs[leafIndex].argumentAddresses[2] = token0[i]; 
                 leafs[leafIndex].argumentAddresses[3] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[4] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault");  
             }
 
             //DECREASE LIQUIDITY
@@ -3360,7 +3369,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     false,
                     "modifyLiquidities(bytes,uint256)",
                     new address[](5),
-                    string.concat("Decrease liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
+                    string.concat("Decrease liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol(), " using SETTLE"),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = token0[i]; 
@@ -3395,7 +3404,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     false,
                     "modifyLiquidities(bytes,uint256)",
                     new address[](5),
-                    string.concat("Decrease liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
+                    string.concat("Decrease liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol(), " using SETTLE"),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = token0[i]; 
@@ -3403,6 +3412,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafs[leafIndex].argumentAddresses[2] = token0[i]; 
                 leafs[leafIndex].argumentAddresses[3] = token1[i]; 
                 leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault"); 
+
+                unchecked {
+                    leafIndex++; 
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "uniV4PositionManager"),
+                    false,
+                    "modifyLiquidities(bytes,uint256)",
+                    new address[](4),
+                    string.concat("Decrease liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol(), " using CLEAR_OR_TAKE or CLOSE_CURRENCY"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[2] = token0[i]; 
+                leafs[leafIndex].argumentAddresses[3] = token1[i]; 
             }
 
             //BURN LIQUIDITY

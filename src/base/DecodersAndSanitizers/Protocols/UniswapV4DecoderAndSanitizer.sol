@@ -28,7 +28,7 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
     // @dev inputs can be grouped together based on common things, ie. swaps will always be swap, settle, take, etc. 
     function execute(bytes calldata commands, bytes[] calldata inputs, uint256 /*deadline*/) external pure returns (bytes memory addressesFound) {
         // Verify exactly 1 byte
-        require(commands.length == 1, "Invalid commands length");
+        require(commands.length <= 2, "Invalid commands length");
         // Extract and verify command
         uint8 command = uint8(commands[0]);
         if (command == uint8(Commands.V4_SWAP)) {
@@ -50,10 +50,22 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                 if (uint8(actions[1]) != uint8(Actions.SETTLE_ALL)) revert UniswapV4DecoderAndSanitizer__NotSwapSubAction(); 
                 if (uint8(actions[2]) != uint8(Actions.TAKE_ALL)) revert UniswapV4DecoderAndSanitizer__NotSwapSubAction(); 
 
+
                 (address currencyToSpend, ) = abi.decode(params[1], (address, uint128)); 
                 (address currencyToReceive, ) = abi.decode(params[2], (address, uint128)); 
-
+                 
                 addressesFound = abi.encodePacked(currency0, currency1, hook, currencyToSpend, currencyToReceive);  
+
+                if (commands.length == 1) return addressesFound; 
+
+                //otherwise, we have a sweep
+
+                uint8 command1 = uint8(commands[1]);
+                if (command1 != uint8(Commands.SWEEP)) revert UniswapV4DecoderAndSanitizer__NotSwapSubAction(); 
+
+                (address currencyToSweep, address recipient, ) = abi.decode(inputs[1], (address, address, uint256)); 
+                addressesFound = abi.encodePacked(addressesFound, currencyToSweep, recipient); 
+
             } else {
                 revert UniswapV4DecoderAndSanitizer__UnsupportedAction(); 
             }
@@ -75,8 +87,8 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
         // First decode the outer tuple (actions, params)
         (bytes memory actions, bytes[] memory params) = abi.decode(unlockData, (bytes, bytes[]));
         
-        //only support 1 action at a time (which can have up to 2 subactions, so 3 actions total)
-        if (actions.length > 3) revert UniswapV4DecoderAndSanitizer__SubActionLength(); 
+        //only support 1 action at a time (which can have up to 4 subactions, so 3 actions total)
+        if (actions.length > 4) revert UniswapV4DecoderAndSanitizer__SubActionLength(); 
         
         uint8 action = uint8(bytes1(actions[0]));
         if (action == uint8(Actions.MINT_POSITION)) {
@@ -97,10 +109,14 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
             if (subAction != uint8(Actions.SETTLE_PAIR)) revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
 
             (address currency0Settle, address currency1Settle) = abi.decode(params[1], (address, address)); 
-              
+            
+
             addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, recipient, currency0Settle, currency1Settle); 
+            addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+
             return addressesFound;             
-         
+              
+        // @dev if increasing liquidity, we can either SETTLE_PAIR, CLOSE_CURRENCY, or CLEAR_OR_TAKE. If using ETH, we can also include an optional SWEEP 
         } else if (action == uint8(Actions.INCREASE_LIQUIDITY)) {
 
              (
@@ -123,8 +139,9 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
             if (subAction == uint8(Actions.SETTLE_PAIR)) {
                 (address currency0Settle, address currency1Settle) = abi.decode(params[1], (address, address)); 
                 
-                return addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
-
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
+                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                return addressesFound; 
             } else if (subAction == uint8(Actions.CLOSE_CURRENCY)) {
                 //if the length is too short, we revert w/ unsupported
                 if (actions.length <= 2) revert UniswapV4DecoderAndSanitizer__SubActionLength(); 
@@ -146,7 +163,9 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                     } 
                 
                 // Return currency0, currency1
-                return addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
+                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                return addressesFound; 
 
             } else if (subAction == uint8(Actions.CLEAR_OR_TAKE)) {
                 if (actions.length <= 2) revert UniswapV4DecoderAndSanitizer__SubActionLength(); 
@@ -165,7 +184,9 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                     } 
 
                 // Return currency0, currency1
-                return addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
+                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                return addressesFound; 
 
             } else {
                 revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
@@ -195,7 +216,9 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                
                 (address currency0Settle, address currency1Settle, address recipient) = abi.decode(params[1], (address, address, address)); 
 
-                return addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle, recipient); 
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle, recipient); 
+                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                return addressesFound; 
                 
             // Supported but not recommended
             } else if (subAction == uint8(Actions.CLOSE_CURRENCY)) {
@@ -217,7 +240,9 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                         revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction();     
                     } 
 
-                return addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
+                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                return addressesFound; 
 
             } else if (subAction == uint8(Actions.CLEAR_OR_TAKE)) {
                 if (actions.length <= 2) revert UniswapV4DecoderAndSanitizer__SubActionLength(); 
@@ -234,7 +259,9 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                         revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction();     
                     } 
 
-                return addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
+                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                return addressesFound; 
 
             } else {
                 revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
@@ -254,11 +281,45 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
             if (subAction == uint8(Actions.TAKE_PAIR)) {
                 (address currency0Settle, address currency1Settle, address recipient) = abi.decode(params[1], (address, address, address)); 
                 addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle, recipient); 
+                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                return addressesFound; 
             } else {
                 revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
             }
         } else {
             revert UniswapV4DecoderAndSanitizer__UnsupportedAction(); 
         }
+    }
+
+    //============================== Helper Functions ===============================
+    
+    // Helper function to check for and process SWEEP action
+    function _processSweepIfPresent(
+        bytes memory actions,
+        bytes[] memory params,
+        uint256 sweepActionIndex,
+        bytes memory currentAddressesFound
+    ) internal pure returns (bytes memory updatedAddressesFound) {
+        // Check if there's another action and it's SWEEP
+        if (actions.length > sweepActionIndex &&
+            uint8(bytes1(actions[sweepActionIndex])) == uint8(Actions.SWEEP)) {
+    
+            (address currencyToSweep, address recipient) = abi.decode(
+                params[sweepActionIndex],
+                (address, address)
+            );
+    
+            // Append the sweep addresses to existing addresses
+            updatedAddressesFound = abi.encodePacked(
+                currentAddressesFound,
+                currencyToSweep,
+                recipient
+            );
+    
+            return updatedAddressesFound;
+        }
+    
+        // If no SWEEP action, return the original addresses
+        return currentAddressesFound;
     }
 }
