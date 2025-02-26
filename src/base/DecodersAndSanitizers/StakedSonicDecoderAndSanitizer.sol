@@ -11,6 +11,7 @@ import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoco
 import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol"; 
 import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol"; 
 
+
 contract StakedSonicDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
     BalancerV2DecoderAndSanitizer,
@@ -61,10 +62,10 @@ contract StakedSonicDecoderAndSanitizer is
             CurveDecoderAndSanitizer,
             NativeWrapperDecoderAndSanitizer
         )
+
         returns (bytes memory addressesFound)
     {
         // Nothing to sanitize or return
         return addressesFound;
     }
-
 }

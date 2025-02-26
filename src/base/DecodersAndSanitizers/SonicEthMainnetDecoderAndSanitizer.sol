@@ -12,8 +12,7 @@ import {AaveV3DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocol
 import {LidoDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/LidoDecoderAndSanitizer.sol";
 import {FluidFTokenDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/FluidFTokenDecoderAndSanitizer.sol";
-import {OFTDecoderAndSanitizer} from
-    "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
+import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
 
 contract SonicMainnetDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
