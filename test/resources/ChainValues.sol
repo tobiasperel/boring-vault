@@ -1545,6 +1545,7 @@ contract ChainValues {
         values[sonicMainnet]["USDC_stS_PoolId"] =  0x713fb5036dc70012588d77a5b066f1dd05c712d7000200000000000000000041;
         values[sonicMainnet]["USDC_wS_PoolId"] =  0xfc127dfc32b7739a7cfff7ed19e4c4ab3221953a0002000000000000000000a4;
         values[sonicMainnet]["stS_BEETS_PoolId"] =  0x10ac2f9dae6539e77e372adb14b1bf8fbd16b3e8000200000000000000000005;
+        values[sonicMainnet]["USDC_WETH_PoolId"] =  0x308ebea1dc4ead75f0aebd1569e39354e26ae9e600020000000000000000009c;
 
         // Tellers
         values[sonicMainnet]["scUSDTeller"] = 0x358CFACf00d0B4634849821BB3d1965b472c776a.toBytes32();
