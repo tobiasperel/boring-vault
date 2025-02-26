@@ -62,21 +62,18 @@ contract CreateSwellEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
         );
 
         // // ========================== Euler ==========================
-        ERC4626[] memory depositVaults = new ERC4626[](2); 
-        depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerWETH")); 
-        depositVaults[1] = ERC4626(getAddress(sourceChain, "eulerWEETH")); 
-        address[] memory subaccounts = new address[](1); 
+        ERC4626[] memory depositVaults = new ERC4626[](2);
+        depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerWETH"));
+        depositVaults[1] = ERC4626(getAddress(sourceChain, "eulerWEETH"));
+        address[] memory subaccounts = new address[](1);
         subaccounts[0] = address(boringVault);
         _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
 
         // ========================== Merkl ==========================
-         ERC20[] memory tokensToClaim = new ERC20[](1);
-         tokensToClaim[0] = getERC20(sourceChain, "WSWELL");
-          _addMerklLeafs(
-            leafs,
-            getAddress(sourceChain, "merklDistributor"),
-            getAddress(sourceChain, "dev1Address"),
-            tokensToClaim
+        ERC20[] memory tokensToClaim = new ERC20[](1);
+        tokensToClaim[0] = getERC20(sourceChain, "WSWELL");
+        _addMerklLeafs(
+            leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim
         );
 
         // ========================== Verify & Generate ==========================
