@@ -62,26 +62,35 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "stS_BEETS_PoolId")); //stS, BEETS (swap BEETS for stS, then USDC, swap function leaves only support 2 token pools atm)
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_WETH_PoolId")); //USDC -> WETH and then can deposit for scETH
 
+        _addBalancerLeafs(
+            leafs, getBytes32(sourceChain, "scETH_WETH_PoolId"), getAddress(sourceChain, "scETH_WETH_gauge")
+        );
+
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "WETH");
         _addTellerLeafs(leafs, getAddress(sourceChain, "scETHTeller"), tellerAssets, false);
 
         // ========================== Silo ==========================
-        
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_ETH_config")); 
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_ETH_wstkscETH_config")); 
+
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_ETH_config"));
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_ETH_wstkscETH_config"));
 
         // ========================== Curve =========================
-        
-        _addCurveLeafs(leafs, getAddress(sourceChain, "curve_WETH_scETH_pool"), 2, getAddress(sourceChain, "curve_WETH_scETH_gauge")); 
-        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "curve_WETH_scETH_pool")); 
+
+        _addCurveLeafs(
+            leafs,
+            getAddress(sourceChain, "curve_WETH_scETH_pool"),
+            2,
+            getAddress(sourceChain, "curve_WETH_scETH_gauge")
+        );
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "curve_WETH_scETH_pool"));
 
         // ========================== Euler =========================
-        
+
         ERC4626[] memory depositVaults = new ERC4626[](2);
-        depositVaults[0] = ERC4626(getAddress(sourceChain, "euler_scETH_MEV")); 
-        depositVaults[1] = ERC4626(getAddress(sourceChain, "euler_WETH_MEV")); 
+        depositVaults[0] = ERC4626(getAddress(sourceChain, "euler_scETH_MEV"));
+        depositVaults[1] = ERC4626(getAddress(sourceChain, "euler_WETH_MEV"));
 
         address[] memory subaccounts = new address[](1);
         subaccounts[0] = address(boringVault);
@@ -91,8 +100,9 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
          // ========================== Native =========================
         _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));
        
+
         // ========================== Verify =========================
-         
+
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         string memory filePath = "./leafs/Sonic/StakedSonicETHStrategistLeafs.json";
