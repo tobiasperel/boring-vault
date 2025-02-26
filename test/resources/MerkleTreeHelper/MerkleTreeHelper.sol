@@ -4365,7 +4365,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "deposit(uint256,address)",
             new address[](1),
-            string.concat("Deposit ", asset.symbol(), " for ", vault.symbol()),
+            string.concat("Deposit ", asset.symbol(), " for ", vault.symbol(), " for ", vm.toString(subaccount)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = subaccount;
@@ -4378,7 +4378,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "withdraw(uint256,address,address)",
             new address[](2),
-            string.concat("Withdraw ", asset.symbol(), " from ", vault.symbol()),
+            string.concat("Withdraw ", asset.symbol(), " from ", vault.symbol(), " for ", vm.toString(subaccount)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
@@ -4393,7 +4393,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "mint(uint256,address)",
             new address[](1),
-            string.concat("Mint ", vault.symbol(), " using ", asset.symbol()),
+            string.concat("Mint ", vault.symbol(), " using ", asset.symbol(), " for ", vm.toString(subaccount)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = subaccount;
@@ -4407,7 +4407,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "redeem(uint256,address,address)",
             new address[](2),
-            string.concat("Redeem ", vault.symbol(), " for ", asset.symbol()),
+            string.concat("Redeem ", vault.symbol(), " for ", asset.symbol(), " for ", vm.toString(subaccount)),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
@@ -6784,19 +6784,39 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafs[leafIndex].argumentAddresses[0] = subaccounts[i];
                 leafs[leafIndex].argumentAddresses[1] = address(depositVaults[j]);
 
-                //unchecked {
-                //    leafIndex++;
-                //}
-                //leafs[leafIndex] = ManageLeaf(
-                //    getAddress(sourceChain, "ethereumVaultConnector"),
-                //    false,
-                //    "call(address,address,uint256,bytes)",
-                //    new address[](2),
-                //    string.concat("Call EVC Target ", depositVaults[j].name(), " onBehalfOfAccount ", vm.toString(subaccounts[i])),
-                //    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                //);
-                //leafs[leafIndex].argumentAddresses[0] = address(depositVaults[j]);
-                //leafs[leafIndex].argumentAddresses[1] = subaccounts[i];
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "ethereumVaultConnector"),
+                    false,
+                    "call(address,address,uint256,bytes)",
+                    new address[](5),
+                    string.concat("Call Withdraw on ", depositVaults[j].name(), " via EVC on behalf of ", vm.toString(subaccounts[i])),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = address(depositVaults[j]); 
+                leafs[leafIndex].argumentAddresses[1] = subaccounts[i]; 
+                leafs[leafIndex].argumentAddresses[2] = address(0xb460af94); //withdraw
+                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");  //receiver must be vault
+                leafs[leafIndex].argumentAddresses[4] = subaccounts[i];  //owner must be subaccount
+
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "ethereumVaultConnector"),
+                    false,
+                    "call(address,address,uint256,bytes)",
+                    new address[](5),
+                    string.concat("Call Redeem on ", depositVaults[j].name(), " via EVC on behalf of ", vm.toString(subaccounts[i])),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = address(depositVaults[j]); 
+                leafs[leafIndex].argumentAddresses[1] = subaccounts[i]; 
+                leafs[leafIndex].argumentAddresses[2] = address(0xba087652); //redeem 
+                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");  //receiver must be vault
+                leafs[leafIndex].argumentAddresses[4] = subaccounts[i];  //owner must be subaccount
             }
         }
     }
@@ -6851,7 +6871,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     false,
                     "borrow(uint256,address)",
                     new address[](1),
-                    string.concat("Borrow ", ERC20(borrowVaults[j].asset()).name(), " from Euler Vault"),
+                    string.concat("Borrow ", ERC20(borrowVaults[j].asset()).name(), " from ", borrowVaults[j].name(), " for account #", vm.toString(i)),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = subaccounts[i];
@@ -6865,7 +6885,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     false,
                     "repay(uint256,address)",
                     new address[](1),
-                    string.concat("Repay ", ERC20(borrowVaults[j].asset()).name(), " to Euler Vault"),
+                    string.concat("Repay ", ERC20(borrowVaults[j].asset()).name(), " to ", borrowVaults[j].name(), " for account #", vm.toString(i)),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = subaccounts[i];
@@ -6879,7 +6899,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     false,
                     "repayWithShares(uint256,address)",
                     new address[](1),
-                    string.concat("Repay ", ERC20(borrowVaults[j].asset()).name(), " with shares to Euler Vault"),
+                    string.concat("Repay ", ERC20(borrowVaults[j].asset()).name(), " with shares ", borrowVaults[j].name(), " for account #", vm.toString(i)),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = subaccounts[i];
@@ -6892,24 +6912,27 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     false,
                     "disableController()",
                     new address[](0),
-                    string.concat("Disable ", borrowVaults[j].name(), " as controller"),
+                    string.concat("Disable ", borrowVaults[j].name(), " as controller for account #", vm.toString(i)),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                //leafs[leafIndex].argumentAddresses[0] = subaccounts[i];
+                //leafs[leafIndex].argumentAddresses[0] = subaccounts[i]; 
+                
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "ethereumVaultConnector"),
+                    false,
+                    "call(address,address,uint256,bytes)",
+                    new address[](4),
+                    string.concat("Call Borrow on ", borrowVaults[j].name(), " via EVC on behalf of ", vm.toString(subaccounts[i])),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = address(borrowVaults[j]); 
+                leafs[leafIndex].argumentAddresses[1] = subaccounts[i]; 
+                leafs[leafIndex].argumentAddresses[2] = address(0x4b3fd148); //borrow
+                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
 
-                //unchecked {
-                //    leafIndex++;
-                //}
-                //leafs[leafIndex] = ManageLeaf(
-                //    getAddress(sourceChain, "ethereumVaultConnector"),
-                //    false,
-                //    "call(address,address,uint256,bytes)",
-                //    new address[](2),
-                //    string.concat("Call EVC Target ", borrowVaults[j].name(), " onBehalfOfAccount ", vm.toString(subaccounts[i])),
-                //    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                //);
-                //leafs[leafIndex].argumentAddresses[0] = address(borrowVaults[j]);
-                //leafs[leafIndex].argumentAddresses[1] = subaccounts[i];
             }
         }
     }
