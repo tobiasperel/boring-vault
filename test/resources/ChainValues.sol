@@ -1082,6 +1082,10 @@ contract ChainValues {
         values[mainnet]["spectra_sdeUSD_YT"] = 0xE9677Bfde5830B100281178681C7e78c7d861D1C.toBytes32();
         values[mainnet]["spectra_sdeUSD_IBT"] = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326.toBytes32();
 
+        // Odos
+        values[mainnet]["odosRouterV2"] = 0xCf5540fFFCdC3d510B18bFcA6d2b9987b0772559.toBytes32();
+        values[mainnet]["odosExecutor"] = 0xd768d1Fe6Ef1449A54F9409400fe9d0E4954ea3F.toBytes32();
+
     }
 
     function _addBaseValues() private {

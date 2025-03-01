@@ -464,4 +464,15 @@ contract DecoderCustomTypes {
         uint64 amount;
         uint256 nonce;
     }
+
+    // ========================================= Odos ==================================
+    struct swapTokenInfo {
+        address inputToken;
+        uint256 inputAmount;
+        address inputReceiver;
+        address outputToken;
+        uint256 outputQuote;
+        uint256 outputMin;
+        address outputReceiver;
+    }
 }

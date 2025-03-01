@@ -9137,6 +9137,54 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Exchange tokens in Spectra Pool"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+    }
+
+    // ========================================= Odos =========================================
+    
+    //TODO add loop for tokens
+    function _addOdosSwapLeafs(ManageLeaf[] memory leafs, address inputToken, address outputToken) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            inputToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Odos Router V2 to spend ", ERC20(inputToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "odosRouterV2");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            outputToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Odos Router V2 to spend ", ERC20(outputToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "odosRouterV2");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "odosRouterV2"),
+            false,
+            "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)",
+            new address[](5),
+            string.concat("Swap ", ERC20(inputToken).symbol(), " for ", ERC20(outputToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = inputToken; 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor"); 
+        leafs[leafIndex].argumentAddresses[2] = outputToken;  
+        leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor"); 
 
     }
 
