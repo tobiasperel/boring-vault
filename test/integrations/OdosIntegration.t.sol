@@ -45,7 +45,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(new FullOdosDecoderAndSanitizer());
+        rawDataDecoderAndSanitizer = address(new FullOdosDecoderAndSanitizer(getAddress(sourceChain, "odosRouterV2")));
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -115,7 +115,77 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(new FullOdosDecoderAndSanitizer());
+        rawDataDecoderAndSanitizer = address(new FullOdosDecoderAndSanitizer(getAddress(sourceChain, "odosRouterV2")));
+
+        setAddress(false, sourceChain, "boringVault", address(boringVault));
+        setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        setAddress(false, sourceChain, "manager", address(manager));
+        setAddress(false, sourceChain, "managerAddress", address(manager));
+        setAddress(false, sourceChain, "accountantAddress", address(1));
+
+        rolesAuthority = new RolesAuthority(address(this), Authority(address(0)));
+        boringVault.setAuthority(rolesAuthority);
+        manager.setAuthority(rolesAuthority);
+
+        // Setup roles authority.
+        rolesAuthority.setRoleCapability(
+            MANAGER_ROLE,
+            address(boringVault),
+            bytes4(keccak256(abi.encodePacked("manage(address,bytes,uint256)"))),
+            true
+        );
+        rolesAuthority.setRoleCapability(
+            MANAGER_ROLE,
+            address(boringVault),
+            bytes4(keccak256(abi.encodePacked("manage(address[],bytes[],uint256[])"))),
+            true
+        );
+
+        rolesAuthority.setRoleCapability(
+            STRATEGIST_ROLE,
+            address(manager),
+            ManagerWithMerkleVerification.manageVaultWithMerkleVerification.selector,
+            true
+        );
+        rolesAuthority.setRoleCapability(
+            MANGER_INTERNAL_ROLE,
+            address(manager),
+            ManagerWithMerkleVerification.manageVaultWithMerkleVerification.selector,
+            true
+        );
+        rolesAuthority.setRoleCapability(
+            ADMIN_ROLE, address(manager), ManagerWithMerkleVerification.setManageRoot.selector, true
+        );
+        rolesAuthority.setRoleCapability(
+            BORING_VAULT_ROLE, address(manager), ManagerWithMerkleVerification.flashLoan.selector, true
+        );
+        rolesAuthority.setRoleCapability(
+            BALANCER_VAULT_ROLE, address(manager), ManagerWithMerkleVerification.receiveFlashLoan.selector, true
+        );
+
+        // Grant roles
+        rolesAuthority.setUserRole(address(this), STRATEGIST_ROLE, true);
+        rolesAuthority.setUserRole(address(manager), MANGER_INTERNAL_ROLE, true);
+        rolesAuthority.setUserRole(address(this), ADMIN_ROLE, true);
+        rolesAuthority.setUserRole(address(manager), MANAGER_ROLE, true);
+        rolesAuthority.setUserRole(address(boringVault), BORING_VAULT_ROLE, true);
+        rolesAuthority.setUserRole(getAddress(sourceChain, "vault"), BALANCER_VAULT_ROLE, true);
+    }
+
+    function _setUpSpecificBlock_SonicWETHSwap() internal {
+        setSourceChainName("sonicMainnet");
+        // Setup forked environment.
+        string memory rpcKey = "SONIC_MAINNET_RPC_URL";
+        uint256 blockNumber = 11169032; 
+
+        _startFork(rpcKey, blockNumber);
+
+        boringVault = new BoringVault(address(this), "Boring Vault", "BV", 18);
+
+        manager =
+            new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
+
+        rawDataDecoderAndSanitizer = address(new FullOdosDecoderAndSanitizer(getAddress(sourceChain, "odosRouterV2")));
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -188,7 +258,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -409,6 +479,76 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
+    function testOdosSwapERC20_Sonic() external {
+        _setUpSpecificBlock_SonicWETHSwap(); 
+
+        deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18);
+        
+        address[] memory tokens = new address[](3);   
+        tokens[0] = getAddress(sourceChain, "USDC"); 
+        tokens[1] = getAddress(sourceChain, "WETH"); 
+        tokens[2] = getAddress(sourceChain, "USDT"); 
+       
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        _addOdosSwapLeafs(leafs, tokens);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
+        manageLeafs[0] = leafs[5]; //approve weth
+        manageLeafs[1] = leafs[6]; //swap() weth -> usdc
+        manageLeafs[2] = leafs[7]; //swapCompact() weth -> usdc
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](3);
+        targets[0] = getAddress(sourceChain, "WETH"); //approve
+        targets[1] = getAddress(sourceChain, "odosRouterV2"); //approve
+        targets[2] = getAddress(sourceChain, "odosRouterV2"); //approve
+
+        bytes[] memory targetData = new bytes[](3);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "odosRouterV2"), type(uint256).max
+        );
+        
+        DecoderCustomTypes.swapTokenInfo memory swapTokenInfo = DecoderCustomTypes.swapTokenInfo({
+            inputToken: getAddress(sourceChain, "WETH"),
+            inputAmount: 1e18,
+            inputReceiver: getAddress(sourceChain, "odosExecutor"),
+            outputToken: getAddress(sourceChain, "USDC"),
+            outputQuote: 2239355834,
+            outputMin: 2229355834,
+            outputReceiver: address(boringVault)
+        }); 
+    
+        //much longer path
+        bytes memory pathDefinition = hex"04030a0102aa88cc0301000101020014012433768406010003020001a686fe0f06020104020001c5dfced4060201050200015b3a9e66060201060200000702010207eceabd67b0f236fe57f61e619d91e4b223eb75d20002000000000000000000bc02060201080901ff000000000000000000000000000000000000000000000f4dd4c3ccb1729f099b79d83540049758a5e9ff50c42deacd8fc9773493ed674b675be577f2634bb6d9b069f6b96a507243d501d1a23b3fccfc85d36fb30f3fcb864d49cdff15061ed5c6adfee40b40cfd41df89d060b72ebdd50d65f9021e4457c477efe809a1d337bdfc98b77a1067e3819f66d8ad23f29219dd400f2bf60e5a23d13be72b486d40388945c4b7d607aaf7b5cde9f09b5f03cf3b5c923aeea039e2fb66102314ce7b64ce5ce3e5183bc94ad38000000000000000000000000"; 
+
+        targetData[1] = abi.encodeWithSignature(
+            "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)", swapTokenInfo, pathDefinition, getAddress(sourceChain, "odosExecutor"), 0
+        );
+        
+        // @dev NOTE: this is swapCompact ABI-encoded. This tx data was retrieved directly from the Odos API. After assembling the tx, the output from the /assemble endpoint will return the following data in the data field. This includes everything needed for swapping. Submit the entire tx data as the targetData. Note that is already includes the function signature, etc.  
+        targetData[2] = hex"83bd37f9000150c42deacd8fc9773493ed674b675be577f2634b000129219dd400f2bf60e5a23d13be72b486d4038894080de0b6b3a7640000048579dbba028f5c0001B28Ca7e465C452cE4252598e0Bc96Aeba553CF82000000015615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f0000000006020307017015f2b506010001020001e6f4da260602010302000006020104020002060201050601ff000000000000000000000000000000000000000000000000b6d9b069f6b96a507243d501d1a23b3fccfc85d350c42deacd8fc9773493ed674b675be577f2634b6fb30f3fcb864d49cdff15061ed5c6adfee40b40cfd41df89d060b72ebdd50d65f9021e4457c477e9f46dd8f2a4016c26c1cf1f4ef90e5e1928d756b039e2fb66102314ce7b64ce5ce3e5183bc94ad380000000000000000"; 
+
+        address[] memory decodersAndSanitizers = new address[](3);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](3);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+
+        uint256 usdcBal = getERC20(sourceChain, "USDC").balanceOf(address(boringVault)); 
+        assertGt(usdcBal, 0); 
+    }
+
 
     // ========================================= HELPER FUNCTIONS =========================================
 
@@ -418,4 +558,6 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
     }
 }
 
-contract FullOdosDecoderAndSanitizer is OdosDecoderAndSanitizer {}
+contract FullOdosDecoderAndSanitizer is OdosDecoderAndSanitizer {
+    constructor(address _odosRouter) OdosDecoderAndSanitizer(_odosRouter){}
+}

@@ -6,6 +6,13 @@ import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndS
 
 abstract contract OdosDecoderAndSanitizer is BaseDecoderAndSanitizer {
 
+    // Reference to the OdosRouterV2 contract
+    IOdosRouterV2 internal immutable odosRouter; //temp
+
+    constructor(address _odosRouter) {
+        odosRouter = IOdosRouterV2(_odosRouter); 
+    }
+
     function swap(
         DecoderCustomTypes.swapTokenInfo memory tokenInfo,
         bytes calldata /*pathDefinition*/,
@@ -22,9 +29,6 @@ abstract contract OdosDecoderAndSanitizer is BaseDecoderAndSanitizer {
         address executor;
         uint32 referralCode;
         bytes calldata pathDefinition;
-        
-        // Reference to the OdosRouterV2 contract
-        IOdosRouterV2 odosRouter = IOdosRouterV2(0xCf5540fFFCdC3d510B18bFcA6d2b9987b0772559); //temp
         
         {
             address msgSender = msg.sender;
