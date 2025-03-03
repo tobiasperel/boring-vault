@@ -240,6 +240,8 @@ contract ChainValues {
         values[mainnet]["stkGHO"] = 0x1a88Df1cFe15Af22B3c4c783D4e6F7F9e0C1885d.toBytes32();
         values[mainnet]["lvlUSD"] = 0x7C1156E515aA1A2E851674120074968C905aAF37.toBytes32();
         values[mainnet]["slvlUSD"] = 0x4737D9b4592B40d51e110b94c9C043c6654067Ae.toBytes32();
+        values[mainnet]["PXETH"] = 0x04C154b66CB340F3Ae24111CC767e0184Ed00Cc6.toBytes32(); 
+        values[mainnet]["FXUSD"] = 0x085780639CC2cACd35E474e71f4d000e2405d8f6.toBytes32(); 
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
