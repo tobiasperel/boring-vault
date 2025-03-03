@@ -18,7 +18,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
     address public managerAddress = 0xaFa8c08bedB2eC1bbEb64A7fFa44c604e7cca68d;
     address public accountantAddress = 0xEa23aC6D7D11f6b181d6B98174D334478ADAe6b0;
-    address public rawDataDecoderAndSanitizer = 0xbB8D86916004cA6332E7a43Bc84f1bfF43A9Da07;
+    address public rawDataDecoderAndSanitizer = 0x1c0243F818c2af828938d703476D53448E93dD9D;
 
     function setUp() external {}
 
@@ -164,6 +164,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "EBTC_USR_86"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "Corn_eBTC_PT03_2025_WETH_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WBTC_USR_86"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "Corn_eBTC_PT03_2025_WBTC_915"));
 
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USDC_86"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USDT_86"));
@@ -177,6 +178,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "EBTC_USR_86"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "Corn_eBTC_PT03_2025_WETH_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USR_86"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "Corn_eBTC_PT03_2025_WBTC_915"));
 
         // ========================== MorphoRewards ==========================
         _addMorphoRewardWrapperLeafs(leafs);
@@ -216,6 +218,32 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Resolv ==========================
         _addAllResolvLeafs(leafs);  
+
+        // ========================== Curve ==========================
+        _addCurveLeafs(leafs, getAddress(sourceChain, "fxUSD_USDC_Curve_Pool"), 2, getAddress(sourceChain, "fxUSD_USDC_Curve_Gauge"));   
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "fxUSD_USDC_Curve_Pool")); 
+
+        _addCurveLeafs(leafs, getAddress(sourceChain, "WETH_PXETH_Curve_Pool"), 2, getAddress(sourceChain, "WETH_PXETH_Curve_Gauge"));   
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "WETH_PXETH_Curve_Pool"));   
+
+        _addCurveLeafs(leafs, getAddress(sourceChain, "STETH_PXETH_Curve_Pool"), 2, getAddress(sourceChain, "STETH_PXETH_Curve_Gauge"));   
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "STETH_PXETH_Curve_Pool"));   
+       
+        // ========================== Convex ==========================
+        // F(x) booster
+        //step 1)
+        _addConvexFXBoosterLeafs(
+            leafs, 
+            getAddress(sourceChain, "convexFX_gauge_USDC_fxUSD"),
+            getAddress(sourceChain, "convexFX_lp_USDC_fxUSD")
+        );
+        //step 2) (after vault creation)
+        //address expectedVaultAddress = 0x123456789...
+        //_addConvexFXVaultLeafs(leafs, expectedVaultAddress); 
+        
+        //leafs, lpToken, rewardsContract
+        _addConvexLeafs(leafs, getERC20(sourceChain, "WETH_PXETH_Curve_Pool"), getAddress(sourceChain, "WETH_PXETH_Convex_Rewards"));  
+        _addConvexLeafs(leafs, getERC20(sourceChain, "STETH_PXETH_Curve_Pool"), getAddress(sourceChain, "STETH_PXETH_Convex_Rewards"));  
 
         // ========================== Verify ==========================
 
