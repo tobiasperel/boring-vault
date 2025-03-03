@@ -9140,6 +9140,40 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     }
 
+    // ========================================= Ambient =========================================
+    
+    function _addAmbientLPLeafs(ManageLeaf[] memory leafs, address token0, address token1) {
+        if (token0 != getAddress(sourceChain, "ETH")) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                token0,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(token0).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
+        }
+        
+        if (token1 == getAddress(sourceChain, "ETH")) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                token1,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(token1).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
+        }
+    }
+
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
     bool addLeafIndex = false;
