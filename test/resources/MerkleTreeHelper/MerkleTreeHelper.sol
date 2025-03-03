@@ -497,6 +497,88 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
+    function _addConvexFXBoosterLeafs(ManageLeaf[] memory leafs, address stakingAddress, address stakingToken) internal {
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "convexFXBooster"),
+            false,
+            "createVault(uint256)",
+            new address[](2),
+            string.concat("Create Vault for ", ERC20(stakingToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = stakingAddress; 
+        leafs[leafIndex].argumentAddresses[1] = stakingToken; 
+    }
+
+    function _addConvexFXVaultLeafs(ManageLeaf[] memory leafs, address fxVault) internal {
+        
+        address stakingToken = IConvexFXVault(fxVault).stakingToken(); 
+        
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            stakingToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Created FXVault to spend ", ERC20(stakingToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = fxVault; 
+        
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            fxVault,
+            false,
+            "deposit(uint256,bool)",
+            new address[](0),
+            string.concat("Deposit ", ERC20(stakingToken).symbol(), " into created Convex FX Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            fxVault,
+            false,
+            "withdraw(uint256)",
+            new address[](0),
+            string.concat("Withdraw ", ERC20(stakingToken).symbol(), " from created Convex FX Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            fxVault,
+            false,
+            "getReward(bool)",
+            new address[](0),
+            string.concat("Get Reward from ", ERC20(stakingToken).symbol(), " Convex FX Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            fxVault,
+            false,
+            "transferTokens(address[])",
+            new address[](0),
+            string.concat("Rescue Tokens from ", ERC20(stakingToken).symbol(), " Convex FX Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+    } 
+
     // ========================================= Usual Money =========================================
 
     function _addUsualMoneyLeafs(ManageLeaf[] memory leafs) internal {
@@ -9475,4 +9557,8 @@ interface IGoldiVault {
 interface ISpectraVault {
     function vaultShare() external view returns (address);
     function underlying() external view returns (address);
+}
+
+interface IConvexFXVault {
+    function stakingToken() external view returns (address); 
 }

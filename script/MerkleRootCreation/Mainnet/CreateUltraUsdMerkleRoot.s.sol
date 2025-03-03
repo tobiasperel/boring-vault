@@ -9,7 +9,7 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateUltraUsdMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateUltraUsdMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL --gas-limit 100000000000000000
  */
 contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;

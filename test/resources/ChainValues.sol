@@ -530,6 +530,11 @@ contract ChainValues {
 
         // Convex-Curve Platform Specifics
         values[mainnet]["convexCurveMainnetBooster"] = 0xF403C135812408BFbE8713b5A23a04b3D48AAE31.toBytes32();
+        values[mainnet]["convexFXPoolRegistry"] = 0xdB95d646012bB87aC2E6CD63eAb2C42323c1F5AF.toBytes32(); 
+        values[mainnet]["convexFXBooster"] = 0xAffe966B27ba3E4Ebb8A0eC124C7b7019CC762f8.toBytes32(); 
+
+        values[mainnet]["convexFX_gauge_USDC_fxUSD"] = 0xf1E141C804BA39b4a031fDF46e8c08dBa7a0df60.toBytes32(); 
+        values[mainnet]["convexFX_lp_USDC_fxUSD"] = 0x5018BE882DccE5E3F2f3B0913AE2096B9b3fB61f.toBytes32(); 
 
         values[mainnet]["ethFrxethBaseRewardPool"] = 0xbD5445402B0a287cbC77cb67B2a52e2FC635dce4.toBytes32();
         values[mainnet]["ethStethNgBaseRewardPool"] = 0x6B27D7BC63F1999D14fF9bA900069ee516669ee8.toBytes32();
