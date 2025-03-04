@@ -10,6 +10,7 @@ import {UniswapV3SwapRouter02DecoderAndSanitizer} from "src/base/DecodersAndSani
 import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ERC4626DecoderAndSanitizer.sol"; 
 import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol"; 
 import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol"; 
+import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol"; 
 
 
 contract StakedSonicDecoderAndSanitizer is
@@ -20,9 +21,13 @@ contract StakedSonicDecoderAndSanitizer is
     SiloDecoderAndSanitizer,
     UniswapV3SwapRouter02DecoderAndSanitizer,
     EulerEVKDecoderAndSanitizer,
-    NativeWrapperDecoderAndSanitizer
+    NativeWrapperDecoderAndSanitizer,
+    OdosDecoderAndSanitizer
 {
-    constructor(address _nonFungiblePositionManager) UniswapV3SwapRouter02DecoderAndSanitizer(_nonFungiblePositionManager) {}
+    constructor(address _nonFungiblePositionManager, address _odosRouter) 
+        UniswapV3SwapRouter02DecoderAndSanitizer(_nonFungiblePositionManager) 
+        OdosDecoderAndSanitizer(_odosRouter)
+    {}
 
     /**
      * @notice BalancerV2 and Curve all specify a `deposit(uint256,address)`,

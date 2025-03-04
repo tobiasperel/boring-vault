@@ -18,7 +18,7 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba;
     address public managerAddress = 0x5F7f5205A3E7c63c3bd287EecBe7879687D4c698;
     address public accountantAddress = 0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034;
-    address public rawDataDecoderAndSanitizer = 0xf1BeC14BB66F5349Fe42C14fEb66BA1fa53F869b;
+    address public rawDataDecoderAndSanitizer = 0x0e9514e135CED0D5811467EE56e8c9328E68e351;
 
     function setUp() external {}
 
@@ -53,6 +53,15 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_wS_PoolId")); //USDC, wS
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "stS_BEETS_PoolId")); //stS, BEETS (swap BEETS for stS, then USDC, swap function leaves only support 2 token pools atm)
 
+        // ========================== Odos ==========================
+        
+        address[] memory tokens = new address[](4);   
+        tokens[0] = getAddress(sourceChain, "USDC"); 
+        tokens[1] = getAddress(sourceChain, "stS"); 
+        tokens[2] = getAddress(sourceChain, "wS"); 
+        tokens[3] = getAddress(sourceChain, "scUSD"); 
+        _addOdosSwapLeafs(leafs, tokens); 
+        
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "USDC");
