@@ -55,11 +55,12 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Odos ==========================
         
-        address[] memory tokens = new address[](4);   
+        address[] memory tokens = new address[](5);   
         tokens[0] = getAddress(sourceChain, "USDC"); 
         tokens[1] = getAddress(sourceChain, "stS"); 
         tokens[2] = getAddress(sourceChain, "wS"); 
         tokens[3] = getAddress(sourceChain, "scUSD"); 
+        tokens[4] = getAddress(sourceChain, "BEETS"); 
         _addOdosSwapLeafs(leafs, tokens); 
         
         // ========================== Teller ==========================
