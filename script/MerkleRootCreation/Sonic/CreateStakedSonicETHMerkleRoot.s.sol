@@ -18,7 +18,7 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x455d5f11Fea33A8fa9D3e285930b478B6bF85265;
     address public managerAddress = 0xB77F31E02797724021F822181dff29F966A7B2cb;
     address public accountantAddress = 0x61bE1eC20dfE0197c27B80bA0f7fcdb1a6B236E2;
-    address public rawDataDecoderAndSanitizer = 0xf1BeC14BB66F5349Fe42C14fEb66BA1fa53F869b;
+    address public rawDataDecoderAndSanitizer = 0x0e9514e135CED0D5811467EE56e8c9328E68e351;
 
     function setUp() external {}
 
@@ -65,6 +65,16 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         _addBalancerLeafs(
             leafs, getBytes32(sourceChain, "scETH_WETH_PoolId"), getAddress(sourceChain, "scETH_WETH_gauge")
         );
+
+
+        // ========================== Odos ==========================
+
+        address[] memory tokens = new address[](4);   
+        tokens[0] = getAddress(sourceChain, "WETH"); 
+        tokens[1] = getAddress(sourceChain, "stS"); 
+        tokens[2] = getAddress(sourceChain, "wS"); 
+        tokens[3] = getAddress(sourceChain, "scETH"); 
+        _addOdosSwapLeafs(leafs, tokens); 
 
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
