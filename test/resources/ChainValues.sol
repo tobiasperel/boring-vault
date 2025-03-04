@@ -1816,5 +1816,9 @@ contract ChainValues {
 
         // OFTs
         values[berachain]["LBTC_OFT"] = 0x630e12D53D4E041b8C5451aD035Ea841E08391d7.toBytes32();
+
+        // Standard Bridge
+        values[bob]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
+        values[bob]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
     }
 }
