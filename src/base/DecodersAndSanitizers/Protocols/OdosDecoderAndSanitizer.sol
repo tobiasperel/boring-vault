@@ -29,7 +29,12 @@ abstract contract OdosDecoderAndSanitizer is BaseDecoderAndSanitizer {
         address executor;
         uint32 referralCode;
         bytes calldata pathDefinition;
-        
+
+        // Variables to store indices for addresses that need lookup
+        Address memory inputTokenLookup;  
+        Address memory outputTokenLookup; 
+        Address memory executorLookup; 
+
         {
             address msgSender = msg.sender;
             assembly {
@@ -50,21 +55,31 @@ abstract contract OdosDecoderAndSanitizer is BaseDecoderAndSanitizer {
                     }
                     // For addresses from the addressList, we'll just store the index for later retrieval
                     default {
-                        // Store a marker in the high bits and the index in the low bits
                         // We'll use this later to know we need to look up from addressList
-                        result := or(0x1000000000000000000000000000000000000000, sub(inputPos, 2))
+                        result := 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE
                         newPos := add(currPos, 2)
                     }
                 }
                 
                 let result := 0
                 let pos := 4
+                let fromList := 0
 
                 // Load in the input and output token addresses
                 result, pos := getAddress(pos)
+                if eq(result, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE) {
+                    let inputPos := shr(240, calldataload(sub(pos, 2))) //sub 2 because we added 2 in `getAddress`, shr 240 bits to get index
+                    mstore(add(inputTokenLookup, 0x00), sub(inputPos, 2)) // Store index
+                    mstore(add(inputTokenLookup, 0x20), 1)                // Set needsLookup to true
+                }
                 mstore(tokenInfo, result)
 
                 result, pos := getAddress(pos)
+                if eq(result, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE) {
+                    let inputPos := shr(240, calldataload(sub(pos, 2)))
+                    mstore(add(outputTokenLookup, 0x00), sub(inputPos, 2))
+                    mstore(add(outputTokenLookup, 0x20), 1)
+                }
                 mstore(add(tokenInfo, 0x60), result)
 
                 // Load in the input amount - a 0 byte means the full balance is to be used
@@ -92,7 +107,13 @@ abstract contract OdosDecoderAndSanitizer is BaseDecoderAndSanitizer {
                 pos := add(pos, 3)
 
                 // Load in the executor address
-                executor, pos := getAddress(pos)
+                result, pos := getAddress(pos)
+                if eq(result, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE) {
+                    let inputPos := shr(240, calldataload(sub(pos, 2)))
+                    mstore(add(executorLookup, 0x00), sub(inputPos, 2))
+                    mstore(add(executorLookup, 0x20), 1)
+                }
+                executor := result
 
                 // Load in the destination to send the input to - Zero denotes the executor
                 result, pos := getAddress(pos)
@@ -115,37 +136,30 @@ abstract contract OdosDecoderAndSanitizer is BaseDecoderAndSanitizer {
         }
 
         // For inputToken
-        if (isAddressMarked(tokenInfo.inputToken)) {
-            tokenInfo.inputToken = odosRouter.addressList(extractIndex(tokenInfo.inputToken));
+        if (inputTokenLookup.needsLookup) {
+            tokenInfo.inputToken = odosRouter.addressList(inputTokenLookup.tokenIndex);
         }
         
         // For outputToken
-        if (isAddressMarked(tokenInfo.outputToken)) {
-            tokenInfo.outputToken = odosRouter.addressList(extractIndex(tokenInfo.outputToken));
+        if (outputTokenLookup.needsLookup) {
+            tokenInfo.outputToken = odosRouter.addressList(outputTokenLookup.tokenIndex);
         }
         
         // For executor
-        if (isAddressMarked(executor)) {
-            executor = odosRouter.addressList(extractIndex(executor));
+        if (executorLookup.needsLookup) {
+            executor = odosRouter.addressList(executorLookup.tokenIndex);
         }
-
 
         addressesFound = abi.encodePacked(tokenInfo.inputToken, tokenInfo.inputReceiver, tokenInfo.outputToken, tokenInfo.outputReceiver, executor); 
     }
-
-    // Helper Functions
-
-    function isAddressMarked(address addr) private pure returns (bool) {
-        return uint256(uint160(addr)) >= 2**160;
-    }
-    
-    function extractIndex(address addr) private pure returns (uint256) {
-        return uint256(uint160(addr)) & uint256(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF);
-    }
-
 } 
 
 
 interface IOdosRouterV2 {
     function addressList(uint256 index) external view returns (address); 
+}
+
+struct Address {    
+    uint256 tokenIndex; 
+    bool needsLookup; 
 }
