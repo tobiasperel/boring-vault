@@ -69,11 +69,12 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Odos ==========================
 
-        address[] memory tokens = new address[](4);   
+        address[] memory tokens = new address[](5);   
         tokens[0] = getAddress(sourceChain, "WETH"); 
         tokens[1] = getAddress(sourceChain, "stS"); 
         tokens[2] = getAddress(sourceChain, "wS"); 
         tokens[3] = getAddress(sourceChain, "scETH"); 
+        tokens[4] = getAddress(sourceChain, "BEETS"); 
         _addOdosSwapLeafs(leafs, tokens); 
 
         // ========================== Teller ==========================
