@@ -9172,6 +9172,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
         }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            token1,
+            false,
+            "userCmd(uint16,bytes)",
+            new address[](2),
+            string.concat("Mint LP Position of ", ERC20(token0).symbol(), " and ", ERC20(token1).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = token0; //base (these are set by pool maybe?)
+        leafs[leafIndex].argumentAddresses[1] = token1; //quote
+
+        
     }
 
     // ========================================= JSON FUNCTIONS =========================================

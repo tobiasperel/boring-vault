@@ -1704,6 +1704,10 @@ contract ChainValues {
 
         // Merkl
         values[swell]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
+
+        // Ambient
+        values[swell]["crocSwapDex"] = 0xaAAaAaaa82812F0a1f274016514ba2cA933bF24D.toBytes32();
+
     }
 
     function _addBerachainTestnetValues() private {

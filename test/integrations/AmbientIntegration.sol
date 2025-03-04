@@ -101,8 +101,7 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
         rolesAuthority.setUserRole(address(this), ADMIN_ROLE, true);
         rolesAuthority.setUserRole(address(manager), MANAGER_ROLE, true);
         rolesAuthority.setUserRole(address(boringVault), BORING_VAULT_ROLE, true);
-        rolesAuthority.setUserRole(getAddress(sourceChain, "vault"), BALANCER_VAULT_ROLE, true);
-    }
+        rolesAuthority.setUserRole(getAddress(sourceChain, "vault"), BALANCER_VAULT_ROLE, true); }
 
     function testAmbientLiquidityPath() external {
         deal(address(boringVault), 1_000e18);
@@ -120,6 +119,7 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](9);
         manageLeafs[0] = leafs[0]; //approve USDE
+        manageLeafs[1] = leafs[1]; //mint USDE/
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -128,7 +128,7 @@ contract UniswapV3IntegrationTest is Test, MerkleTreeHelper {
 
         bytes[] memory targetData = new bytes[](9);
         targetData[0] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "uniV3Router"), type(uint256).max
+            "approve(address,uint256)", getAddress(sourceChain, "crocSwapDex"), type(uint256).max
         );
 
         address[] memory decodersAndSanitizers = new address[](1);
