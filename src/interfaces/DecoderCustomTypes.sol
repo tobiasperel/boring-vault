@@ -466,6 +466,7 @@ contract DecoderCustomTypes {
     }
 
     // ========================================= Odos ==================================
+    
     struct swapTokenInfo {
         address inputToken;
         uint256 inputAmount;
@@ -474,5 +475,26 @@ contract DecoderCustomTypes {
         uint256 outputQuote;
         uint256 outputMin;
         address outputReceiver;
+    }
+    // ========================================= Level ==================================
+    
+    /// @dev for reference 
+    //enum OrderType {
+    //    MINT,
+    //    REDEEM
+    //}
+    
+    struct LevelOrder {
+        uint8 order_type;
+        address benefactor;
+        address beneficiary;
+        address collateral_asset;
+        uint256 collateral_amount;
+        uint256 lvlusd_amount;
+    }    
+
+    struct Route {
+        address[] addresses;
+        uint256[] ratios;
     }
 }

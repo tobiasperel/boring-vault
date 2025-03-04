@@ -86,3 +86,7 @@ interface IRecipeMarketHub {
         view
         returns (uint256, bytes32, address, uint256, uint256, uint256);
 }
+
+interface IPoolRegistry {
+    function poolInfo(uint256 _pid) external view returns (address, address, address, address, uint8); 
+}
