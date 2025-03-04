@@ -51,6 +51,15 @@ contract CreateSonicETHMerkleRoot is Script, MerkleTreeHelper {
         feeAssets[0] = getERC20(sourceChain, "WETH");
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true); //add yield claiming
 
+        // ========================== AaveV3 ==========================
+        ERC20[] memory supplyAssets = new ERC20[](1);
+        supplyAssets[0] = getERC20(sourceChain, "WETH");
+        ERC20[] memory borrowAssets = new ERC20[](0);
+        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
+
+        // ========================== SiloV2 ==========================
+        _
+
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         string memory filePath = "./leafs/Sonic/SonicETHStrategistLeafs.json";
