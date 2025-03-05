@@ -1538,6 +1538,8 @@ contract ChainValues {
         values[sonicMainnet]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
         values[sonicMainnet]["WBTC"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32(); //also OFT
         values[sonicMainnet]["BEETS"] = 0x2D0E0814E62D80056181F5cd932274405966e4f0.toBytes32();
+        values[sonicMainnet]["rEUL"] = 0x09E6cab47B7199b9d3839A2C40654f246d518a80.toBytes32(); 
+        values[sonicMainnet]["EUL"] = 0x8e15C8D399e86d4FD7B427D42f06c60cDD9397e7.toBytes32(); 
         values[sonicMainnet]["ZRO"] = address(1).toBytes32();
 
         values[sonicMainnet]["balancerVault"] = address(1).toBytes32();
