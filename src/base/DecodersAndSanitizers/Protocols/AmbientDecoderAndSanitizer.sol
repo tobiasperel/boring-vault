@@ -5,8 +5,13 @@ import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecode
 
 abstract contract AmbientDecoderAndSanitizer is BaseDecoderAndSanitizer {
     //============================== ERRORS ===============================
+
+    error AmbientDecoderAndSanitizer__UnsupportedCallPath(); 
+
+    //============================== CrocSwapDex ===============================
     
     // NOTE: this is disabled on ETH and Scroll according to their docs and swaps should be routed through either the Router or using `userCmd()`
+    // NOTE: the router exposes the same abi as the function below, just at a higher gas cost. 
     function swap(
         address base,
         address quote,
@@ -19,7 +24,6 @@ abstract contract AmbientDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint128, /*minOut*/
         uint8 /*reserveFlags*/
     ) external pure virtual returns (bytes memory addressesFound) {
-        //TODO: see if there are differences between pool indexes?
         addressesFound = abi.encodePacked(base, quote);
     }
 
@@ -80,6 +84,8 @@ abstract contract AmbientDecoderAndSanitizer is BaseDecoderAndSanitizer {
             ) = abi.decode(cmd, (uint8, address, address, uint256, int24, int24, bool, uint8, bytes));
 
             addressesFound = abi.encodePacked(base, quote); 
+        } else {
+            revert AmbientDecoderAndSanitizer__UnsupportedCallPath(); 
         }
     }
 }

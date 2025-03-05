@@ -9142,6 +9142,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= Ambient =========================================
     
+    /// @dev baseToken/quoteToken
+    /// these are not interchangeable and must be exact for the pool being swapped or minting liq. ie USDE/ETH is not the same as ETH/USDE 
     function _addAmbientLPLeafs(ManageLeaf[] memory leafs, address baseToken, address quoteToken) internal {
 
         if (baseToken != getAddress(sourceChain, "ETH")) {
@@ -9192,6 +9194,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
             leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
             leafs[leafIndex].argumentAddresses[2] = address(0); //lp conduit (user owned)
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                false,
+                "userCmd(uint16,bytes)",
+                new address[](2),
+                string.concat("Call userCmd using 'HotPath' or 'KnockoutPath' without ETH "),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+
         } else {
             if (baseToken == getAddress(sourceChain, "ETH")) baseToken = address(0); 
             if (quoteToken == getAddress(sourceChain, "ETH")) quoteToken = address(0); 
@@ -9221,14 +9238,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "userCmd(uint16,bytes)",
                 new address[](3),
-                string.concat("Burn LP Position of ETH and ", ERC20(quoteToken).symbol()),
+                string.concat("Call userCmd using 'WarmPath' without ETH"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
             leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
             leafs[leafIndex].argumentAddresses[2] = address(0); //lp conduit (user owned)
 
-            //swapping eth to token
+            //swapping eth to token, using knockout
             unchecked {
                 leafIndex++;
             }
@@ -9237,13 +9254,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 true,
                 "userCmd(uint16,bytes)",
                 new address[](2),
-                string.concat("Call userCmd using 'HotPath' with ETH "),
+                string.concat("Call userCmd using 'HotPath' or 'KnockoutPath' with ETH "),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
             leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
             
-            //swapping token to eth
+            //swapping token to eth, using knockout
             unchecked {
                 leafIndex++;
             }
@@ -9252,13 +9269,108 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "userCmd(uint16,bytes)",
                 new address[](2),
-                string.concat("Call userCmd using 'HotPath' without ETH "),
+                string.concat("Call userCmd using 'HotPath' or 'KnockoutPath' without ETH "),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
             leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
         }
         
+    }
+
+    function _addAmbientSwapLeafs(ManageLeaf[] memory leafs, address baseToken, address quoteToken) internal {
+        if (baseToken != getAddress(sourceChain, "ETH")) {
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                baseToken,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(baseToken).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
+        }
+        
+        if (quoteToken != getAddress(sourceChain, "ETH")) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                quoteToken,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(quoteToken).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
+        }
+        
+       // address base,
+       // address quote,
+       // uint256, /*poolIdx*/
+       // bool, /*isBuy*/
+       // bool, /*inBaseQty*/
+       // uint128, /*qty*/
+       // uint16, /*tip*/
+       // uint128, /*limitPrice*/
+       // uint128, /*minOut*/
+       // uint8 /*reserveFlags*/
+        if (baseToken != getAddress(sourceChain, "ETH") && quoteToken != getAddress(sourceChain, "ETH")) {
+            unchecked {
+                 leafIndex++;
+             }
+             leafs[leafIndex] = ManageLeaf(
+                 getAddress(sourceChain, "crocSwapDex"),
+                 false,
+                 "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
+                 new address[](2),
+                 string.concat("Swap using CrocSwapDex (Ambient) between ", ERC20(baseToken).symbol(), " and ", ERC20(quoteToken).symbol()),
+                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+             );
+             leafs[leafIndex].argumentAddresses[0] = baseToken;
+             leafs[leafIndex].argumentAddresses[1] = quoteToken;
+        } else {
+            if (baseToken == getAddress(sourceChain, "ETH")) baseToken = address(0); 
+            if (quoteToken == getAddress(sourceChain, "ETH")) quoteToken = address(0); 
+            
+            //add correct swap symbol if eth is quote or base (since it can be either) 
+            address erc20Token = baseToken == address(0) ? quoteToken : baseToken; 
+
+            unchecked {
+                 leafIndex++;
+             }
+             leafs[leafIndex] = ManageLeaf(
+                 getAddress(sourceChain, "crocSwapDex"),
+                 true,
+                 "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
+                 new address[](2),
+                 string.concat("Swap using CrocSwapDex (Ambient) between ETH and ", ERC20(erc20Token).symbol()),
+                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+             );
+             leafs[leafIndex].argumentAddresses[0] = baseToken;
+             leafs[leafIndex].argumentAddresses[1] = quoteToken;
+
+            unchecked {
+                 leafIndex++;
+             }
+             leafs[leafIndex] = ManageLeaf(
+                 getAddress(sourceChain, "crocSwapDex"),
+                 false,
+                 "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
+                 new address[](2),
+                 string.concat("Swap using CrocSwapDex (Ambient) between ", ERC20(erc20Token).symbol(), " and ETH"),
+                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+             );
+             leafs[leafIndex].argumentAddresses[0] = baseToken;
+             leafs[leafIndex].argumentAddresses[1] = quoteToken;
+
+        }
+         
     }
 
     // ========================================= JSON FUNCTIONS =========================================
