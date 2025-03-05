@@ -1611,6 +1611,11 @@ contract ChainValues {
         // Odos
         values[sonicMainnet]["odosRouterV2"] = 0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D.toBytes32();
         values[sonicMainnet]["odosExecutor"] = 0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82.toBytes32();
+
+        // Aave
+        values[sonicMainnet]["v3Pool"] = 0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3.toBytes32();
+        values[sonicMainnet]["v3RewardsController"] = 0x24bD6e9ca54F1737467DEf82dCA9702925B3Aa59.toBytes32();
+         
     }
 
     function _addSepoliaValues() private {
