@@ -11,6 +11,7 @@ import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoco
 import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol"; 
 import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol"; 
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol"; 
+import {MerklDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MerklDecoderAndSanitizer.sol"; 
 
 
 contract StakedSonicDecoderAndSanitizer is
@@ -22,7 +23,8 @@ contract StakedSonicDecoderAndSanitizer is
     UniswapV3SwapRouter02DecoderAndSanitizer,
     EulerEVKDecoderAndSanitizer,
     NativeWrapperDecoderAndSanitizer,
-    OdosDecoderAndSanitizer
+    OdosDecoderAndSanitizer,
+    MerklDecoderAndSanitizer
 {
     constructor(address _nonFungiblePositionManager, address _odosRouter) 
         UniswapV3SwapRouter02DecoderAndSanitizer(_nonFungiblePositionManager) 
