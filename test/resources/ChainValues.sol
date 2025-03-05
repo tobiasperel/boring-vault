@@ -1543,8 +1543,7 @@ contract ChainValues {
         values[sonicMainnet]["vault"] = address(1).toBytes32();
 
         // UniswapV3
-        values[sonicMainnet]["uniswapV3NonFungiblePositionManager"] =
-            0x743E03cceB4af2efA3CC76838f6E8B50B63F184c.toBytes32();
+        values[sonicMainnet]["uniswapV3NonFungiblePositionManager"] = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c.toBytes32();
         values[sonicMainnet]["uniV3Router"] = 0xaa52bB8110fE38D0d2d2AF0B85C3A3eE622CA455.toBytes32();
 
         // Beets/Balancer
@@ -1611,6 +1610,10 @@ contract ChainValues {
         // Odos
         values[sonicMainnet]["odosRouterV2"] = 0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D.toBytes32();
         values[sonicMainnet]["odosExecutor"] = 0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82.toBytes32();
+
+         // Aave
+        values[sonicMainnet]["v3Pool"] = 0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3.toBytes32();
+        values[sonicMainnet]["v3RewardsController"] = 0x24bD6e9ca54F1737467DEf82dCA9702925B3Aa59.toBytes32();
     }
 
     function _addSepoliaValues() private {
