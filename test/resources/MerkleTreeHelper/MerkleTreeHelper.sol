@@ -9142,51 +9142,122 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= Ambient =========================================
     
-    function _addAmbientLPLeafs(ManageLeaf[] memory leafs, address token0, address token1) {
-        if (token0 != getAddress(sourceChain, "ETH")) {
+    function _addAmbientLPLeafs(ManageLeaf[] memory leafs, address baseToken, address quoteToken) internal {
+
+        if (baseToken != getAddress(sourceChain, "ETH")) {
+
             unchecked {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                token0,
+                baseToken,
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(token0).symbol()),
+                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(baseToken).symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
         }
         
-        if (token1 == getAddress(sourceChain, "ETH")) {
+        if (quoteToken != getAddress(sourceChain, "ETH")) {
             unchecked {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                token1,
+                quoteToken,
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(token1).symbol()),
+                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(quoteToken).symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
         }
+        
+        if (baseToken != getAddress(sourceChain, "ETH") && quoteToken != getAddress(sourceChain, "ETH")) {
 
-        unchecked {
-            leafIndex++;
+            //used for every command that includes the warm path 
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                false,
+                "userCmd(uint16,bytes)",
+                new address[](3),
+                string.concat("Call usrCmd using 'WarmPath' with no ETH"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+            leafs[leafIndex].argumentAddresses[2] = address(0); //lp conduit (user owned)
+        } else {
+            if (baseToken == getAddress(sourceChain, "ETH")) baseToken = address(0); 
+            if (quoteToken == getAddress(sourceChain, "ETH")) quoteToken = address(0); 
+            
+            // used for minting positions
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                true,
+                "userCmd(uint16,bytes)",
+                new address[](3),
+                string.concat("Call userCmd using 'WarmPath' with ETH "),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+            leafs[leafIndex].argumentAddresses[2] = address(0); //lp conduit (user owned)
+            
+            //Used for commands that don't include sending ETH (harvest, burn)
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                false,
+                "userCmd(uint16,bytes)",
+                new address[](3),
+                string.concat("Burn LP Position of ETH and ", ERC20(quoteToken).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+            leafs[leafIndex].argumentAddresses[2] = address(0); //lp conduit (user owned)
+
+            //swapping eth to token
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                true,
+                "userCmd(uint16,bytes)",
+                new address[](2),
+                string.concat("Call userCmd using 'HotPath' with ETH "),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+            
+            //swapping token to eth
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                false,
+                "userCmd(uint16,bytes)",
+                new address[](2),
+                string.concat("Call userCmd using 'HotPath' without ETH "),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
         }
-        leafs[leafIndex] = ManageLeaf(
-            token1,
-            false,
-            "userCmd(uint16,bytes)",
-            new address[](2),
-            string.concat("Mint LP Position of ", ERC20(token0).symbol(), " and ", ERC20(token1).symbol()),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = token0; //base (these are set by pool maybe?)
-        leafs[leafIndex].argumentAddresses[1] = token1; //quote
-
         
     }
 

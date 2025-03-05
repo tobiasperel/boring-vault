@@ -5,7 +5,8 @@ import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecode
 
 abstract contract AmbientDecoderAndSanitizer is BaseDecoderAndSanitizer {
     //============================== ERRORS ===============================
-
+    
+    // NOTE: this is disabled on ETH and Scroll according to their docs and swaps should be routed through either the Router or using `userCmd()`
     function swap(
         address base,
         address quote,
