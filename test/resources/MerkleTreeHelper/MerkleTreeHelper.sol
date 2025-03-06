@@ -9501,6 +9501,44 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         _addSLvlUSDWithdrawLeafs(leafs); 
    } 
 
+   // ============================================= WeETH ==================================================
+   
+   function _addWeETHLeafs(ManageLeaf[] memory leafs, address ETH, address referral) internal {
+        
+        //if not native eth 
+        if (ETH != getAddress(sourceChain, "ETH") && ETH != address(0)) {
+
+            unchecked {
+                leafIndex++;
+            }
+
+            leafs[leafIndex] = ManageLeaf(
+                ETH, //will be weth on beraChain
+                true,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve etherFiL2SyncPool to spend WETH"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "etherFiL2SyncPool"); 
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "etherFiL2SyncPool"), //target
+            true,
+            "deposit(address,uint256,uint256,address)",
+            new address[](2),
+            string.concat("Deposit ETH into WeETH"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = ETH;
+        leafs[leafIndex].argumentAddresses[1] = referral;
+    }
+
 
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
