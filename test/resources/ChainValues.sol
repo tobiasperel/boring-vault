@@ -240,6 +240,8 @@ contract ChainValues {
         values[mainnet]["stkGHO"] = 0x1a88Df1cFe15Af22B3c4c783D4e6F7F9e0C1885d.toBytes32();
         values[mainnet]["lvlUSD"] = 0x7C1156E515aA1A2E851674120074968C905aAF37.toBytes32();
         values[mainnet]["slvlUSD"] = 0x4737D9b4592B40d51e110b94c9C043c6654067Ae.toBytes32();
+        values[mainnet]["PXETH"] = 0x04C154b66CB340F3Ae24111CC767e0184Ed00Cc6.toBytes32(); 
+        values[mainnet]["FXUSD"] = 0x085780639CC2cACd35E474e71f4d000e2405d8f6.toBytes32(); 
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -509,6 +511,21 @@ contract ChainValues {
         values[mainnet]["usdc_CrvUsd_Convex_Id"] = address(182).toBytes32();
         values[mainnet]["sDai_sUsde_Curve_Pool"] = 0x167478921b907422F8E88B43C4Af2B8BEa278d3A.toBytes32();
         values[mainnet]["sDai_sUsde_Curve_Gauge"] = 0x330Cfd12e0E97B0aDF46158D2A81E8Bd2985c6cB.toBytes32();
+        
+        //FXUSD
+        values[mainnet]["fxUSD_USDC_Curve_Pool"] = 0x5018BE882DccE5E3F2f3B0913AE2096B9b3fB61f.toBytes32();
+        values[mainnet]["fxUSD_USDC_Curve_Gauge"] = 0xD7f9111D529ed8859A0d5A1DC1BA7a021b61f22A.toBytes32();
+        
+        //WETH_PXETH
+        values[mainnet]["WETH_PXETH_Curve_Pool"] = 0xC8Eb2Cf2f792F77AF0Cd9e203305a585E588179D.toBytes32();
+        values[mainnet]["WETH_PXETH_Curve_Gauge"] = 0xABaD903647511a0EC755a118849f733f7d2Ba002.toBytes32();
+        values[mainnet]["WETH_PXETH_Convex_Rewards"] = 0x3B793E505A3C7dbCb718Fe871De8eBEf7854e74b.toBytes32();
+        
+        //STETH_PXETH
+        values[mainnet]["STETH_PXETH_Curve_Pool"] = 0x6951bDC4734b9f7F3E1B74afeBC670c736A0EDB6.toBytes32();
+        values[mainnet]["STETH_PXETH_Curve_Gauge"] = 0x58215F083882A5eb7056Ac34a0fdDA9D3b5665d2.toBytes32();
+        values[mainnet]["STETH_PXETH_Convex_Rewards"] = 0x633556C8413FCFd45D83656290fF8d64EE41A7c1.toBytes32();
+
 
         values[mainnet]["ezETH_wETH_Curve_Pool"] = 0x85dE3ADd465a219EE25E04d22c39aB027cF5C12E.toBytes32();
         values[mainnet]["weETH_rswETH_Curve_Pool"] = 0x278cfB6f06B1EFc09d34fC7127d6060C61d629Db.toBytes32();
@@ -530,6 +547,7 @@ contract ChainValues {
 
         // Convex-Curve Platform Specifics
         values[mainnet]["convexCurveMainnetBooster"] = 0xF403C135812408BFbE8713b5A23a04b3D48AAE31.toBytes32();
+        values[mainnet]["convexCurveMainnetRewardsContract"] = 0xF403C135812408BFbE8713b5A23a04b3D48AAE31.toBytes32();
         values[mainnet]["convexFXPoolRegistry"] = 0xdB95d646012bB87aC2E6CD63eAb2C42323c1F5AF.toBytes32(); 
         values[mainnet]["convexFXBooster"] = 0xAffe966B27ba3E4Ebb8A0eC124C7b7019CC762f8.toBytes32(); 
 
@@ -631,6 +649,7 @@ contract ChainValues {
         values[mainnet]["WBTC_USR_86"] = 0xf84288cdcf652627f66cd7a6d4c43c3ee43ca7146d9a9cfab3a136a861144d6f;
         values[mainnet]["EBTC_USR_86"] = 0xa4577bf93e8c70d9f91b6e000ae084ae0a7a29d4ebe28cbfea24975c28dccfb5;
         values[mainnet]["Corn_eBTC_PT03_2025_WETH_915"] = 0x4758ddbbcb96c8d0c10f46ca260d505e32399c2dd995380a832578ee84ef2d54;
+        values[mainnet]["Corn_eBTC_PT03_2025_WBTC_915"] = 0x9dd533d05afa8dfce6a2ed82219e1c1dcebb16fe7722fb5912b989ef69df487f;
 
         // MetaMorpho
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();
@@ -1091,6 +1110,10 @@ contract ChainValues {
         values[mainnet]["spectra_sdeUSD_YT"] = 0xE9677Bfde5830B100281178681C7e78c7d861D1C.toBytes32();
         values[mainnet]["spectra_sdeUSD_IBT"] = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326.toBytes32();
 
+        // Odos
+        values[mainnet]["odosRouterV2"] = 0xCf5540fFFCdC3d510B18bFcA6d2b9987b0772559.toBytes32();
+        values[mainnet]["odosExecutor"] = 0xd768d1Fe6Ef1449A54F9409400fe9d0E4954ea3F.toBytes32();
+
         // Level
         values[mainnet]["levelMinter"] = 0x8E7046e27D14d09bdacDE9260ff7c8c2be68a41f.toBytes32();
 
@@ -1527,6 +1550,7 @@ contract ChainValues {
         values[sonicMainnet]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32(); //$S token
         values[sonicMainnet]["WETH"] = 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b.toBytes32();
         values[sonicMainnet]["USDC"] = 0x29219dd400f2Bf60E5a23d13Be72B486D4038894.toBytes32();
+        values[sonicMainnet]["USDT"] = 0x6047828dc181963ba44974801FF68e538dA5eaF9.toBytes32();
         values[sonicMainnet]["wS"] = 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38.toBytes32();
         values[sonicMainnet]["stS"] = 0xE5DA20F15420aD15DE0fa650600aFc998bbE3955.toBytes32();
         values[sonicMainnet]["scUSD"] = 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE.toBytes32();
@@ -1606,6 +1630,10 @@ contract ChainValues {
         // Curve
         values[sonicMainnet]["curve_WETH_scETH_pool"] = 0xfF11f56281247EaD18dB76fD23b252156738FA94.toBytes32();
         values[sonicMainnet]["curve_WETH_scETH_gauge"] = 0x4F7Fc3F5112eAef10495B04b5dd376E50c42dA51.toBytes32();
+
+        // Odos
+        values[sonicMainnet]["odosRouterV2"] = 0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D.toBytes32();
+        values[sonicMainnet]["odosExecutor"] = 0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82.toBytes32();
     }
 
     function _addSepoliaValues() private {
