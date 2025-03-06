@@ -9277,6 +9277,66 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
+    // ========================================= Odos =========================================
+    
+    //TODO add loop for tokens
+    function _addOdosSwapLeafs(ManageLeaf[] memory leafs, address[] memory tokens) internal {
+
+        for (uint256 i = 0; i < tokens.length; i++) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                tokens[i],
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve Odos Router V2 to spend ", ERC20(tokens[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "odosRouterV2");
+
+            for (uint256 j = 0; j < tokens.length; j++) {
+
+                if (i == j) continue; 
+
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "odosRouterV2"),
+                    false,
+                    "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)",
+                    new address[](5),
+                    string.concat("Swap ", ERC20(tokens[i]).symbol(), " for ", ERC20(tokens[j]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = tokens[i]; 
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor"); 
+                leafs[leafIndex].argumentAddresses[2] = tokens[j];  
+                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
+                leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor"); 
+
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "odosRouterV2"),
+                    false,
+                    "swapCompact()",
+                    new address[](5),
+                    string.concat("Swap Compact ", ERC20(tokens[i]).symbol(), " for ", ERC20(tokens[j]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = tokens[i]; 
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor"); 
+                leafs[leafIndex].argumentAddresses[2] = tokens[j];  
+                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
+                leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor"); 
+            }
+        }
+    }
+
     // ========================================= Level Money / LevelUSD =========================================
     
    function _addLevelLeafs(ManageLeaf[] memory leafs) internal {
