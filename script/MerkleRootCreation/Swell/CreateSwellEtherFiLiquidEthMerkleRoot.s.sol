@@ -19,8 +19,9 @@ contract CreateSwellEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
     address public managerAddress = 0xDEa7AF4a96A762c9d43A7eE02acecD20A3C6D8B6;
     address public accountantAddress = 0x0d05D94a5F1E76C18fbeB7A13d17C8a314088198;
-    address public rawDataDecoderAndSanitizer = 0x568a4E08909aab6995979dB24B3cdaE00244CeB4;
-function setUp() external {}
+    address public rawDataDecoderAndSanitizer = 0xA81BA0b3A4743207a4801882b7a050d959f26f35; 
+
+    function setUp() external {}
 
     /**
      * @notice Uncomment which script you want to run.
@@ -36,7 +37,7 @@ function setUp() external {}
         setAddress(false, swell, "accountantAddress", accountantAddress);
         setAddress(false, swell, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        ManageLeaf[] memory leafs = new ManageLeaf[](64);
 
         // ========================== Native Wrapping ==========================
         _addNativeLeafs(leafs);
@@ -76,8 +77,19 @@ function setUp() external {}
         );
 
         // ========================== Velodrome ==========================
-        
+        address[] memory token0 = new address[](1);
+        token0[0] = getAddress(sourceChain, "WETH");
+        address[] memory token1 = new address[](1);
+        token1[0] = getAddress(sourceChain, "WEETH");
+        address[] memory gauges = new address[](1);
+        gauges[0] = getAddress(sourceChain, "velodrome_weth_weeth_gauge");
+        _addVelodromeV3Leafs(
+            leafs, token0, token1, getAddress(sourceChain, "velodromeNonFungiblePositionManager"), gauges
+        );
 
+        // ========================== Ambient ==========================
+        _addAmbientLPLeafs(leafs, getAddress(sourceChain, "WEETH"), getAddress(sourceChain, "ETH")); 
+        _addAmbientSwapLeafs(leafs, getAddress(sourceChain, "WEETH"), getAddress(sourceChain, "ETH")); //can remove if they don't want/need swapping between the two
 
         // ========================== Verify & Generate ==========================
 

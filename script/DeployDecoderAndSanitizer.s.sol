@@ -48,7 +48,7 @@ import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 /**
- *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --with-gas-price 30000000000 --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
+ *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify --with-gas-price 30000000000
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
 
@@ -58,21 +58,25 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("mainnet");
-        setSourceChainName("mainnet"); 
+        vm.createSelectFork("swell");
+        setSourceChainName("swell"); 
     }
 
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
     
-        creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        deployer.deployContract("Ultra USD Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        //creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
+        //deployer.deployContract("Ultra USD Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
         //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "convexFXPoolRegistry"));
         //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
+        
+        creationCode = type(SwellEtherFiLiquidEthDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "velodromeNonFungiblePositionManager"));
+        deployer.deployContract("Swell EtherFi Liquid ETH Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
         
         vm.stopBroadcast();
     }

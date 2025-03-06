@@ -1726,12 +1726,12 @@ contract ChainValues {
         values[swell]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
         values[swell]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
 
-        values[swell]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
         values[swell]["balancerVault"] = address(1).toBytes32();
         values[swell]["vault"] = address(1).toBytes32();
 
         // ERC20s
         values[swell]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
+        values[swell]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
         values[swell]["WEETH"] = 0xA6cB988942610f6731e664379D15fFcfBf282b44.toBytes32(); //also OFT
         values[swell]["WSWELL"] = 0xda1F8EA667dc5600F5f654DF44b47F1639a83DD1.toBytes32();
         values[swell]["USDE"] = 0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34.toBytes32(); //also OFT
@@ -1749,8 +1749,10 @@ contract ChainValues {
         values[swell]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
 
         // Velodrome
-        values[swell]["velodromeRouter"] = .toBytes32();
-        values[swell]["velodromeNonFungiblePositionManager"] = .toBytes32();
+        values[swell]["velodromeRouter"] = 0x3a63171DD9BebF4D07BC782FECC7eb0b890C2A45.toBytes32();
+        values[swell]["velodromeNonFungiblePositionManager"] = 0x991d5546C4B442B4c5fdc4c8B8b8d131DEB24702.toBytes32();
+
+        values[swell]["velodrome_weth_weeth_gauge"] = 0xd9F5cF355191610B04F1936192bd898829C9b2d7.toBytes32(); 
 
         // Ambient
         values[swell]["crocSwapDex"] = 0xaAAaAaaa82812F0a1f274016514ba2cA933bF24D.toBytes32();
