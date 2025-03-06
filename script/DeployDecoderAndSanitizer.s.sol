@@ -48,7 +48,7 @@ import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 /**
- *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --with-gas-price 30000000000 --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
+ *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify --with-gas-price 30000000000
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
 
@@ -67,8 +67,12 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         vm.startBroadcast(privateKey);
     
         creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "convexFXPoolRegistry"));
-        deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
+        constructorArgs = abi.encode(
+            getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), 
+            getAddress(sourceChain, "convexFXPoolRegistry"),
+            getAddress(sourceChain, "odosRouterV2")
+        );
+        deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
         
         vm.stopBroadcast();
     }

@@ -249,12 +249,16 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e18);
         
         address[] memory tokens = new address[](3);   
+        SwapKind memory kind = new SwapKind[](3); 
         tokens[0] = getAddress(sourceChain, "USDC"); 
+        kind[0] = SwapKind.BuyAndSell; 
         tokens[1] = getAddress(sourceChain, "WETH"); 
+        kind[1] = SwapKind.BuyAndSell; 
         tokens[2] = getAddress(sourceChain, "USDT"); 
+        kind[2] = SwapKind.BuyAndSell; 
        
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addOdosSwapLeafs(leafs, tokens);
+        _addOdosSwapLeafs(leafs, tokens, kind);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -315,12 +319,16 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e18);
         
         address[] memory tokens = new address[](3);   
+        SwapKind memory kind = new SwapKind[](3); 
         tokens[0] = getAddress(sourceChain, "USDC"); 
+        kind[0] = SwapKind.BuyAndSell; 
         tokens[1] = getAddress(sourceChain, "WETH"); 
+        kind[1] = SwapKind.BuyAndSell; 
         tokens[2] = getAddress(sourceChain, "USDT"); 
+        kind[2] = SwapKind.BuyAndSell; 
        
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addOdosSwapLeafs(leafs, tokens);
+        _addOdosSwapLeafs(leafs, tokens, kind);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -420,12 +428,16 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000_000e18);
         
         address[] memory tokens = new address[](3);   
+        SwapKind memory kind = new SwapKind[](3); 
         tokens[0] = getAddress(sourceChain, "USDC"); 
+        kind[0] = SwapKind.BuyAndSell; 
         tokens[1] = getAddress(sourceChain, "WETH"); 
+        kind[1] = SwapKind.BuyAndSell; 
         tokens[2] = getAddress(sourceChain, "USDT"); 
+        kind[2] = SwapKind.BuyAndSell; 
        
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addOdosSwapLeafs(leafs, tokens);
+        _addOdosSwapLeafs(leafs, tokens, kind);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -485,12 +497,16 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18);
         
         address[] memory tokens = new address[](3);   
+        SwapKind memory kind = new SwapKind[](3); 
         tokens[0] = getAddress(sourceChain, "USDC"); 
+        kind[0] = SwapKind.BuyAndSell; 
         tokens[1] = getAddress(sourceChain, "WETH"); 
+        kind[1] = SwapKind.BuyAndSell; 
         tokens[2] = getAddress(sourceChain, "USDT"); 
+        kind[2] = SwapKind.BuyAndSell; 
        
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addOdosSwapLeafs(leafs, tokens);
+        _addOdosSwapLeafs(leafs, tokens, kind);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
