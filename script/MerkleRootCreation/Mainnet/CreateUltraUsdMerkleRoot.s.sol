@@ -11,11 +11,12 @@ import "forge-std/Script.sol";
 /**
  *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateUltraUsdMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL --gas-limit 100000000000000000
  */
+/// @dev NOTE: This script contains drone leaves. If adding new functionality, be sure to include it in drones as well. 
 contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xbc0f3B23930fff9f4894914bD745ABAbA9588265;
-    address public rawDataDecoderAndSanitizer = 0xD03d4De8E8b47550fCF93898c7524E9e9A8aEc2D;
+    address public rawDataDecoderAndSanitizer = 0xfB319769c34AeAf8587F386417d984BE49088338;
     address public managerAddress = 0x4f81c27e750A453d6206C2d10548d6566F60886C;
     address public accountantAddress = 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe;
     address public drone = 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De;
@@ -36,7 +37,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](2048);
+        ManageLeaf[] memory leafs = new ManageLeaf[](4096);
 
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](4);
@@ -168,6 +169,9 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
 
+        // ========================== Odos ==========================
+        _addOdosSwapLeafs(leafs, oneInchAssets, oneInchKind); 
+
         // ========================== EtherFi ==========================
         /**
          * stake, unstake, wrap, unwrap
@@ -257,7 +261,11 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         _addLeafsForDroneTransfers(leafs, drone, localTokens);
 
-        // ========================== Drone Leafs ==========================
+        // ====================================================
+        //
+        //                  Begin Drone Leaves
+        //
+        // ====================================================
 
         uint256 startIndex = leafIndex + 1;
         setAddress(true, sourceChain, "boringVault", drone);
@@ -306,6 +314,9 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
          *
          */
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
+
+        // ========================== Odos ==========================
+        _addOdosSwapLeafs(leafs, oneInchAssets, oneInchKind);  
 
         // ========================== EtherFi ==========================
         /**
