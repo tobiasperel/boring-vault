@@ -1728,10 +1728,13 @@ contract ChainValues {
 
         values[swell]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
         values[swell]["balancerVault"] = address(1).toBytes32();
+        values[swell]["vault"] = address(1).toBytes32();
 
         // ERC20s
+        values[swell]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
         values[swell]["WEETH"] = 0xA6cB988942610f6731e664379D15fFcfBf282b44.toBytes32(); //also OFT
         values[swell]["WSWELL"] = 0xda1F8EA667dc5600F5f654DF44b47F1639a83DD1.toBytes32();
+        values[swell]["USDE"] = 0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34.toBytes32(); //also OFT
 
         // Standard Bridge
         values[swell]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
@@ -1744,6 +1747,10 @@ contract ChainValues {
 
         // Merkl
         values[swell]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
+
+        // Ambient
+        values[swell]["crocSwapDex"] = 0xaAAaAaaa82812F0a1f274016514ba2cA933bF24D.toBytes32();
+
     }
 
     function _addBerachainTestnetValues() private {
