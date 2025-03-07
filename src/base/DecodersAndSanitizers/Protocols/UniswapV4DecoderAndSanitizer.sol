@@ -10,6 +10,7 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
 
     error UniswapV4DecoderAndSanitizer__NotSwapInput(); 
     error UniswapV4DecoderAndSanitizer__NotSwapSubAction(); 
+    error UniswapV4DecoderAndSanitizer__SwapActionLength(); 
     error UniswapV4DecoderAndSanitizer__UnsupportedAction(); 
     error UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
     error UniswapV4DecoderAndSanitizer__SubActionLength(); 
@@ -35,6 +36,7 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
 
             // Extract the path from PoolKey
             (bytes memory actions, bytes[] memory params) = abi.decode(inputs[0], (bytes, bytes[]));
+            if (actions.length > 3) revert UniswapV4DecoderAndSanitizer__SwapActionLength(); 
 
             if (uint8(actions[0]) == uint8(Actions.SWAP_EXACT_IN_SINGLE) || uint8(actions[0]) == uint8(Actions.SWAP_EXACT_OUT_SINGLE)) { 
 
@@ -301,22 +303,26 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
         bytes memory currentAddressesFound
     ) internal pure returns (bytes memory updatedAddressesFound) {
         // Check if there's another action and it's SWEEP
-        if (actions.length > sweepActionIndex &&
-            uint8(bytes1(actions[sweepActionIndex])) == uint8(Actions.SWEEP)) {
+        if (actions.length > sweepActionIndex) {
+            if (uint8(bytes1(actions[sweepActionIndex])) == uint8(Actions.SWEEP)) {
     
-            (address currencyToSweep, address recipient) = abi.decode(
-                params[sweepActionIndex],
-                (address, address)
-            );
+                (address currencyToSweep, address recipient) = abi.decode(
+                    params[sweepActionIndex],
+                    (address, address)
+                );
     
-            // Append the sweep addresses to existing addresses
-            updatedAddressesFound = abi.encodePacked(
-                currentAddressesFound,
-                currencyToSweep,
-                recipient
-            );
+                // Append the sweep addresses to existing addresses
+                updatedAddressesFound = abi.encodePacked(
+                    currentAddressesFound,
+                    currencyToSweep,
+                    recipient
+                );
     
-            return updatedAddressesFound;
+                return updatedAddressesFound;
+            } else {
+                //additional actions MUST be sweep or else they are unsanitized
+                revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
+            }
         }
     
         // If no SWEEP action, return the original addresses
