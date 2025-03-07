@@ -9,14 +9,14 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateLiquidUsdMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateLiquidUsdMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL --gas-limit 1000000000000000000
  */
 contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     //standard
     address public boringVault = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C;
-    address public rawDataDecoderAndSanitizer = 0x67cD2b7D6666B9aa68fd9AaCe34473eA88111944;
+    address public rawDataDecoderAndSanitizer = 0xEa19F0293453ab73214A93Fd69773684b5Eeb98f;
     address public managerAddress = 0xcFF411d5C54FE0583A984beE1eF43a4776854B9A;
     address public accountantAddress = 0xc315D6e14DDCDC7407784e2Caf815d131Bc1D3E7;
 
@@ -80,7 +80,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](2048);
+        ManageLeaf[] memory leafs = new ManageLeaf[](4096);
 
         // ========================== Aave V3 ==========================
         setAddress(true, mainnet, "rawDataDecoderAndSanitizer", aaveV3DecoderAndSanitizer);
@@ -296,8 +296,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
          * Swap PYUSD <-> FRAX
          * Swap PYUSD <-> crvUSD
          */
-        address[] memory assets = new address[](24);
-        SwapKind[] memory kind = new SwapKind[](24);
+        address[] memory assets = new address[](25);
+        SwapKind[] memory kind = new SwapKind[](25);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -346,6 +346,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         kind[22] = SwapKind.Sell;
         assets[23] = getAddress(sourceChain, "USR");
         kind[23] = SwapKind.BuyAndSell;
+        assets[24] = getAddress(sourceChain, "RLUSD");
+        kind[24] = SwapKind.BuyAndSell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "PENDLE_wETH_30"));
@@ -366,6 +368,9 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "DAI_FRAX_05"));
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "PYUSD_USDC_01"));
 
+        // ========================== Odos ==========================
+        _addOdosSwapLeafs(leafs, assets, kind); 
+
         // ========================== Curve Swapping ==========================
         /**
          * USDe <-> USDC,
@@ -375,6 +380,13 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USDe_USDC_Curve_Pool"));
         _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USDe_DAI_Curve_Pool"));
         _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "sDAI_sUSDe_Curve_Pool"));
+        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USDC_RLUSD_Curve_Pool"));
+
+        // ========================== Curve ==========================
+        _addCurveLeafs(leafs, getAddress(sourceChain, "USDC_RLUSD_Curve_Pool"), 2, getAddress(sourceChain, "USDC_RLUSD_Curve_Pool")); 
+
+        // ========================== Resolv ==========================
+        _addAllResolvLeafs(leafs); 
 
         // ========================== Ethena Withdraws ==========================
         _addEthenaSUSDeWithdrawLeafs(leafs);

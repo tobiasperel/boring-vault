@@ -12,8 +12,7 @@ import {PancakeSwapV3FullDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/PancakeSwapV3FullDecoderAndSanitizer.sol";
 import {AerodromeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AerodromeDecoderAndSanitizer.sol";
 import {EtherFiLiquidEthDecoderAndSanitizer} from
-    "src/base/DecodersAndSanitizers/EtherFiLiquidEthDecoderAndSanitizer.sol";
-import {OnlyKarakDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/OnlyKarakDecoderAndSanitizer.sol";
+    "src/base/DecodersAndSanitizers/EtherFiLiquidEthDecoderAndSanitizer.sol"; import {OnlyKarakDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/OnlyKarakDecoderAndSanitizer.sol";
 import {Deployer} from "src/helper/Deployer.sol";
 import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
 import {ContractNames} from "resources/ContractNames.sol";
@@ -67,8 +66,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         vm.startBroadcast(privateKey);
     
         creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        deployer.deployContract("Ultra USD Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("EtherFi Liquid USD Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
 
         //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "convexFXPoolRegistry"));

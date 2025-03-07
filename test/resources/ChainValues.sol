@@ -242,6 +242,7 @@ contract ChainValues {
         values[mainnet]["slvlUSD"] = 0x4737D9b4592B40d51e110b94c9C043c6654067Ae.toBytes32();
         values[mainnet]["PXETH"] = 0x04C154b66CB340F3Ae24111CC767e0184Ed00Cc6.toBytes32(); 
         values[mainnet]["FXUSD"] = 0x085780639CC2cACd35E474e71f4d000e2405d8f6.toBytes32(); 
+        values[mainnet]["RLUSD"] = 0x8292Bb45bf1Ee4d140127049757C2E0fF06317eD.toBytes32(); 
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -511,6 +512,9 @@ contract ChainValues {
         values[mainnet]["usdc_CrvUsd_Convex_Id"] = address(182).toBytes32();
         values[mainnet]["sDai_sUsde_Curve_Pool"] = 0x167478921b907422F8E88B43C4Af2B8BEa278d3A.toBytes32();
         values[mainnet]["sDai_sUsde_Curve_Gauge"] = 0x330Cfd12e0E97B0aDF46158D2A81E8Bd2985c6cB.toBytes32();
+
+        values[mainnet]["USDC_RLUSD_Curve_Pool"] = 0xD001aE433f254283FeCE51d4ACcE8c53263aa186.toBytes32(); 
+        values[mainnet]["USDC_RLUSD_Curve_Gauge"] = 0xFc3212Bd9Ad9A28Da6B2bd50a2918969C126894F.toBytes32(); 
         
         //FXUSD
         values[mainnet]["fxUSD_USDC_Curve_Pool"] = 0x5018BE882DccE5E3F2f3B0913AE2096B9b3fB61f.toBytes32();
