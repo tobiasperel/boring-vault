@@ -383,7 +383,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USDC_RLUSD_Curve_Pool"));
 
         // ========================== Curve ==========================
-        _addCurveLeafs(leafs, getAddress(sourceChain, "USDC_RLUSD_Curve_Pool"), 2, getAddress(sourceChain, "USDC_RLUSD_Curve_Pool")); 
+        _addCurveLeafs(leafs, getAddress(sourceChain, "USDC_RLUSD_Curve_Pool"), 2, getAddress(sourceChain, "USDC_RLUSD_Curve_Gauge")); 
 
         // ========================== Resolv ==========================
         _addAllResolvLeafs(leafs); 
