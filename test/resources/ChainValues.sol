@@ -1752,7 +1752,7 @@ contract ChainValues {
         values[swell]["velodromeRouter"] = 0x3a63171DD9BebF4D07BC782FECC7eb0b890C2A45.toBytes32();
         values[swell]["velodromeNonFungiblePositionManager"] = 0x991d5546C4B442B4c5fdc4c8B8b8d131DEB24702.toBytes32();
 
-        values[swell]["velodrome_weth_weeth_gauge"] = 0xd9F5cF355191610B04F1936192bd898829C9b2d7.toBytes32(); 
+        values[swell]["velodrome_weth_weeth_v3_gauge"] = 0x14bAD0eE354c0161178bAcC59340Bb223F66b76C.toBytes32(); 
 
         // Ambient
         values[swell]["crocSwapDex"] = 0xaAAaAaaa82812F0a1f274016514ba2cA933bF24D.toBytes32();

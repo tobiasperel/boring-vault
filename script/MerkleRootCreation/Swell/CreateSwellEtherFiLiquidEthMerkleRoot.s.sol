@@ -61,13 +61,21 @@ contract CreateSwellEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
             remoteTokens
         );
 
-        // // ========================== Euler ==========================
+        // ========================== Euler ==========================
+        {
         ERC4626[] memory depositVaults = new ERC4626[](2);
         depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerWETH"));
         depositVaults[1] = ERC4626(getAddress(sourceChain, "eulerWEETH"));
+
         address[] memory subaccounts = new address[](1);
         subaccounts[0] = address(boringVault);
+
+        ERC4626[] memory borrowVaults = new ERC4626[](1); 
+        borrowVaults[0] = ERC4626(getAddress(sourceChain, "eulerWETH")); 
+
         _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+        _addEulerBorrowLeafs(leafs, borrowVaults, subaccounts);  
+        }
 
         // ========================== Merkl ==========================
         ERC20[] memory tokensToClaim = new ERC20[](1);
@@ -82,7 +90,7 @@ contract CreateSwellEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
         address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "WEETH");
         address[] memory gauges = new address[](1);
-        gauges[0] = getAddress(sourceChain, "velodrome_weth_weeth_gauge");
+        gauges[0] = getAddress(sourceChain, "velodrome_weth_weeth_v3_gauge");
         _addVelodromeV3Leafs(
             leafs, token0, token1, getAddress(sourceChain, "velodromeNonFungiblePositionManager"), gauges
         );
