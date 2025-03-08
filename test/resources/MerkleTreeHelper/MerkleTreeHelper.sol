@@ -263,6 +263,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
 
         if (gauge != address(0)) {
+            
+            address lpToken = ICurveGauge(gauge).lp_token(); 
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                lpToken,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Deposit into Curve gauge"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
             // Deposit into gauge.
             unchecked {
                 leafIndex++;
@@ -272,7 +288,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "deposit(uint256,address)",
                 new address[](1),
-                string.concat("Deposit into Curve gauge"),
+                string.concat("Deposit ", ERC20(lpToken).name(), " into Curve gauge"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
@@ -286,7 +302,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "withdraw(uint256)",
                 new address[](0),
-                string.concat("Withdraw from Curve gauge"),
+                string.concat("Withdraw ", ERC20(lpToken).name(), " from Curve gauge"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
 
@@ -10084,6 +10100,10 @@ interface UniswapV3Pool {
 
 interface CurvePool {
     function coins(uint256 i) external view returns (address);
+}
+
+interface ICurveGauge {
+    function lp_token() external view returns (address); 
 }
 
 interface BalancerVault {
