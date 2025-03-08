@@ -15,7 +15,7 @@ import "forge-std/Script.sol";
 contract CreateEBTCBerachainMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
-    address public boringVault = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642; 
+    address public boringVault = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642;
     address public managerAddress = 0x382d0106F308864D5462332D9D3bB54a60384B70;
     address public accountantAddress = 0x1b293DC39F94157fA0D1D36d7e0090C8B8B8c13F;
     address public rawDataDecoderAndSanitizer = 0xaC5B5396c716F1231c4F597494430239d58ab885;
@@ -38,16 +38,14 @@ contract CreateEBTCBerachainMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, berachain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        
 
         // ========================== LayerZero ==========================
         _addLayerZeroLeafs(
             leafs, getERC20(sourceChain, "LBTC"), getAddress(sourceChain, "LBTC_OFT"), layerZeroMainnetEndpointId
         );
-        
 
         // ========================== Verify ==========================
-        
+
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         string memory filePath = "./leafs/Berachain/eBTC.json";

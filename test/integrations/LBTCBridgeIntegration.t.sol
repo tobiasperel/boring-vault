@@ -44,9 +44,7 @@ contract LBTCBridgeIntegrationTest is Test, MerkleTreeHelper {
         manager =
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
-        rawDataDecoderAndSanitizer = address(
-            new FullLBTCBridgeDecoderAndSanitizer()
-        );
+        rawDataDecoderAndSanitizer = address(new FullLBTCBridgeDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -110,7 +108,7 @@ contract LBTCBridgeIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "LBTC"), address(boringVault), 1e8);
 
         bytes32 toChain = 0x0000000000000000000000000000000000000000000000000000000000002105;
-        bytes32 toAddress = getBytes32(sourceChain, "boringVault"); 
+        bytes32 toAddress = getBytes32(sourceChain, "boringVault");
 
         ManageLeaf[] memory leafs = new ManageLeaf[](4);
 
@@ -132,25 +130,22 @@ contract LBTCBridgeIntegrationTest is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "LBTC");
         targets[1] = getAddress(sourceChain, "lbtcBridge");
 
-
         bytes[] memory targetData = new bytes[](2);
-        targetData[0] =
-            abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "lbtcBridge"), type(uint256).max);
-        targetData[1] =
-            abi.encodeWithSignature("deposit(bytes32,bytes32,uint64)", toChain, toAddress, 1e8);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "lbtcBridge"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature("deposit(bytes32,bytes32,uint64)", toChain, toAddress, 1e8);
 
         address[] memory decodersAndSanitizers = new address[](2);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
 
         uint256[] memory values = new uint256[](2);
-        values[0] = 0; 
-        values[1] = 212643322173382; //getFee()  
-
+        values[0] = 0;
+        values[1] = 212643322173382; //getFee()
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
-
 
     // ========================================= HELPER FUNCTIONS =========================================
 
@@ -159,6 +154,5 @@ contract LBTCBridgeIntegrationTest is Test, MerkleTreeHelper {
         vm.selectFork(forkId);
     }
 }
-
 
 contract FullLBTCBridgeDecoderAndSanitizer is LBTCBridgeDecoderAndSanitizer {}

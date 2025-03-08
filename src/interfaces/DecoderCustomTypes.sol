@@ -455,7 +455,7 @@ contract DecoderCustomTypes {
     }
 
     // ========================================= LBTC Bridge ==================================
-     struct DepositBridgeAction {
+    struct DepositBridgeAction {
         uint256 fromChain;
         bytes32 fromContract;
         uint256 toChain;

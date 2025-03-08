@@ -9,6 +9,8 @@ import {SiloDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/
 import {UniswapV3SwapRouter02DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/UniswapV3SwapRouter02DecoderAndSanitizer.sol"; 
 import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ERC4626DecoderAndSanitizer.sol"; 
 import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol"; 
+import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol"; 
+
 
 contract StakedSonicDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
@@ -17,7 +19,8 @@ contract StakedSonicDecoderAndSanitizer is
     CurveDecoderAndSanitizer,
     SiloDecoderAndSanitizer,
     UniswapV3SwapRouter02DecoderAndSanitizer,
-    EulerEVKDecoderAndSanitizer
+    EulerEVKDecoderAndSanitizer,
+    NativeWrapperDecoderAndSanitizer
 {
     constructor(address _nonFungiblePositionManager) UniswapV3SwapRouter02DecoderAndSanitizer(_nonFungiblePositionManager) {}
 
@@ -56,12 +59,13 @@ contract StakedSonicDecoderAndSanitizer is
         pure
         override(
             BalancerV2DecoderAndSanitizer,
-            CurveDecoderAndSanitizer
+            CurveDecoderAndSanitizer,
+            NativeWrapperDecoderAndSanitizer
         )
+
         returns (bytes memory addressesFound)
     {
         // Nothing to sanitize or return
         return addressesFound;
     }
-
 }
