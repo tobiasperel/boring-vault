@@ -66,7 +66,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
-  
+
         //address sonicUniV3 = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c; 
         creationCode = type(SonicLBTCvSonicDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode();
