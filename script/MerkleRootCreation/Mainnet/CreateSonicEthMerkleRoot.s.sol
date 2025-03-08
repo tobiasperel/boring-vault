@@ -17,7 +17,7 @@ contract CreateSonicEthMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812;
     address public managerAddress = 0x6830046d872604E92f9F95F225fF63f2300bc1e9;
     address public accountantAddress = 0x3a592F9Ea2463379c4154d03461A73c484993668;
-    address public rawDataDecoderAndSanitizer = 0x742A7058Fba0F7c300C18361ec186aC17fced558;
+    address public rawDataDecoderAndSanitizer = 0x0D7E71645Fa55FaD8035Ff10E77Ef0B91632fE45;
 
     function setUp() external {}
 
