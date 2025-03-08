@@ -15,7 +15,7 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0x309f25d839A2fe225E80210e110C99150Db98AAF;
-    address public rawDataDecoderAndSanitizer = 0x37506448170D925D1831a51fEee741525bBE10E5;
+    address public rawDataDecoderAndSanitizer = 0x3F7a23283d0e9C56952aE7e1836a5C4344908432;
     address public managerAddress = 0x9D828035dd3C95452D4124870C110E7866ea6bb7;
     address public accountantAddress = 0x0639e239E417Ab9D1f0f926Fd738a012153930A7;
 
@@ -62,6 +62,9 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
         _addLayerZeroLeafs(
             leafs, getERC20(sourceChain, "LBTC"), LBTCOFTAdapter, layerZeroMainnetEndpointId
         );
+
+        // ========================== Balancer/Beets ==========================
+        _addBalancerLeafs(leafs, getBytes32(sourceChain, "scBTC_LBTC_PoolId"), getAddress(sourceChain, "scBTC_LBTC_gauge"));
 
         // ========================== Silo ==========================
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_LBTC_scBTC_id32_config")); 

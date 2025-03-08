@@ -69,7 +69,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     
         creationCode = type(SonicLBTCvSonicDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode();
-        deployer.deployContract("Sonic LBTCv Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        deployer.deployContract("Sonic LBTCv Decoder And Sanitizer V0.5", creationCode, constructorArgs, 0);
 
         //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "convexFXPoolRegistry"));
