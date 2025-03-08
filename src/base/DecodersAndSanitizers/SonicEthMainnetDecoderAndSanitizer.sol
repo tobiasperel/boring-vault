@@ -15,7 +15,7 @@ import {FluidFTokenDecoderAndSanitizer} from
 import {OFTDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol"; 
-import {Odos
+import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol"; 
 
 
 contract SonicMainnetDecoderAndSanitizer is
@@ -28,10 +28,12 @@ contract SonicMainnetDecoderAndSanitizer is
     LidoDecoderAndSanitizer,
     FluidFTokenDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
-    TellerDecoderAndSanitizer
+    TellerDecoderAndSanitizer,
+    OdosDecoderAndSanitizer
 {
-    constructor(address _uniswapV3NonFungiblePositionManager)
+    constructor(address _uniswapV3NonFungiblePositionManager, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
+        OdosDecoderAndSanitizer(_odosRouter)
     {}
 
     //============================== HANDLE FUNCTION COLLISIONS ===============================
