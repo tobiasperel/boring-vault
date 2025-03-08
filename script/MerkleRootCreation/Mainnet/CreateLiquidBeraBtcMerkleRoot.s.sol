@@ -61,20 +61,15 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         tellerAssets[2] = getERC20(sourceChain, "cbBTC");
         _addTellerLeafs(leafs, eBTCTellerLZ, tellerAssets, false);
 
-
         // ========================== Royco ==========================
         {
+            bytes32 wbtcMarketHash = 0xb36f14fd392b9a1d6c3fabedb9a62a63d2067ca0ebeb63bbc2c93b11cc8eb3a2;
+            address roycoFrontEndFeeRecipientTemp = 0x303907c6991B9058AB4aBd18B9c57B611FB81103; //this is what is used when there is no fee, I think, but waiting on confirmation from royco team on if they need us to use something specific
+            _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "WBTC"), wbtcMarketHash, roycoFrontEndFeeRecipientTemp);
 
-            bytes32 wbtcMarketHash = 0xb36f14fd392b9a1d6c3fabedb9a62a63d2067ca0ebeb63bbc2c93b11cc8eb3a2; 
-            address roycoFrontEndFeeRecipientTemp = 0x303907c6991B9058AB4aBd18B9c57B611FB81103; //this is what is used when there is no fee, I think, but waiting on confirmation from royco team on if they need us to use something specific  
-            _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "WBTC"), wbtcMarketHash, roycoFrontEndFeeRecipientTemp);  
-
-
-            bytes32 lbtcMarketHash = 0xabf4b2f17bc32faf4c3295b1347f36d21ec5629128d465b5569e600bf8d46c4f; 
-            _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "LBTC"), lbtcMarketHash, roycoFrontEndFeeRecipientTemp);  
-
-        } 
-
+            bytes32 lbtcMarketHash = 0xabf4b2f17bc32faf4c3295b1347f36d21ec5629128d465b5569e600bf8d46c4f;
+            _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "LBTC"), lbtcMarketHash, roycoFrontEndFeeRecipientTemp);
+        }
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
