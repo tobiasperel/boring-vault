@@ -274,10 +274,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Deposit into Curve gauge"),
+                string.concat("Approve Curve gauge to spend ", ERC20(lpToken).name()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[0] = gauge; 
+
 
             // Deposit into gauge.
             unchecked {
