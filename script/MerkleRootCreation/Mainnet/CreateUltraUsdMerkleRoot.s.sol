@@ -9,13 +9,13 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateUltraUsdMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateUltraUsdMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL --gas-limit 100000000000000000
  */
 contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xbc0f3B23930fff9f4894914bD745ABAbA9588265;
-    address public rawDataDecoderAndSanitizer = 0x31331e50eCD9982E1E756f4ee468EA7F0E58243e;
+    address public rawDataDecoderAndSanitizer = 0xD03d4De8E8b47550fCF93898c7524E9e9A8aEc2D;
     address public managerAddress = 0x4f81c27e750A453d6206C2d10548d6566F60886C;
     address public accountantAddress = 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe;
     address public drone = 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De;
@@ -115,8 +115,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         /*
          *
          */
-        address[] memory oneInchAssets = new address[](22);
-        SwapKind[] memory oneInchKind = new SwapKind[](22);
+        address[] memory oneInchAssets = new address[](21);
+        SwapKind[] memory oneInchKind = new SwapKind[](21);
         oneInchAssets[0] = getAddress(sourceChain, "USDC");
         oneInchKind[0] = SwapKind.BuyAndSell;
         oneInchAssets[1] = getAddress(sourceChain, "USDT");
@@ -159,8 +159,6 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         oneInchKind[19] = SwapKind.BuyAndSell;
         oneInchAssets[20] = getAddress(sourceChain, "GHO");
         oneInchKind[20] = SwapKind.BuyAndSell;
-        oneInchAssets[21] = getAddress(sourceChain, "lvlUSD");
-        oneInchKind[21] = SwapKind.BuyAndSell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
 
@@ -367,7 +365,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sDAI")));
 
         // ========================== lvlUSD ==========================
-        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "slvlUSD")));  
+        _addLevelLeafs(leafs);  
 
         // ========================== Spectra ==========================
         _addSpectraLeafs(
@@ -451,6 +449,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USD0Plus_market_06_25_2025"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_wstUSR_market_03_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USDe_03_26_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_lvlUSD_05_28_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_slvlUSD_05_28_25"), true);
 
         // ========================== 1inch ==========================
         /*
