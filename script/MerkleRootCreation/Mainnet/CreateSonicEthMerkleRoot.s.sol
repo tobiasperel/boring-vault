@@ -97,6 +97,9 @@ contract CreateSonicEthMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Etherfi (eETh, weETH) ==========================
         _addEtherFiLeafs(leafs);
 
+        // ========================== Native ==========================
+        _addNativeLeafs(leafs);
+
         // ========================== Sonic Gateway ==========================
         ERC20[] memory bridgeAssets = new ERC20[](1);
         bridgeAssets[0] = getERC20(sourceChain, "WETH");
