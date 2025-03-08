@@ -240,6 +240,8 @@ contract ChainValues {
         values[mainnet]["stkGHO"] = 0x1a88Df1cFe15Af22B3c4c783D4e6F7F9e0C1885d.toBytes32();
         values[mainnet]["lvlUSD"] = 0x7C1156E515aA1A2E851674120074968C905aAF37.toBytes32();
         values[mainnet]["slvlUSD"] = 0x4737D9b4592B40d51e110b94c9C043c6654067Ae.toBytes32();
+        values[mainnet]["PXETH"] = 0x04C154b66CB340F3Ae24111CC767e0184Ed00Cc6.toBytes32(); 
+        values[mainnet]["FXUSD"] = 0x085780639CC2cACd35E474e71f4d000e2405d8f6.toBytes32(); 
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -509,6 +511,21 @@ contract ChainValues {
         values[mainnet]["usdc_CrvUsd_Convex_Id"] = address(182).toBytes32();
         values[mainnet]["sDai_sUsde_Curve_Pool"] = 0x167478921b907422F8E88B43C4Af2B8BEa278d3A.toBytes32();
         values[mainnet]["sDai_sUsde_Curve_Gauge"] = 0x330Cfd12e0E97B0aDF46158D2A81E8Bd2985c6cB.toBytes32();
+        
+        //FXUSD
+        values[mainnet]["fxUSD_USDC_Curve_Pool"] = 0x5018BE882DccE5E3F2f3B0913AE2096B9b3fB61f.toBytes32();
+        values[mainnet]["fxUSD_USDC_Curve_Gauge"] = 0xD7f9111D529ed8859A0d5A1DC1BA7a021b61f22A.toBytes32();
+        
+        //WETH_PXETH
+        values[mainnet]["WETH_PXETH_Curve_Pool"] = 0xC8Eb2Cf2f792F77AF0Cd9e203305a585E588179D.toBytes32();
+        values[mainnet]["WETH_PXETH_Curve_Gauge"] = 0xABaD903647511a0EC755a118849f733f7d2Ba002.toBytes32();
+        values[mainnet]["WETH_PXETH_Convex_Rewards"] = 0x3B793E505A3C7dbCb718Fe871De8eBEf7854e74b.toBytes32();
+        
+        //STETH_PXETH
+        values[mainnet]["STETH_PXETH_Curve_Pool"] = 0x6951bDC4734b9f7F3E1B74afeBC670c736A0EDB6.toBytes32();
+        values[mainnet]["STETH_PXETH_Curve_Gauge"] = 0x58215F083882A5eb7056Ac34a0fdDA9D3b5665d2.toBytes32();
+        values[mainnet]["STETH_PXETH_Convex_Rewards"] = 0x633556C8413FCFd45D83656290fF8d64EE41A7c1.toBytes32();
+
 
         values[mainnet]["ezETH_wETH_Curve_Pool"] = 0x85dE3ADd465a219EE25E04d22c39aB027cF5C12E.toBytes32();
         values[mainnet]["weETH_rswETH_Curve_Pool"] = 0x278cfB6f06B1EFc09d34fC7127d6060C61d629Db.toBytes32();
@@ -530,6 +547,7 @@ contract ChainValues {
 
         // Convex-Curve Platform Specifics
         values[mainnet]["convexCurveMainnetBooster"] = 0xF403C135812408BFbE8713b5A23a04b3D48AAE31.toBytes32();
+        values[mainnet]["convexCurveMainnetRewardsContract"] = 0xF403C135812408BFbE8713b5A23a04b3D48AAE31.toBytes32();
         values[mainnet]["convexFXPoolRegistry"] = 0xdB95d646012bB87aC2E6CD63eAb2C42323c1F5AF.toBytes32(); 
         values[mainnet]["convexFXBooster"] = 0xAffe966B27ba3E4Ebb8A0eC124C7b7019CC762f8.toBytes32(); 
 
@@ -631,6 +649,7 @@ contract ChainValues {
         values[mainnet]["WBTC_USR_86"] = 0xf84288cdcf652627f66cd7a6d4c43c3ee43ca7146d9a9cfab3a136a861144d6f;
         values[mainnet]["EBTC_USR_86"] = 0xa4577bf93e8c70d9f91b6e000ae084ae0a7a29d4ebe28cbfea24975c28dccfb5;
         values[mainnet]["Corn_eBTC_PT03_2025_WETH_915"] = 0x4758ddbbcb96c8d0c10f46ca260d505e32399c2dd995380a832578ee84ef2d54;
+        values[mainnet]["Corn_eBTC_PT03_2025_WBTC_915"] = 0x9dd533d05afa8dfce6a2ed82219e1c1dcebb16fe7722fb5912b989ef69df487f;
 
         // MetaMorpho
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();
@@ -771,7 +790,11 @@ contract ChainValues {
         values[mainnet]["pendle_wstUSR_market_03_26_25"] = 0x353d0B2EFB5B3a7987fB06D30Ad6160522d08426.toBytes32();
 
         values[mainnet]["pendle_tETH_03_28_2025"] = 0xBDb8F9729d3194f75fD1A3D9bc4FFe0DDe3A404c.toBytes32();
+
         values[mainnet]["pendle_beraSTONE_04_09_2025"] = 0x7561C5CCfe41A26B33944B58C70D6a3CB63E881c.toBytes32();
+
+        values[mainnet]["pendle_lvlUSD_05_28_25"] = 0xE45d2CE15aBbA3c67b9fF1E7A69225C855d3DA82.toBytes32(); 
+        values[mainnet]["pendle_slvlUSD_05_28_25"] = 0x1C71752a6C10D66375702aaFAd4B6D20393702Cf.toBytes32(); 
 
         // Aave V3 Core
         values[mainnet]["v3Pool"] = 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2.toBytes32();
@@ -1537,14 +1560,16 @@ contract ChainValues {
         values[sonicMainnet]["EBTC"] = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642.toBytes32();
         values[sonicMainnet]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
         values[sonicMainnet]["WBTC"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32(); //also OFT
+        values[sonicMainnet]["BEETS"] = 0x2D0E0814E62D80056181F5cd932274405966e4f0.toBytes32(); 
+        values[sonicMainnet]["rEUL"] = 0x09E6cab47B7199b9d3839A2C40654f246d518a80.toBytes32(); 
+        values[sonicMainnet]["EUL"] = 0x8e15C8D399e86d4FD7B427D42f06c60cDD9397e7.toBytes32(); 
         values[sonicMainnet]["ZRO"] = address(1).toBytes32();
 
         values[sonicMainnet]["balancerVault"] = address(1).toBytes32();
         values[sonicMainnet]["vault"] = address(1).toBytes32();
 
         // UniswapV3
-        values[sonicMainnet]["uniswapV3NonFungiblePositionManager"] =
-            0x743E03cceB4af2efA3CC76838f6E8B50B63F184c.toBytes32();
+        values[sonicMainnet]["uniswapV3NonFungiblePositionManager"] = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c.toBytes32();
         values[sonicMainnet]["uniV3Router"] = 0xaa52bB8110fE38D0d2d2AF0B85C3A3eE622CA455.toBytes32();
 
         // Beets/Balancer
@@ -1611,11 +1636,14 @@ contract ChainValues {
         // Odos
         values[sonicMainnet]["odosRouterV2"] = 0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D.toBytes32();
         values[sonicMainnet]["odosExecutor"] = 0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82.toBytes32();
-
+        
         // Aave
         values[sonicMainnet]["v3Pool"] = 0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3.toBytes32();
         values[sonicMainnet]["v3RewardsController"] = 0x24bD6e9ca54F1737467DEf82dCA9702925B3Aa59.toBytes32();
          
+        // Merkl
+        values[sonicMainnet]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
+
     }
 
     function _addSepoliaValues() private {
@@ -1710,10 +1738,13 @@ contract ChainValues {
 
         values[swell]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
         values[swell]["balancerVault"] = address(1).toBytes32();
+        values[swell]["vault"] = address(1).toBytes32();
 
         // ERC20s
+        values[swell]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
         values[swell]["WEETH"] = 0xA6cB988942610f6731e664379D15fFcfBf282b44.toBytes32(); //also OFT
         values[swell]["WSWELL"] = 0xda1F8EA667dc5600F5f654DF44b47F1639a83DD1.toBytes32();
+        values[swell]["USDE"] = 0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34.toBytes32(); //also OFT
 
         // Standard Bridge
         values[swell]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
@@ -1726,6 +1757,10 @@ contract ChainValues {
 
         // Merkl
         values[swell]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
+
+        // Ambient
+        values[swell]["crocSwapDex"] = 0xaAAaAaaa82812F0a1f274016514ba2cA933bF24D.toBytes32();
+
     }
 
     function _addBerachainTestnetValues() private {
