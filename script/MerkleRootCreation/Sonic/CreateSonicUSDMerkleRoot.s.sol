@@ -50,6 +50,22 @@ contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         feeAssets[0] = getERC20(sourceChain, "USDC");
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true); //add yield claiming
 
+        // ========================== Merkl ==========================
+        ERC20[] memory tokensToClaim = new ERC20[](2); 
+        tokensToClaim[0] = getERC20(sourceChain, "wS"); 
+        tokensToClaim[1] = getERC20(sourceChain, "awS"); 
+        _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim);    
+
+        // ========================== AaveV3 ==========================
+        ERC20[] memory supplyTokens = new ERC20[](2); 
+        supplyTokens[0] = getERC20(sourceChain, "wS");  
+        supplyTokens[1] = getERC20(sourceChain, "awS");  //aave wrapped S
+        ERC20[] memory borrowTokens = new ERC20[](0); 
+        
+        _addAaveV3Leafs(leafs, supplyTokens, borrowTokens);  
+        
+
+        // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         string memory filePath = "./leafs/Sonic/SonicUSDStrategistLeafs.json";

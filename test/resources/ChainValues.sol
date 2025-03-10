@@ -1646,6 +1646,7 @@ contract ChainValues {
         // Aave
         values[sonicMainnet]["v3Pool"] = 0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3.toBytes32();
         values[sonicMainnet]["v3RewardsController"] = 0x24bD6e9ca54F1737467DEf82dCA9702925B3Aa59.toBytes32();
+        values[sonicMainnet]["awS"] = 0x6C5E14A212c1C3e4Baf6f871ac9B1a969918c131.toBytes32(); 
          
         // Merkl
         values[sonicMainnet]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
