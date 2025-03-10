@@ -14,6 +14,7 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
     error UniswapV4DecoderAndSanitizer__UnsupportedAction(); 
     error UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
     error UniswapV4DecoderAndSanitizer__SubActionLength(); 
+    error UniswapV4DecoderAndSanitizer__MustBeSweep(); 
 
     //============================== Immutables ===============================
     IUniswapV4PositionManager posm; 
@@ -112,9 +113,10 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
 
             (address currency0Settle, address currency1Settle) = abi.decode(params[1], (address, address)); 
             
-
             addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, recipient, currency0Settle, currency1Settle); 
-            addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+
+            //expected sweep index would be 2 here (if any) -> mint, settle, sweep
+            addressesFound = _processSweepIfPresent(actions, params, 2, addressesFound);  
 
             return addressesFound;             
               
@@ -141,8 +143,10 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
             if (subAction == uint8(Actions.SETTLE_PAIR)) {
                 (address currency0Settle, address currency1Settle) = abi.decode(params[1], (address, address)); 
                 
-                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
-                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, currency0Settle, currency1Settle); 
+                
+                //expected sweep index would be 2 here (if any) -> increase, settle, sweep
+                addressesFound = _processSweepIfPresent(actions, params, 2, addressesFound);  
                 return addressesFound; 
             } else if (subAction == uint8(Actions.CLOSE_CURRENCY)) {
                 //if the length is too short, we revert w/ unsupported
@@ -165,8 +169,8 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                     } 
                 
                 // Return currency0, currency1
-                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
-                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, currency0Settle, currency1Settle); 
+                addressesFound = _processSweepIfPresent(actions, params, 3, addressesFound);  
                 return addressesFound; 
 
             } else if (subAction == uint8(Actions.CLEAR_OR_TAKE)) {
@@ -186,8 +190,8 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                     } 
 
                 // Return currency0, currency1
-                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
-                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, currency0Settle, currency1Settle); 
+                addressesFound = _processSweepIfPresent(actions, params, 3, addressesFound);  
                 return addressesFound; 
 
             } else {
@@ -218,8 +222,10 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                
                 (address currency0Settle, address currency1Settle, address recipient) = abi.decode(params[1], (address, address, address)); 
 
-                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle, recipient); 
-                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, currency0Settle, currency1Settle, recipient); 
+
+                //if sweep, would be decrease, take, sweep
+                addressesFound = _processSweepIfPresent(actions, params, 2, addressesFound);  
                 return addressesFound; 
                 
             // Supported but not recommended
@@ -242,8 +248,8 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                         revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction();     
                     } 
 
-                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
-                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, currency0Settle, currency1Settle); 
+                addressesFound = _processSweepIfPresent(actions, params, 3, addressesFound);  
                 return addressesFound; 
 
             } else if (subAction == uint8(Actions.CLEAR_OR_TAKE)) {
@@ -261,8 +267,8 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                         revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction();     
                     } 
 
-                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle); 
-                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, currency0Settle, currency1Settle); 
+                addressesFound = _processSweepIfPresent(actions, params, 3, addressesFound);  
                 return addressesFound; 
 
             } else {
@@ -282,8 +288,8 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
             uint8 subAction = uint8(bytes1(actions[1])); 
             if (subAction == uint8(Actions.TAKE_PAIR)) {
                 (address currency0Settle, address currency1Settle, address recipient) = abi.decode(params[1], (address, address, address)); 
-                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, currency0Settle, currency1Settle, recipient); 
-                addressesFound = _processSweepIfPresent(actions, params, actions.length - 1, addressesFound);  
+                addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, currency0Settle, currency1Settle, recipient); 
+                addressesFound = _processSweepIfPresent(actions, params, 2, addressesFound);  
                 return addressesFound; 
             } else {
                 revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
@@ -321,7 +327,7 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                 return updatedAddressesFound;
             } else {
                 //additional actions MUST be sweep or else they are unsanitized
-                revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
+                revert UniswapV4DecoderAndSanitizer__MustBeSweep(); 
             }
         }
     
