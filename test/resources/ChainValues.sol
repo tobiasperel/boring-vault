@@ -1143,6 +1143,7 @@ contract ChainValues {
         values[base]["uniswapV3NonFungiblePositionManager"] = 0x03a520b32C04BF3bEEf7BEb72E919cf822Ed34f1.toBytes32();
 
         values[base]["USDC"] = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913.toBytes32();
+        values[base]["USDT"] = 0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2.toBytes32();
         values[base]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
         values[base]["WEETH"] = 0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A.toBytes32();
         values[base]["WSTETH"] = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452.toBytes32();
@@ -1159,6 +1160,10 @@ contract ChainValues {
         values[base]["cbBTC"] = 0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf.toBytes32();
         values[base]["tBTC"] = 0x236aa50979D5f3De3Bd1Eeb40E81137F22ab794b.toBytes32();
         values[base]["dlcBTC"] = 0x12418783e860997eb99e8aCf682DF952F721cF62.toBytes32();
+        values[base]["PENDLE"] = 0xA99F6e6785Da0F5d6fB42495Fe424BCE029Eeb3E.toBytes32();
+        values[base]["MORPHO"] = 0xBAa5CC21fd487B8Fcc2F632f3F4E8D37262a0842.toBytes32();
+        values[base]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32(); 
+        values[base]["WBTC"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32(); 
 
         // Balancer vault
         values[base]["vault"] = 0xBA12222222228d8Ba445958a75a0704d566BF2C8.toBytes32();
@@ -1197,6 +1202,12 @@ contract ChainValues {
         values[base]["cbETH_wETH_965"] = 0x6600aae6c56d242fa6ba68bd527aff1a146e77813074413186828fd3f1cdca91;
         values[base]["cbETH_wETH_945"] = 0x84662b4f95b85d6b082b68d32cf71bb565b3f22f216a65509cc2ede7dccdfe8c;
 
+        // MetaMorpho
+        values[base]["gauntletCbBTCcore"] = 0x6770216aC60F634483Ec073cBABC4011c94307Cb.toBytes32();  
+        values[base]["gauntletLBTCcore"] = 0x0D05e6ec0A10f9fFE9229EAA785c11606a1d13Fb.toBytes32(); 
+        values[base]["seamlessCbBTC"] = 0x5a47C803488FE2BB0A0EAaf346b420e4dF22F3C7.toBytes32(); 
+        values[base]["moonwellCbBTC"] = 0x543257eF2161176D7C8cD90BA65C2d4CaEF5a796.toBytes32(); 
+
         values[base]["uniV3Router"] = 0x2626664c2603336E57B271c5C0b26F421741e481.toBytes32();
 
         values[base]["aggregationRouterV5"] = 0x1111111254EEB25477B68fb85Ed929f73A960582.toBytes32();
@@ -1209,6 +1220,22 @@ contract ChainValues {
         // Instadapp Fluid
         values[base]["fWETH"] = 0x9272D6153133175175Bc276512B2336BE3931CE9.toBytes32();
         values[base]["fWSTETH"] = 0x896E39f0E9af61ECA9dD2938E14543506ef2c2b5.toBytes32();
+
+        // Pendle
+        values[base]["pendleMarketFactory"] = 0x59968008a703dC13E6beaECed644bdCe4ee45d13.toBytes32();
+        values[base]["pendleRouter"] = 0x888888888889758F76e7103c6CbF23ABbF58F946.toBytes32();
+        values[base]["pendleOracle"] = 0x9a9Fa8338dd5E5B2188006f1Cd2Ef26d921650C2.toBytes32();
+        values[base]["pendleLimitOrderRouter"] = 0x000000000000c9B3E2C3Ec88B1B4c0cD853f4321.toBytes32();
+
+        values[base]["pendle_LBTC_05_28_25"] = 0x727cEbAcfb10fFd353Fc221D06A862B437eC1735.toBytes32(); 
+
+        // Odos
+        values[base]["odosRouterV2"] = 0x19cEeAd7105607Cd444F5ad10dd51356436095a1.toBytes32(); 
+        values[base]["odosExecutor"] = 0x52bB904473E0aDC699c7B103962D35a0F53D9E1e.toBytes32();  
+
+        // LBTC Bridge
+        values[base]["lbtcBridge"] = 0xA869817b48b25EeE986bdF4bE04062e6fd2C418B.toBytes32();  
+
     }
 
     function _addArbitrumValues() private {
