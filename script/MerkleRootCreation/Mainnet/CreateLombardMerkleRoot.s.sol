@@ -147,6 +147,17 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             _addTellerLeafs(leafs, newEBTCTeller, tellerAssets, false);
         }
 
+        {
+            ERC20[] memory tellerAssets = new ERC20[](5);
+            tellerAssets[0] = getERC20(sourceChain, "WBTC");
+            tellerAssets[1] = getERC20(sourceChain, "LBTC");
+            tellerAssets[2] = getERC20(sourceChain, "cbBTC");
+            tellerAssets[3] = getERC20(sourceChain, "EBTC");
+            tellerAssets[4] = getERC20(sourceChain, "BTCN");
+            
+            _addTellerLeafs(leafs, getAddress(sourceChain, "sBTCNTeller"), tellerAssets, false);
+        }
+
         // ========================== Pendle ==========================
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_market_12_26_24"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_corn_market_12_26_24"), true);
@@ -154,6 +165,9 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_corn_market_3_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_concrete_market_04_09_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_WBTC_concrete_market_04_09_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_market_06_25_25"), true); 
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_market_06_25_25"), true); 
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_market_06_25_25"), true); 
 
         // ========================== MorphoBlue ==========================
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "LBTC_WBTC_945"));
@@ -173,6 +187,15 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Gearbox ==========================
         _addGearboxLeafs(leafs, ERC4626(getAddress(sourceChain, "dWBTCV3")), getAddress(sourceChain, "sdWBTCV3"));
+
+        // ========================== LBTC CCIP Wrapper ==========================
+        // BNB
+        _addLBTCBridgeLeafs(leafs, 0x0000000000000000000000000000000000000000000000000000000000000038); 
+        // BASE
+        _addLBTCBridgeLeafs(leafs, 0x0000000000000000000000000000000000000000000000000000000000002105); 
+
+        // ========================== LayerZero ==========================
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "LBTC"), getAddress(sourceChain, "LBTCOFTAdapter"), layerZeroCornEndpointId);     
 
         // ========================== PancakeSwapV3 ==========================
         setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", pancakeSwapDataDecoderAndSanitizer);
