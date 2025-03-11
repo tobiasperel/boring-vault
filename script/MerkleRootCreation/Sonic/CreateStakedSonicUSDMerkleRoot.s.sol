@@ -18,7 +18,7 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba;
     address public managerAddress = 0x5F7f5205A3E7c63c3bd287EecBe7879687D4c698;
     address public accountantAddress = 0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034;
-    address public rawDataDecoderAndSanitizer = 0xf1BeC14BB66F5349Fe42C14fEb66BA1fa53F869b;
+    address public rawDataDecoderAndSanitizer = 0x476465EABBc951Bd9506a1237EB8b64286a0B461;
 
     function setUp() external {}
 
@@ -53,6 +53,16 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_wS_PoolId")); //USDC, wS
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "stS_BEETS_PoolId")); //stS, BEETS (swap BEETS for stS, then USDC, swap function leaves only support 2 token pools atm)
 
+        // ========================== Odos ==========================
+        
+        address[] memory tokens = new address[](5);   
+        tokens[0] = getAddress(sourceChain, "USDC"); 
+        tokens[1] = getAddress(sourceChain, "stS"); 
+        tokens[2] = getAddress(sourceChain, "wS"); 
+        tokens[3] = getAddress(sourceChain, "scUSD"); 
+        tokens[4] = getAddress(sourceChain, "BEETS"); 
+        _addOdosSwapLeafs(leafs, tokens); 
+        
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "USDC");
@@ -87,6 +97,12 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Native =========================
         _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));
+
+         // ========================== Merkl =========================
+        ERC20[] memory tokensToClaim = new ERC20[](2);
+        tokensToClaim[0] = getERC20(sourceChain, "rEUL");
+        tokensToClaim[1] = getERC20(sourceChain, "wS");
+        _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim);
 
         // ========================== Verify =========================
 

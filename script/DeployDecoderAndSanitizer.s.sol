@@ -14,8 +14,7 @@ import {AerodromeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Aerod
 import {EtherFiLiquidEthDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/EtherFiLiquidEthDecoderAndSanitizer.sol";
 import {OnlyKarakDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/OnlyKarakDecoderAndSanitizer.sol";
-import {Deployer} from "src/helper/Deployer.sol";
-import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
+import {Deployer} from "src/helper/Deployer.sol"; import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
 import {ContractNames} from "resources/ContractNames.sol";
 import {PointFarmingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PointFarmingDecoderAndSanitizer.sol";
 import {OnlyHyperlaneDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/OnlyHyperlaneDecoderAndSanitizer.sol";
@@ -37,12 +36,15 @@ import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Aave
 import {LombardBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LombardBtcDecoderAndSanitizer.sol";
 import {EtherFiBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiBtcDecoderAndSanitizer.sol";
 import {SymbioticLRTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SymbioticLRTDecoderAndSanitizer.sol";
+import {SonicLBTCvSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvSonicDecoderAndSanitizer.sol";
 import {eBTCBerachainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/eBTCBerachainDecoderAndSanitizer.sol"; 
 import {SonicBTCDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicBTCDecoderAndSanitizer.sol";
 import {BerachainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BerachainDecoderAndSanitizer.sol"; 
 import {PrimeLiquidBeraBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PrimeLiquidBeraBtcDecoderAndSanitizer.sol"; 
 import {StakedSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/StakedSonicDecoderAndSanitizer.sol";
 import {HybridBtcBobDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/HybridBtcBobDecoderAndSanitizer.sol";
+import {HybridBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/HybridBtcDecoderAndSanitizer.sol";
+import {SonicVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicVaultDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -60,21 +62,54 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("bob");
-        setSourceChainName("bob"); 
+        vm.createSelectFork("sonicMainnet");
+        setSourceChainName("sonicMainnet"); 
     }
 
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
+
     
         //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
         //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
+
         creationCode = type(HybridBtcBobDecoderAndSanitizer).creationCode;
         constructorArgs = hex""; 
         bobDeployer.deployContract("Hybrid BTC Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
+
+        creationCode = type(SonicMainnetDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("Sonic Mainnet Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
+
+        creationCode = type(HybridBtcDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
+        deployer.deployContract("Hybrid BTC Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
+
+        //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
+        //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+
+        creationCode = type(SonicVaultDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("Sonic Vault Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
+        
+        //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
+        //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+
+        creationCode = type(StakedSonicDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("Staked Sonic Decoder and Sanitizer V0.2", creationCode, constructorArgs, 0);
+        creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
+        deployer.deployContract("Ultra USD Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+
+        //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "convexFXPoolRegistry"));
+        //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
         
         vm.stopBroadcast();
     }
