@@ -37,6 +37,7 @@ import {LidoDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/
 import {MorphoRewardsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/MorphoRewardsDecoderAndSanitizer.sol";
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 import {ResolvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ResolvDecoderAndSanitizer.sol";
+import {ConvexFXDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ConvexFXDecoderAndSanitizer.sol";
 
 contract LombardBtcDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -65,10 +66,12 @@ contract LombardBtcDecoderAndSanitizer is
     LidoDecoderAndSanitizer,
     MorphoRewardsDecoderAndSanitizer,
     TellerDecoderAndSanitizer,
-    ResolvDecoderAndSanitizer
+    ResolvDecoderAndSanitizer,
+    ConvexFXDecoderAndSanitizer
 {
-    constructor(address _uniswapV3NonFungiblePositionManager)
+    constructor(address _uniswapV3NonFungiblePositionManager, address _poolRegistry)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
+        ConvexFXDecoderAndSanitizer(_poolRegistry)
     {}
 
     //============================== HANDLE FUNCTION COLLISIONS ===============================
@@ -123,7 +126,8 @@ contract LombardBtcDecoderAndSanitizer is
             CurveDecoderAndSanitizer,
             NativeWrapperDecoderAndSanitizer,
             GearboxDecoderAndSanitizer,
-            ResolvDecoderAndSanitizer
+            ResolvDecoderAndSanitizer,
+            ConvexFXDecoderAndSanitizer
         )
         returns (bytes memory addressesFound)
     {
