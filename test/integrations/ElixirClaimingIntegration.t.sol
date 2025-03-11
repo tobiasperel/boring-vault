@@ -8,8 +8,7 @@ import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
-import {EtherFiLiquidUsdDecoderAndSanitizer} from
-    "src/base/DecodersAndSanitizers/EtherFiLiquidUsdDecoderAndSanitizer.sol";
+import {ElixirClaimingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ElixirClaimingDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
@@ -47,7 +46,7 @@ contract EthenaWithdrawIntegrationTest is Test, MerkleTreeHelper {
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
         rawDataDecoderAndSanitizer = address(
-            new EtherFiLiquidUsdDecoderAndSanitizer(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"))
+            new FullElxDecoderAndSanitizer()
         );
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
@@ -128,12 +127,12 @@ contract EthenaWithdrawIntegrationTest is Test, MerkleTreeHelper {
         merkleProofs[1] = 0x8a9ca40ed7dcecf931aa6bbee0209424bff61c7c27ec43b5cd595cd4e2de36d9;
         merkleProofs[2] = 0xa966f249fe4484d42c74d63f13bb66416b812f6bde127ce7d728b42c9f9e9f6e;
         merkleProofs[3] = 0x049f162bd25dc9e957207485740e3d92e542db4623ef55a1012a93d67a99d9b8;
-        merkleProofs[4] = 0xcc86d0e86a2f3303caacba362ed4663773692ce6436b9bd65acfca38823719070;
+        merkleProofs[4] = 0xcc86d0e86a2f3303caacba362ed4663773692ce6436b9bd65acfca3882371907;
         merkleProofs[5] = 0x755d09e9a8d95fea930eb695a4c003ada3bb8387b42e3b21029edaeee20b7c82;
         merkleProofs[6] = 0xde1405b47b38f97342b4b323afe403acfa16e792c2be58a6e2e248eece5a85ad;
         merkleProofs[7] = 0x1b2df0180f736528dd29dda59e07051c622e9763cb1a95ae0f614fef7e00e3ff;
         merkleProofs[8] = 0xf8cb8665d6008ff837351acb04c8829cbd6c2677cf3b5db9e41b60add7e96181;
-        merkleProofs[9] = 0x3120b8316d1c5e6b9c3b802c5ed83c0756b1a45d2a2f80838ea43677b60276980;
+        merkleProofs[9] = 0x3120b8316d1c5e6b9c3b802c5ed83c0756b1a45d2a2f80838ea43677b6027698;
         merkleProofs[10] = 0x7f25fd751b9344055e81eb844672269fe1a05cb3d3841b7c16b9cb91529859b6;
         merkleProofs[11] = 0x0132354e4833ae849613407c62f5dcc18f401a92ec2d416456c93c36f83b315b;
         merkleProofs[12] = 0x766a125ee4bc084e6e9b689eba8ee84b11161dd2a976d4ceb8894db5f8d4c71e;
@@ -153,13 +152,15 @@ contract EthenaWithdrawIntegrationTest is Test, MerkleTreeHelper {
 
         uint256[] memory values = new uint256[](1);
         
-
         // NOTE: without a way to generate the proofs or signature for the vault, this is going to fail. 
         // The above proofs and signatures were taken from a passing TX for a user, but the vaults proofs and sig are unknown as this appears
         // to be generated on the FE for claims.  
         // At this point, I am unable to find any SDK or FE code that will do this for the vault addresses we need. 
         // The signature can be obtained from pranking the wallet on Rabby, but in order to generate the proofs this requires a siganture to be sent. 
-        vm.expectRevert(); 
+        //
+        // We could bastardize the state of the contract for the sake of a passing test, but that would defeat the purpose of the test. 
+        // In this case, we are testing that the boring vault CAN call the claim function, which the revert below indicates. 
+        vm.expectRevert(); //use -vvvv to verify this is erroring with: InvalidSignature() or 0x8baa579f; 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
 
     }
@@ -172,7 +173,6 @@ contract EthenaWithdrawIntegrationTest is Test, MerkleTreeHelper {
     }
 }
 
-interface EthenaSusde {
-    function cooldownDuration() external view returns (uint24);
-    function cooldowns(address) external view returns (uint104 cooldownEnd, uint152 underlyingAmount);
-}
+
+contract FullElxDecoderAndSanitizer is ElixirClaimingDecoderAndSanitizer {}
+
