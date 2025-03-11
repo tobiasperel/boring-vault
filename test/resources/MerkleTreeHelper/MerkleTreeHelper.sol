@@ -9810,7 +9810,20 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         _addSLvlUSDWithdrawLeafs(leafs); 
    } 
 
-
+    // ========================================= ELX Claiming =========================================
+    function _addELXClaimingLeafs(ManageLeaf[] memory leafs) internal {
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "elxTokenDistributor"),
+            false,
+            "claim(uint256,bytes32[],bytes)",
+            new address[](0),
+            string.concat("Claim ELX Airdrop"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+    } 
 
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.

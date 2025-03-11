@@ -1120,6 +1120,9 @@ contract ChainValues {
         // Level
         values[mainnet]["levelMinter"] = 0x8E7046e27D14d09bdacDE9260ff7c8c2be68a41f.toBytes32();
 
+        // ELX Claiming
+        values[mainnet]["elxTokenDistributor"] = 0xeb5D4b79e95Edb5567f3f9703FbD56a107905c0C.toBytes32();
+
     }
 
     function _addBaseValues() private {
