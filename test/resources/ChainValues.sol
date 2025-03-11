@@ -1880,6 +1880,8 @@ contract ChainValues {
         values[bob]["ZRO"] = address(1).toBytes32();
         values[bob]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
 
+        // OFTs
+        
         // Standard Bridge
         values[bob]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
         values[bob]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
