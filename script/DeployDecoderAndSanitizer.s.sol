@@ -104,8 +104,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
         deployer.deployContract("Staked Sonic Decoder and Sanitizer V0.2", creationCode, constructorArgs, 0);
         creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        deployer.deployContract("Ultra USD Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("EtherFi Liquid USD Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
 
         //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "convexFXPoolRegistry"));
