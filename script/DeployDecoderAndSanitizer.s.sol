@@ -45,6 +45,7 @@ import {StakedSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Sta
 import {HybridBtcBobDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/HybridBtcBobDecoderAndSanitizer.sol";
 import {HybridBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/HybridBtcDecoderAndSanitizer.sol";
 import {SonicVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicVaultDecoderAndSanitizer.sol";
+import {LBTCvBNBDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LBTCvBNBDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -62,8 +63,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("sonicMainnet");
-        setSourceChainName("sonicMainnet"); 
+        vm.createSelectFork("bsc");
+        setSourceChainName("bsc"); 
     }
 
     function run() external {
@@ -71,41 +72,10 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         vm.startBroadcast(privateKey);
 
     
-        //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        creationCode = type(LBTCvBNBDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("LBTCv BNB Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
 
-
-        creationCode = type(HybridBtcBobDecoderAndSanitizer).creationCode;
-        constructorArgs = hex""; 
-        bobDeployer.deployContract("Hybrid BTC Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
-
-        creationCode = type(SonicMainnetDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Sonic Mainnet Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
-
-        creationCode = type(HybridBtcDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        deployer.deployContract("Hybrid BTC Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
-
-        //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
-
-        creationCode = type(SonicVaultDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Sonic Vault Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
-        
-        //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
-
-        creationCode = type(StakedSonicDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Staked Sonic Decoder and Sanitizer V0.2", creationCode, constructorArgs, 0);
-        creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        deployer.deployContract("Ultra USD Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
         //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "convexFXPoolRegistry"));
