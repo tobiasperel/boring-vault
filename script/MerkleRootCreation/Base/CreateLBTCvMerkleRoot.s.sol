@@ -54,8 +54,8 @@ contract CreateLBTCvMerkleRootScript is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, false, true);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](6);
-        SwapKind[] memory kind = new SwapKind[](6);
+        address[] memory assets = new address[](7);
+        SwapKind[] memory kind = new SwapKind[](7);
         assets[0] = getAddress(sourceChain, "cbBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
@@ -68,10 +68,15 @@ contract CreateLBTCvMerkleRootScript is Script, MerkleTreeHelper {
         kind[4] = SwapKind.Sell;
         assets[5] = getAddress(sourceChain, "MORPHO");
         kind[5] = SwapKind.Sell;
+        assets[6] = getAddress(sourceChain, "WETH");
+        kind[6] = SwapKind.BuyAndSell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         // ========================== Odos ==========================
         _addOdosSwapLeafs(leafs, assets, kind);  
+
+        // ========================== Native ==========================
+        _addNativeLeafs(leafs); 
 
         // ========================== Pendle ==========================
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_05_28_25"), true);
