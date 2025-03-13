@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+ // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
@@ -71,6 +71,7 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Dolomite Borrow ==========================
         
         _addDolomiteBorrowLeafs(leafs, getAddress(sourceChain, "WETH"));
+        _addDolomiteBorrowLeafs(leafs, getAddress(sourceChain, "WEETH"));
 
         // ========================== dTokens ==========================
         

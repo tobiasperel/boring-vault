@@ -8617,9 +8617,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             "openBorrowPosition(uint256,uint256,uint256,uint256,uint8)",
             new address[](1),
             string.concat(
-                "Borrow ",
+                "Use ",
                 ERC20(borrowToken).symbol(),
-                " from Dolomite BorrowPosition Market ID: ",
+                " as collateral on Dolomite BorrowPosition Market ID: ",
                 vm.toString(marketId)
             ),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
