@@ -21,6 +21,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     mapping(address => mapping(address => mapping(address => bool))) public ownerToTokenToSpenderToApprovalInTree;
     mapping(address => mapping(address => mapping(address => bool))) public ownerToOneInchSellTokenToBuyTokenToInTree;
+    mapping(address => mapping(address => mapping(address => bool))) public ownerToOdosSellTokenToBuyTokenToInTree;
 
     function setSourceChainName(string memory _chain) internal {
         sourceChain = _chain;
@@ -262,6 +263,23 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
 
         if (gauge != address(0)) {
+            
+            address lpToken = ICurveGauge(gauge).lp_token(); 
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                lpToken,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve Curve gauge to spend ", ERC20(lpToken).name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = gauge; 
+
+
             // Deposit into gauge.
             unchecked {
                 leafIndex++;
@@ -271,7 +289,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "deposit(uint256,address)",
                 new address[](1),
-                string.concat("Deposit into Curve gauge"),
+                string.concat("Deposit ", ERC20(lpToken).name(), " into Curve gauge"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
@@ -285,7 +303,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "withdraw(uint256)",
                 new address[](0),
-                string.concat("Withdraw from Curve gauge"),
+                string.concat("Withdraw ", ERC20(lpToken).name(), " from Curve gauge"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
 
@@ -9315,60 +9333,353 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= Odos =========================================
 
-    //TODO add loop for tokens
-    function _addOdosSwapLeafs(ManageLeaf[] memory leafs, address[] memory tokens) internal {
+    function _addOdosSwapLeafs(ManageLeaf[] memory leafs, address[] memory tokens, SwapKind[] memory kind) internal {
+
         for (uint256 i = 0; i < tokens.length; i++) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][tokens[i]][getAddress(
+                    sourceChain, "odosRouterV2"
+                )]
+            ) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    tokens[i],
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve Odos Router V2 to spend ", ERC20(tokens[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "odosRouterV2");
+            }
+
+            for (uint256 j = 0; j < tokens.length; j++) {
+
+                if (i == j) continue;
+
+                if (
+                    !ownerToOdosSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][tokens[i]][tokens[j]]
+                        && kind[j] != SwapKind.Sell
+                ) {
+
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        getAddress(sourceChain, "odosRouterV2"),
+                        false,
+                        "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)",
+                        new address[](5),
+                        string.concat("Swap ", ERC20(tokens[i]).symbol(), " for ", ERC20(tokens[j]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = tokens[i];
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor");
+                    leafs[leafIndex].argumentAddresses[2] = tokens[j];
+                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+                    leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor");
+
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        getAddress(sourceChain, "odosRouterV2"),
+                        false,
+                        "swapCompact()",
+                        new address[](5),
+                        string.concat("Swap Compact ", ERC20(tokens[i]).symbol(), " for ", ERC20(tokens[j]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = tokens[i];
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor");
+                    leafs[leafIndex].argumentAddresses[2] = tokens[j];
+                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+                    leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor");
+
+                    ownerToOdosSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][tokens[i]][tokens[j]]
+                    = true;
+                }
+
+                if (
+                    kind[i] == SwapKind.BuyAndSell
+                        && !ownerToOdosSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][tokens[j]][tokens[i]]
+                ) {
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        getAddress(sourceChain, "odosRouterV2"),
+                        false,
+                        "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)",
+                        new address[](5),
+                        string.concat("Swap ", ERC20(tokens[j]).symbol(), " for ", ERC20(tokens[i]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = tokens[j];
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor");
+                    leafs[leafIndex].argumentAddresses[2] = tokens[i];
+                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+                    leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor");
+
+                    unchecked {
+                        leafIndex++;
+                    }
+                    leafs[leafIndex] = ManageLeaf(
+                        getAddress(sourceChain, "odosRouterV2"),
+                        false,
+                        "swapCompact()",
+                        new address[](5),
+                        string.concat("Swap Compact ", ERC20(tokens[j]).symbol(), " for ", ERC20(tokens[i]).symbol()),
+                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    );
+                    leafs[leafIndex].argumentAddresses[0] = tokens[j];
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor");
+                    leafs[leafIndex].argumentAddresses[2] = tokens[i];
+                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+                    leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor");
+
+                    ownerToOdosSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][tokens[j]][tokens[i]]
+                    = true;
+
+                }
+            }
+        }
+    }
+
+
+    // ========================================= Ambient =========================================
+    
+    /// @dev baseToken/quoteToken
+    /// these are not interchangeable and must be exact for the pool being swapped or minting liq. ie USDE/ETH is not the same as ETH/USDE 
+    function _addAmbientLPLeafs(ManageLeaf[] memory leafs, address baseToken, address quoteToken) internal {
+
+        if (baseToken != getAddress(sourceChain, "ETH")) {
+
             unchecked {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                tokens[i],
+                baseToken,
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Approve Odos Router V2 to spend ", ERC20(tokens[i]).symbol()),
+                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(baseToken).symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "odosRouterV2");
-
-            for (uint256 j = 0; j < tokens.length; j++) {
-                if (i == j) continue;
-
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    getAddress(sourceChain, "odosRouterV2"),
-                    false,
-                    "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)",
-                    new address[](5),
-                    string.concat("Swap ", ERC20(tokens[i]).symbol(), " for ", ERC20(tokens[j]).symbol()),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = tokens[i];
-                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor");
-                leafs[leafIndex].argumentAddresses[2] = tokens[j];
-                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
-                leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor");
-
-                unchecked {
-                    leafIndex++;
-                }
-                leafs[leafIndex] = ManageLeaf(
-                    getAddress(sourceChain, "odosRouterV2"),
-                    false,
-                    "swapCompact()",
-                    new address[](5),
-                    string.concat("Swap Compact ", ERC20(tokens[i]).symbol(), " for ", ERC20(tokens[j]).symbol()),
-                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                );
-                leafs[leafIndex].argumentAddresses[0] = tokens[i];
-                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor");
-                leafs[leafIndex].argumentAddresses[2] = tokens[j];
-                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
-                leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor");
-            }
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
         }
+        
+        if (quoteToken != getAddress(sourceChain, "ETH")) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                quoteToken,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(quoteToken).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
+        }
+        
+        if (baseToken != getAddress(sourceChain, "ETH") && quoteToken != getAddress(sourceChain, "ETH")) {
+
+            //used for every command that includes the warm path 
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                false,
+                "userCmd(uint16,bytes)",
+                new address[](3),
+                string.concat("Call usrCmd using 'WarmPath' with no ETH"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+            leafs[leafIndex].argumentAddresses[2] = address(0); //lp conduit (user owned)
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                false,
+                "userCmd(uint16,bytes)",
+                new address[](2),
+                string.concat("Call userCmd using 'HotPath' or 'KnockoutPath' without ETH "),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+
+        } else {
+            if (baseToken == getAddress(sourceChain, "ETH")) baseToken = address(0); 
+            if (quoteToken == getAddress(sourceChain, "ETH")) quoteToken = address(0); 
+            
+            // used for minting positions
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                true,
+                "userCmd(uint16,bytes)",
+                new address[](3),
+                string.concat("Call userCmd using 'WarmPath' with ETH "),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+            leafs[leafIndex].argumentAddresses[2] = address(0); //lp conduit (user owned)
+            
+            //Used for commands that don't include sending ETH (harvest, burn)
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                false,
+                "userCmd(uint16,bytes)",
+                new address[](3),
+                string.concat("Call userCmd using 'WarmPath' without ETH"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+            leafs[leafIndex].argumentAddresses[2] = address(0); //lp conduit (user owned)
+
+            //swapping eth to token, using knockout
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                true,
+                "userCmd(uint16,bytes)",
+                new address[](2),
+                string.concat("Call userCmd using 'HotPath' or 'KnockoutPath' with ETH "),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+            
+            //swapping token to eth, using knockout
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                false,
+                "userCmd(uint16,bytes)",
+                new address[](2),
+                string.concat("Call userCmd using 'HotPath' or 'KnockoutPath' without ETH "),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
+            leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
+        }
+        
+    }
+
+    function _addAmbientSwapLeafs(ManageLeaf[] memory leafs, address baseToken, address quoteToken) internal {
+        if (baseToken != getAddress(sourceChain, "ETH")) {
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                baseToken,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(baseToken).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
+        }
+        
+        if (quoteToken != getAddress(sourceChain, "ETH")) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                quoteToken,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve CrocSwapDex (Ambient) to spend ", ERC20(quoteToken).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
+        }
+        
+       // address base,
+       // address quote,
+       // uint256, /*poolIdx*/
+       // bool, /*isBuy*/
+       // bool, /*inBaseQty*/
+       // uint128, /*qty*/
+       // uint16, /*tip*/
+       // uint128, /*limitPrice*/
+       // uint128, /*minOut*/
+       // uint8 /*reserveFlags*/
+        if (baseToken != getAddress(sourceChain, "ETH") && quoteToken != getAddress(sourceChain, "ETH")) {
+            unchecked {
+                 leafIndex++;
+             }
+             leafs[leafIndex] = ManageLeaf(
+                 getAddress(sourceChain, "crocSwapDex"),
+                 false,
+                 "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
+                 new address[](2),
+                 string.concat("Swap using CrocSwapDex (Ambient) between ", ERC20(baseToken).symbol(), " and ", ERC20(quoteToken).symbol()),
+                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+             );
+             leafs[leafIndex].argumentAddresses[0] = baseToken;
+             leafs[leafIndex].argumentAddresses[1] = quoteToken;
+        } else {
+            if (baseToken == getAddress(sourceChain, "ETH")) baseToken = address(0); 
+            if (quoteToken == getAddress(sourceChain, "ETH")) quoteToken = address(0); 
+            
+            //add correct swap symbol if eth is quote or base (since it can be either) 
+            address erc20Token = baseToken == address(0) ? quoteToken : baseToken; 
+
+            unchecked {
+                 leafIndex++;
+             }
+             leafs[leafIndex] = ManageLeaf(
+                 getAddress(sourceChain, "crocSwapDex"),
+                 true,
+                 "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
+                 new address[](2),
+                 string.concat("Swap using CrocSwapDex (Ambient) between ETH and ", ERC20(erc20Token).symbol()),
+                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+             );
+             leafs[leafIndex].argumentAddresses[0] = baseToken;
+             leafs[leafIndex].argumentAddresses[1] = quoteToken;
+
+            unchecked {
+                 leafIndex++;
+             }
+             leafs[leafIndex] = ManageLeaf(
+                 getAddress(sourceChain, "crocSwapDex"),
+                 false,
+                 "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
+                 new address[](2),
+                 string.concat("Swap using CrocSwapDex (Ambient) between ", ERC20(erc20Token).symbol(), " and ETH"),
+                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+             );
+             leafs[leafIndex].argumentAddresses[0] = baseToken;
+             leafs[leafIndex].argumentAddresses[1] = quoteToken;
+
+        }
+         
     }
 
     // ========================================= Level Money / LevelUSD =========================================
@@ -9585,6 +9896,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[1] = referral;
         }
     }
+
 
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
@@ -9875,6 +10187,10 @@ interface UniswapV3Pool {
 
 interface CurvePool {
     function coins(uint256 i) external view returns (address);
+}
+
+interface ICurveGauge {
+    function lp_token() external view returns (address); 
 }
 
 interface BalancerVault {

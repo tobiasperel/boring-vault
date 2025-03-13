@@ -2,7 +2,7 @@
     "metadata": {
         "AccountantAddress": "0xA76E0F54918E39A63904b51F688513043242a0BE",
         "BoringVaultAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
-        "DecoderAndSanitizerAddress": "0xad67B9EdCD822FF39ad6b81860b98351F89dB40F",
+        "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
         "DigestComposition": [
             "Bytes20(DECODER_AND_SANITIZER_ADDRESS)",
             "Bytes20(TARGET_ADDRESS)",
@@ -10,230 +10,1854 @@
             "Bytes4(TARGET_FUNCTION_SELECTOR)",
             "Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"
         ],
-        "LeafCount": 7,
-        "ManageRoot": "0x89271cf66f7e5231d5c5825f80b8ac28b44c53359f4dde5cf5ea00d9f0ae64e3",
+        "LeafCount": 128,
+        "ManageRoot": "0x89a526fb2b69815032c7c59b737cef4f7275105b4e02cd4c6cc09317876cb406",
         "ManagerAddress": "0x76fda7A02B616070D3eC5902Fa3C5683AC3cB8B6",
-        "TreeCapacity": 16
+        "TreeCapacity": 128
     },
     "leafs": [
         {
             "AddressArguments": ["0xe6DCD54B4CDe2e9E935C22F57EBBBaaF5cc3BC8a"],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xad67B9EdCD822FF39ad6b81860b98351F89dB40F",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
             "Description": "Approve Circle Token Adapter to burn USDC",
             "FunctionSelector": "0x095ea7b3",
             "FunctionSignature": "approve(address,uint256)",
-            "LeafDigest": "0x5e52be3c12f0a24aa3e86eaadc0504708fd1631dad11c3699856afa9ee822dd2",
+            "LeafDigest": "0x8b02ddb5940a76443bd1265feac8bb291468f7f5fc73e282f74ad07da34fcb55",
             "PackedArgumentAddresses": "0xe6dcd54b4cde2e9e935c22f57ebbbaaf5cc3bc8a",
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
             "AddressArguments": ["0x9Ef7629F9B930168b76283AdD7120777b3c895b3"],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xad67B9EdCD822FF39ad6b81860b98351F89dB40F",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
             "Description": "Approve Sonic Gateway L2 to spend 0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
             "FunctionSelector": "0x095ea7b3",
             "FunctionSignature": "approve(address,uint256)",
-            "LeafDigest": "0x5730108ae4722a8657fd915ad6bd564611779034609c40e95073159e48ff4cfd",
+            "LeafDigest": "0xdca164fe06a01c3fb8905866c37e309590360bf513e5de3d3bbc29f25573d5bf",
             "PackedArgumentAddresses": "0x9ef7629f9b930168b76283add7120777b3c895b3",
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
             "AddressArguments": ["0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xad67B9EdCD822FF39ad6b81860b98351F89dB40F",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
             "Description": "Withdraw 0x29219dd400f2Bf60E5a23d13Be72B486D4038894 from Sonic",
             "FunctionSelector": "0x7542cda8",
             "FunctionSignature": "withdraw(uint96,address,uint256)",
-            "LeafDigest": "0x546d8ed50dcbeee59b145e88654be982f149b588be88160fb9bf11b3951b7959",
+            "LeafDigest": "0xd954de8b4c1b180ed097ab7478db2a6fc440cd2d1152b4e6e4aa69ba0de3a51a",
             "PackedArgumentAddresses": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
             "TargetAddress": "0x9Ef7629F9B930168b76283AdD7120777b3c895b3"
         },
         {
             "AddressArguments": ["0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xad67B9EdCD822FF39ad6b81860b98351F89dB40F",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
             "Description": "Claim 0x29219dd400f2Bf60E5a23d13Be72B486D4038894 from Sonic Gateway",
             "FunctionSelector": "0x99016142",
             "FunctionSignature": "claim(uint256,address,uint256,bytes)",
-            "LeafDigest": "0x9d0f09cd1e46a884516ec4d7a6a7d17a4bc44d39922a8c4ce6af67b895d97c37",
+            "LeafDigest": "0xd69745c65142b38db4112c8d625ea17205bbea0357cd6f45b23e308dfd399844",
             "PackedArgumentAddresses": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "TargetAddress": "0x9Ef7629F9B930168b76283AdD7120777b3c895b3"
+        },
+        {
+            "AddressArguments": ["0x9Ef7629F9B930168b76283AdD7120777b3c895b3"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve Sonic Gateway L2 to spend 0x6047828dc181963ba44974801FF68e538dA5eaF9",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x036e02d29f11f8e6c63ea661eb17e44dbf1bb12ac417380eb5bb81b1a4e8eb28",
+            "PackedArgumentAddresses": "0x9ef7629f9b930168b76283add7120777b3c895b3",
+            "TargetAddress": "0x6047828dc181963ba44974801FF68e538dA5eaF9"
+        },
+        {
+            "AddressArguments": ["0xdAC17F958D2ee523a2206206994597C13D831ec7"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw 0x6047828dc181963ba44974801FF68e538dA5eaF9 from Sonic",
+            "FunctionSelector": "0x7542cda8",
+            "FunctionSignature": "withdraw(uint96,address,uint256)",
+            "LeafDigest": "0xa9e0a5a6ab5e50146f74e42d19affbd9080b1709afce6decbe6319344471aeea",
+            "PackedArgumentAddresses": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "TargetAddress": "0x9Ef7629F9B930168b76283AdD7120777b3c895b3"
+        },
+        {
+            "AddressArguments": ["0xdAC17F958D2ee523a2206206994597C13D831ec7"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Claim 0x6047828dc181963ba44974801FF68e538dA5eaF9 from Sonic Gateway",
+            "FunctionSelector": "0x99016142",
+            "FunctionSignature": "claim(uint256,address,uint256,bytes)",
+            "LeafDigest": "0xce1d9b9ac099afe8ddf6877c91530624206b806e99aaafafe162f4937267e436",
+            "PackedArgumentAddresses": "0xdac17f958d2ee523a2206206994597c13d831ec7",
             "TargetAddress": "0x9Ef7629F9B930168b76283AdD7120777b3c895b3"
         },
         {
             "AddressArguments": ["0xA76E0F54918E39A63904b51F688513043242a0BE"],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xad67B9EdCD822FF39ad6b81860b98351F89dB40F",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
             "Description": "Approve Accountant to spend USDC.e",
             "FunctionSelector": "0x095ea7b3",
             "FunctionSignature": "approve(address,uint256)",
-            "LeafDigest": "0xbeba335ee6644bc7be91ec4678aed5e0d81d781ba3b0d5c104164de487cbcffc",
+            "LeafDigest": "0x695e1e95e9bcad088a72023090461306771d0303227fe2c1caae100d2fcd2fca",
             "PackedArgumentAddresses": "0xa76e0f54918e39a63904b51f688513043242a0be",
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
             "AddressArguments": ["0x29219dd400f2Bf60E5a23d13Be72B486D4038894"],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xad67B9EdCD822FF39ad6b81860b98351F89dB40F",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
             "Description": "Claim fees in USDC.e",
             "FunctionSelector": "0x15a0ea6a",
             "FunctionSignature": "claimFees(address)",
-            "LeafDigest": "0xdecb6da0a6983905e2890442841f600585a13b06f129bd53212ab11224f0e187",
+            "LeafDigest": "0x05f6dd19fa8851f169616e449f76df068c80a14b307877aebee09e66edc5ae73",
             "PackedArgumentAddresses": "0x29219dd400f2bf60e5a23d13be72b486d4038894",
             "TargetAddress": "0xA76E0F54918E39A63904b51F688513043242a0BE"
         },
         {
             "AddressArguments": ["0x29219dd400f2Bf60E5a23d13Be72B486D4038894"],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xad67B9EdCD822FF39ad6b81860b98351F89dB40F",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
             "Description": "Claim yield in USDC.e",
             "FunctionSelector": "0x999927df",
             "FunctionSignature": "claimYield(address)",
-            "LeafDigest": "0x7504232e03102d7250a8da3a147b998937cd6bca7c2ff8f8ff03fc7205039aba",
+            "LeafDigest": "0x0a2eb0aa363a44b0ce8ca851825a7fd56ed11fdc988d4fba3ed7b60f1473dc1f",
             "PackedArgumentAddresses": "0x29219dd400f2bf60e5a23d13be72b486d4038894",
             "TargetAddress": "0xA76E0F54918E39A63904b51F688513043242a0BE"
         },
         {
-            "AddressArguments": [],
+            "AddressArguments": ["0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3"],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve Aave V3 Pool to spend USDC.e",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xb773be9ddd13d3ba29826d9f7bbf88f3f63ef57c01a6a823b2e462f507c6845f",
+            "PackedArgumentAddresses": "0x5362dbb1e601abf3a4c14c22ffeda64042e5eaa3",
+            "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
+        },
+        {
+            "AddressArguments": ["0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve Aave V3 Pool to spend USDT",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x1888b11f85b39fc652200e3b8e5df335ca198202715ffd4e32b49f1092bf895f",
+            "PackedArgumentAddresses": "0x5362dbb1e601abf3a4c14c22ffeda64042e5eaa3",
+            "TargetAddress": "0x6047828dc181963ba44974801FF68e538dA5eaF9"
+        },
+        {
+            "AddressArguments": [
+                "0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Supply USDC.e to Aave V3",
+            "FunctionSelector": "0x617ba037",
+            "FunctionSignature": "supply(address,uint256,address,uint16)",
+            "LeafDigest": "0xf13dfa34233f00a100dba5c9cbc65108b68dec9895547db7c9497e8e0cfbe464",
+            "PackedArgumentAddresses": "0x29219dd400f2bf60e5a23d13be72b486d4038894d3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3"
+        },
+        {
+            "AddressArguments": [
+                "0x6047828dc181963ba44974801FF68e538dA5eaF9",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Supply USDT to Aave V3",
+            "FunctionSelector": "0x617ba037",
+            "FunctionSignature": "supply(address,uint256,address,uint16)",
+            "LeafDigest": "0xb8e248468bd2784621de4b71c9029b0a4378f5ab0de069673d4915b8e42dc5f5",
+            "PackedArgumentAddresses": "0x6047828dc181963ba44974801ff68e538da5eaf9d3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3"
+        },
+        {
+            "AddressArguments": [
+                "0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw USDC.e from Aave V3",
+            "FunctionSelector": "0x69328dec",
+            "FunctionSignature": "withdraw(address,uint256,address)",
+            "LeafDigest": "0xe298884458510e8f7f9b60b44eced2eea3ba5a222c5ffa4b5e1155366e49190f",
+            "PackedArgumentAddresses": "0x29219dd400f2bf60e5a23d13be72b486d4038894d3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3"
+        },
+        {
+            "AddressArguments": [
+                "0x6047828dc181963ba44974801FF68e538dA5eaF9",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw USDT from Aave V3",
+            "FunctionSelector": "0x69328dec",
+            "FunctionSignature": "withdraw(address,uint256,address)",
+            "LeafDigest": "0x67ee5a122317a9b28c5744e9b9eac4747550de0551dfa8816f900bf77a9e9c53",
+            "PackedArgumentAddresses": "0x6047828dc181963ba44974801ff68e538da5eaf9d3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3"
+        },
+        {
+            "AddressArguments": ["0x29219dd400f2Bf60E5a23d13Be72B486D4038894"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Toggle USDC.e as collateral in Aave V3",
+            "FunctionSelector": "0x5a3b74b9",
+            "FunctionSignature": "setUserUseReserveAsCollateral(address,bool)",
+            "LeafDigest": "0x58abdf87c8cbaaea54e40482a90a942533d430a6d405c72815d297d814aa2a1d",
+            "PackedArgumentAddresses": "0x29219dd400f2bf60e5a23d13be72b486d4038894",
+            "TargetAddress": "0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3"
+        },
+        {
+            "AddressArguments": ["0x6047828dc181963ba44974801FF68e538dA5eaF9"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Toggle USDT as collateral in Aave V3",
+            "FunctionSelector": "0x5a3b74b9",
+            "FunctionSignature": "setUserUseReserveAsCollateral(address,bool)",
+            "LeafDigest": "0xa5e0a7a33d53c54af170a228a467285b9407ad32f01cd21217ece667f10e3233",
+            "PackedArgumentAddresses": "0x6047828dc181963ba44974801ff68e538da5eaf9",
+            "TargetAddress": "0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3"
         },
         {
             "AddressArguments": [],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Set user e-mode in Aave V3",
+            "FunctionSelector": "0x28530a47",
+            "FunctionSignature": "setUserEMode(uint8)",
+            "LeafDigest": "0x4fa69bedc148104e07439fbb635b4999ed26507e8d9c6cfc07f3245262278f4e",
             "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "TargetAddress": "0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Claim rewards",
+            "FunctionSelector": "0x236300dc",
+            "FunctionSignature": "claimRewards(address[],uint256,address,address)",
+            "LeafDigest": "0x33e39f7f926e9c7c227966581f9ae0856c5de499692e7396ec1182446db26ae7",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x24bD6e9ca54F1737467DEf82dCA9702925B3Aa59"
+        },
+        {
+            "AddressArguments": ["0xE223C8e92AA91e966CA31d5C6590fF7167E25801"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve bwS-8 to spend wS",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x3cbdafbb9a7d699dc344069c904f20b43e875215153f4211077d3b2f278373bd",
+            "PackedArgumentAddresses": "0xe223c8e92aa91e966ca31d5c6590ff7167e25801",
+            "TargetAddress": "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit wS for bwS-8",
+            "FunctionSelector": "0x6e553f65",
+            "FunctionSignature": "deposit(uint256,address)",
+            "LeafDigest": "0xa127c78df40a4b266fcb8da251cf5bf82e1d008c65619e73b5440d87d2ff68a8",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw wS from bwS-8",
+            "FunctionSelector": "0xb460af94",
+            "FunctionSignature": "withdraw(uint256,address,address)",
+            "LeafDigest": "0xb7221df7da29d15f3f38825a2f09662e7a7acd1d802a471614f13955757583e4",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint bwS-8 using wS",
+            "FunctionSelector": "0x94bf804d",
+            "FunctionSignature": "mint(uint256,address)",
+            "LeafDigest": "0x676a480293c7edf6991b30350ed924b4c3df5f760647e784b8eddd945a5c81fd",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem bwS-8 for wS",
+            "FunctionSelector": "0xba087652",
+            "FunctionSignature": "redeem(uint256,address,address)",
+            "LeafDigest": "0x17aa83a0593d003beb3db1b7f0bb3bc26e282a36497595b15239748bceb08536",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit Wrapped Sonic with type into Silo",
+            "FunctionSelector": "0xb7ec8d4b",
+            "FunctionSignature": "deposit(uint256,address,uint8)",
+            "LeafDigest": "0x7e79ee03428bcc046303368e0bd1f966cf93b491eb9812eb2be366d562acbbcb",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint Wrapped Sonic with type into Silo",
+            "FunctionSelector": "0xc061ddc7",
+            "FunctionSignature": "mint(uint256,address,uint8)",
+            "LeafDigest": "0x9160356d8a17d728b305569a045426e8b754f0055c2845ac6a3ffd9dab0c4f23",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw Wrapped Sonic with type from Silo",
+            "FunctionSelector": "0xb8337c2a",
+            "FunctionSignature": "withdraw(uint256,address,address,uint8)",
+            "LeafDigest": "0xae779efc8b5078446f1f1095e2cb08ba8c2a1b7d7e722439571736fccacf67e1",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem Wrapped Sonic with type from Silo",
+            "FunctionSelector": "0xda537660",
+            "FunctionSignature": "redeem(uint256,address,address,uint8)",
+            "LeafDigest": "0x4609147b8148bf318142a31b01319c6839fffc5892fa7e285bb2ef80ea8d1e7a",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow Wrapped Sonic from Silo",
+            "FunctionSelector": "0xd5164184",
+            "FunctionSignature": "borrow(uint256,address,address)",
+            "LeafDigest": "0x5612f40d997d305a1d8e852d00e2fb4f474efbf59fb8e6b3c7e40ffcba21dd31",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow shares of Wrapped Sonic from Silo",
+            "FunctionSelector": "0x889576f7",
+            "FunctionSignature": "borrowShares(uint256,address,address)",
+            "LeafDigest": "0x3136616aaa5b6cc86877326a262883b6ccfb418bc91425027ecc1c726bbaa569",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow same asset Wrapped Sonic from Silo",
+            "FunctionSelector": "0x7fe2c8b7",
+            "FunctionSignature": "borrowSameAsset(uint256,address,address)",
+            "LeafDigest": "0xa6b00251b348b224f21ecb02642d3e9752c24c1ca7014d4af7b30de58300f165",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay Wrapped Sonic to Silo",
+            "FunctionSelector": "0xacb70815",
+            "FunctionSignature": "repay(uint256,address)",
+            "LeafDigest": "0x998b1d273a429a46794c9f0b6dff00b662aacfbf5caa73bce8f45738a8aeb6a2",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay shares of Wrapped Sonic to Silo",
+            "FunctionSelector": "0xe36754eb",
+            "FunctionSignature": "repayShares(uint256,address)",
+            "LeafDigest": "0xe4f5f9470d7ddc327a157d8cf3fcaa711c951df087d0e88a34f8dbe5c8051bb8",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Transition Collateral in Wrapped Sonic Silo",
+            "FunctionSelector": "0xfa9b1c6a",
+            "FunctionSignature": "transitionCollateral(uint256,address,uint8)",
+            "LeafDigest": "0x70d4d04ba794af0064af0f6d362e21bfc9a30ea5d1f28e0e39e2bc6d0d3948e9",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
         },
         {
             "AddressArguments": [],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Switch Collateral to Wrapped Sonic Silo",
+            "FunctionSelector": "0xa1ecef5c",
+            "FunctionSignature": "switchCollateralToThisSilo()",
+            "LeafDigest": "0x481ffc86db1ae45d6310352cdd753201405f6bdef2a5cd9a472c57f6b8357166",
             "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
         },
         {
             "AddressArguments": [],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Accrue interest on Wrapped Sonic Silo",
+            "FunctionSelector": "0xa6afed95",
+            "FunctionSignature": "accrueInterest()",
+            "LeafDigest": "0x3107fb08c41f6750a8cbc25fdf8dd726ef53915ae7f95c7b29cf3d1d937b14fd",
             "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
+        },
+        {
+            "AddressArguments": ["0x4E216C15697C1392fE59e1014B009505E05810Df"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve bUSDC.e-8 to spend USDC.e",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xf5017aa499517e3ce8183e07fe10068d43b8102de1188fbcd30ea11971a0dc6f",
+            "PackedArgumentAddresses": "0x4e216c15697c1392fe59e1014b009505e05810df",
+            "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit USDC.e for bUSDC.e-8",
+            "FunctionSelector": "0x6e553f65",
+            "FunctionSignature": "deposit(uint256,address)",
+            "LeafDigest": "0x1bfb064cd1aa097afb70bea3e965f9345ed5404eb39ba56522cea679a9d3c197",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw USDC.e from bUSDC.e-8",
+            "FunctionSelector": "0xb460af94",
+            "FunctionSignature": "withdraw(uint256,address,address)",
+            "LeafDigest": "0x6c439e8d6f8b7c08cecda79384d4987f693405f335fbcbc54cfe5fbf45a79682",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint bUSDC.e-8 using USDC.e",
+            "FunctionSelector": "0x94bf804d",
+            "FunctionSignature": "mint(uint256,address)",
+            "LeafDigest": "0xccb5c3b41296ec50ee0a53ca31881017f58c0edd8fe0b827a946cde7773a5988",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem bUSDC.e-8 for USDC.e",
+            "FunctionSelector": "0xba087652",
+            "FunctionSignature": "redeem(uint256,address,address)",
+            "LeafDigest": "0x433d4c2f3fdb42da24a77c37f23f3bc9fef4f312c8c6666c015e6a0556092402",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit Bridged USDC (Sonic Labs) with type into Silo",
+            "FunctionSelector": "0xb7ec8d4b",
+            "FunctionSignature": "deposit(uint256,address,uint8)",
+            "LeafDigest": "0x03688df7d598bc1e8a9a68306a0219c024ca57f34bff690c491223e301ea9f3d",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint Bridged USDC (Sonic Labs) with type into Silo",
+            "FunctionSelector": "0xc061ddc7",
+            "FunctionSignature": "mint(uint256,address,uint8)",
+            "LeafDigest": "0x22c16f078c5036724b70877515f69c3a976fb22db7f24337c5d9f424717911c8",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw Bridged USDC (Sonic Labs) with type from Silo",
+            "FunctionSelector": "0xb8337c2a",
+            "FunctionSignature": "withdraw(uint256,address,address,uint8)",
+            "LeafDigest": "0x29584780e0b99f023c5541cd32f5d9f31ec168e2ce25ee55e6fccbd66ab5d3e7",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem Bridged USDC (Sonic Labs) with type from Silo",
+            "FunctionSelector": "0xda537660",
+            "FunctionSignature": "redeem(uint256,address,address,uint8)",
+            "LeafDigest": "0x1852245198e3f53890c9160b7a2f3ddcea574df3ddf3f2c3ce48fe64765f4f19",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow Bridged USDC (Sonic Labs) from Silo",
+            "FunctionSelector": "0xd5164184",
+            "FunctionSignature": "borrow(uint256,address,address)",
+            "LeafDigest": "0x708d7da4162f55f7cc19e367cfc3c3229ede84dd852bc7095f81f63ea445586d",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow shares of Bridged USDC (Sonic Labs) from Silo",
+            "FunctionSelector": "0x889576f7",
+            "FunctionSignature": "borrowShares(uint256,address,address)",
+            "LeafDigest": "0x0707168eae5f380b356a7d82e553eaad9e6b2b6b9370e8a0a6de3d67ff4d72b8",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow same asset Bridged USDC (Sonic Labs) from Silo",
+            "FunctionSelector": "0x7fe2c8b7",
+            "FunctionSignature": "borrowSameAsset(uint256,address,address)",
+            "LeafDigest": "0x55215fa13704e9ea53dc877ed3d54707b7f1089f2ba9ebdc7e3ed7b4a629c3c4",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay Bridged USDC (Sonic Labs) to Silo",
+            "FunctionSelector": "0xacb70815",
+            "FunctionSignature": "repay(uint256,address)",
+            "LeafDigest": "0xb8ae4d0fc4ba95daf0b3d55541042119f6166041df8d36919e9b58e777915b8c",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay shares of Bridged USDC (Sonic Labs) to Silo",
+            "FunctionSelector": "0xe36754eb",
+            "FunctionSignature": "repayShares(uint256,address)",
+            "LeafDigest": "0x47bce7c3b79c2f5dc759fd82f7bf2e29202138064c9047c619d71fedfde41829",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Transition Collateral in Bridged USDC (Sonic Labs) Silo",
+            "FunctionSelector": "0xfa9b1c6a",
+            "FunctionSignature": "transitionCollateral(uint256,address,uint8)",
+            "LeafDigest": "0x74ec9168d4790ee79b92b67da58406de2e0bbfe5c7fdd186407b6eb4e067c32c",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
         },
         {
             "AddressArguments": [],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Switch Collateral to Bridged USDC (Sonic Labs) Silo",
+            "FunctionSelector": "0xa1ecef5c",
+            "FunctionSignature": "switchCollateralToThisSilo()",
+            "LeafDigest": "0xd1f7128cf9384446774025e5cc7928a989c41788e05c48099e64a3c2955ae540",
             "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
         },
         {
             "AddressArguments": [],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Accrue interest on Bridged USDC (Sonic Labs) Silo",
+            "FunctionSelector": "0xa6afed95",
+            "FunctionSignature": "accrueInterest()",
+            "LeafDigest": "0x5556afb2e7ba0a1037ca4e0042d9e2d0bac1c25a083fab981f517591acbc8b6e",
             "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
+        },
+        {
+            "AddressArguments": ["0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve bwS-20 to spend wS",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xff7f7d0d24c853aae207517307848f0a8e1263bea3907c9dada00ecc6a4584a3",
+            "PackedArgumentAddresses": "0xf55902de87bd80c6a35614b48d7f8b612a083c12",
+            "TargetAddress": "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit wS for bwS-20",
+            "FunctionSelector": "0x6e553f65",
+            "FunctionSignature": "deposit(uint256,address)",
+            "LeafDigest": "0x70e3fd45635254a3b3896412cb622c0426c780922a5738f76fd4a0a1e022426d",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw wS from bwS-20",
+            "FunctionSelector": "0xb460af94",
+            "FunctionSignature": "withdraw(uint256,address,address)",
+            "LeafDigest": "0x024a399e62c08980b455fa724ec7ca8db0d92bfd775f039e406af7f57c870318",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint bwS-20 using wS",
+            "FunctionSelector": "0x94bf804d",
+            "FunctionSignature": "mint(uint256,address)",
+            "LeafDigest": "0x22d88387e8ec2d5bd770fb8ad86217ca9f2e27dbcac49782b91426ee3e8eea88",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem bwS-20 for wS",
+            "FunctionSelector": "0xba087652",
+            "FunctionSignature": "redeem(uint256,address,address)",
+            "LeafDigest": "0x4c76ddd22a1ba580ef79a50eb91bbd9aaae3459b3391c72a0f1b4f8e53f96ec7",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit Wrapped Sonic with type into Silo",
+            "FunctionSelector": "0xb7ec8d4b",
+            "FunctionSignature": "deposit(uint256,address,uint8)",
+            "LeafDigest": "0xc73b91368e97771f09d6fc6709b1a79f5e5e524426b0954d41063da7bfc7f32c",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint Wrapped Sonic with type into Silo",
+            "FunctionSelector": "0xc061ddc7",
+            "FunctionSignature": "mint(uint256,address,uint8)",
+            "LeafDigest": "0x38ead98157f0af6659930a01f3e89e4557ea3cc57df29c5f5351fd3adbd7ffb4",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw Wrapped Sonic with type from Silo",
+            "FunctionSelector": "0xb8337c2a",
+            "FunctionSignature": "withdraw(uint256,address,address,uint8)",
+            "LeafDigest": "0x1a1633a232f4e737d57c92cc22d05114e913c31604ae0c9393f14e1d43fea648",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem Wrapped Sonic with type from Silo",
+            "FunctionSelector": "0xda537660",
+            "FunctionSignature": "redeem(uint256,address,address,uint8)",
+            "LeafDigest": "0x5eb5011b79e42cdfe6310b37e0f1097dbd9aeffc1f84191dfdfceee653ed050a",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow Wrapped Sonic from Silo",
+            "FunctionSelector": "0xd5164184",
+            "FunctionSignature": "borrow(uint256,address,address)",
+            "LeafDigest": "0x2386e68b512e5c8af3d7db752104ea9aae4afd649964f35f8a1fbb2a5584c592",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow shares of Wrapped Sonic from Silo",
+            "FunctionSelector": "0x889576f7",
+            "FunctionSignature": "borrowShares(uint256,address,address)",
+            "LeafDigest": "0x1fe372b86d1f36b6cfabaefc196455849050f1326a4ecc55247bab5c2ad0c052",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow same asset Wrapped Sonic from Silo",
+            "FunctionSelector": "0x7fe2c8b7",
+            "FunctionSignature": "borrowSameAsset(uint256,address,address)",
+            "LeafDigest": "0x47f94a06d1d6c3beaa6d3189e7bdd0b795b03c38fcb1546ba65b8aa4d5428cb2",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay Wrapped Sonic to Silo",
+            "FunctionSelector": "0xacb70815",
+            "FunctionSignature": "repay(uint256,address)",
+            "LeafDigest": "0x81fc5dc66457d6e34cff5d0b7625a9e3db0005fa6a7e6ec45cdd946c7e00179b",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay shares of Wrapped Sonic to Silo",
+            "FunctionSelector": "0xe36754eb",
+            "FunctionSignature": "repayShares(uint256,address)",
+            "LeafDigest": "0x2549d4348f92d229090c798e404a6407d388c6b3be146cad589ac463d0b1365b",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Transition Collateral in Wrapped Sonic Silo",
+            "FunctionSelector": "0xfa9b1c6a",
+            "FunctionSignature": "transitionCollateral(uint256,address,uint8)",
+            "LeafDigest": "0xdaeb1b88fdc28d1cb5f5a228d9c2f45e9fe19bcb9204dae029a99c2620a0e085",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
         },
         {
             "AddressArguments": [],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Switch Collateral to Wrapped Sonic Silo",
+            "FunctionSelector": "0xa1ecef5c",
+            "FunctionSignature": "switchCollateralToThisSilo()",
+            "LeafDigest": "0xa8da616cbd1d9b033d634310b1308d4ea4e78c3b6e53fa64c0261004200f12ef",
             "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
         },
         {
             "AddressArguments": [],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Accrue interest on Wrapped Sonic Silo",
+            "FunctionSelector": "0xa6afed95",
+            "FunctionSignature": "accrueInterest()",
+            "LeafDigest": "0x799f2f245e80a0ab2f651815ddbff82dc409f9be516860fe894dc1c27201bf21",
             "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
+        },
+        {
+            "AddressArguments": ["0x322e1d5384aa4ED66AeCa770B95686271de61dc3"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve bUSDC.e-20 to spend USDC.e",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x869606ca6ef89e131c91ca7875e1012510fb1e8886436e56f3cc448825739c5c",
+            "PackedArgumentAddresses": "0x322e1d5384aa4ed66aeca770b95686271de61dc3",
+            "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit USDC.e for bUSDC.e-20",
+            "FunctionSelector": "0x6e553f65",
+            "FunctionSignature": "deposit(uint256,address)",
+            "LeafDigest": "0x428c587f07b93df773a68324fd1769bb7ab28ff8a35072be20f449299b02cce9",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw USDC.e from bUSDC.e-20",
+            "FunctionSelector": "0xb460af94",
+            "FunctionSignature": "withdraw(uint256,address,address)",
+            "LeafDigest": "0x381f8e738e861dc71491aae49fcf3f4418ceedc660e7c09ec22801b736fcb860",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint bUSDC.e-20 using USDC.e",
+            "FunctionSelector": "0x94bf804d",
+            "FunctionSignature": "mint(uint256,address)",
+            "LeafDigest": "0xb68f22967d171b219d8a7887bf4e59b0768750594a96706a695fdccaa4dea4fa",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem bUSDC.e-20 for USDC.e",
+            "FunctionSelector": "0xba087652",
+            "FunctionSignature": "redeem(uint256,address,address)",
+            "LeafDigest": "0xabcc7db0aae8a8904fbc20a9b72c2afb0eeb26c5722ba7f54bf3002a3c9f0f00",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit Bridged USDC (Sonic Labs) with type into Silo",
+            "FunctionSelector": "0xb7ec8d4b",
+            "FunctionSignature": "deposit(uint256,address,uint8)",
+            "LeafDigest": "0xfa13ccd315e110ca2a200af29c219f1ee8f4186089753d77b71a785b66c31e77",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint Bridged USDC (Sonic Labs) with type into Silo",
+            "FunctionSelector": "0xc061ddc7",
+            "FunctionSignature": "mint(uint256,address,uint8)",
+            "LeafDigest": "0x2d2a0d910a8c474317c42a306b1e088c62078344014cfcd61a6943d559425bcf",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw Bridged USDC (Sonic Labs) with type from Silo",
+            "FunctionSelector": "0xb8337c2a",
+            "FunctionSignature": "withdraw(uint256,address,address,uint8)",
+            "LeafDigest": "0x6712bb9164d66b85bec9c8f059e54567de64e1bdb6baeaaf11d2707a866794e9",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem Bridged USDC (Sonic Labs) with type from Silo",
+            "FunctionSelector": "0xda537660",
+            "FunctionSignature": "redeem(uint256,address,address,uint8)",
+            "LeafDigest": "0x6fea18c585b2757454426bae71dad74993970ae920eb7fd10301a662025d8ffc",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow Bridged USDC (Sonic Labs) from Silo",
+            "FunctionSelector": "0xd5164184",
+            "FunctionSignature": "borrow(uint256,address,address)",
+            "LeafDigest": "0x55e4fb2dc535ed125a4d18d4dc0892aeff649cae90e6c349cf76c94248e2ebe0",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow shares of Bridged USDC (Sonic Labs) from Silo",
+            "FunctionSelector": "0x889576f7",
+            "FunctionSignature": "borrowShares(uint256,address,address)",
+            "LeafDigest": "0x4704587cb5f081fc7c0e290ced5c8458e445f4f68909d015950021eac9fdf23d",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow same asset Bridged USDC (Sonic Labs) from Silo",
+            "FunctionSelector": "0x7fe2c8b7",
+            "FunctionSignature": "borrowSameAsset(uint256,address,address)",
+            "LeafDigest": "0xbf5555536629b8b90f6d7603788c03d20ca5da954c3e539c4fa26af261cb9502",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay Bridged USDC (Sonic Labs) to Silo",
+            "FunctionSelector": "0xacb70815",
+            "FunctionSignature": "repay(uint256,address)",
+            "LeafDigest": "0xcd49f7e5d80cce2e1555b04a0c9b78cf6c43782b087170529e8a244144838c33",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay shares of Bridged USDC (Sonic Labs) to Silo",
+            "FunctionSelector": "0xe36754eb",
+            "FunctionSignature": "repayShares(uint256,address)",
+            "LeafDigest": "0x902bf8a1d31ca7cf663b131628a2a9dcdf6e61166bece9b3515c1280ae6d9bb8",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Transition Collateral in Bridged USDC (Sonic Labs) Silo",
+            "FunctionSelector": "0xfa9b1c6a",
+            "FunctionSignature": "transitionCollateral(uint256,address,uint8)",
+            "LeafDigest": "0xaafbd403b81b507cb9e544347e46aedf488b1c6d3b89f91c1796ec9b6d39dde0",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
         },
         {
             "AddressArguments": [],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Switch Collateral to Bridged USDC (Sonic Labs) Silo",
+            "FunctionSelector": "0xa1ecef5c",
+            "FunctionSignature": "switchCollateralToThisSilo()",
+            "LeafDigest": "0x17e9da850c44b5e8e6f4bed61ce1ed98a88a90b84822ed5581cb02f4ec369bb7",
             "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Accrue interest on Bridged USDC (Sonic Labs) Silo",
+            "FunctionSelector": "0xa6afed95",
+            "FunctionSignature": "accrueInterest()",
+            "LeafDigest": "0x094a45d15067d0102c932d4e01d95dec3546c41daffecd1fa42587a7f8e5657a",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
+        },
+        {
+            "AddressArguments": ["0x4E09FF794D255a123b00efa30162667A8054a845"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve bwstkscUSD-23 to spend wstkscUSD",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xfb3b4cf9b3dc405f89ac1bee21747534ee84c7d2210ffc5bfa1da3e4e413f692",
+            "PackedArgumentAddresses": "0x4e09ff794d255a123b00efa30162667a8054a845",
+            "TargetAddress": "0x9fb76f7ce5FCeAA2C42887ff441D46095E494206"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit wstkscUSD for bwstkscUSD-23",
+            "FunctionSelector": "0x6e553f65",
+            "FunctionSignature": "deposit(uint256,address)",
+            "LeafDigest": "0x7e32923734b8cbe5b0b86344de1fa1f932a88adb8976366405ddd94e1db2fa70",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw wstkscUSD from bwstkscUSD-23",
+            "FunctionSelector": "0xb460af94",
+            "FunctionSignature": "withdraw(uint256,address,address)",
+            "LeafDigest": "0x124f83974497341db8499c47f775409ad04b2bdf0cfc5ad63bb6cd88f8f663d5",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint bwstkscUSD-23 using wstkscUSD",
+            "FunctionSelector": "0x94bf804d",
+            "FunctionSignature": "mint(uint256,address)",
+            "LeafDigest": "0x8f8ddec92814a3a094f5ea79bcc02d892fbab6ff2e1eecbed101d5a0a5e9181f",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem bwstkscUSD-23 for wstkscUSD",
+            "FunctionSelector": "0xba087652",
+            "FunctionSignature": "redeem(uint256,address,address)",
+            "LeafDigest": "0xde5cc73dcae4c5415beb8eda8cd1686de1748c1707d45c84d0b98f2061a5e6a9",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit Wrapped stkscUSD with type into Silo",
+            "FunctionSelector": "0xb7ec8d4b",
+            "FunctionSignature": "deposit(uint256,address,uint8)",
+            "LeafDigest": "0xcaa8c811b975369f15cba7dfb6caec88e24a55620d5a9997525889d4bb2b06a0",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint Wrapped stkscUSD with type into Silo",
+            "FunctionSelector": "0xc061ddc7",
+            "FunctionSignature": "mint(uint256,address,uint8)",
+            "LeafDigest": "0xc4b8313afecaeb3cf4a1fd99c59f8b6a273b232c5f0344291fd863dd2ce82797",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw Wrapped stkscUSD with type from Silo",
+            "FunctionSelector": "0xb8337c2a",
+            "FunctionSignature": "withdraw(uint256,address,address,uint8)",
+            "LeafDigest": "0xabcb70fec7b5cb093a0478b6c1cf97d12e0d05f1e2d68dcbe3420cc1a4e105f1",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem Wrapped stkscUSD with type from Silo",
+            "FunctionSelector": "0xda537660",
+            "FunctionSignature": "redeem(uint256,address,address,uint8)",
+            "LeafDigest": "0x6e0c2fc752bd3ae249e9397aa61de160d55d29d50c9a6f02181a5e183f967706",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow Wrapped stkscUSD from Silo",
+            "FunctionSelector": "0xd5164184",
+            "FunctionSignature": "borrow(uint256,address,address)",
+            "LeafDigest": "0x2d0ba987cd4bdd5702947f04ddd5c1c38764c4c93a6c54e280f3720658fd330b",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow shares of Wrapped stkscUSD from Silo",
+            "FunctionSelector": "0x889576f7",
+            "FunctionSignature": "borrowShares(uint256,address,address)",
+            "LeafDigest": "0x9debaf25301a8e547ec231cccc192bb73a667ac33e9a66a0145a7c007921fc9f",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow same asset Wrapped stkscUSD from Silo",
+            "FunctionSelector": "0x7fe2c8b7",
+            "FunctionSignature": "borrowSameAsset(uint256,address,address)",
+            "LeafDigest": "0x436a83d40ca988fabd3880b25f5e6650a2028698fba9a2a21f353fcb3e7c81f3",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay Wrapped stkscUSD to Silo",
+            "FunctionSelector": "0xacb70815",
+            "FunctionSignature": "repay(uint256,address)",
+            "LeafDigest": "0xa996d8664b86736f7e7d122abe0e856340ae92efd5ca717d2c142531f79cecdf",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay shares of Wrapped stkscUSD to Silo",
+            "FunctionSelector": "0xe36754eb",
+            "FunctionSignature": "repayShares(uint256,address)",
+            "LeafDigest": "0x287ed590272603c7f5e038f89c37d5fe55b650697df9183ccf50fc97002dddc7",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Transition Collateral in Wrapped stkscUSD Silo",
+            "FunctionSelector": "0xfa9b1c6a",
+            "FunctionSignature": "transitionCollateral(uint256,address,uint8)",
+            "LeafDigest": "0x2da39984415d82ab52b3a4abc0c62baccbbe5d6a7a4e01f1aa585fa245b7e8c3",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Switch Collateral to Wrapped stkscUSD Silo",
+            "FunctionSelector": "0xa1ecef5c",
+            "FunctionSignature": "switchCollateralToThisSilo()",
+            "LeafDigest": "0xd43569154295cd35ffae711760ac8816efb18b710174f41d551ea2b6590c9113",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Accrue interest on Wrapped stkscUSD Silo",
+            "FunctionSelector": "0xa6afed95",
+            "FunctionSignature": "accrueInterest()",
+            "LeafDigest": "0x6aa1111c815b82882e2f3d31567c0562b73697f8fd1c5d7edb450406cd79bb41",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
+        },
+        {
+            "AddressArguments": ["0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve bUSDC.e-23 to spend USDC.e",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xd7c55ac08419dd4fc26db121dde395fce555fe16422c70681a5c22efd15695a9",
+            "PackedArgumentAddresses": "0x5954ce6671d97d24b782920ddcdbb4b1e63ab2de",
+            "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit USDC.e for bUSDC.e-23",
+            "FunctionSelector": "0x6e553f65",
+            "FunctionSignature": "deposit(uint256,address)",
+            "LeafDigest": "0xa1445325561a00de67992f18a75239da801ce4e01aba3d07c78b8b5f062456e7",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw USDC.e from bUSDC.e-23",
+            "FunctionSelector": "0xb460af94",
+            "FunctionSignature": "withdraw(uint256,address,address)",
+            "LeafDigest": "0x415e56ac9ddc6317615fb53162c725a045266db7672310a3f5bbe6c0d539146d",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint bUSDC.e-23 using USDC.e",
+            "FunctionSelector": "0x94bf804d",
+            "FunctionSignature": "mint(uint256,address)",
+            "LeafDigest": "0x628b44662853352f7b4a809ff61b1450d85d53d6dbc3965aa6b10d8489b6431d",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem bUSDC.e-23 for USDC.e",
+            "FunctionSelector": "0xba087652",
+            "FunctionSignature": "redeem(uint256,address,address)",
+            "LeafDigest": "0x29487585260c2d96211780a5c616dea06bc7e2ee038b2dced37ddd98150972bd",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Deposit Bridged USDC (Sonic Labs) with type into Silo",
+            "FunctionSelector": "0xb7ec8d4b",
+            "FunctionSignature": "deposit(uint256,address,uint8)",
+            "LeafDigest": "0x87983cdca338b6aeb5b3d679807aebc9c3f6f4b3dc04ce0de7a51e2cc8270dfc",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Mint Bridged USDC (Sonic Labs) with type into Silo",
+            "FunctionSelector": "0xc061ddc7",
+            "FunctionSignature": "mint(uint256,address,uint8)",
+            "LeafDigest": "0x933b9b3da745498f7926fb887546b6381f831b8b7886836e6e0d3f16d0a06e87",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Withdraw Bridged USDC (Sonic Labs) with type from Silo",
+            "FunctionSelector": "0xb8337c2a",
+            "FunctionSignature": "withdraw(uint256,address,address,uint8)",
+            "LeafDigest": "0x55cadc6455c8b1b9703b789c6f2d4c4c680657e6e67ec35e994ff49aafae34dd",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Redeem Bridged USDC (Sonic Labs) with type from Silo",
+            "FunctionSelector": "0xda537660",
+            "FunctionSignature": "redeem(uint256,address,address,uint8)",
+            "LeafDigest": "0xac40af694da3ba9c9c2d187e38eeb4c3ba69198c50a7b506bbd097d292a60602",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow Bridged USDC (Sonic Labs) from Silo",
+            "FunctionSelector": "0xd5164184",
+            "FunctionSignature": "borrow(uint256,address,address)",
+            "LeafDigest": "0xc2e60f2ba0e7676776cb16ba106b0815aa4172d2dd35ca648724072a1518f87a",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow shares of Bridged USDC (Sonic Labs) from Silo",
+            "FunctionSelector": "0x889576f7",
+            "FunctionSignature": "borrowShares(uint256,address,address)",
+            "LeafDigest": "0x5e6e2f67586ea6504a3eea04ad8bce699b780ad4f2823fcce8a705483d5bde46",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": [
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Borrow same asset Bridged USDC (Sonic Labs) from Silo",
+            "FunctionSelector": "0x7fe2c8b7",
+            "FunctionSignature": "borrowSameAsset(uint256,address,address)",
+            "LeafDigest": "0x11c9454ddb48ceb5c0e4d625723ce2b19c1621d4fd47841620ecb8313d186570",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97aed3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay Bridged USDC (Sonic Labs) to Silo",
+            "FunctionSelector": "0xacb70815",
+            "FunctionSignature": "repay(uint256,address)",
+            "LeafDigest": "0x637d685493cc4f4d31546b27f6adf4269073f7486bd8c0e25a3e5bebe13d3076",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Repay shares of Bridged USDC (Sonic Labs) to Silo",
+            "FunctionSelector": "0xe36754eb",
+            "FunctionSignature": "repayShares(uint256,address)",
+            "LeafDigest": "0x1cb74e9da95aa2e2e3f57d3a335413dfae9ca811d1292c469053b651bcd2bda2",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Transition Collateral in Bridged USDC (Sonic Labs) Silo",
+            "FunctionSelector": "0xfa9b1c6a",
+            "FunctionSignature": "transitionCollateral(uint256,address,uint8)",
+            "LeafDigest": "0x6ee6f6d0a8c43dd70d8f30b80cbd756d61ef6e497198122181ba2fd8cae4beae",
+            "PackedArgumentAddresses": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Switch Collateral to Bridged USDC (Sonic Labs) Silo",
+            "FunctionSelector": "0xa1ecef5c",
+            "FunctionSignature": "switchCollateralToThisSilo()",
+            "LeafDigest": "0xedbb4f967ba94284b6161ed9601f3c7829a8e20446a76c30a8e388cabc1c893f",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Accrue interest on Bridged USDC (Sonic Labs) Silo",
+            "FunctionSelector": "0xa6afed95",
+            "FunctionSignature": "accrueInterest()",
+            "LeafDigest": "0x467393f8a14fb09b3fd49a8cf9e68c868956b9fe200c57f4961a7f7226d04db7",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
+        },
+        {
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve Odos Router V2 to spend USDC.e",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xc0daff58d9be584a659caf2682427c963798d8276f5a9fcde5db1f341c49f85b",
+            "PackedArgumentAddresses": "0xac041df48df9791b0654f1dbbf2cc8450c5f2e9d",
+            "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
+        },
+        {
+            "AddressArguments": [
+                "0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
+                "0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82",
+                "0x6047828dc181963ba44974801FF68e538dA5eaF9",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Swap USDC.e for USDT",
+            "FunctionSelector": "0x3b635ce4",
+            "FunctionSignature": "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)",
+            "LeafDigest": "0x5729a1b655c02b5e7fe4499e1b2213c6a2467c7d5c02f655cff1455919562f5f",
+            "PackedArgumentAddresses": "0x29219dd400f2bf60e5a23d13be72b486d4038894b28ca7e465c452ce4252598e0bc96aeba553cf826047828dc181963ba44974801ff68e538da5eaf9d3dce716f3ef535c5ff8d041c1a41c3bd89b97aeb28ca7e465c452ce4252598e0bc96aeba553cf82",
+            "TargetAddress": "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
+        },
+        {
+            "AddressArguments": [
+                "0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
+                "0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82",
+                "0x6047828dc181963ba44974801FF68e538dA5eaF9",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Swap Compact USDC.e for USDT",
+            "FunctionSelector": "0x83bd37f9",
+            "FunctionSignature": "swapCompact()",
+            "LeafDigest": "0xb8d2b8d2c68a2e375061fe0322f671a53bdb4062a596392660926964d761dfe1",
+            "PackedArgumentAddresses": "0x29219dd400f2bf60e5a23d13be72b486d4038894b28ca7e465c452ce4252598e0bc96aeba553cf826047828dc181963ba44974801ff68e538da5eaf9d3dce716f3ef535c5ff8d041c1a41c3bd89b97aeb28ca7e465c452ce4252598e0bc96aeba553cf82",
+            "TargetAddress": "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
+        },
+        {
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Approve Odos Router V2 to spend USDT",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x1cc7ebff5c068cfd1c069f8d14c2493620eb8f91f3f4dbcdb2af5056c24cd0d8",
+            "PackedArgumentAddresses": "0xac041df48df9791b0654f1dbbf2cc8450c5f2e9d",
+            "TargetAddress": "0x6047828dc181963ba44974801FF68e538dA5eaF9"
+        },
+        {
+            "AddressArguments": [
+                "0x6047828dc181963ba44974801FF68e538dA5eaF9",
+                "0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82",
+                "0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Swap USDT for USDC.e",
+            "FunctionSelector": "0x3b635ce4",
+            "FunctionSignature": "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)",
+            "LeafDigest": "0xc88dee5edc13958ea2c2e07078840e742b902622c5fb085680bdb45ac4e5ee11",
+            "PackedArgumentAddresses": "0x6047828dc181963ba44974801ff68e538da5eaf9b28ca7e465c452ce4252598e0bc96aeba553cf8229219dd400f2bf60e5a23d13be72b486d4038894d3dce716f3ef535c5ff8d041c1a41c3bd89b97aeb28ca7e465c452ce4252598e0bc96aeba553cf82",
+            "TargetAddress": "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
+        },
+        {
+            "AddressArguments": [
+                "0x6047828dc181963ba44974801FF68e538dA5eaF9",
+                "0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82",
+                "0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE",
+                "0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x053a492062317086D643fa33A3323206Da9FF64D",
+            "Description": "Swap Compact USDT for USDC.e",
+            "FunctionSelector": "0x83bd37f9",
+            "FunctionSignature": "swapCompact()",
+            "LeafDigest": "0x01e943b0e0f09f6f2cf23ce5a34242e5d976a3f9f98d510bffacd86874a9e388",
+            "PackedArgumentAddresses": "0x6047828dc181963ba44974801ff68e538da5eaf9b28ca7e465c452ce4252598e0bc96aeba553cf8229219dd400f2bf60e5a23d13be72b486d4038894d3dce716f3ef535c5ff8d041c1a41c3bd89b97aeb28ca7e465c452ce4252598e0bc96aeba553cf82",
+            "TargetAddress": "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
         }
     ],
     "MerkleTree": {
         "0": [
-            "0x89271cf66f7e5231d5c5825f80b8ac28b44c53359f4dde5cf5ea00d9f0ae64e3"
+            "0x89a526fb2b69815032c7c59b737cef4f7275105b4e02cd4c6cc09317876cb406"
         ],
         "1": [
-            "0xaac70f2b724e49b2fc6af29374086c93550301bfaec67e0d474b45e025eb5452",
-            "0x41fbd3a0cfdfcee05cf3eb16d95ed1c81f50c3c6268bb806b406ec06ee93e704"
+            "0x3418e5f58802f8bdb7181f16e3cd21c48fd76e2139b488c864e4c98fe41e28fd",
+            "0x6a7440fc7e7df16e89400464169cd1c8196f0623e987f15cb3992e49408759de"
         ],
         "2": [
-            "0x0394c70101f7940d00bcef21cefc83730c89f86e8f722d55f6cb92d074b39bb7",
-            "0xa79908c793e70783a137abb5acb2c5d9c464437f5b3ed3e81d0e6cbdc8092273",
-            "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe",
-            "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe"
+            "0x4beba0ba6bbc969bf0dac9d382c94c7177e94576032697e76f6fc05b83d33bff",
+            "0x568e6686e4e066d42cce5b144fc6da49f2faa7e908d580b379166323fd680c31",
+            "0x6b9b2dff85697974a9eda46847f9467a17ef0cc27f0640496ed7c22454e67fa0",
+            "0x1a31fc12c448cd94302921b9451c2b34496eb55ba244c17aa16dd5451329d6e1"
         ],
         "3": [
-            "0xc45df084c15f70c6c69ce1d2c82c7a145ca2cd677fa3ed251c310d67a4e89236",
-            "0x782c768dd95dba4aba3265ec03056d0d0ba32cddf082900765a9caaf57fc1eb5",
-            "0x6494439efc37d3a8be192bf8e03ea6c8e4d4b00956834bc208f4618cadae9f2c",
-            "0x9c2160b026ce689465184deb37fd45bf454d394724b52fcf5a86aa25ccbd69b5",
-            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
-            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
-            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
-            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba"
+            "0x8cf4e67a0b69ab27ba29b0891055f3baae8a03a851db64e62191555078ec0118",
+            "0x240359db976f9a6ef4f22a77bcd44d6d260fe876573c3b6695fb0281084a2360",
+            "0x7aaa2adccd1a9c31940da1fdcfbdf2df1f259eabab643d2dbd289dd1b0c70676",
+            "0x58469af13e2e2175db28f018da7d2d99664eb4aa9adb023559db8890ef0119ae",
+            "0xcd6a9929b0f3ade55db301e4aa6e473aac9c38bca433af8e344819816f939f0f",
+            "0xd1fd25b57d38c1225e666b98feddb855f2565213f4f63e6581d15b8b6c1d6a9c",
+            "0x74497129339e59f413a0d7525f350afaf7ed04f3f2f6b55e9be0f51d47a8b7b3",
+            "0x15c8fa9a785b0db78956988230aa4ea7b20a7a8f140fbe5d7a46a0994cc72d50"
         ],
         "4": [
-            "0x5e52be3c12f0a24aa3e86eaadc0504708fd1631dad11c3699856afa9ee822dd2",
-            "0x5730108ae4722a8657fd915ad6bd564611779034609c40e95073159e48ff4cfd",
-            "0x546d8ed50dcbeee59b145e88654be982f149b588be88160fb9bf11b3951b7959",
-            "0x9d0f09cd1e46a884516ec4d7a6a7d17a4bc44d39922a8c4ce6af67b895d97c37",
-            "0xbeba335ee6644bc7be91ec4678aed5e0d81d781ba3b0d5c104164de487cbcffc",
-            "0xdecb6da0a6983905e2890442841f600585a13b06f129bd53212ab11224f0e187",
-            "0x7504232e03102d7250a8da3a147b998937cd6bca7c2ff8f8ff03fc7205039aba",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400"
+            "0x7642403cd6621283f5b0423e1629b965da5df18405f2d45f605a12ec6444d185",
+            "0x4ea851535c9dd4004b6d6ac95aff3631444bb722fba28902ff35f0140ab79223",
+            "0x5f7085c65b08e267274d86a3a740d451ee4016ad80b720a3169d3d1469119abe",
+            "0x362a1baf7fc4b0ecb7d3364222fa45098c4f0930f166eba8e7d0b222f05a9fab",
+            "0x594aa380823b373c9deb67cc3b498838f37eaad8fe9bc0e6b74b379441b4735f",
+            "0xbb8d8faeb7ba2ca5210c89b42e07285cb90801e53762787d9f903a6fb9a73666",
+            "0x9554ae244269d832435e6fde0b0a33621b3e4568b611225d0bb1bfe3fa62f6ea",
+            "0x6b195c0a0469754d41dd35ff007e77aac34e8417c4d999fe49ca52653c9f7be3",
+            "0x65bc4533c16eaf4a30b6112154be7ca6a7e0a3698aad752d7518417398e6a3f0",
+            "0x74d51c635c0bc90892b5c910a47c2fad58952b31127b001a6b9705b45beae508",
+            "0x88d55b2457940eb812204fab2286f063d8b4df1361b5bb8d1f81c8eccbac52fc",
+            "0x007636a38d684ab6cf7c0ba869b16a14f55eef986025bac9eae2df60409571cf",
+            "0xda61f5f6d72eb46b705d366679e9d5e7264221bd48ee94323ace731210c1c38d",
+            "0xc303b824239668b9c8cf5a0ddedfb73c9f3e83c8f48151823355c459fe98e5f7",
+            "0x2513686a933bb05a7f51833847080963e89a4aa894626067204f38f98f19f943",
+            "0x349a1a593f31052636acd20dc0dfc2fb3b5918a68d3bc8637dd6162dc50d03e0"
+        ],
+        "5": [
+            "0x646948ade50f023673ee058d5bc9ffe02925c9bc614e22e79944729628a714c0",
+            "0x5f8ee8505c02f43b7ed73f0018ca4638de7228059c1fa75f8cfcc33ae4a1e41f",
+            "0x598532b098ab575cbec5f0c123f1062137e501c4e63edc0098dc41f5e5fe9d19",
+            "0x3d04c117d4d0af3f21e28aacd34e11c9d3f3a7b2f710f590c8461d9248ca8789",
+            "0xe66a4ef4045d02217127bba56b26e56c408321b79ebffeb3e56b7bc6c3db340a",
+            "0xe46092eeda1acb630124e71dfdd7a62a6a28fbb2f415b03fff3a5fc60d62b42f",
+            "0x1ea8026d4c1078022a749d60db0c3d835438f9e5700b516565d36dbc1f3b46d6",
+            "0x152862d4f8d918b74e7867c51cab1a7da0dc44a2bbb2553d428ad0001b7b2665",
+            "0xba10f48b81f348e05f7f01e62ab2ece6317f15fbdc16a37180f8477b3fb81dae",
+            "0x5326c4395a70b0877b713e77b88e473543abbd90551f4564e260ccb68e35284a",
+            "0x1b914633135cc338a7a707856b4454106c6851267fef3e0858414d063eb30019",
+            "0xf555c83dc0727bbc68b5f795e63295f3c23112e553b360cb27ca27b05c9ecdb8",
+            "0x172c3d130ec3276813cceed45fbc1f45908ff6e48d99305c3bf89ed1eb9414a8",
+            "0xf35dc983cbc2ae8c7b947f00a1593cf608307680def173feb0a9da147b2e7c9d",
+            "0x28fb7eb3f692dd831c25bae68639fe0aeda56e0fb37cdf3b66c689e667ec2a15",
+            "0x76d0d8afb1dcfe8e28fabaf39b191a7242015216f607592f7229c7bc749c619a",
+            "0x8decdd7ce4454971ae5d55e65366109866cae1e6ed18d6b40a79e3cd50d89358",
+            "0x2f5033b0055c5d78935d0d72bbaf8647f15479b07ac36dd772f65cacf473d2ca",
+            "0x012bd58e8feb345dba82c641c30e6a3aa048833d87f8972a37b6fff80c4a757c",
+            "0x8c890aceb282e8d64ef88d207a7bbca6466a273d8d311cf6bb65b0e657db52d8",
+            "0x9c98161990129b3d634299b24a727baacd226a87c89cd0130c2618acb28a0c47",
+            "0x7af1c081bbd7ed5e41e0dd8457fe4d928622c47abde3e8acda3e04637880f8fd",
+            "0xaa65f112ff464e2bd2ec5a31d0d371b0e240fb9f1e20cc23ef542368daead247",
+            "0x9daab6c10ce9cefa03b80243bcf471760edf2696ae8a1410be692e984fecb91c",
+            "0xaa8c3625540d0affb8563ddcac21c9221298ec004594ff3cbae4380b04ced6f1",
+            "0x3cc6ae3c44ccdb8be0b8fbb8caae848a849d81203f4b4279175e4d17926bb1c7",
+            "0x6821baf6655938dfe9721fca44cae1e6d9fccccee5cc0261414d7516461464d2",
+            "0xeda7996f1392f0d562eab75da297d233696c65b727a023e03c428a4d1482f022",
+            "0xa04cefa64f5b986753fbcee1fb8b0adb9f38f699674e17edc0792f320c0b5efe",
+            "0xdfc913f49dc9c72a5452123c1ddefd8d1a0e50cf04fe3d88836701e273a1e61f",
+            "0x7d2ed3bb02b5fa3c7ebd749837651432d416013c356e51f9b73bdaded03ec5bb",
+            "0x8e2ae54ccbd55451bf44a95c8f1dcc6d958058fd6935d36f178adafeb6e53286"
+        ],
+        "6": [
+            "0x87b5955196b033678677a208bb09588ab438a393e786d8ac02e897bc6367558f",
+            "0x13e68412dc7a5fcc0869df38304b5e07237a0977343d830f99886b678b0dc70b",
+            "0x1ae14e81f7d3d8eb440a6483ddecae6048b39b01ecd8169c51cea444f4094ef1",
+            "0x2f0489a7f1244254414a658a0a5b15142c8fd7ab28ee08ba69334981e82f6e31",
+            "0x543988a38fb0d3b387ac2c9b6e902b3b7a638204bf7e6f84a1cc010986a38e07",
+            "0x93b0450a64ea5ec32cd22fa6741c2313a1b7b299a7e5fd6ebf84ff7a1ca55cdd",
+            "0xe47dcaa86a01c37a2c9c75e4e4a7df0b791d5bcda6819b1881cc9c418e093c5d",
+            "0x07b6687e294d76b8a8e3b5c4abd454d6cfcd782b66f0cab5eafcc57955d59957",
+            "0xeaa121306fa04111941919e915b597925b67a79a50887a8393b0714fbbd0e5b4",
+            "0xe1d1bf0aaafbb0c660217fc18bb03bb716be492a6279819d5a28bc819895e120",
+            "0xb738b6adc65d8329a225cd399a59f42ea170c6a2d00dde1fd753d6d717d23063",
+            "0x449d0af38b22e834916b7322f0394ce972fad0381ccb0819bb42ea32437c78f0",
+            "0x0c4e989be676d015d9d9a62174302aceaaa31bb91e83d2d18546b14e8e68bf80",
+            "0x0de0300fb3947986a3a699d8061cab934191d05b0bd97a98c1e71cf1e8630539",
+            "0x6c5019e3b16346686af555f72e76572422634ceb62ac2b6f90459dfc9e213979",
+            "0x25d5d44ce78b6cfacd6f50ed70478059829ab606237581634af5fa449e60e40f",
+            "0x9f29799f2724df46d46a08d7699f0a4c4f2a4834f132333450f8dc673d892421",
+            "0xf4a05bff328100679d4a409ac49b5faaa07425411526826552b24fc158478635",
+            "0x814a82925a80e772425c237dacf1190264a1dfac88d26a3535e9dbc357b0fa2b",
+            "0xde70d413e469459bb649080b3aae14b8e1cd26c9f4ba10f65b9f47bd66c29990",
+            "0xf14aabfb6bfeed2dae27f65b0d05d690e5777ba9f0815a3179ba9e7932d51f7b",
+            "0xdba71d37fd468d3e31ff101d99513478bce1209dc1917646d933a3433544c3dd",
+            "0x607fb1b85beaf365f1731b595cbf0c4c94ef83f7b4fdf5264606a9d80b4069c3",
+            "0x0ac8210b144be8aa7f21d8f70128e1622700c112cc73f1e2e41ccfc397b1c62c",
+            "0xbba1546f9a1858d05d7031faa7af5c23a7ece19cacd579f6649c6aafa488fdcf",
+            "0xcd9e8ed0657a4b7ffed683312ef655e89b578db88cda8dcebd03d2379b7eaadc",
+            "0xce20bc31c42451b253072caea2b4a18a1f8d187892809d2a70160f59f59db7e2",
+            "0xe8b13b27036eeb10a41172e0fa4652419d14129be639f96f62abe22f1403ac63",
+            "0x3571b1664d0d479e142219f57e04fcdebeabe2a4be20e185708fe9ec7607407f",
+            "0xb6c2182b27e886106e980a62d50310bab99b0996032a4cb957ccab54ec13ec20",
+            "0x7d13fc2d70974e3965cb4327484a30e021e9a28a8b8bff7e97c51d158e72fca5",
+            "0xfc4e8a29fca69e214bf79528e8020e10e3db46f3d93e0de908481ea2234877fd",
+            "0x6127de2e3fb345d65a04184ad5a4859c3c75ade5ac67d462f374b86ded66c4c7",
+            "0x18f6a916bdf2d9b636515b2ddaa8008c50ee905aa84c37aff57edf9d9b4f4ccb",
+            "0x2232dc6277dd7a2c278129d1e8c33e246da7638c1f6f2ca44b2caf0ee960e69b",
+            "0xc2f60b30bda0d6b8e384330669f68282cbe15a8e578ed07fe059e0e8a947e06d",
+            "0x579f12dc50f84a75323a3c910e09a352462b8f8042afb5c3ef7a6680bab5c430",
+            "0x267e4a3529b4caafe6ab4defaf32f666ee1eb75fb591dc18ba25d90fca13d54e",
+            "0x787ec3ba23266d48bc908413eea3577ed36b996307d42b110c2534c51b951734",
+            "0x5aa87b8851c071700e78bd238e09aa7d311f5b47d005c829254d18eb60e89792",
+            "0xc702018d7781f7cb09824ae058d02c6e06e67b44ddfb9ff7dd434250bd2db1d3",
+            "0x5974d07cd6c7b53394ea4ccbc04e62af93e9562082709548b632bd857278087e",
+            "0x4e3708d18882e3aae0fad65a05bb21f2ec1f4725c0643ba771e7b02b12f5fce0",
+            "0x80096ba0e1818a3d8d7a6e83fb250b0318733d4cb8f382b24402fdafc69f714a",
+            "0xf308e139a01288aa7a0a5a7983362e98284811957bced9ede493e5faada398fe",
+            "0xf128e584d2fc85cc38576eee651219b8f86a69996e1602b4e134819f7281dd71",
+            "0x1cf40026c228463994479938cd94e650ef3c835a7cc7b656e106fa58a762407a",
+            "0xfaf347d2064acd2a49643284ae907343029a71072901c119acbd4df612fb949e",
+            "0x3407b16c755e1a0350d807dd91f1bf0d88ddb9e6498684f7ae9443b7cd4b6524",
+            "0xfabce66972e256d1b9a42f7364c4a63aa38967e3fcb70e597d8fcfdc8591cee4",
+            "0xcd8bc356c697373c4908f40a2f1a79fed87db73d716591e26e00aad9caf5141c",
+            "0x6602adcd7bff977b4c8daeffdc343ab1d2a5acf69b8ad3b0dbf0342a1584e213",
+            "0x079e025911002f7b4d8908b549d937d25375589acdcd4c6400c778e9c23edaf9",
+            "0x24a884203f41aa366b2818b99774555377bf82f2b9567498130b3877c75a88af",
+            "0xe983ad4e8c63254fe31048285ca93a80ace23af2fb96aa52a5abea2be00201ff",
+            "0xcc61fe55a22250bd96e50aa94beedd52125d7966e4f93e98716471d223439c1f",
+            "0xe6e8b01e6f4cf0e80cb29beee12a0205f97aff8b50a05f6638e53c09aa1ec44f",
+            "0x489e36553047efae5df27dc80436fc91d28456b649a9ac8e14762ade7db27fbe",
+            "0x6e03c5afdc55b563899794caddb3dbe4096aefa1d641bc76c46ccd294424023b",
+            "0xb3f4b549cca73a4b28f86c853d22625cafd46ea975ee85afb679b0e65f6e8b39",
+            "0x5aa56632f9a27332fba318f62abdec41614442ce1e7825a5bc4350382f469129",
+            "0x8dc3554a623ddeacc38d865c975d05180f2594f316de4313ab0e0ccca865ae57",
+            "0x7c722c3679ab497061abbf192dbf86db33a5a6a208fcedac742bbbc17ca83a5c",
+            "0x2fe8327022c3c9ef9570fb95389d1303ce069e547102a76bb2ca326ec1ac4044"
+        ],
+        "7": [
+            "0x8b02ddb5940a76443bd1265feac8bb291468f7f5fc73e282f74ad07da34fcb55",
+            "0xdca164fe06a01c3fb8905866c37e309590360bf513e5de3d3bbc29f25573d5bf",
+            "0xd954de8b4c1b180ed097ab7478db2a6fc440cd2d1152b4e6e4aa69ba0de3a51a",
+            "0xd69745c65142b38db4112c8d625ea17205bbea0357cd6f45b23e308dfd399844",
+            "0x036e02d29f11f8e6c63ea661eb17e44dbf1bb12ac417380eb5bb81b1a4e8eb28",
+            "0xa9e0a5a6ab5e50146f74e42d19affbd9080b1709afce6decbe6319344471aeea",
+            "0xce1d9b9ac099afe8ddf6877c91530624206b806e99aaafafe162f4937267e436",
+            "0x695e1e95e9bcad088a72023090461306771d0303227fe2c1caae100d2fcd2fca",
+            "0x05f6dd19fa8851f169616e449f76df068c80a14b307877aebee09e66edc5ae73",
+            "0x0a2eb0aa363a44b0ce8ca851825a7fd56ed11fdc988d4fba3ed7b60f1473dc1f",
+            "0xb773be9ddd13d3ba29826d9f7bbf88f3f63ef57c01a6a823b2e462f507c6845f",
+            "0x1888b11f85b39fc652200e3b8e5df335ca198202715ffd4e32b49f1092bf895f",
+            "0xf13dfa34233f00a100dba5c9cbc65108b68dec9895547db7c9497e8e0cfbe464",
+            "0xb8e248468bd2784621de4b71c9029b0a4378f5ab0de069673d4915b8e42dc5f5",
+            "0xe298884458510e8f7f9b60b44eced2eea3ba5a222c5ffa4b5e1155366e49190f",
+            "0x67ee5a122317a9b28c5744e9b9eac4747550de0551dfa8816f900bf77a9e9c53",
+            "0x58abdf87c8cbaaea54e40482a90a942533d430a6d405c72815d297d814aa2a1d",
+            "0xa5e0a7a33d53c54af170a228a467285b9407ad32f01cd21217ece667f10e3233",
+            "0x4fa69bedc148104e07439fbb635b4999ed26507e8d9c6cfc07f3245262278f4e",
+            "0x33e39f7f926e9c7c227966581f9ae0856c5de499692e7396ec1182446db26ae7",
+            "0x3cbdafbb9a7d699dc344069c904f20b43e875215153f4211077d3b2f278373bd",
+            "0xa127c78df40a4b266fcb8da251cf5bf82e1d008c65619e73b5440d87d2ff68a8",
+            "0xb7221df7da29d15f3f38825a2f09662e7a7acd1d802a471614f13955757583e4",
+            "0x676a480293c7edf6991b30350ed924b4c3df5f760647e784b8eddd945a5c81fd",
+            "0x17aa83a0593d003beb3db1b7f0bb3bc26e282a36497595b15239748bceb08536",
+            "0x7e79ee03428bcc046303368e0bd1f966cf93b491eb9812eb2be366d562acbbcb",
+            "0x9160356d8a17d728b305569a045426e8b754f0055c2845ac6a3ffd9dab0c4f23",
+            "0xae779efc8b5078446f1f1095e2cb08ba8c2a1b7d7e722439571736fccacf67e1",
+            "0x4609147b8148bf318142a31b01319c6839fffc5892fa7e285bb2ef80ea8d1e7a",
+            "0x5612f40d997d305a1d8e852d00e2fb4f474efbf59fb8e6b3c7e40ffcba21dd31",
+            "0x3136616aaa5b6cc86877326a262883b6ccfb418bc91425027ecc1c726bbaa569",
+            "0xa6b00251b348b224f21ecb02642d3e9752c24c1ca7014d4af7b30de58300f165",
+            "0x998b1d273a429a46794c9f0b6dff00b662aacfbf5caa73bce8f45738a8aeb6a2",
+            "0xe4f5f9470d7ddc327a157d8cf3fcaa711c951df087d0e88a34f8dbe5c8051bb8",
+            "0x70d4d04ba794af0064af0f6d362e21bfc9a30ea5d1f28e0e39e2bc6d0d3948e9",
+            "0x481ffc86db1ae45d6310352cdd753201405f6bdef2a5cd9a472c57f6b8357166",
+            "0x3107fb08c41f6750a8cbc25fdf8dd726ef53915ae7f95c7b29cf3d1d937b14fd",
+            "0xf5017aa499517e3ce8183e07fe10068d43b8102de1188fbcd30ea11971a0dc6f",
+            "0x1bfb064cd1aa097afb70bea3e965f9345ed5404eb39ba56522cea679a9d3c197",
+            "0x6c439e8d6f8b7c08cecda79384d4987f693405f335fbcbc54cfe5fbf45a79682",
+            "0xccb5c3b41296ec50ee0a53ca31881017f58c0edd8fe0b827a946cde7773a5988",
+            "0x433d4c2f3fdb42da24a77c37f23f3bc9fef4f312c8c6666c015e6a0556092402",
+            "0x03688df7d598bc1e8a9a68306a0219c024ca57f34bff690c491223e301ea9f3d",
+            "0x22c16f078c5036724b70877515f69c3a976fb22db7f24337c5d9f424717911c8",
+            "0x29584780e0b99f023c5541cd32f5d9f31ec168e2ce25ee55e6fccbd66ab5d3e7",
+            "0x1852245198e3f53890c9160b7a2f3ddcea574df3ddf3f2c3ce48fe64765f4f19",
+            "0x708d7da4162f55f7cc19e367cfc3c3229ede84dd852bc7095f81f63ea445586d",
+            "0x0707168eae5f380b356a7d82e553eaad9e6b2b6b9370e8a0a6de3d67ff4d72b8",
+            "0x55215fa13704e9ea53dc877ed3d54707b7f1089f2ba9ebdc7e3ed7b4a629c3c4",
+            "0xb8ae4d0fc4ba95daf0b3d55541042119f6166041df8d36919e9b58e777915b8c",
+            "0x47bce7c3b79c2f5dc759fd82f7bf2e29202138064c9047c619d71fedfde41829",
+            "0x74ec9168d4790ee79b92b67da58406de2e0bbfe5c7fdd186407b6eb4e067c32c",
+            "0xd1f7128cf9384446774025e5cc7928a989c41788e05c48099e64a3c2955ae540",
+            "0x5556afb2e7ba0a1037ca4e0042d9e2d0bac1c25a083fab981f517591acbc8b6e",
+            "0xff7f7d0d24c853aae207517307848f0a8e1263bea3907c9dada00ecc6a4584a3",
+            "0x70e3fd45635254a3b3896412cb622c0426c780922a5738f76fd4a0a1e022426d",
+            "0x024a399e62c08980b455fa724ec7ca8db0d92bfd775f039e406af7f57c870318",
+            "0x22d88387e8ec2d5bd770fb8ad86217ca9f2e27dbcac49782b91426ee3e8eea88",
+            "0x4c76ddd22a1ba580ef79a50eb91bbd9aaae3459b3391c72a0f1b4f8e53f96ec7",
+            "0xc73b91368e97771f09d6fc6709b1a79f5e5e524426b0954d41063da7bfc7f32c",
+            "0x38ead98157f0af6659930a01f3e89e4557ea3cc57df29c5f5351fd3adbd7ffb4",
+            "0x1a1633a232f4e737d57c92cc22d05114e913c31604ae0c9393f14e1d43fea648",
+            "0x5eb5011b79e42cdfe6310b37e0f1097dbd9aeffc1f84191dfdfceee653ed050a",
+            "0x2386e68b512e5c8af3d7db752104ea9aae4afd649964f35f8a1fbb2a5584c592",
+            "0x1fe372b86d1f36b6cfabaefc196455849050f1326a4ecc55247bab5c2ad0c052",
+            "0x47f94a06d1d6c3beaa6d3189e7bdd0b795b03c38fcb1546ba65b8aa4d5428cb2",
+            "0x81fc5dc66457d6e34cff5d0b7625a9e3db0005fa6a7e6ec45cdd946c7e00179b",
+            "0x2549d4348f92d229090c798e404a6407d388c6b3be146cad589ac463d0b1365b",
+            "0xdaeb1b88fdc28d1cb5f5a228d9c2f45e9fe19bcb9204dae029a99c2620a0e085",
+            "0xa8da616cbd1d9b033d634310b1308d4ea4e78c3b6e53fa64c0261004200f12ef",
+            "0x799f2f245e80a0ab2f651815ddbff82dc409f9be516860fe894dc1c27201bf21",
+            "0x869606ca6ef89e131c91ca7875e1012510fb1e8886436e56f3cc448825739c5c",
+            "0x428c587f07b93df773a68324fd1769bb7ab28ff8a35072be20f449299b02cce9",
+            "0x381f8e738e861dc71491aae49fcf3f4418ceedc660e7c09ec22801b736fcb860",
+            "0xb68f22967d171b219d8a7887bf4e59b0768750594a96706a695fdccaa4dea4fa",
+            "0xabcc7db0aae8a8904fbc20a9b72c2afb0eeb26c5722ba7f54bf3002a3c9f0f00",
+            "0xfa13ccd315e110ca2a200af29c219f1ee8f4186089753d77b71a785b66c31e77",
+            "0x2d2a0d910a8c474317c42a306b1e088c62078344014cfcd61a6943d559425bcf",
+            "0x6712bb9164d66b85bec9c8f059e54567de64e1bdb6baeaaf11d2707a866794e9",
+            "0x6fea18c585b2757454426bae71dad74993970ae920eb7fd10301a662025d8ffc",
+            "0x55e4fb2dc535ed125a4d18d4dc0892aeff649cae90e6c349cf76c94248e2ebe0",
+            "0x4704587cb5f081fc7c0e290ced5c8458e445f4f68909d015950021eac9fdf23d",
+            "0xbf5555536629b8b90f6d7603788c03d20ca5da954c3e539c4fa26af261cb9502",
+            "0xcd49f7e5d80cce2e1555b04a0c9b78cf6c43782b087170529e8a244144838c33",
+            "0x902bf8a1d31ca7cf663b131628a2a9dcdf6e61166bece9b3515c1280ae6d9bb8",
+            "0xaafbd403b81b507cb9e544347e46aedf488b1c6d3b89f91c1796ec9b6d39dde0",
+            "0x17e9da850c44b5e8e6f4bed61ce1ed98a88a90b84822ed5581cb02f4ec369bb7",
+            "0x094a45d15067d0102c932d4e01d95dec3546c41daffecd1fa42587a7f8e5657a",
+            "0xfb3b4cf9b3dc405f89ac1bee21747534ee84c7d2210ffc5bfa1da3e4e413f692",
+            "0x7e32923734b8cbe5b0b86344de1fa1f932a88adb8976366405ddd94e1db2fa70",
+            "0x124f83974497341db8499c47f775409ad04b2bdf0cfc5ad63bb6cd88f8f663d5",
+            "0x8f8ddec92814a3a094f5ea79bcc02d892fbab6ff2e1eecbed101d5a0a5e9181f",
+            "0xde5cc73dcae4c5415beb8eda8cd1686de1748c1707d45c84d0b98f2061a5e6a9",
+            "0xcaa8c811b975369f15cba7dfb6caec88e24a55620d5a9997525889d4bb2b06a0",
+            "0xc4b8313afecaeb3cf4a1fd99c59f8b6a273b232c5f0344291fd863dd2ce82797",
+            "0xabcb70fec7b5cb093a0478b6c1cf97d12e0d05f1e2d68dcbe3420cc1a4e105f1",
+            "0x6e0c2fc752bd3ae249e9397aa61de160d55d29d50c9a6f02181a5e183f967706",
+            "0x2d0ba987cd4bdd5702947f04ddd5c1c38764c4c93a6c54e280f3720658fd330b",
+            "0x9debaf25301a8e547ec231cccc192bb73a667ac33e9a66a0145a7c007921fc9f",
+            "0x436a83d40ca988fabd3880b25f5e6650a2028698fba9a2a21f353fcb3e7c81f3",
+            "0xa996d8664b86736f7e7d122abe0e856340ae92efd5ca717d2c142531f79cecdf",
+            "0x287ed590272603c7f5e038f89c37d5fe55b650697df9183ccf50fc97002dddc7",
+            "0x2da39984415d82ab52b3a4abc0c62baccbbe5d6a7a4e01f1aa585fa245b7e8c3",
+            "0xd43569154295cd35ffae711760ac8816efb18b710174f41d551ea2b6590c9113",
+            "0x6aa1111c815b82882e2f3d31567c0562b73697f8fd1c5d7edb450406cd79bb41",
+            "0xd7c55ac08419dd4fc26db121dde395fce555fe16422c70681a5c22efd15695a9",
+            "0xa1445325561a00de67992f18a75239da801ce4e01aba3d07c78b8b5f062456e7",
+            "0x415e56ac9ddc6317615fb53162c725a045266db7672310a3f5bbe6c0d539146d",
+            "0x628b44662853352f7b4a809ff61b1450d85d53d6dbc3965aa6b10d8489b6431d",
+            "0x29487585260c2d96211780a5c616dea06bc7e2ee038b2dced37ddd98150972bd",
+            "0x87983cdca338b6aeb5b3d679807aebc9c3f6f4b3dc04ce0de7a51e2cc8270dfc",
+            "0x933b9b3da745498f7926fb887546b6381f831b8b7886836e6e0d3f16d0a06e87",
+            "0x55cadc6455c8b1b9703b789c6f2d4c4c680657e6e67ec35e994ff49aafae34dd",
+            "0xac40af694da3ba9c9c2d187e38eeb4c3ba69198c50a7b506bbd097d292a60602",
+            "0xc2e60f2ba0e7676776cb16ba106b0815aa4172d2dd35ca648724072a1518f87a",
+            "0x5e6e2f67586ea6504a3eea04ad8bce699b780ad4f2823fcce8a705483d5bde46",
+            "0x11c9454ddb48ceb5c0e4d625723ce2b19c1621d4fd47841620ecb8313d186570",
+            "0x637d685493cc4f4d31546b27f6adf4269073f7486bd8c0e25a3e5bebe13d3076",
+            "0x1cb74e9da95aa2e2e3f57d3a335413dfae9ca811d1292c469053b651bcd2bda2",
+            "0x6ee6f6d0a8c43dd70d8f30b80cbd756d61ef6e497198122181ba2fd8cae4beae",
+            "0xedbb4f967ba94284b6161ed9601f3c7829a8e20446a76c30a8e388cabc1c893f",
+            "0x467393f8a14fb09b3fd49a8cf9e68c868956b9fe200c57f4961a7f7226d04db7",
+            "0xc0daff58d9be584a659caf2682427c963798d8276f5a9fcde5db1f341c49f85b",
+            "0x5729a1b655c02b5e7fe4499e1b2213c6a2467c7d5c02f655cff1455919562f5f",
+            "0xb8d2b8d2c68a2e375061fe0322f671a53bdb4062a596392660926964d761dfe1",
+            "0x1cc7ebff5c068cfd1c069f8d14c2493620eb8f91f3f4dbcdb2af5056c24cd0d8",
+            "0xc88dee5edc13958ea2c2e07078840e742b902622c5fb085680bdb45ac4e5ee11",
+            "0x01e943b0e0f09f6f2cf23ce5a34242e5d976a3f9f98d510bffacd86874a9e388"
         ]
     }
 }

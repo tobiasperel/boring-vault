@@ -112,8 +112,8 @@ contract ConvexFXIntegrationTest is Test, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
         _addConvexFXBoosterLeafs(
             leafs, 
-            getAddress(sourceChain, "convexFX_gauge_USDC_fxUSD"),
-            getAddress(sourceChain, "convexFX_lp_USDC_fxUSD")
+            getAddress(sourceChain, "convexFX_gauge_USDC_fxUSD"), //convex gauge (from FE) !(not the curve gauge)!
+            getAddress(sourceChain, "convexFX_lp_USDC_fxUSD") //curve lp (from convex or curve FE)
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
