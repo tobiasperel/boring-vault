@@ -355,6 +355,13 @@ contract ChainValues {
         // values[mainnet]["ezETH_wETH"] = 0x596192bB6e41802428Ac943D2f1476C1Af25CC0E.toBytes32();
         // values[mainnet]["ezETH_wETH_gauge"] = 0xa8B309a75f0D64ED632d45A003c68A30e59A1D8b.toBytes32();
         // values[mainnet]["aura_ezETH_wETH"] = 0x95eC73Baa0eCF8159b4EE897D973E41f51978E50.toBytes32();
+        
+        // Balancer V3
+        values[mainnet]["balancerV3Router"] = 0x5C6fb490BDFD3246EB0bB062c168DeCAF4bD9FDd.toBytes32();
+        values[mainnet]["balancerV3Router2"] = 0xAE563E3f8219521950555F5962419C8919758Ea2.toBytes32();
+        values[mainnet]["balancerV3VaultExplorer"] = 0x774cB66e2B2dB59A9daF175e9b2B7A142E17EB94.toBytes32();
+        values[mainnet]["balancerV3_USDC_GHO_USDT"] = 0x85B2b559bC2D21104C4DEFdd6EFcA8A20343361D.toBytes32();
+
 
         // Linear Pools.
         values[mainnet]["bb_a_dai"] = 0x6667c6fa9f2b3Fc1Cc8D85320b62703d938E4385.toBytes32();

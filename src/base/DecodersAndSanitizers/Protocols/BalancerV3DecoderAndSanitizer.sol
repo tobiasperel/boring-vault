@@ -2,25 +2,24 @@
 pragma solidity 0.8.21;
 
 import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
+import {Permit2DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/Permit2DecoderAndSanitizer.sol";
 
-abstract contract BalancerV2DecoderAndSanitizer is BaseDecoderAndSanitizer {
+abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Permit2DecoderAndSanitizer {
     //============================== ERRORS ===============================
     
     // TODO decide on what we want to do for userData
     // afaict this is reliant on what type of pool we are adding liquidity into? 
     // if we disable any bytes being passed, will it bork certain pools? 
     
-    
     // Router 
     // Add Liquidity
     function addLiquidityProportional(
-    address pool,
-    uint256[] memory /*maxAmountsIn*/,
-    uint256 /*exactBptAmountOut*/,
-    bool /*wethIsEth*/,
-    bytes memory /*userData*/
+        address pool,
+        uint256[] memory /*maxAmountsIn*/,
+        uint256 /*exactBptAmountOut*/,
+        bool /*wethIsEth*/,
+        bytes memory /*userData*/
     ) external pure virtual returns (bytes memory addressesFound) {
-
         addressesFound = abi.encodePacked(pool); 
     }
 
@@ -33,16 +32,18 @@ abstract contract BalancerV2DecoderAndSanitizer is BaseDecoderAndSanitizer {
     ) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(pool); 
     }
-
+    
+    // if the pool is sanitized, presumably we are fine with any of the tokens being exact out, so there is no need to sanitize this address
+    // and we are able to save leaf space
     function addLiquiditySingleTokenExactOut(
         address pool,
-        address tokenIn,
+        address /*tokenIn*/,
         uint256 /*maxAmountIn*/,
         uint256 /*exactBptAmountOut*/,
         bool /*wethIsEth*/,
         bytes memory /*userData*/
     ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(pool, tokenIn); 
+        addressesFound = abi.encodePacked(pool); 
     }
 
      function addLiquidityCustom(
@@ -80,9 +81,9 @@ abstract contract BalancerV2DecoderAndSanitizer is BaseDecoderAndSanitizer {
     function removeLiquiditySingleTokenExactOut(
         address pool,
         uint256 /*maxBptAmountIn*/,
-        IERC20 /*tokenOut*/,
+        address /*tokenOut*/,
         uint256 /*exactAmountOut*/,
-        bool /*wethIsEth*/
+        bool /*wethIsEth*/,
         bytes memory /*userData*/
     ) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(pool); 
@@ -128,6 +129,8 @@ abstract contract BalancerV2DecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 /*maxAmountIn*/,
         uint256 /*deadline*/,
         bool /*wethIsEth*/,
-       bytes calldata userData
-    ) external
+       bytes calldata /*userData*/
+    ) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(pool, tokenIn, tokenOut); 
+    }
 }
