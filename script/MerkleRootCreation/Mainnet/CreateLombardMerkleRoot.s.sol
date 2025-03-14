@@ -143,8 +143,12 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[2] = getERC20(sourceChain, "cbBTC");
             address eBTCTeller = 0x458797A320e6313c980C2bC7D270466A6288A8bB;
             _addTellerLeafs(leafs, eBTCTeller, tellerAssets, false);
+            eBTCTeller = 0xe19a43B1b8af6CeE71749Af2332627338B3242D1;
+            _addTellerLeafs(leafs, eBTCTeller, tellerAssets, false);
 
             address newEBTCTeller = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268;
+            _addTellerLeafs(leafs, newEBTCTeller, tellerAssets, false);
+            newEBTCTeller = 0x458797A320e6313c980C2bC7D270466A6288A8bB;
             _addTellerLeafs(leafs, newEBTCTeller, tellerAssets, false);
 
             ERC20[] memory sonicBTCTellerAssets = new ERC20[](2); 

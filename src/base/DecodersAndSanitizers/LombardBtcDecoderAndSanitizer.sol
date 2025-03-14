@@ -39,6 +39,9 @@ import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocol
 import {LombardBTCMinterDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/LombardBtcMinterDecoderAndSanitizer.sol";
 import {BTCNMinterDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/BTCNMinterDecoderAndSanitizer.sol";
+import {MorphoRewardsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/MorphoRewardsDecoderAndSanitizer.sol";
+import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
+import {ResolvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ResolvDecoderAndSanitizer.sol";
 
 contract LombardBtcDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -68,7 +71,8 @@ contract LombardBtcDecoderAndSanitizer is
     MorphoRewardsDecoderAndSanitizer,
     TellerDecoderAndSanitizer,
     LombardBTCMinterDecoderAndSanitizer,
-    BTCNMinterDecoderAndSanitizer
+    BTCNMinterDecoderAndSanitizer,
+    ResolvDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
@@ -86,6 +90,19 @@ contract LombardBtcDecoderAndSanitizer is
         returns (bytes memory addressesFound)
     {
         addressesFound = abi.encodePacked(receiver);
+    }
+
+    /**
+     * @notice Gearbox, Resolv `deposit(uint256)`,
+     *         all cases are handled the same way.
+     */
+    function deposit(uint256 /*amount*/)
+        external
+        pure
+        override(GearboxDecoderAndSanitizer, ResolvDecoderAndSanitizer)
+        returns (bytes memory addressesFound)
+    {
+        return addressesFound; 
     }
 
     /**
@@ -112,7 +129,8 @@ contract LombardBtcDecoderAndSanitizer is
             BalancerV2DecoderAndSanitizer,
             CurveDecoderAndSanitizer,
             NativeWrapperDecoderAndSanitizer,
-            GearboxDecoderAndSanitizer
+            GearboxDecoderAndSanitizer,
+            ResolvDecoderAndSanitizer
         )
         returns (bytes memory addressesFound)
     {
@@ -158,11 +176,24 @@ contract LombardBtcDecoderAndSanitizer is
     {
         addressesFound = abi.encodePacked(_token, _receiver);
     }
+    
+    /**
+     * @notice Resolv, and FluidFToken all specify a `redeem(uint256,address,address,uint256)`,
+     *         all cases are handled the same way.
+     */
+    function redeem(uint256, address a, address b, uint256)
+        external
+        pure
+        override(FluidFTokenDecoderAndSanitizer, ResolvDecoderAndSanitizer)
+        returns (bytes memory addressesFound)
+    {
+        addressesFound = abi.encodePacked(a, b); 
+    }
 
     function wrap(uint256)
         external
         pure
-        override(EtherFiDecoderAndSanitizer, LidoDecoderAndSanitizer)
+        override(EtherFiDecoderAndSanitizer, LidoDecoderAndSanitizer, ResolvDecoderAndSanitizer)
         returns (bytes memory addressesFound)
     {
         // Nothing to sanitize or return
@@ -172,7 +203,7 @@ contract LombardBtcDecoderAndSanitizer is
     function unwrap(uint256)
         external
         pure
-        override(EtherFiDecoderAndSanitizer, LidoDecoderAndSanitizer)
+        override(EtherFiDecoderAndSanitizer, LidoDecoderAndSanitizer, ResolvDecoderAndSanitizer)
         returns (bytes memory addressesFound)
     {
         // Nothing to sanitize or return

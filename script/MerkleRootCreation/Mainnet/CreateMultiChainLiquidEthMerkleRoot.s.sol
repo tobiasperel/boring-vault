@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+//SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
@@ -15,7 +15,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
-    address public rawDataDecoderAndSanitizer = 0x72B0dB3c5b133C6D060AB58134654287fA9f05BF;
+    address public rawDataDecoderAndSanitizer = 0xB0D19CDA2BD3035767CDb5D81cB387976De52117;
     address public managerAddress = 0x227975088C28DBBb4b421c6d96781a53578f19a8;
     address public accountantAddress = 0x0d05D94a5F1E76C18fbeB7A13d17C8a314088198;
     address public pancakeSwapDataDecoderAndSanitizer = 0xfdC73Fc6B60e4959b71969165876213918A443Cd;
@@ -43,7 +43,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](1024);
+        ManageLeaf[] memory leafs = new ManageLeaf[](2048);
 
         // ========================== Aave V3 ==========================
         ERC20[] memory supplyAssets = new ERC20[](3);
@@ -281,7 +281,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[9] = getERC20(sourceChain, "SFRXETH");
             tellerAssets[10] = getERC20(sourceChain, "ETHX");
             address superSymbioticTeller = 0x99dE9e5a3eC2750a6983C8732E6e795A35e7B861;
-            _addTellerLeafs(leafs, superSymbioticTeller, tellerAssets);
+            _addTellerLeafs(leafs, superSymbioticTeller, tellerAssets, false);
 
             tellerAssets = new ERC20[](13);
             tellerAssets[0] = getERC20(sourceChain, "WETH");
@@ -298,14 +298,14 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[11] = getERC20(sourceChain, "RSWETH");
             tellerAssets[12] = getERC20(sourceChain, "RSETH");
             address kingKarakTeller = 0x929B44db23740E65dF3A81eA4aAB716af1b88474;
-            _addTellerLeafs(leafs, kingKarakTeller, tellerAssets);
+            _addTellerLeafs(leafs, kingKarakTeller, tellerAssets, false);
         }
 
         // ========================== Fluid Dex ==========================
         {
             ERC20[] memory supplyTokens = new ERC20[](2);
             supplyTokens[0] = getERC20(sourceChain, "WEETH");
-            supplyTokens[1] = getERC20(sourceChain, "WETH");
+            supplyTokens[1] = getERC20(sourceChain, "ETH");
 
             ERC20[] memory borrowTokens = new ERC20[](1);
             borrowTokens[0] = getERC20(sourceChain, "WSTETH");
@@ -313,25 +313,40 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             uint256 dexType = 2000;
 
             _addFluidDexLeafs(
-                leafs, getAddress(sourceChain, "weETH_ETHDex_wstETH"), dexType, supplyTokens, borrowTokens
+                leafs, getAddress(sourceChain, "weETH_ETHDex_wstETH"), dexType, supplyTokens, borrowTokens, true
             );
+        }
+
+        // ========================== Euler ==========================
+        {
+            ERC4626[] memory depositVaults = new ERC4626[](1);
+            depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerPrimeWETH"));
+
+            address[] memory subaccounts = new address[](1);
+            subaccounts[0] = address(boringVault);
+
+            _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
         }
 
         // ========================== Term ==========================
         {
             setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", termFinanceDecoderAndSanitizer);
-            ERC20[] memory purchaseTokens = new ERC20[](2);
+            ERC20[] memory purchaseTokens = new ERC20[](3);
             purchaseTokens[0] = getERC20(sourceChain, "WETH");
             purchaseTokens[1] = getERC20(sourceChain, "WETH");
-            address[] memory termAuctionOfferLockerAddresses = new address[](2);
+            purchaseTokens[2] = getERC20(sourceChain, "WETH");
+            address[] memory termAuctionOfferLockerAddresses = new address[](3);
             termAuctionOfferLockerAddresses[0] = 0x8b051F8Bc836EC4B01da563dB82df9CD22CA4884;
             termAuctionOfferLockerAddresses[1] = 0x8a98076a97dc3e905b6beEb47268a92658bCf9C1;
-            address[] memory termRepoLockers = new address[](2);
+            termAuctionOfferLockerAddresses[2] = 0x87b1ac843B0d41EeeE8BD29ad448F8C249E27350;
+            address[] memory termRepoLockers = new address[](3);
             termRepoLockers[0] = 0x330e701F0523b445958f0484E6Ea3656c55932A4;
             termRepoLockers[1] = 0x46044AccFa442cDd1f4958847CC05F01a59b9610;
-            address[] memory termRepoServicers = new address[](2);
+            termRepoLockers[2] = 0xe78a151b155115e829423055Cc9f7B1b4c63C2a6;
+            address[] memory termRepoServicers = new address[](3);
             termRepoServicers[0] = 0x4895958D1F170Db5fD71bcf3B2cE0dA40A0e38FF;
             termRepoServicers[1] = 0x859B4aDc287E76fe7076F6Af9bfB56e3E9253c1c;
+            termRepoServicers[2] = 0xC419779ffDc0DEf108Cc26935ec4DaAC89e7ed40;
             _addTermFinanceLockOfferLeafs(leafs, purchaseTokens, termAuctionOfferLockerAddresses, termRepoLockers);
             _addTermFinanceUnlockOfferLeafs(leafs, termAuctionOfferLockerAddresses);
             _addTermFinanceRevealOfferLeafs(leafs, termAuctionOfferLockerAddresses);
@@ -405,6 +420,20 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
                 getAddress(sourceChain, "basePortal"),
                 localTokens,
                 remoteTokens
+            );
+
+            ERC20[] memory swellLocalTokens = new ERC20[](0);
+            ERC20[] memory swellRemoteTokens = new ERC20[](0);
+
+            _addStandardBridgeLeafs(
+                leafs,
+                swell,
+                getAddress(swell, "crossDomainMessenger"),
+                getAddress(sourceChain, "swellResolvedDelegate"),
+                getAddress(sourceChain, "swellStandardBridge"),
+                getAddress(sourceChain, "swellPortal"),
+                swellLocalTokens,
+                swellRemoteTokens
             );
         }
 

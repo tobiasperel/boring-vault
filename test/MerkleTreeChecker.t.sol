@@ -59,7 +59,7 @@ contract MerkleTreeCheckerTest is Test, MerkleTreeHelper {
         address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "LBTC");
 
-        _addUniswapV3Leafs(leafs, token0, token1, false);
+        _addUniswapV3Leafs(leafs, token0, token1, false, false);
 
         // ========================== Fee Claiming ==========================
         /**
@@ -139,7 +139,7 @@ contract MerkleTreeCheckerTest is Test, MerkleTreeHelper {
         address[] memory token1 = new address[](1);
         token1[0] = getAddress(sourceChain, "LBTC");
 
-        _addUniswapV3Leafs(leafs, token0, token1, false);
+        _addUniswapV3Leafs(leafs, token0, token1, false, false);
 
         // ========================== Fee Claiming ==========================
         /**
@@ -183,7 +183,7 @@ contract MerkleTreeCheckerTest is Test, MerkleTreeHelper {
 
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "WBTC");
-        _addTellerLeafs(leafs, 0xe19a43B1b8af6CeE71749Af2332627338B3242D1, tellerAssets);
+        _addTellerLeafs(leafs, 0xe19a43B1b8af6CeE71749Af2332627338B3242D1, tellerAssets, false);
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
     }
