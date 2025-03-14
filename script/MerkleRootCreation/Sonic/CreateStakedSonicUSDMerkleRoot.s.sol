@@ -45,6 +45,16 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         feeAssets[1] = getERC20(sourceChain, "scUSD");
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true);
 
+          // ========================== UniswapV3 ==========================
+        address[] memory token0 = new address[](1);
+        token0[0] = getAddress(sourceChain, "scUSD");
+
+        address[] memory token1 = new address[](1);
+        token1[0] = getAddress(sourceChain, "USDC");
+
+        _addUniswapV3Leafs(leafs, token0, token1, false, true); //use swapRouter02
+
+
         // ========================== Beets ==========================
         _addBalancerLeafs(
             leafs, getBytes32(sourceChain, "scUSD_USDC_PoolId"), getAddress(sourceChain, "scUSD_USDC_gauge")
@@ -56,12 +66,18 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Odos ==========================
         
         address[] memory tokens = new address[](5);   
+        SwapKind[] memory kind = new SwapKind[](5); 
         tokens[0] = getAddress(sourceChain, "USDC"); 
+        kind[0] = SwapKind.BuyAndSell; 
         tokens[1] = getAddress(sourceChain, "stS"); 
+        kind[1] = SwapKind.Sell; 
         tokens[2] = getAddress(sourceChain, "wS"); 
+        kind[2] = SwapKind.Sell; 
         tokens[3] = getAddress(sourceChain, "scUSD"); 
+        kind[3] = SwapKind.BuyAndSell; 
         tokens[4] = getAddress(sourceChain, "BEETS"); 
-        _addOdosSwapLeafs(leafs, tokens); 
+        kind[4] = SwapKind.Sell; 
+        _addOdosSwapLeafs(leafs, tokens, kind); 
         
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
@@ -73,6 +89,7 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id8_config"));
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"));
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_config"));
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_scUSD_id15_config"));
 
         // ========================== Curve =========================
 
@@ -86,9 +103,11 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Euler =========================
 
-        ERC4626[] memory depositVaults = new ERC4626[](2);
+        ERC4626[] memory depositVaults = new ERC4626[](4);
         depositVaults[0] = ERC4626(getAddress(sourceChain, "euler_scUSD_MEV"));
         depositVaults[1] = ERC4626(getAddress(sourceChain, "euler_USDC_MEV"));
+        depositVaults[2] = ERC4626(getAddress(sourceChain, "euler_USDC_RE7"));
+        depositVaults[3] = ERC4626(getAddress(sourceChain, "euler_scUSD_RE7"));
 
         address[] memory subaccounts = new address[](1);
         subaccounts[0] = address(boringVault);

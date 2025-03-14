@@ -18,7 +18,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
     address public managerAddress = 0xaFa8c08bedB2eC1bbEb64A7fFa44c604e7cca68d;
     address public accountantAddress = 0xEa23aC6D7D11f6b181d6B98174D334478ADAe6b0;
-    address public rawDataDecoderAndSanitizer = 0x1c0243F818c2af828938d703476D53448E93dD9D;
+    address public rawDataDecoderAndSanitizer = 0xa3be7fC2878Bdd93e50de9f490EEFfF00e14Dd9C;
 
     function setUp() external {}
 
@@ -37,7 +37,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](1024);
+        ManageLeaf[] memory leafs = new ManageLeaf[](2048);
 
         // ========================== UniswapV3 ==========================
         address[] memory token0 = new address[](16);
@@ -91,8 +91,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](20);
-        SwapKind[] memory kind = new SwapKind[](20);
+        address[] memory assets = new address[](24);
+        SwapKind[] memory kind = new SwapKind[](24);
         assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
@@ -133,8 +133,19 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         kind[18] = SwapKind.BuyAndSell;
         assets[19] = getAddress(sourceChain, "FXUSD");
         kind[19] = SwapKind.BuyAndSell;
+        assets[20] = getAddress(sourceChain, "FXN");
+        kind[20] = SwapKind.Sell;
+        assets[21] = getAddress(sourceChain, "CRV");
+        kind[21] = SwapKind.Sell;
+        assets[22] = getAddress(sourceChain, "WSTETH");
+        kind[22] = SwapKind.Sell;
+        assets[23] = getAddress(sourceChain, "CVX");
+        kind[23] = SwapKind.Sell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
+
+        // ========================== Odos ==========================
+        _addOdosSwapLeafs(leafs, assets, kind);  
 
         // ========================== Aave ==========================
         ERC20[] memory supplyAssets = new ERC20[](5);
@@ -244,8 +255,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
             getAddress(sourceChain, "convexFX_lp_USDC_fxUSD")
         );
         //step 2) (after vault creation)
-        //address expectedVaultAddress = 0x123456789...
-        //_addConvexFXVaultLeafs(leafs, expectedVaultAddress); 
+        address expectedVaultAddress = 0x7bA41E927caed25bD8D25f5e6c82813Bb1d51310; 
+        _addConvexFXVaultLeafs(leafs, expectedVaultAddress); 
         
         //leafs, lpToken, rewardsContract
         _addConvexLeafs(leafs, getERC20(sourceChain, "WETH_PXETH_Curve_Pool"), getAddress(sourceChain, "WETH_PXETH_Convex_Rewards"));  
