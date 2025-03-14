@@ -140,6 +140,7 @@ contract ChainValues {
         // Tellers
         values[mainnet]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32();
         values[mainnet]["liquidBeraBTCTeller"] = 0x07951756b68427e7554AB4c9091344cB8De1Ad5a.toBytes32();
+        values[mainnet]["sonicBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32(); 
 
         // DeFi Ecosystem
         values[mainnet]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
@@ -760,6 +761,7 @@ contract ChainValues {
         values[mainnet]["pendle_eBTC_market_6_25_25"] = 0x523f9441853467477b4dDE653c554942f8E17162.toBytes32();
 
         values[mainnet]["pendle_pumpBTC_market_03_26_25"] = 0x8098B48a1c4e4080b30A43a7eBc0c87b52F17222.toBytes32();
+        values[mainnet]["pendle_pumpBTC_market_05_28_25"] = 0x2D8F5997Af9bc7AE4047287425355518EF01fcfC.toBytes32();
         values[mainnet]["pendle_corn_pumpBTC_market_12_25_24"] = 0xf8208fB52BA80075aF09840A683143C22DC5B4dd.toBytes32();
 
         values[mainnet]["pendle_uniBTC_market_03_26_25"] = 0x380C751BD0412f47Ca560B6AFeB566d88dc18630.toBytes32();
@@ -977,6 +979,10 @@ contract ChainValues {
 
         // corn
         values[mainnet]["cornSilo"] = 0x8bc93498b861fd98277c3b51d240e7E56E48F23c.toBytes32();
+        values[mainnet]["cornSwapFacilityWBTC"] = 0xBf5eB70b93d5895C839B8BeB3C27dc36f6B56fea.toBytes32();
+        values[mainnet]["cornSwapFacilitycbBTC"] = 0x554335b8C994E47e6dbfDC08Fa8aca0510e66BA1.toBytes32();
+
+        values[mainnet]["LBTCOFTAdapter"] = 0x6bc15D7930839Ec18A57F6f7dF72aE1B439D077f.toBytes32();
 
         // Treehouse
         values[mainnet]["TreehouseRedemption"] = 0x0618DBdb3Be798346e6D9C08c3c84658f94aD09F.toBytes32();
@@ -1538,8 +1544,7 @@ contract ChainValues {
         values[sonicMainnet]["vault"] = address(1).toBytes32();
 
         // UniswapV3
-        values[sonicMainnet]["uniswapV3NonFungiblePositionManager"] =
-            0x743E03cceB4af2efA3CC76838f6E8B50B63F184c.toBytes32();
+        values[sonicMainnet]["uniswapV3NonFungiblePositionManager"] = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c.toBytes32();
         values[sonicMainnet]["uniV3Router"] = 0xaa52bB8110fE38D0d2d2AF0B85C3A3eE622CA455.toBytes32();
 
         // Beets/Balancer
@@ -1585,6 +1590,8 @@ contract ChainValues {
         // Silo
         values[sonicMainnet]["siloRouter"] = 0x22AacdEc57b13911dE9f188CF69633cC537BdB76.toBytes32();
         values[sonicMainnet]["silo_stS_wS_config"] = 0x78C246f67c8A6cE03a1d894d4Cf68004Bd55Deea.toBytes32();
+        values[sonicMainnet]["silo_S_scUSD_config"] = 0xFe514E71F0933F63B374056557AED3dBB381C646.toBytes32(); 
+        values[sonicMainnet]["silo_S_USDC_config"] = 0x4915F6d3C9a7B20CedFc5d3854f2802f30311d13.toBytes32(); 
         values[sonicMainnet]["silo_wS_USDC_id8_config"] = 0x4915F6d3C9a7B20CedFc5d3854f2802f30311d13.toBytes32();
         values[sonicMainnet]["silo_wS_USDC_id20_config"] = 0x062A36Bbe0306c2Fd7aecdf25843291fBAB96AD2.toBytes32();
         values[sonicMainnet]["silo_USDC_wstkscUSD_id23_config"] = 0xbC24c0F594ECA381956895957c771437D61400D3.toBytes32();

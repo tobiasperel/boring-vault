@@ -4,8 +4,7 @@
         "BoringVaultAddress": "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
         "DecoderAndSanitizerAddress": "0xf1BeC14BB66F5349Fe42C14fEb66BA1fa53F869b",
         "DigestComposition": [
-            "Bytes20(DECODER_AND_SANITIZER_ADDRESS)",
-            "Bytes20(TARGET_ADDRESS)",
+            "Bytes20(DECODER_AND_SANITIZER_ADDRESS)", "Bytes20(TARGET_ADDRESS)",
             "Bytes1(CAN_SEND_VALUE)",
             "Bytes4(TARGET_FUNCTION_SELECTOR)",
             "Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"
