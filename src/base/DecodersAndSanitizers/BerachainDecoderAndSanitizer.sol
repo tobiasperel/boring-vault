@@ -11,6 +11,7 @@ import {GoldiVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Prot
 import {BeraETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/BeraETHDecoderAndSanitizer.sol";
 import {InfraredDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/InfraredDecoderAndSanitizer.sol"; 
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol"; 
+import {WeETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/WeEthDecoderAndSanitizer.sol"; 
 
 
 contract BerachainDecoderAndSanitizer is
@@ -22,7 +23,8 @@ contract BerachainDecoderAndSanitizer is
     GoldiVaultDecoderAndSanitizer,
     BeraETHDecoderAndSanitizer,
     InfraredDecoderAndSanitizer,
-    TellerDecoderAndSanitizer
+    TellerDecoderAndSanitizer,
+    WeETHDecoderAndSanitizer
 {
     constructor(address _nonFungiblePositionManager, address _dolomiteMargin)
         UniswapV3DecoderAndSanitizer(_nonFungiblePositionManager)
