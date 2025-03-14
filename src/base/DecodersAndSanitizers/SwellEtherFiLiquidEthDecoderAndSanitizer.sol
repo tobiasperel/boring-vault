@@ -7,12 +7,14 @@ import {NativeWrapperDecoderAndSanitizer} from
 import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
 import {StandardBridgeDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/StandardBridgeDecoderAndSanitizer.sol";
-import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol"; 
+import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol";
+import {MerklDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MerklDecoderAndSanitizer.sol";
 
 contract SwellEtherFiLiquidEthDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
     NativeWrapperDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
     StandardBridgeDecoderAndSanitizer,
-    EulerEVKDecoderAndSanitizer
+    EulerEVKDecoderAndSanitizer,
+    MerklDecoderAndSanitizer
 {}

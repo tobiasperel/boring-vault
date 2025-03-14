@@ -86,6 +86,13 @@ contract DecoderCustomTypes {
         uint256 amountOutMinimum;
     }
 
+    struct ExactInputParamsRouter02 {
+        bytes path;
+        address recipient;
+        uint256 amountIn;
+        uint256 amountOutMinimum;
+    }
+
     struct PancakeSwapExactInputParams {
         bytes path;
         address recipient;
@@ -488,6 +495,17 @@ contract DecoderCustomTypes {
         uint256 amount;
         // are you using Protected, Collateral
         uint8 assetType;
+    }
+
+    // ========================================= LBTC Bridge ==================================
+    struct DepositBridgeAction {
+        uint256 fromChain;
+        bytes32 fromContract;
+        uint256 toChain;
+        address toContract;
+        address recipient;
+        uint64 amount;
+        uint256 nonce;
     }
 }
 
