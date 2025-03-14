@@ -66,7 +66,7 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         kind[1] = SwapKind.BuyAndSell;
         kind[2] = SwapKind.BuyAndSell;
         kind[3] = SwapKind.BuyAndSell;
-        kind[4] = SwapKind.BuyAndSell;
+        kind[4] = SwapKind.Sell;
         _addOdosSwapLeafs(leafs, tokens, kind); 
         
         // ========================== Teller ==========================
