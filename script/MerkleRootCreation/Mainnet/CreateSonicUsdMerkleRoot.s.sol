@@ -179,7 +179,7 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         
         // ========================== Odos ==========================
         // reuse same assets from 1inch array since we want those same swaps
-        _addOdosSwapLeafs(leafs, assets); 
+        _addOdosSwapLeafs(leafs, assets, kind); 
 
 
         // ========================== Sparklend ==========================
