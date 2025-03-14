@@ -44,6 +44,7 @@ import {StakedSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Sta
 import {HybridBtcBobDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/HybridBtcBobDecoderAndSanitizer.sol";
 import {HybridBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/HybridBtcDecoderAndSanitizer.sol";
 import {SonicVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicVaultDecoderAndSanitizer.sol";
+import {LBTCvBaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LBTCvBaseDecoderAndSanitizer.sol";
 import {SonicLBTCvSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvSonicDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
@@ -70,20 +71,11 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
+    
+        creationCode = type(LBTCvBaseDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("LBTCv Base Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
-        //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
-
-        //creationCode = type(HybridBtcBobDecoderAndSanitizer).creationCode;
-        //constructorArgs = hex""; 
-        //bobDeployer.deployContract("Hybrid BTC Decoder and Sanitizer V0.0", creationCode, constructorArgs, 0);
-
-
-        creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "convexFXPoolRegistry"), getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Lombard BTC Decoder And Sanitizer V0.5", creationCode, constructorArgs, 0);
-        
         vm.stopBroadcast();
 
     }
