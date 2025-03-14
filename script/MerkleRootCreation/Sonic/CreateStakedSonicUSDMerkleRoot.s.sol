@@ -60,8 +60,14 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         tokens[1] = getAddress(sourceChain, "stS"); 
         tokens[2] = getAddress(sourceChain, "wS"); 
         tokens[3] = getAddress(sourceChain, "scUSD"); 
-        tokens[4] = getAddress(sourceChain, "BEETS"); 
-        _addOdosSwapLeafs(leafs, tokens); 
+        tokens[4] = getAddress(sourceChain, "BEETS");
+        SwapKind[] memory kind = new SwapKind[](5);
+        kind[0] = SwapKind.BuyAndSell;
+        kind[1] = SwapKind.BuyAndSell;
+        kind[2] = SwapKind.BuyAndSell;
+        kind[3] = SwapKind.BuyAndSell;
+        kind[4] = SwapKind.BuyAndSell;
+        _addOdosSwapLeafs(leafs, tokens, kind); 
         
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);

@@ -68,7 +68,10 @@ contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
          address[] memory tokens = new address[](2);
          tokens[0] = getAddress(sourceChain, "USDC");
          tokens[1] = getAddress(sourceChain, "USDT");
-         _addOdosSwapLeafs(leafs, tokens);
+         SwapKind[] memory kind = new SwapKind[](2);
+         kind[0] = SwapKind.BuyAndSell;
+         kind[1] = SwapKind.BuyAndSell;
+         _addOdosSwapLeafs(leafs, tokens, kind);
 
          // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
