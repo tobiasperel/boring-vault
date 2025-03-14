@@ -30,6 +30,8 @@ import {MorphoRewardsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/M
 import {TermFinanceDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TermFinanceDecoderAndSanitizer.sol";
 import {SpectraDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SpectraDecoderAndSanitizer.sol"; 
 import {ResolvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ResolvDecoderAndSanitizer.sol"; 
+import {LevelDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/LevelDecoderAndSanitizer.sol"; 
+import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol"; 
 
 contract EtherFiLiquidUsdDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -55,10 +57,13 @@ contract EtherFiLiquidUsdDecoderAndSanitizer is
     MorphoRewardsDecoderAndSanitizer,
     TermFinanceDecoderAndSanitizer,
     SpectraDecoderAndSanitizer,
-    ResolvDecoderAndSanitizer
+    ResolvDecoderAndSanitizer,
+    LevelDecoderAndSanitizer,
+    OdosDecoderAndSanitizer
 {
-    constructor(address _uniswapV3NonFungiblePositionManager)
+    constructor(address _uniswapV3NonFungiblePositionManager, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
+        OdosDecoderAndSanitizer(_odosRouter)
     {}
 
     //============================== HANDLE FUNCTION COLLISIONS ===============================

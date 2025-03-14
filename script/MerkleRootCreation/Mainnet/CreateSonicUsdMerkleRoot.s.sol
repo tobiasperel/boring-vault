@@ -17,7 +17,7 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE;
     address public managerAddress = 0x76fda7A02B616070D3eC5902Fa3C5683AC3cB8B6;
     address public accountantAddress = 0xA76E0F54918E39A63904b51F688513043242a0BE;
-    address public rawDataDecoderAndSanitizer = 0xfc27B1CbA6F640060cCcC5E42B7828577f175D17;
+    address public rawDataDecoderAndSanitizer = 0x2F1d20557c299Bb75401DFFB31a590d072459143;
 
     function setUp() external {}
 
@@ -35,7 +35,7 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](256);
+        ManageLeaf[] memory leafs = new ManageLeaf[](512);
 
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](4);
@@ -139,6 +139,7 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCcore")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCprime")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "usualBoostedUSDC")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "smokehouseUSDC")));
 
         // ========================== sDAI ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sDAI")));
@@ -147,10 +148,49 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sUSDs")));
 
         // ========================== Sonic Gateway ==========================
-        ERC20[] memory bridgeAssets = new ERC20[](1);
+        {
+        ERC20[] memory bridgeAssets = new ERC20[](2);
         bridgeAssets[0] = getERC20(sourceChain, "USDC");
+        bridgeAssets[1] = getERC20(sourceChain, "USDT");
         _addSonicGatewayLeafsEth(leafs, bridgeAssets);
+        }
 
+        // ========================== Fluid ==========================
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDC"));
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDT"));            
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fGHO"));            
+
+        // ========================== Fluid Dex ==========================
+         {
+            ERC20[] memory supplyTokens = new ERC20[](2);
+            supplyTokens[0] = getERC20(sourceChain, "GHO");
+            supplyTokens[1] = getERC20(sourceChain, "USDC");
+
+            ERC20[] memory borrowTokens = new ERC20[](2);
+            borrowTokens[0] = getERC20(sourceChain, "GHO");
+            borrowTokens[1] = getERC20(sourceChain, "USDC");
+
+            uint256 dexType = 4000;
+
+            _addFluidDexLeafs(
+                leafs, getAddress(sourceChain, "GHO_USDCDex_GHO_USDCDex"), dexType, supplyTokens, borrowTokens, false //no native ETH leaves
+            );
+        }
+        
+        // ========================== Odos ==========================
+        // reuse same assets from 1inch array since we want those same swaps
+        _addOdosSwapLeafs(leafs, assets); 
+
+
+        // ========================== Sparklend ==========================
+        {
+        ERC20[] memory supplyAssetsSparklend = new ERC20[](2);
+        supplyAssetsSparklend[0] = getERC20(sourceChain, "USDC"); 
+        supplyAssetsSparklend[1] = getERC20(sourceChain, "USDT"); 
+        ERC20[] memory borrowAssetsSparklend = new ERC20[](0);
+        _addSparkLendLeafs(leafs, supplyAssetsSparklend, borrowAssetsSparklend); 
+        }
+    
         // ========================== Verify & Generate ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
