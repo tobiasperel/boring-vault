@@ -1565,6 +1565,14 @@ contract ChainValues {
         values[bsc]["pancakeSwapV3NonFungiblePositionManager"] = 0x46A15B0b27311cedF172AB29E4f4766fbE7F4364.toBytes32();
         values[bsc]["pancakeSwapV3MasterChefV3"] = 0x556B9306565093C855AEA9AE92A594704c2Cd59e.toBytes32();
         values[bsc]["pancakeSwapV3Router"] = 0x13f4EA83D0bd40E75C8222255bc855a974568Dd4.toBytes32();
+
+        // Odos
+        values[bsc]["odosRouterV2"] = 0x89b8AA89FDd0507a99d334CBe3C808fAFC7d850E.toBytes32();
+        values[bsc]["odosExecutor"] = 0x3f1aBA670a0234109be0222a805F3207117c2531.toBytes32();
+        
+        // LBTC Bridge
+        values[bsc]["lbtcBridge"] = 0xA869817b48b25EeE986bdF4bE04062e6fd2C418B.toBytes32(); 
+
     }
 
     function _addCornValues() private {
