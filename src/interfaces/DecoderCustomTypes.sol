@@ -100,6 +100,49 @@ contract DecoderCustomTypes {
         uint256 amountOutMinimum;
     }
 
+    // ========================================= UNISWAP V4 =========================================
+    
+    struct SwapParams {
+        /// Whether to swap token0 for token1 or vice versa
+        bool zeroForOne;
+        /// The desired input amount if negative (exactIn), or the desired output amount if positive (exactOut)
+        int256 amountSpecified;
+        /// The sqrt price at which, if reached, the swap will stop executing
+        uint160 sqrtPriceLimitX96;
+    }
+
+    struct PoolKey {
+        /// @notice The lower currency of the pool, sorted numerically
+        address currency0;
+        /// @notice The higher currency of the pool, sorted numerically
+        address currency1;
+        /// @notice The pool LP fee, capped at 1_000_000. If the highest bit is 1, the pool has a dynamic fee and must be exactly equal to 0x800000
+        uint24 fee;
+        /// @notice Ticks that involve positions must be a multiple of tick spacing
+        int24 tickSpacing;
+        /// @notice The hooks of the pool
+        address hooks;
+    }
+
+    /// @dev comes from IV4 Router
+    struct ExactInputSingleParams {
+        PoolKey poolKey;
+        bool zeroForOne;
+        uint128 amountIn;
+        uint128 amountOutMinimum;
+        bytes hookData;
+    }
+
+     /// @notice Parameters for a single-hop exact-output swap
+    struct ExactOutputSingleParams {
+        PoolKey poolKey;
+        bool zeroForOne;
+        uint128 amountOut;
+        uint128 amountInMaximum;
+        bytes hookData;
+    }
+
+
     // ========================================= MORPHO BLUE =========================================
 
     struct MarketParams {
@@ -465,3 +508,4 @@ contract DecoderCustomTypes {
         uint256 nonce;
     }
 }
+
