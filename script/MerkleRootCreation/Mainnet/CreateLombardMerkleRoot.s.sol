@@ -148,11 +148,12 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[0] = getERC20(sourceChain, "WBTC");
             tellerAssets[1] = getERC20(sourceChain, "LBTC");
             tellerAssets[2] = getERC20(sourceChain, "cbBTC");
-            address eBTCTeller = 0xe19a43B1b8af6CeE71749Af2332627338B3242D1;
+             address eBTCTeller = 0x458797A320e6313c980C2bC7D270466A6288A8bB;
             _addTellerLeafs(leafs, eBTCTeller, tellerAssets, false);
 
-            address newEBTCTeller = 0x458797A320e6313c980C2bC7D270466A6288A8bB;
+            address newEBTCTeller = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268;
             _addTellerLeafs(leafs, newEBTCTeller, tellerAssets, false);
+
         }
 
         {
@@ -164,6 +165,13 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[4] = getERC20(sourceChain, "BTCN");
             
             _addTellerLeafs(leafs, getAddress(sourceChain, "sBTCNTeller"), tellerAssets, false);
+        }
+
+        {
+            ERC20[] memory sonicBTCTellerAssets = new ERC20[](2);
+            sonicBTCTellerAssets[0] = getERC20(sourceChain, "LBTC");
+            sonicBTCTellerAssets[1] = getERC20(sourceChain, "EBTC");
+            _addTellerLeafs(leafs, getAddress(sourceChain, "sonicLBTCTeller"), sonicBTCTellerAssets, false);
         }
 
         // ========================== Pendle ==========================
@@ -201,6 +209,8 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         _addLBTCBridgeLeafs(leafs, 0x0000000000000000000000000000000000000000000000000000000000000038); 
         // To Base
         _addLBTCBridgeLeafs(leafs, 0x0000000000000000000000000000000000000000000000000000000000002105); 
+
+        // ========================== Fluid Dex ==========================
 
         // ========================== PancakeSwapV3 ==========================
         setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", pancakeSwapDataDecoderAndSanitizer);
