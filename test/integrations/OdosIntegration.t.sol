@@ -585,6 +585,75 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
         manageLeafs[0] = leafs[9]; //approve weth
+        manageLeafs[1] = leafs[10]; //swap() weth -> usdt
+        manageLeafs[2] = leafs[11]; //swapCompact() weth -> usdt
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](3);
+        targets[0] = getAddress(sourceChain, "WETH"); //approve
+        targets[1] = getAddress(sourceChain, "odosRouterV2"); //approve
+        targets[2] = getAddress(sourceChain, "odosRouterV2"); //approve
+
+        bytes[] memory targetData = new bytes[](3);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "odosRouterV2"), type(uint256).max
+        );
+        
+        DecoderCustomTypes.swapTokenInfo memory swapTokenInfo = DecoderCustomTypes.swapTokenInfo({
+            inputToken: getAddress(sourceChain, "WETH"),
+            inputAmount: 1e18,
+            inputReceiver: getAddress(sourceChain, "odosExecutor"),
+            outputToken: getAddress(sourceChain, "USDT"),
+            outputQuote: 1,
+            outputMin: 1,
+            outputReceiver: address(boringVault)
+        }); 
+
+        bytes memory pathDefinition = hex"01020300510101010201077e6297b36a5670ff00000000000000000000000000352b186090068eb35d532428676ce510e17ab581c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000000000000000000000000000"; 
+
+        targetData[1] = abi.encodeWithSignature(
+            "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)", swapTokenInfo, pathDefinition, getAddress(sourceChain, "odosExecutor"), 0
+        );
+        
+        // @dev NOTE: this is swapCompact ABI-encoded. This tx data was retrieved directly from the Odos API. After assembling the tx, the output from the /assemble endpoint will return the following data in the data field. This includes everything needed for swapping. Submit the entire tx data as the targetData. Note that is already includes the function signature, etc.  
+        targetData[2] = hex"83bd37f90001c02aaa39b223fe8d0a0e5c4f27ead9083c756cc20001dac17f958d2ee523a2206206994597c13d831ec7080de0b6b3a7640000048350be22028f5c0001d768d1Fe6Ef1449A54F9409400fe9d0E4954ea3F000000015615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f0000000003010203000d0101010201ff000000000000000000000000000000000000000000c7bbec68d12a0d1830360f8ec58fa599ba1b0e9bc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000000000000000000000000000"; 
+
+        address[] memory decodersAndSanitizers = new address[](3);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](3);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
+    function testOdosSwapERC20_Sonic() external {
+        _setUpSpecificBlock_SonicWETHSwap(); 
+
+        deal(getAddress(sourceChain, "WETH"), address(boringVault), 1_000e18);
+        
+        address[] memory tokens = new address[](3);   
+        SwapKind[] memory kind = new SwapKind[](3); 
+        tokens[0] = getAddress(sourceChain, "USDC"); 
+        kind[0] = SwapKind.BuyAndSell; 
+        tokens[1] = getAddress(sourceChain, "WETH"); 
+        kind[1] = SwapKind.BuyAndSell; 
+        tokens[2] = getAddress(sourceChain, "USDT"); 
+        kind[2] = SwapKind.BuyAndSell; 
+       
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        _addOdosSwapLeafs(leafs, tokens, kind);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
+        manageLeafs[0] = leafs[9]; //approve weth
         manageLeafs[1] = leafs[3]; //swap() weth -> usdc
         manageLeafs[2] = leafs[4]; //swapCompact() weth -> usdc
 
