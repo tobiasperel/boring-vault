@@ -42,9 +42,13 @@ import {SonicBTCDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicB
 import {BerachainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BerachainDecoderAndSanitizer.sol"; 
 import {PrimeLiquidBeraBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PrimeLiquidBeraBtcDecoderAndSanitizer.sol"; 
 import {StakedSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/StakedSonicDecoderAndSanitizer.sol";
+<<<<<<< HEAD
 import {HybridBtcBobDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/HybridBtcBobDecoderAndSanitizer.sol";
 import {HybridBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/HybridBtcDecoderAndSanitizer.sol";
 import {SonicVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicVaultDecoderAndSanitizer.sol";
+=======
+import {SonicLBTCvSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvSonicDecoderAndSanitizer.sol";
+>>>>>>> update/LBTCv-sonic-merkle-root-0
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -63,14 +67,20 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
+<<<<<<< HEAD
         vm.createSelectFork("berachain");
         setSourceChainName("berachain"); 
+=======
+        vm.createSelectFork("sonicMainnet");
+        setSourceChainName("sonicMainnet"); 
+>>>>>>> update/LBTCv-sonic-merkle-root-0
     }
 
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
     
+<<<<<<< HEAD
        creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
        deployer.deployContract("Ultra USD Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
@@ -87,6 +97,11 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
             getAddress(sourceChain, "odosRouterV2")
         );
         deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
+=======
+        creationCode = type(SonicLBTCvSonicDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode();
+        deployer.deployContract("Sonic LBTCv Decoder And Sanitizer V0.5", creationCode, constructorArgs, 0);
+>>>>>>> update/LBTCv-sonic-merkle-root-0
 
         vm.stopBroadcast();
     }
