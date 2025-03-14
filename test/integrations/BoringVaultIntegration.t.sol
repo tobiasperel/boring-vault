@@ -51,7 +51,7 @@ contract BoringVaultIntegrationTest is Test, MerkleTreeHelper {
         superSymbioticTeller = TellerWithMultiAssetSupport(getAddress(sourceChain, "superSymbioticTeller"));
 
         rawDataDecoderAndSanitizer = address(
-            new EtherFiLiquidEthDecoderAndSanitizer(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"))
+            new EtherFiLiquidEthDecoderAndSanitizer(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), address(0))
         );
 
         setAddress(false, sourceChain, "boringVault", address(liquidEth));
