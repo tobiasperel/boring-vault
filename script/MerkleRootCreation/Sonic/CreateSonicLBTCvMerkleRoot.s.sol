@@ -9,13 +9,13 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Sonic/CreateSonicLBTCvMerkleRoot.s.sol:CreateSonicLBTCvMerkleRootScript --rpc-url $SONIC_MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Sonic/CreateSonicLBTCvMerkleRoot.s.sol --rpc-url $SONIC_MAINNET_RPC_URL
  */
 contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0x309f25d839A2fe225E80210e110C99150Db98AAF;
-    address public rawDataDecoderAndSanitizer = 0x2096157256f0B45666fD3E4344e7d25280590B20;
+    address public rawDataDecoderAndSanitizer = 0x3F7a23283d0e9C56952aE7e1836a5C4344908432;
     address public managerAddress = 0x9D828035dd3C95452D4124870C110E7866ea6bb7;
     address public accountantAddress = 0x0639e239E417Ab9D1f0f926Fd738a012153930A7;
 
@@ -35,14 +35,12 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, sonicMainnet, "accountantAddress", accountantAddress);
         setAddress(false, sonicMainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        leafIndex = type(uint256).max;
-
-        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        ManageLeaf[] memory leafs = new ManageLeaf[](64);
 
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](2);
         feeAssets[0] = getERC20(sourceChain, "LBTC");
-        feeAssets[1] = getERC20(sourceChain, "eBTC");
+        feeAssets[1] = getERC20(sourceChain, "EBTC");
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true);
 
         // ========================== BoringVaults ==========================
@@ -54,7 +52,7 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
 
             ERC20[] memory sonicBTCTellerAssets = new ERC20[](2); 
             sonicBTCTellerAssets[0] = getERC20(sourceChain, "LBTC"); 
-            sonicBTCTellerAssets[1] = getERC20(sourceChain, "eBTC");
+            sonicBTCTellerAssets[1] = getERC20(sourceChain, "EBTC");
             address sonicBTCTeller = 0xAce7DEFe3b94554f0704d8d00F69F273A0cFf079;
             _addTellerLeafs(leafs, sonicBTCTeller, sonicBTCTellerAssets, false);
         }
@@ -68,8 +66,12 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Balancer/Beets ==========================
         _addBalancerLeafs(leafs, getBytes32(sourceChain, "scBTC_LBTC_PoolId"), getAddress(sourceChain, "scBTC_LBTC_gauge"));
 
+        // ========================== Silo ==========================
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_LBTC_scBTC_id32_config")); 
+
+
         // ========================== Verify ==========================
-        
+       
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
