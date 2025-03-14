@@ -16,6 +16,7 @@ import {OFTDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol"; 
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol"; 
+import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol"; 
 import {SonicGatewayDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SonicGatewayDecoderAndSanitizer.sol"; 
 
 
@@ -31,6 +32,7 @@ contract SonicMainnetDecoderAndSanitizer is
     OFTDecoderAndSanitizer,
     TellerDecoderAndSanitizer,
     OdosDecoderAndSanitizer,
+    FluidDexDecoderAndSanitizer,
     SonicGatewayDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager, address _odosRouter)
