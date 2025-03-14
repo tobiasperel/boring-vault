@@ -277,7 +277,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = gauge; 
 
-
             // Deposit into gauge.
             unchecked {
                 leafIndex++;
