@@ -4,7 +4,7 @@
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "mainnet",
     "evmVersion": "cancun",
-    "desiredNumberOfDeploymentTxs": 5,
+    "desiredNumberOfDeploymentTxs": 2,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -38,7 +38,7 @@
   },
   "boringVaultConfiguration": {
     "boringVaultDeploymentName": "AlphaSTETH Boring Vault V0.0",
-    "boringVaultName": "Alpha STETH Vault",
+    "boringVaultName": "Alpha STETH",
     "boringVaultSymbol": "AlphaSTETH",
     "boringVaultDecimals": 18
   },
