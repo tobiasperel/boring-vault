@@ -497,4 +497,16 @@ contract DecoderCustomTypes {
         address[] addresses;
         uint256[] ratios;
     }
+
+    // ========================================= Royco ==================================
+    struct APOffer {
+        uint256 offerID;
+        bytes32 targetMarketHash;
+        address ap;
+        address fundingVault;
+        uint256 quantity;
+        uint256 expiry;
+        address[] incentivesRequested;
+        uint256[] incentiveAmountsRequested;
+    }
 }
