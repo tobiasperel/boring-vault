@@ -83,24 +83,24 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256, /*expiry*/
         address[] calldata incentivesRequested,
         uint256[] calldata /*incentiveAmountsRequested*/
-    ) external payable virtual returns (bytes memory addressesFound) {
-        // TODO: Decode the recipes from WeirollMarket
-        (,address inputToken,,,,,) = recipeMarketHub.marketHashToWeirollMarket(targetMarketHash);
+    ) external pure virtual returns (bytes memory addressesFound) {
+        address marketHash0 = address(bytes20(bytes16(targetMarketHash)));
+        address marketHash1 = address(bytes20(bytes16(targetMarketHash << 128)));
+        addressesFound = abi.encodePacked(marketHash0, marketHash1, fundingVault);
         for (uint256 i = 0; i < incentivesRequested.length; i++) {
             addressesFound = abi.encodePacked(addressesFound, incentivesRequested[i]);
         }
-        addressesFound = abi.encodePacked(inputToken, fundingVault, addressesFound);
     }
 
     function cancelAPOffer(
         DecoderCustomTypes.APOffer calldata offer
-    ) external payable virtual returns (bytes memory addressesFound) {
-        // TODO: Decode the recipes from WeirollMarket
-        (,address inputToken,,,,,) = recipeMarketHub.marketHashToWeirollMarket(offer.targetMarketHash);
+    ) external pure virtual returns (bytes memory addressesFound) {
+        address marketHash0 = address(bytes20(bytes16(offer.targetMarketHash)));
+        address marketHash1 = address(bytes20(bytes16(offer.targetMarketHash << 128)));
+        addressesFound = abi.encodePacked(marketHash0, marketHash1, offer.ap, offer.fundingVault);
         for (uint256 i = 0; i < offer.incentivesRequested.length; i++) {
             addressesFound = abi.encodePacked(addressesFound, offer.incentivesRequested[i]);
         }
-        addressesFound = abi.encodePacked(inputToken, offer.ap, offer.fundingVault, addressesFound);
     }
 
     //VaultMarketHub
@@ -111,7 +111,7 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256, /*expiry*/
         address[] calldata incentivesRequested,
         uint256[] calldata /*incentivesRatesRequested*/
-    ) external virtual returns (bytes memory addressesFound) {
+    ) external pure virtual returns (bytes memory addressesFound) {
         for (uint256 i = 0; i < incentivesRequested.length; i++) {
             addressesFound = abi.encodePacked(addressesFound, incentivesRequested[i]);
         }
@@ -123,7 +123,7 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256, /*assets*/
         address receiver,
         uint256 /*minShares*/
-    ) external virtual returns (bytes memory addressesFound) {
+    ) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(receiver);
     }
 }
