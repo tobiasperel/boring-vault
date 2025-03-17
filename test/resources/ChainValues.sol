@@ -361,6 +361,7 @@ contract ChainValues {
         values[mainnet]["balancerV3Router2"] = 0xAE563E3f8219521950555F5962419C8919758Ea2.toBytes32();
         values[mainnet]["balancerV3VaultExplorer"] = 0x774cB66e2B2dB59A9daF175e9b2B7A142E17EB94.toBytes32();
         values[mainnet]["balancerV3_USDC_GHO_USDT"] = 0x85B2b559bC2D21104C4DEFdd6EFcA8A20343361D.toBytes32();
+        values[mainnet]["balancerV3_WETH_WSTETH_boosted"] = 0xc4Ce391d82D164c166dF9c8336DDF84206b2F812.toBytes32();
 
 
         // Linear Pools.
@@ -1135,7 +1136,9 @@ contract ChainValues {
 
         // Level
         values[mainnet]["levelMinter"] = 0x8E7046e27D14d09bdacDE9260ff7c8c2be68a41f.toBytes32();
-
+        
+        // Permit2 
+        values[mainnet]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32(); 
     }
 
     function _addBaseValues() private {

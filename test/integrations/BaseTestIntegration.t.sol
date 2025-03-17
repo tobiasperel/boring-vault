@@ -21,6 +21,14 @@ contract BaseTestIntegration is Test, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
     using stdStorage for StdStorage;
 
+    struct Tx {
+        ManageLeaf[] manageLeafs;  
+        address[] targets;  
+        bytes[] targetData; 
+        address[] decodersAndSanitizers;
+        uint256[] values;    
+    }
+
     ManagerWithMerkleVerification public manager;
     BoringVault public boringVault;
     address public rawDataDecoderAndSanitizer;
@@ -122,7 +130,24 @@ contract BaseTestIntegration is Test, MerkleTreeHelper {
         vm.selectFork(forkId);
     }
 
-    function overrideDecoder(address newDecoder) internal {
+    function _overrideDecoder(address newDecoder) internal {
         setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", newDecoder);
+        rawDataDecoderAndSanitizer = newDecoder; 
+    }
+
+    function _getTxArrays(uint256 size) internal returns (Tx memory) {
+        Tx memory tx_; 
+
+        tx_.manageLeafs = new ManageLeaf[](size); 
+        tx_.targets = new address[](size); 
+        tx_.targetData = new bytes[](size); 
+        tx_.decodersAndSanitizers = new address[](size); 
+        tx_.values = new uint256[](size); 
+
+        return tx_; 
+    }
+
+    function _submitManagerCall(bytes32[][] memory proofs, Tx memory tx_) internal {
+        manager.manageVaultWithMerkleVerification(proofs, tx_.decodersAndSanitizers, tx_.targets, tx_.targetData, tx_.values);
     }
 }
