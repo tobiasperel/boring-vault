@@ -10,7 +10,7 @@ abstract contract SyrupDecoderAndSanitizer is BaseDecoderAndSanitizer {
     function deposit(
         uint256 /*amount*/,
         bytes32 /*depositData_*/ // "0:itb" for into the block or "0:okx" for okx, only used for event
-    ) external pure returns (bytes memory addressesFound) {
+    ) external pure virtual returns (bytes memory addressesFound) {
         // Nothing to sanitize
         // Return addresses found
         return addressesFound;
@@ -20,7 +20,7 @@ abstract contract SyrupDecoderAndSanitizer is BaseDecoderAndSanitizer {
     function requestRedeem(
         uint256 /*shares_*/,
         address owner_
-    ) external pure returns (bytes memory addressesFound) {
+    ) external pure virtual returns (bytes memory addressesFound) {
         // Nothing to sanitize
         // Return addresses found
         addressesFound = abi.encodePacked(owner_);
@@ -30,7 +30,7 @@ abstract contract SyrupDecoderAndSanitizer is BaseDecoderAndSanitizer {
     function removeShares(
         uint256 /*shares_*/,
         address owner_
-    ) external pure returns (bytes memory addressesFound) {
+    ) external pure virtual returns (bytes memory addressesFound) {
         // Nothing to sanitize
         // Return addresses found
         addressesFound = abi.encodePacked(owner_);
