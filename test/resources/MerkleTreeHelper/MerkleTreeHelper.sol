@@ -7299,6 +7299,77 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
 
+    function _addRoycoRecipeAPOfferLeafs(ManageLeaf[] memory leafs, bytes32 targetMarketHash, address fundingVault, address[] memory incentivesRequested) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "recipeMarketHub"),
+            true, // TODO check if this should be true
+            "createAPOffer(bytes32,address,uint256,uint256,address[],uint256[])",
+            new address[](3 + incentivesRequested.length),
+            string.concat("Create AP Offer for Recipe Market"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(bytes20(bytes16(targetMarketHash)));
+        leafs[leafIndex].argumentAddresses[1] = address(bytes20(bytes16(targetMarketHash << 128)));
+        leafs[leafIndex].argumentAddresses[2] = fundingVault;
+        for (uint256 i = 0; i < incentivesRequested.length; i++) {
+            leafs[leafIndex].argumentAddresses[3 + i] = incentivesRequested[i];
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "recipeMarketHub"),
+            true, // TODO check if this should be true
+            "cancelAPOffer((uint256,bytes32,address,address,uint256,uint256,address[],uint256[]))",
+            new address[](4 + incentivesRequested.length),
+            string.concat("Cancel AP Offer for Recipe Market"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(bytes20(bytes16(targetMarketHash)));
+        leafs[leafIndex].argumentAddresses[1] = address(bytes20(bytes16(targetMarketHash << 128)));
+        leafs[leafIndex].argumentAddresses[2] = address(999); //TODO: add ap address
+        leafs[leafIndex].argumentAddresses[3] = fundingVault;
+        for (uint256 i = 0; i < incentivesRequested.length; i++) {
+            leafs[leafIndex].argumentAddresses[4 + i] = incentivesRequested[i];
+        }
+    }
+
+    function _addRoycoVaultMarketLeafs(ManageLeaf[] memory leafs, address targetVault, address fundingVault, address[] memory incentivesRequested) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "vaultMarketHub"),
+            false,
+            "createAPOffer(address,address,uint256,uint256,address[],uint256[])",
+            new address[](2 + incentivesRequested.length),
+            string.concat("Create AP Offer for Vault Market"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = targetVault;
+        leafs[leafIndex].argumentAddresses[1] = fundingVault;
+        for (uint256 i = 0; i < incentivesRequested.length; i++) {
+            leafs[leafIndex].argumentAddresses[2 + i] = incentivesRequested[i];
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "wrappedVault"),
+            false,
+            "safeDeposit(uint256,address,uint256)",
+            new address[](1),
+            string.concat("Deposit into WrappedVault using safeDeposit"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+    }
+
     // ========================================= Resolv =========================================
 
     function _addAllResolvLeafs(ManageLeaf[] memory leafs) internal {

@@ -446,6 +446,122 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
+    function testRoycoWeirollVaultMarketHubIntegration() external {
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 100_000e6);
+
+        address[] memory incentivesRequested = new address[](2);
+        incentivesRequested[0] = getAddress(sourceChain, "WBTC");
+        incentivesRequested[1] = getAddress(sourceChain, "WETH");
+        uint256[] memory amountsRequested = new uint256[](2);
+        amountsRequested[0] = 1e8;
+        amountsRequested[1] = 10e18;
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        // fundingVault = address(0) means pull funds from caller (boringVault)
+        _addRoycoVaultMarketLeafs(leafs, getAddress(sourceChain, "supplyUSDCAaveWrappedVault"), address(0), incentivesRequested);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
+        manageLeafs[0] = leafs[0]; //approve //TODO: check ordering
+        manageLeafs[1] = leafs[1]; //safeDeposit
+        manageLeafs[2] = leafs[2]; //createAPOffer
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](3);
+        targets[0] = getAddress(sourceChain, "USDC");
+        targets[1] = getAddress(sourceChain, "wrappedVault");
+        targets[2] = getAddress(sourceChain, "vaultMarketHub");
+
+        bytes[] memory targetData = new bytes[](3);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "wrappedVault"), type(uint256).max
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "safeDeposit(uint256,address,uint256)", 100e6, getAddress(sourceChain, "boringVault"), 90e6
+        );
+        targetData[2] = abi.encodeWithSignature(
+            "createAPOffer(address,address,uint256,uint256,address[],uint256[])",
+            getAddress(sourceChain, "supplyUSDCAaveWrappedVault"),
+            address(0),
+            100e6,
+            1773880121, // March 19 2026
+            incentivesRequested,
+            amountsRequested
+        );
+
+        address[] memory decodersAndSanitizers = new address[](3);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](3);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
+    function testRoycoWeirollRecipeMarketHubIntegration() external {
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 100_000e6);
+        bytes32 targetMarketHash = bytes32("PLACEHOLDER");
+
+        address[] memory incentivesRequested = new address[](2);
+        incentivesRequested[0] = getAddress(sourceChain, "WBTC");
+        incentivesRequested[1] = getAddress(sourceChain, "WETH");
+        uint256[] memory amountsRequested = new uint256[](2);
+        amountsRequested[0] = 1e8;
+        amountsRequested[1] = 10e18;
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        _addRoycoRecipeAPOfferLeafs(leafs, targetMarketHash, address(0), incentivesRequested);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
+        manageLeafs[0] = leafs[0];
+        manageLeafs[1] = leafs[1];
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](2);
+        targets[0] = getAddress(sourceChain, "USDC");
+        targets[1] = getAddress(sourceChain, "recipeMarketHub");
+
+        bytes[] memory targetData = new bytes[](2);
+        targetData[0] = abi.encodeWithSignature(
+            "createAPOffer(bytes32,address,uint256,uint256,address[],uint256[])",
+            targetMarketHash,
+            address(0),
+            100e6,
+            1773880121, // March 19 2026
+            incentivesRequested,
+            amountsRequested
+        );
+        targetData[1] = abi.encodeWithSignature(
+            "cancelAPOffer(uint256,bytes32,address,address,uint256,uint256,address[],uint256[])",
+            999,
+            address(2), //TODO PLACEHOLDER
+            targetMarketHash,
+            address(0),
+            100e6,
+            1773880121, // March 19 2026
+            incentivesRequested,
+            amountsRequested
+        );
+
+        address[] memory decodersAndSanitizers = new address[](2);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](2);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    }
+
     // ========================================= HELPER FUNCTIONS =========================================
 
     function _startFork(string memory rpcKey, uint256 blockNumber) internal returns (uint256 forkId) {
