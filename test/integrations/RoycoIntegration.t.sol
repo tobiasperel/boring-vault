@@ -473,15 +473,15 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
 
         address[] memory targets = new address[](3);
         targets[0] = getAddress(sourceChain, "USDC");
-        targets[1] = getAddress(sourceChain, "wrappedVault");
+        targets[1] = getAddress(sourceChain, "supplyUSDCAaveWrappedVault");
         targets[2] = getAddress(sourceChain, "vaultMarketHub");
 
         bytes[] memory targetData = new bytes[](3);
         targetData[0] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "wrappedVault"), type(uint256).max
+            "approve(address,uint256)", getAddress(sourceChain, "supplyUSDCAaveWrappedVault"), type(uint256).max
         );
         targetData[1] = abi.encodeWithSignature(
-            "safeDeposit(uint256,address,uint256)", 100e6, getAddress(sourceChain, "boringVault"), 90e6
+            "safeDeposit(uint256,address,uint256)", 100e6, getAddress(sourceChain, "boringVault"), 88e6
         );
         targetData[2] = abi.encodeWithSignature(
             "createAPOffer(address,address,uint256,uint256,address[],uint256[])",
@@ -505,7 +505,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
 
     function testRoycoWeirollRecipeMarketHubIntegration() external {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 100_000e6);
-        bytes32 targetMarketHash = bytes32("PLACEHOLDER");
+        bytes32 targetMarketHash = 0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b; //swap USDC to stkGHO market hash
 
         address[] memory incentivesRequested = new address[](2);
         incentivesRequested[0] = getAddress(sourceChain, "WBTC");
@@ -528,7 +528,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
         address[] memory targets = new address[](2);
-        targets[0] = getAddress(sourceChain, "USDC");
+        targets[0] = getAddress(sourceChain, "recipeMarketHub");
         targets[1] = getAddress(sourceChain, "recipeMarketHub");
 
         bytes[] memory targetData = new bytes[](2);
@@ -542,15 +542,15 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
             amountsRequested
         );
         targetData[1] = abi.encodeWithSignature(
-            "cancelAPOffer(uint256,bytes32,address,address,uint256,uint256,address[],uint256[])",
-            999,
-            address(2), //TODO PLACEHOLDER
+            "cancelAPOffer((uint256,bytes32,address,address,uint256,uint256,address[],uint256[]))",
+            DecoderCustomTypes.APOffer(11, // this depends on when we are forking from, this is the 11th offer created
             targetMarketHash,
+            getAddress(sourceChain, "boringVault"), // msg.sender of createAPOffer call
             address(0),
             100e6,
             1773880121, // March 19 2026
             incentivesRequested,
-            amountsRequested
+            amountsRequested)
         );
 
         address[] memory decodersAndSanitizers = new address[](2);
