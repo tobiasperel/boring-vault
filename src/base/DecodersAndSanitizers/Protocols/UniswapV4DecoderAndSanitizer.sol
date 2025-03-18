@@ -96,6 +96,8 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint8 action = uint8(bytes1(actions[0]));
         if (action == uint8(Actions.MINT_POSITION)) {
 
+        if (actions.length > 3) revert UniswapV4DecoderAndSanitizer__SubActionLength(); 
+
              (
                 DecoderCustomTypes.PoolKey memory poolKey,
                 /*int24 tickLower*/,
@@ -141,6 +143,8 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
             }
             
             if (subAction == uint8(Actions.SETTLE_PAIR)) {
+                if (actions.length > 3) revert UniswapV4DecoderAndSanitizer__SubActionLength(); 
+
                 (address currency0Settle, address currency1Settle) = abi.decode(params[1], (address, address)); 
                 
                 addressesFound = abi.encodePacked(poolKey.currency0, poolKey.currency1, poolKey.hooks, currency0Settle, currency1Settle); 
@@ -219,6 +223,7 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
             }
 
             if (subAction == uint8(Actions.TAKE_PAIR)) {
+                if (actions.length > 3) revert UniswapV4DecoderAndSanitizer__SubActionLength(); 
                
                 (address currency0Settle, address currency1Settle, address recipient) = abi.decode(params[1], (address, address, address)); 
 
@@ -275,6 +280,7 @@ abstract contract UniswapV4DecoderAndSanitizer is BaseDecoderAndSanitizer {
                 revert UniswapV4DecoderAndSanitizer__UnsupportedSubAction(); 
             }
         } else if (action == uint8(Actions.BURN_POSITION)) {
+            if (actions.length > 3) revert UniswapV4DecoderAndSanitizer__SubActionLength(); 
 
              (
                 uint256 tokenId,
