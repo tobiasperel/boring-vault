@@ -4240,11 +4240,109 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "removeLiquiditySingleTokenExactIn(address,uint256,address,uint256,bool,bytes)",
             new address[](1),
-            string.concat("Add liquidty unbalanced to ", pool.name(), " on BalancerV3"),
+            string.concat("Remove liquidty single token exact in from ", pool.name()),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "removeLiquiditySingleTokenExactOut(address,uint256,address,uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Remove Liquidity single token exact out from ", pool.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "removeLiquidityCustom(address,uint256,uint256[],bool,bytes)",
+            new address[](1),
+            string.concat("Remove Liquidity custom from ", pool.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "removeLiquidityCustom(address,uint256,uint256[],bool,bytes)",
+            new address[](1),
+            string.concat("Remove Liquidity custom from ", pool.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "removeLiquidityRecovery(address,uint256,uint256[])",
+            new address[](1),
+            string.concat("Remove Liquidity in recovery mode from ", pool.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+    }
+
+    function _addBalancerV3SwapLeafs(ManageLeaf[] memory leafs, address _pool) internal {
+        address[] memory tokens = IVaultExplorer(getAddress(sourceChain, "balancerV3VaultExplorer")).getPoolTokens(_pool);  
+
+        //IBalancerV3Pool pool = IBalancerV3Pool(_pool);  
         
+        //if the pool as WETH, you can use native eth and wrap it  
+        //bool hasEth = false;  
+
+        //I think the router uses permit2, but will double check 
+        uint256 length = tokens.length; 
+        for (uint256 i = 0; i < length; ++i) {
+
+            unchecked {
+                leafIndex++; 
+            }
+
+            leafs[leafIndex] = ManageLeaf(
+                address(tokens[i]),
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve BalancerV3 Vault to spend ", ERC20(tokens[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "balancerV3Vault"); 
+
+        }
+
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "swapSingleTokenExactIn(address,address,address,uint256,uint256,uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Swap tokens using ", ERC20(_pool).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool; 
+        //leafs[leafIndex].argumentAddresses[1] = tokens[0]; //token0
+        //leafs[leafIndex].argumentAddresses[2] = tokens[1]; //token1...tokenN
+
+
     }
 
     // ========================================= Aura =========================================

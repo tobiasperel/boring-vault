@@ -110,27 +110,27 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
     // Swaps   
      function swapSingleTokenExactIn(
         address pool,
-        address tokenIn,
-        address tokenOut,
+        address /*tokenIn*/,
+        address /*tokenOut*/,
         uint256 /*exactAmountIn*/,
         uint256 /*minAmountOut*/,
         uint256 /*deadline*/,
         bool /*wethIsEth*/,
         bytes calldata /*userData*/
     ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(pool, tokenIn, tokenOut); 
+        addressesFound = abi.encodePacked(pool); 
     } 
 
     function swapSingleTokenExactOut(
         address pool,
-        address tokenIn,
-        address tokenOut,
+        address /*tokenIn*/,
+        address /*tokenOut*/,
         uint256 /*exactAmountOut*/,
         uint256 /*maxAmountIn*/,
         uint256 /*deadline*/,
         bool /*wethIsEth*/,
        bytes calldata /*userData*/
     ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(pool, tokenIn, tokenOut); 
+        addressesFound = abi.encodePacked(pool); 
     }
 }
