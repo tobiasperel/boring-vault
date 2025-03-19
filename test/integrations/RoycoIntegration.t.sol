@@ -303,92 +303,92 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
     //
-    //    function testRoycoWeirollExecuteWithdrawIntegration() external {
-    //        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
-    //
-    //        bytes32 stkGHOMarketHash = 0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b;
-    //
-    //        bytes32 stkGHOHash = 0x8349eff9a17d01f2e9fa015121d0d03cd4b15ae9f2b8b17add16bbad006a1c6a;
-    //
-    //        ManageLeaf[] memory leafs = new ManageLeaf[](8);
-    //        _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "USDC"), stkGHOMarketHash, getAddress(sourceChain, "boringVault"));
-    //
-    //        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
-    //
-    //        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
-    //
-    //        //first we'll check early unlocks and forfeits
-    //        ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
-    //        manageLeafs[0] = leafs[0]; //approve
-    //        manageLeafs[1] = leafs[1]; //fillIPOffers (execute deposit script)
-    //
-    //        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
-    //
-    //        //we are interacting the stkGHO market
-    //        address[] memory targets = new address[](2);
-    //        targets[0] = getAddress(sourceChain, "USDC");
-    //        targets[1] = getAddress(sourceChain, "recipeMarketHub");
-    //
-    //        bytes32[] memory ipOfferHashes = new bytes32[](1);
-    //        ipOfferHashes[0] = stkGHOHash; //stkGHO offer hash from: https://etherscan.io/tx/0x133e477a7573555df912bba020c3a5e3c3b137a21a76c8f52b3b5a7a2065f2e0
-    //
-    //        uint256[] memory amounts = new uint256[](1);
-    //        amounts[0] = 100e6;
-    //
-    //        bytes[] memory targetData = new bytes[](2);
-    //        targetData[0] = abi.encodeWithSignature(
-    //            "approve(address,uint256)", getAddress(sourceChain, "recipeMarketHub"), type(uint256).max
-    //        );
-    //        targetData[1] = abi.encodeWithSignature(
-    //            "fillIPOffers(bytes32[],uint256[],address,address)",
-    //            ipOfferHashes,
-    //            amounts,
-    //            address(0),
-    //            getAddress(sourceChain, "boringVault")
-    //        );
-    //
-    //        address[] memory decodersAndSanitizers = new address[](2);
-    //        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
-    //        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
-    //
-    //        uint256[] memory values = new uint256[](2);
-    //
-    //        //execute deposit script
-    //        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-    //
-    //        ///Test Withdraws
-    //
-    //        //accrue some rewards
-    //        skip(40 days);
-    //
-    //        //NOTE: created upon calling `fillIPOffers()` and needed for withdrawls
-    //        address expectedWeirollWallet = 0x903eaa26E1C5fa9c12B7fa83Fa3db9aB824aAA42;
-    //
-    //        ManageLeaf[] memory manageLeafs2 = new ManageLeaf[](2);
-    //        manageLeafs2[0] = leafs[2]; //executeWithdrawalScript
-    //        manageLeafs2[1] = leafs[4]; //executeWithdrawalScript
-    //
-    //        manageProofs = _getProofsUsingTree(manageLeafs2, manageTree);
-    //
-    //        targets = new address[](2);
-    //        targets[0] = getAddress(sourceChain, "recipeMarketHub");
-    //        targets[1] = getAddress(sourceChain, "recipeMarketHub");
-    //
-    //        targetData = new bytes[](2);
-    //        targetData[0] = abi.encodeWithSignature("executeWithdrawalScript(address)", expectedWeirollWallet);
-    //        targetData[1] = abi.encodeWithSignature(
-    //            "claim(address,address)", expectedWeirollWallet, getAddress(sourceChain, "boringVault")
-    //        );
-    //
-    //        decodersAndSanitizers = new address[](2);
-    //        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
-    //        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
-    //
-    //        values = new uint256[](2);
-    //
-    //        //execute forfeit script with rewards accrued
-    //        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
-    //    }
+       function testRoycoWeirollExecuteWithdrawIntegrationComplete() external {
+           deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
+    
+           bytes32 stkGHOMarketHash = 0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b;
+    
+           bytes32 stkGHOHash = 0x8349eff9a17d01f2e9fa015121d0d03cd4b15ae9f2b8b17add16bbad006a1c6a;
+    
+           ManageLeaf[] memory leafs = new ManageLeaf[](8);
+           _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "USDC"), stkGHOMarketHash, getAddress(sourceChain, "boringVault"));
+    
+           bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+    
+           manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+    
+           //first we'll check early unlocks and forfeits
+           ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
+           manageLeafs[0] = leafs[0]; //approve
+           manageLeafs[1] = leafs[1]; //fillIPOffers (execute deposit script)
+    
+           bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+    
+           //we are interacting the stkGHO market
+           address[] memory targets = new address[](2);
+           targets[0] = getAddress(sourceChain, "USDC");
+           targets[1] = getAddress(sourceChain, "recipeMarketHub");
+    
+           bytes32[] memory ipOfferHashes = new bytes32[](1);
+           ipOfferHashes[0] = stkGHOHash; //stkGHO offer hash from: https://etherscan.io/tx/0x133e477a7573555df912bba020c3a5e3c3b137a21a76c8f52b3b5a7a2065f2e0
+    
+           uint256[] memory amounts = new uint256[](1);
+           amounts[0] = 100e6;
+    
+           bytes[] memory targetData = new bytes[](2);
+           targetData[0] = abi.encodeWithSignature(
+               "approve(address,uint256)", getAddress(sourceChain, "recipeMarketHub"), type(uint256).max
+           );
+           targetData[1] = abi.encodeWithSignature(
+               "fillIPOffers(bytes32[],uint256[],address,address)",
+               ipOfferHashes,
+               amounts,
+               address(0),
+               getAddress(sourceChain, "boringVault")
+           );
+    
+           address[] memory decodersAndSanitizers = new address[](2);
+           decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+           decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+    
+           uint256[] memory values = new uint256[](2);
+    
+           //execute deposit script
+           manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+    
+           ///Test Withdraws
+    
+           //accrue some rewards
+           skip(40 days);
+    
+           //NOTE: created upon calling `fillIPOffers()` and needed for withdrawls
+           address expectedWeirollWallet = 0xF2075aBc3cC8EE8F75F28Ac9A3c5CAeBe1E9C7Cb;
+    
+           ManageLeaf[] memory manageLeafs2 = new ManageLeaf[](2);
+           manageLeafs2[0] = leafs[2]; //executeWithdrawalScript
+           manageLeafs2[1] = leafs[4]; //executeWithdrawalScript
+    
+           manageProofs = _getProofsUsingTree(manageLeafs2, manageTree);
+    
+           targets = new address[](2);
+           targets[0] = getAddress(sourceChain, "recipeMarketHub");
+           targets[1] = getAddress(sourceChain, "recipeMarketHub");
+    
+           targetData = new bytes[](2);
+           targetData[0] = abi.encodeWithSignature("executeWithdrawalScript(address)", expectedWeirollWallet);
+           targetData[1] = abi.encodeWithSignature(
+               "claim(address,address)", expectedWeirollWallet, getAddress(sourceChain, "boringVault")
+           );
+    
+           decodersAndSanitizers = new address[](2);
+           decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+           decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+    
+           values = new uint256[](2);
+    
+           //execute forfeit script with rewards accrued
+           manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+       }
 
     function testRoycoWeirollExecuteWithdrawIntegration() external {
         deal(getAddress(sourceChain, "WBTC"), address(boringVault), 1_000e6);
