@@ -3,14 +3,17 @@ pragma solidity 0.8.21;
 
 import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 import {Permit2DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/Permit2DecoderAndSanitizer.sol";
+import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ERC4626DecoderAndSanitizer.sol";
 
-abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Permit2DecoderAndSanitizer {
+abstract contract BalancerV3DecoderAndSanitizer is 
+    BaseDecoderAndSanitizer, 
+    Permit2DecoderAndSanitizer, 
+    ERC4626DecoderAndSanitizer 
+{
     //============================== ERRORS ===============================
     
-    // TODO decide on what we want to do for userData
-    // afaict this is reliant on what type of pool we are adding liquidity into? 
-    // if we disable any bytes being passed, will it bork certain pools? 
-    
+    error BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
+
     // Router 
     // Add Liquidity
     function addLiquidityProportional(
@@ -18,8 +21,9 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
         uint256[] memory /*maxAmountsIn*/,
         uint256 /*exactBptAmountOut*/,
         bool /*wethIsEth*/,
-        bytes memory /*userData*/
+        bytes memory userData
     ) external pure virtual returns (bytes memory addressesFound) {
+        if (userData.length > 0) revert BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
         addressesFound = abi.encodePacked(pool); 
     }
 
@@ -28,8 +32,9 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
         uint256[] memory /*exactAmountsIn*/,
         uint256 /*minBptAmountOut*/,
         bool /*wethIsEth*/,
-        bytes memory /*userData*/
+        bytes memory userData
     ) external pure virtual returns (bytes memory addressesFound) {
+        if (userData.length > 0) revert BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
         addressesFound = abi.encodePacked(pool); 
     }
     
@@ -41,8 +46,9 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
         uint256 /*maxAmountIn*/,
         uint256 /*exactBptAmountOut*/,
         bool /*wethIsEth*/,
-        bytes memory /*userData*/
+        bytes memory userData
     ) external pure virtual returns (bytes memory addressesFound) {
+        if (userData.length > 0) revert BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
         addressesFound = abi.encodePacked(pool); 
     }
 
@@ -51,8 +57,9 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
         uint256[] memory /*maxAmountsIn*/,
         uint256 /*minBptAmountOut*/,
         bool /*wethIsEth*/,
-        bytes memory /*userData*/
+        bytes memory userData
     ) external pure virtual returns (bytes memory addressesFound) {
+        if (userData.length > 0) revert BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
         addressesFound = abi.encodePacked(pool); 
     }
    
@@ -62,8 +69,9 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
         uint256 /*exactBptAmountIn*/,
         uint256[] memory /*minAmountsOut*/,
         bool /*wethIsEth*/,
-        bytes memory /*userData*/
+        bytes memory userData
     ) external pure virtual returns (bytes memory addressesFound) {
+        if (userData.length > 0) revert BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
         addressesFound = abi.encodePacked(pool); 
     }
 
@@ -73,8 +81,9 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
         address /*tokenOut*/,
         uint256 /*minAmountOut*/,
         bool /*wethIsEth*/,
-        bytes memory /*userData*/
+        bytes memory userData
     ) external pure virtual returns (bytes memory addressesFound) {
+        if (userData.length > 0) revert BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
         addressesFound = abi.encodePacked(pool); 
     }
 
@@ -84,8 +93,9 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
         address /*tokenOut*/,
         uint256 /*exactAmountOut*/,
         bool /*wethIsEth*/,
-        bytes memory /*userData*/
+        bytes memory userData
     ) external pure virtual returns (bytes memory addressesFound) {
+        if (userData.length > 0) revert BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
         addressesFound = abi.encodePacked(pool); 
     }
 
@@ -94,8 +104,9 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
         uint256 /*maxBptAmountIn*/,
         uint256[] memory /*minAmountsOut*/,
         bool /*wethIsEth*/,
-        bytes memory /*userData*/
+        bytes memory userData
     ) external pure virtual returns (bytes memory addressesFound) {
+        if (userData.length > 0) revert BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
         addressesFound = abi.encodePacked(pool); 
     }
 
@@ -116,8 +127,9 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
         uint256 /*minAmountOut*/,
         uint256 /*deadline*/,
         bool /*wethIsEth*/,
-        bytes calldata /*userData*/
+        bytes calldata userData
     ) external pure virtual returns (bytes memory addressesFound) {
+        if (userData.length > 0) revert BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
         addressesFound = abi.encodePacked(pool); 
     } 
 
@@ -129,8 +141,9 @@ abstract contract BalancerV3DecoderAndSanitizer is BaseDecoderAndSanitizer, Perm
         uint256 /*maxAmountIn*/,
         uint256 /*deadline*/,
         bool /*wethIsEth*/,
-       bytes calldata /*userData*/
+        bytes calldata userData
     ) external pure virtual returns (bytes memory addressesFound) {
+        if (userData.length > 0) revert BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
         addressesFound = abi.encodePacked(pool); 
     }
 }

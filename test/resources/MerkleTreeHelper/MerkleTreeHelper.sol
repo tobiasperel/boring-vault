@@ -323,6 +323,65 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
+    function _addCurveGaugeLeafs(ManageLeaf[] memory leafs, address gauge) internal {
+        address lpToken = ICurveGauge(gauge).lp_token(); 
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                lpToken,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve Curve gauge to spend ", ERC20(lpToken).name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = gauge; 
+
+
+            // Deposit into gauge.
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                gauge,
+                false,
+                "deposit(uint256,address)",
+                new address[](1),
+                string.concat("Deposit ", ERC20(lpToken).name(), " into Curve gauge"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            // Withdraw from gauge.
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                gauge,
+                false,
+                "withdraw(uint256)",
+                new address[](0),
+                string.concat("Withdraw ", ERC20(lpToken).name(), " from Curve gauge"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            // Claim rewards.
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                gauge,
+                false,
+                "claim_rewards(address)",
+                new address[](1),
+                string.concat("Claim rewards from Curve gauge"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+    }
+
     function _addConvexLeafs(ManageLeaf[] memory leafs, ERC20 token, address rewardsContract) internal {
         // Approve convexCurveMainnetBooster to spend lp tokens.
         if (
@@ -4080,7 +4139,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     }
 
-    function _addBalancerV3Leafs(ManageLeaf[] memory leafs, address _pool, bool boosted) internal {
+    function _addBalancerV3Leafs(ManageLeaf[] memory leafs, address _pool, bool boosted, address gauge) internal {
         // if it's a boosted pool, these will be wrapped YB tokens, so we will need to somehow get the underlying of those pools
         // it appears like they are a standard ERC4626(?) compliant wrapper vault, so we can proably just check if the pool is boosted, and if it is, then we add ERC4626 leaves
         address[] memory tokens = IVaultExplorer(getAddress(sourceChain, "balancerV3VaultExplorer")).getPoolTokens(_pool);  
@@ -4297,12 +4356,18 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = _pool;
 
+        console.log("BEGIN GAUGE LEAVES"); 
+
+        if (gauge != address(0)) {
+            _addCurveGaugeLeafs(leafs, gauge); 
+        }
+
     }
 
     function _addBalancerV3SwapLeafs(ManageLeaf[] memory leafs, address _pool) internal {
         address[] memory tokens = IVaultExplorer(getAddress(sourceChain, "balancerV3VaultExplorer")).getPoolTokens(_pool);  
 
-        //IBalancerV3Pool pool = IBalancerV3Pool(_pool);  
+        IBalancerV3Pool pool = IBalancerV3Pool(_pool);  
         
         //if the pool as WETH, you can use native eth and wrap it  
         //bool hasEth = false;  
@@ -4311,19 +4376,48 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         uint256 length = tokens.length; 
         for (uint256 i = 0; i < length; ++i) {
 
-            unchecked {
-                leafIndex++; 
-            }
+            //unchecked {
+            //    leafIndex++; 
+            //}
 
+            //leafs[leafIndex] = ManageLeaf(
+            //    address(tokens[i]),
+            //    false,
+            //    "approve(address,uint256)",
+            //    new address[](1),
+            //    string.concat("Approve BalancerV3 Vault to spend ", ERC20(tokens[i]).symbol()),
+            //    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            //);
+            //leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "balancerV3Vault"); 
+
+            unchecked {
+                leafIndex++;
+            }
             leafs[leafIndex] = ManageLeaf(
                 address(tokens[i]),
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Approve BalancerV3 Vault to spend ", ERC20(tokens[i]).symbol()),
+                string.concat("Approve Permit2 to spend ", ERC20(tokens[i]).symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "balancerV3Vault"); 
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2"); 
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(sourceChain, "permit2")] = true;
+            
+            //use permit2 to approve router
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "permit2"),
+                false,
+                "approve(address,address,uint160,uint48)",
+                new address[](2),
+                string.concat("Use Permit2 to approve ", pool.name(), " to spend ", ERC20(tokens[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = tokens[i]; 
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "balancerV3Router"); 
 
         }
 
@@ -4342,6 +4436,20 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         //leafs[leafIndex].argumentAddresses[1] = tokens[0]; //token0
         //leafs[leafIndex].argumentAddresses[2] = tokens[1]; //token1...tokenN
 
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "swapSingleTokenExactOut(address,address,address,uint256,uint256,uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Swap tokens using ", ERC20(_pool).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool; 
+        //leafs[leafIndex].argumentAddresses[1] = tokens[0]; //token0
+        //leafs[leafIndex].argumentAddresses[2] = tokens[1]; //token1...tokenN
 
     }
 
