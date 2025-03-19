@@ -42,7 +42,7 @@ contract GenericRateProvider is IRateProvider {
 
     constructor(
         address _target,
-        bytes4 _selctor,
+        bytes4 _selector,
         bytes32 _staticArgument0,
         bytes32 _staticArgument1,
         bytes32 _staticArgument2,
@@ -54,7 +54,7 @@ contract GenericRateProvider is IRateProvider {
         bool _signed
     ) {
         target = _target;
-        selector = _selctor;
+        selector = _selector;
         staticArgument0 = _staticArgument0;
         staticArgument1 = _staticArgument1;
         staticArgument2 = _staticArgument2;
@@ -93,7 +93,7 @@ contract GenericRateProvider is IRateProvider {
             );
             bytes memory result = target.functionStaticCall(callData);
 
-            int256 res = abi.decode(result, (int256))); 
+            int256 res = abi.decode(result, (int256)); 
             if (res < 0) revert GenericRateProvider__PriceCannotBeLtZero(); 
 
             return uint256(res); 
