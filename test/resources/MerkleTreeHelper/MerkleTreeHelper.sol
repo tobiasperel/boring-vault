@@ -7338,16 +7338,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
-    function _addRoycoVaultMarketLeafs(ManageLeaf[] memory leafs, address targetVault, address fundingVault, address[] memory incentivesRequested) internal {
+    function _addRoycoVaultMarketLeafs(ManageLeaf[] memory leafs, address baseAsset, address targetVault, address fundingVault, address[] memory incentivesRequested) internal {
         unchecked {
             leafIndex++;
         }
         leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "USDC"),
+            baseAsset,
             false,
             "approve(address,uint256)",
             new address[](1),
-            string.concat("Approve Wrapped Vault to spend USDC"),
+            string.concat("Approve Wrapped Vault to spend ", ERC20(baseAsset).symbol()),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = targetVault;

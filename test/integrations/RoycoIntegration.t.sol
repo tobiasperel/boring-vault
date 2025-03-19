@@ -458,7 +458,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         // fundingVault = address(0) means pull funds from caller (boringVault)
-        _addRoycoVaultMarketLeafs(leafs, getAddress(sourceChain, "supplyUSDCAaveWrappedVault"), address(0), incentivesRequested);
+        _addRoycoVaultMarketLeafs(leafs, getAddress(sourceChain, "USDC"), getAddress(sourceChain, "supplyUSDCAaveWrappedVault"), address(0), incentivesRequested);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
