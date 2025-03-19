@@ -27,9 +27,21 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
     address waETHWSTETH = 0x775F661b0bD1739349b9A2A3EF60be277c5d2D29;  
     address tETH = 0xD11c452fc99cF405034ee446803b6F6c1F6d5ED8; 
 
+    address wsSonicUSDC = 0x7870ddFd5ACA4E977B2287e9A212bcbe8FC4135a; 
+    address scUSD = 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE; 
+
     function _setUpMainnet() internal {
         super.setUp(); 
         _setupChain("mainnet", 22067550); 
+            
+        address balancerV3Decoder = address(new FullBalancerV3DecoderAndSanitizer()); 
+
+        _overrideDecoder(balancerV3Decoder); 
+    }
+
+    function _setUpSonic() internal {
+        super.setUp(); 
+        _setupChain("sonicMainnet", 14684422); 
             
         address balancerV3Decoder = address(new FullBalancerV3DecoderAndSanitizer()); 
 
@@ -1229,6 +1241,255 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
 
 
     // Sonic Tests
+    
+    function testBalancerAddRemoveLiqUnbalanced__Sonic() external {
+        _setUpSonic(); 
+        //Test all the leaves necessary for building an LP position from a base asset (USDC, USDT)
 
+        deal(wsSonicUSDC, address(boringVault), 1_000e6); 
+        deal(scUSD, address(boringVault), 1_000e6); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        bool boosted = true; 
+        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"), boosted, address(0)); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(6); 
+
+        tx_.manageLeafs[0] = leafs[5]; //approve permit2 WETH
+        tx_.manageLeafs[1] = leafs[6]; //use permit2 to approve router
+        tx_.manageLeafs[2] = leafs[7]; //approve permit2 WSTETH
+        tx_.manageLeafs[3] = leafs[8]; //use permit2 to approve router
+        tx_.manageLeafs[4] = leafs[9]; //approve router to spend bpt
+        
+        //router calls
+        tx_.manageLeafs[5] = leafs[11]; //addLiqUnbalanced
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //address[] memory targets = new address[](7);
+        tx_.targets[0] = wsSonicUSDC; //approve 
+        tx_.targets[1] = getAddress(sourceChain, "permit2"); //permit2 approves router
+        tx_.targets[2] = scUSD; //approve 
+        tx_.targets[3] = getAddress(sourceChain, "permit2"); //permit2 approves router
+        tx_.targets[4] = getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"); //approve 
+        //router calls
+        tx_.targets[5] = getAddress(sourceChain, "balancerV3Router"); //addLiqUnbalanced
+
+        //bytes[] memory targetData = new bytes[](7);
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", wsSonicUSDC, getAddress(sourceChain, "balancerV3Router"), 1_000e18, type(uint48).max
+        );
+        tx_.targetData[2] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        tx_.targetData[3] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", scUSD, getAddress(sourceChain, "balancerV3Router"), 1_000e18, type(uint48).max
+        );
+        tx_.targetData[4] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "balancerV3Router"), type(uint256).max
+        );
+        
+        uint256[] memory amounts = new uint256[](2); 
+        amounts[0] = 100e6;  
+        amounts[1] = 0;  
+
+        tx_.targetData[5] = abi.encodeWithSignature(
+            "addLiquidityUnbalanced(address,uint256[],uint256,bool,bytes)", 
+            getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"),
+            amounts,
+            1e6,
+            false,
+            "" 
+        );
+
+        //address[] memory decodersAndSanitizers = new address[](7);
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        
+        _submitManagerCall(manageProofs, tx_); 
+
+        //assert we actually get LP tokens 
+        uint256 lpBalance = getERC20(sourceChain, "balancerV3_USDC_scUSD_boosted").balanceOf(address(boringVault)); 
+        assertGt(lpBalance, 0); 
+
+        skip(1 days); 
+
+        // Try unbalanced method
+        tx_ = _getTxArrays(1); 
+
+        tx_.manageLeafs[0] = leafs[14]; 
+
+        manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+        
+        tx_.targets[0] = getAddress(sourceChain, "balancerV3Router"); 
+
+        amounts[0] = 0;  
+        amounts[1] = 0;  
+
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "removeLiquidityProportional(address,uint256,uint256[],bool,bytes)", getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"), lpBalance, amounts, false, "" 
+        ); 
+
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer; 
+
+        _submitManagerCall(manageProofs, tx_); 
+        
+        //check we have more LP now
+        uint256 lpBalance2 = getERC20(sourceChain, "balancerV3_USDC_scUSD_boosted").balanceOf(address(boringVault)); 
+        assertEq(lpBalance2, 0); 
+
+    }
+
+    function testBalancerGaugeStaking__Sonic() external {
+        _setUpSonic(); 
+        //Test all the leaves necessary for building an LP position from a base asset (USDC, USDT)
+
+        deal(wsSonicUSDC, address(boringVault), 1_000e6); 
+        deal(scUSD, address(boringVault), 1_000e6); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](64);
+        bool boosted = true; 
+        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"), boosted, getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted_gauge")); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(8); 
+
+        tx_.manageLeafs[0] = leafs[5]; //approve permit2 USDC
+        tx_.manageLeafs[1] = leafs[6]; //use permit2 to approve router
+        tx_.manageLeafs[2] = leafs[7]; //approve permit2 USDT
+        tx_.manageLeafs[3] = leafs[8]; //use permit2 to approve router
+        tx_.manageLeafs[4] = leafs[9]; //approve permit2 GHO
+
+        tx_.manageLeafs[5] = leafs[11]; //addLiqUnbalanced
+        tx_.manageLeafs[6] = leafs[20]; //approve gauge lp
+        tx_.manageLeafs[7] = leafs[21]; //deposit gauge lp
+
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //address[] memory targets = new address[](7);
+        tx_.targets[0] = wsSonicUSDC; //approve 
+        tx_.targets[1] = getAddress(sourceChain, "permit2"); //permit2 approves router
+        tx_.targets[2] = scUSD; //approve 
+        tx_.targets[3] = getAddress(sourceChain, "permit2"); //permit2 approves router
+        tx_.targets[4] = getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"); //approve 
+        
+        //router calls
+        tx_.targets[5] = getAddress(sourceChain, "balancerV3Router"); //addLiqProportional
+        tx_.targets[6] = getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"); //approve 
+        tx_.targets[7] = getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted_gauge"); //deposit
+
+        //bytes[] memory targetData = new bytes[](7);
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", wsSonicUSDC, getAddress(sourceChain, "balancerV3Router"), 1_000e18, type(uint48).max
+        );
+        tx_.targetData[2] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "permit2"), type(uint256).max
+        );
+        tx_.targetData[3] = abi.encodeWithSignature(
+            "approve(address,address,uint160,uint48)", scUSD, getAddress(sourceChain, "balancerV3Router"), 1_000e18, type(uint48).max
+        );
+        tx_.targetData[4] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "balancerV3Router"), type(uint256).max
+        );
+        
+        uint256[] memory amounts = new uint256[](2); 
+        amounts[0] = 100e6;  
+        amounts[1] = 0;  
+
+        tx_.targetData[5] = abi.encodeWithSignature(
+            "addLiquidityUnbalanced(address,uint256[],uint256,bool,bytes)", 
+            getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"),
+            amounts,
+            1e6,
+            false,
+            "" 
+        );
+
+        tx_.targetData[6] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted_gauge"), type(uint256).max 
+        );
+        tx_.targetData[7] = abi.encodeWithSignature(
+            "deposit(uint256,address)", 1e6, address(boringVault)  
+        );
+
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[5] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[6] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[7] = rawDataDecoderAndSanitizer;
+        
+        _submitManagerCall(manageProofs, tx_); 
+
+        //assert we actually get gauge staking tokens 
+        uint256 lpBalance = getERC20(sourceChain, "balancerV3_USDC_scUSD_boosted_gauge").balanceOf(address(boringVault)); 
+        assertGt(lpBalance, 0); 
+
+        skip(1 days); 
+    
+        //claim rewards, withdraw lp, then remove liquidity
+        tx_ = _getTxArrays(3); 
+
+        tx_.manageLeafs[0] = leafs[23]; 
+        tx_.manageLeafs[1] = leafs[22]; 
+        tx_.manageLeafs[2] = leafs[14]; 
+
+        manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+        
+        tx_.targets[0] = getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted_gauge"); 
+        tx_.targets[1] = getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted_gauge"); 
+        tx_.targets[2] = getAddress(sourceChain, "balancerV3Router"); 
+
+        amounts[0] = 0;  
+        amounts[1] = 0;  
+
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "claim_rewards(address)", address(boringVault) 
+        ); 
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "withdraw(uint256)", lpBalance
+        ); 
+        tx_.targetData[2] = abi.encodeWithSignature(
+            "removeLiquidityProportional(address,uint256,uint256[],bool,bytes)", getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"), 1e1, amounts, false, "" 
+        ); 
+
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer; 
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer; 
+        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer; 
+
+        _submitManagerCall(manageProofs, tx_); 
+        
+        //check we have more LP now
+        uint256 lpBalance2 = getERC20(sourceChain, "balancerV3_USDC_scUSD_boosted").balanceOf(address(boringVault)); 
+        assertEq(lpBalance2, 0); 
+
+        //check we have more BEETS now
+        uint256 BEETSRewards = getERC20(sourceChain, "BEETS").balanceOf(address(boringVault));  
+        assertGt(BEETSRewards, 0); 
+    }         
 
 }

@@ -1673,6 +1673,19 @@ contract ChainValues {
          
         // Merkl
         values[sonicMainnet]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
+
+        // Permit2
+        values[sonicMainnet]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32();
+
+        // BalancerV3
+        values[sonicMainnet]["balancerV3Router"] = 0x6077b9801B5627a65A5eeE70697C793751D1a71c.toBytes32();
+        values[sonicMainnet]["balancerV3Vault"] = 0xbA1333333333a1BA1108E8412f11850A5C319bA9.toBytes32(); 
+        values[sonicMainnet]["balancerV3VaultExplorer"] = 0x6F6CD1a69A19d45df0C300A57829b21713637300.toBytes32(); 
+
+        values[sonicMainnet]["balancerV3_USDC_scUSD_boosted"] = 0x43026d483f42fB35efe03c20B251142D022783f2.toBytes32();  
+        values[sonicMainnet]["balancerV3_USDC_scUSD_boosted_gauge"] = 0x5D9e8B588F1D9e28ea1963681180d8b5938D26BA.toBytes32();  
+        
+
     }
 
     function _addSepoliaValues() private {

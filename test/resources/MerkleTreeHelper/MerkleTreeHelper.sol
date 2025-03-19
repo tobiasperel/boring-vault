@@ -4158,8 +4158,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             }
 
             if (boosted) {
-                _addERC4626Leafs(leafs, ERC4626(tokens[i])); 
+                  try ERC4626(tokens[i]).asset() returns (ERC20 assetAddress) {
+                    if (address(assetAddress) != address(0)) {
+                        _addERC4626Leafs(leafs, ERC4626(tokens[i]));
+                    }
+                } catch {
+                    // Token doesn't implement asset() or isn't a valid ERC4626
+                    // Skip this token or handle the error as needed
+                }
             }
+            
 
             if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][_pool]) {
                 unchecked {
