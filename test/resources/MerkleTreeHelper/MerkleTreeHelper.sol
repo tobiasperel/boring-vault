@@ -7305,7 +7305,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "recipeMarketHub"),
-            false, // TODO check if this should be true
+            false,
             "createAPOffer(bytes32,address,uint256,uint256,address[],uint256[])",
             new address[](3 + incentivesRequested.length),
             string.concat("Create AP Offer for Recipe Market"),
@@ -7323,7 +7323,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "recipeMarketHub"),
-            false, // TODO check if this should be true
+            false,
             "cancelAPOffer((uint256,bytes32,address,address,uint256,uint256,address[],uint256[]))",
             new address[](4 + incentivesRequested.length),
             string.concat("Cancel AP Offer for Recipe Market"),
@@ -7356,7 +7356,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafIndex++;
         }
         leafs[leafIndex] = ManageLeaf(
-            targetVault, // TODO verify this is correct
+            targetVault,
             false,
             "safeDeposit(uint256,address,uint256)",
             new address[](1),
