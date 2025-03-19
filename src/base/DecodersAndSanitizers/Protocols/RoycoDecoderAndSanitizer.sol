@@ -17,6 +17,48 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
         recipeMarketHub = IRecipeMarketHub(_recipeMarketHub);
     }
 
+    // DepositorExecutor
+    function merkleWithdraw() external pure virtual returns (bytes memory addressesFound) {
+        return addressesFound;
+    }
+
+    function withdrawMerkleDeposit(
+        address _weirollWallet,
+        uint256, /*_merkleDepositNonce*/
+        uint256, /*_amountDepositedOnSource*/
+        bytes32[] calldata /*_merkleProof*/
+    ) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(_weirollWallet);
+    }
+
+    // RecipeMarketHub
+    function createAPOffer(
+        bytes32 targetMarketHash,
+        address fundingVault,
+        uint256, /*quantity*/
+        uint256, /*expiry*/
+        address[] calldata incentivesRequested,
+        uint256[] calldata /*incentiveAmountsRequested*/
+    ) external pure virtual returns (bytes memory addressesFound) {
+        address marketHash0 = address(bytes20(bytes16(targetMarketHash)));
+        address marketHash1 = address(bytes20(bytes16(targetMarketHash << 128)));
+        addressesFound = abi.encodePacked(marketHash0, marketHash1, fundingVault);
+        for (uint256 i = 0; i < incentivesRequested.length; i++) {
+            addressesFound = abi.encodePacked(addressesFound, incentivesRequested[i]);
+        }
+    }
+
+    function cancelAPOffer(
+        DecoderCustomTypes.APOffer calldata offer
+    ) external pure virtual returns (bytes memory addressesFound) {
+        address marketHash0 = address(bytes20(bytes16(offer.targetMarketHash)));
+        address marketHash1 = address(bytes20(bytes16(offer.targetMarketHash << 128)));
+        addressesFound = abi.encodePacked(marketHash0, marketHash1, offer.ap, offer.fundingVault);
+        for (uint256 i = 0; i < offer.incentivesRequested.length; i++) {
+            addressesFound = abi.encodePacked(addressesFound, offer.incentivesRequested[i]);
+        }
+    }
+
     function fillIPOffers(
         bytes32[] calldata ipOfferHashes,
         uint256[] calldata, /*fillAmounts*/
@@ -56,54 +98,7 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
         addressesFound = abi.encodePacked(owner, to);
     }
 
-    function claim(
-        address to
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(to);
-    }
-
-    function merkleWithdraw() external pure virtual returns (bytes memory addressesFound) {
-        return addressesFound;
-    }
-
-    function withdrawMerkleDeposit(
-        address _weirollWallet,
-        uint256, /*_merkleDepositNonce*/
-        uint256, /*_amountDepositedOnSource*/
-        bytes32[] calldata /*_merkleProof*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_weirollWallet);
-    }
-
-    //RecipeMarketHub
-    function createAPOffer(
-        bytes32 targetMarketHash,
-        address fundingVault,
-        uint256, /*quantity*/
-        uint256, /*expiry*/
-        address[] calldata incentivesRequested,
-        uint256[] calldata /*incentiveAmountsRequested*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        address marketHash0 = address(bytes20(bytes16(targetMarketHash)));
-        address marketHash1 = address(bytes20(bytes16(targetMarketHash << 128)));
-        addressesFound = abi.encodePacked(marketHash0, marketHash1, fundingVault);
-        for (uint256 i = 0; i < incentivesRequested.length; i++) {
-            addressesFound = abi.encodePacked(addressesFound, incentivesRequested[i]);
-        }
-    }
-
-    function cancelAPOffer(
-        DecoderCustomTypes.APOffer calldata offer
-    ) external pure virtual returns (bytes memory addressesFound) {
-        address marketHash0 = address(bytes20(bytes16(offer.targetMarketHash)));
-        address marketHash1 = address(bytes20(bytes16(offer.targetMarketHash << 128)));
-        addressesFound = abi.encodePacked(marketHash0, marketHash1, offer.ap, offer.fundingVault);
-        for (uint256 i = 0; i < offer.incentivesRequested.length; i++) {
-            addressesFound = abi.encodePacked(addressesFound, offer.incentivesRequested[i]);
-        }
-    }
-
-    //VaultMarketHub
+    // VaultMarketHub
     function createAPOffer(
         address targetVault,
         address fundingVault,
@@ -118,13 +113,19 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
         addressesFound = abi.encodePacked(targetVault, fundingVault, addressesFound);
     }
 
-    //WrappedVault (other functions handled by ERC4626 decoder)
+    // WrappedVault (other functions handled by ERC4626 decoder)
     function safeDeposit(
         uint256, /*assets*/
         address receiver,
         uint256 /*minShares*/
     ) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(receiver);
+    }
+
+    function claim(
+        address to
+    ) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(to);
     }
 }
 
