@@ -1,113 +1,35 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
-import {BoringVault} from "src/base/BoringVault.sol";
-import {ManagerWithMerkleVerification} from "src/base/Roles/ManagerWithMerkleVerification.sol";
-import {SafeTransferLib} from "@solmate/utils/SafeTransferLib.sol";
-import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
+import {BaseTestIntegration} from "test/integrations/BaseTestIntegration.t.sol"; 
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {RoycoWeirollDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/RoycoDecoderAndSanitizer.sol";
-import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ERC4626DecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
-import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
-import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
-contract RoycoIntegrationTest is Test, MerkleTreeHelper {
-    using SafeTransferLib for ERC20;
-    using FixedPointMathLib for uint256;
-    using stdStorage for StdStorage;
+contract RoycoIntegrationTest is BaseTestIntegration {
+    function _setUpMainnet() internal {
+        super.setUp(); 
+        _setupChain("mainnet", 21713448); 
+            
+        address roycoDecoder = address(new FullRoycoDecoderAndSaniziter(0x783251f103555068c1E9D755f69458f39eD937c0)); 
 
-    ManagerWithMerkleVerification public manager;
-    BoringVault public boringVault;
-    address public rawDataDecoderAndSanitizer;
-    RolesAuthority public rolesAuthority;
+        _overrideDecoder(roycoDecoder); 
+    }
 
-    uint8 public constant MANAGER_ROLE = 1;
-    uint8 public constant STRATEGIST_ROLE = 2;
-    uint8 public constant MANGER_INTERNAL_ROLE = 3;
-    uint8 public constant ADMIN_ROLE = 4;
-    uint8 public constant BORING_VAULT_ROLE = 5;
-    uint8 public constant BALANCER_VAULT_ROLE = 6;
+    function _setUpSonic() internal {
+        super.setUp(); 
+        _setupChain("sonicMainnet", 14684422); 
+            
+        address roycoDecoder = address(new FullRoycoDecoderAndSaniziter(0xFcc593aD3705EBcd72eC961c63eb484BE795BDbD)); 
 
-    function setUp() external {
-        setSourceChainName("mainnet");
-        // Setup forked environment.
-        string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 21713448;
-
-        _startFork(rpcKey, blockNumber);
-
-        boringVault = new BoringVault(address(this), "Boring Vault", "BV", 18);
-
-        manager =
-            new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
-
-        rawDataDecoderAndSanitizer =
-            address(new FullRoycoDecoderAndSaniziter(0x783251f103555068c1E9D755f69458f39eD937c0));
-
-        setAddress(false, sourceChain, "boringVault", address(boringVault));
-        setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
-        setAddress(false, sourceChain, "manager", address(manager));
-        setAddress(false, sourceChain, "managerAddress", address(manager));
-        setAddress(false, sourceChain, "accountantAddress", address(1));
-
-        rolesAuthority = new RolesAuthority(address(this), Authority(address(0)));
-        boringVault.setAuthority(rolesAuthority);
-        manager.setAuthority(rolesAuthority);
-
-        // Setup roles authority.
-        rolesAuthority.setRoleCapability(
-            MANAGER_ROLE,
-            address(boringVault),
-            bytes4(keccak256(abi.encodePacked("manage(address,bytes,uint256)"))),
-            true
-        );
-        rolesAuthority.setRoleCapability(
-            MANAGER_ROLE,
-            address(boringVault),
-            bytes4(keccak256(abi.encodePacked("manage(address[],bytes[],uint256[])"))),
-            true
-        );
-
-        rolesAuthority.setRoleCapability(
-            STRATEGIST_ROLE,
-            address(manager),
-            ManagerWithMerkleVerification.manageVaultWithMerkleVerification.selector,
-            true
-        );
-        rolesAuthority.setRoleCapability(
-            MANGER_INTERNAL_ROLE,
-            address(manager),
-            ManagerWithMerkleVerification.manageVaultWithMerkleVerification.selector,
-            true
-        );
-        rolesAuthority.setRoleCapability(
-            ADMIN_ROLE, address(manager), ManagerWithMerkleVerification.setManageRoot.selector, true
-        );
-        rolesAuthority.setRoleCapability(
-            BORING_VAULT_ROLE, address(manager), ManagerWithMerkleVerification.flashLoan.selector, true
-        );
-        rolesAuthority.setRoleCapability(
-            BALANCER_VAULT_ROLE, address(manager), ManagerWithMerkleVerification.receiveFlashLoan.selector, true
-        );
-
-        // Grant roles
-        rolesAuthority.setUserRole(address(this), STRATEGIST_ROLE, true);
-        rolesAuthority.setUserRole(address(manager), MANGER_INTERNAL_ROLE, true);
-        rolesAuthority.setUserRole(address(this), ADMIN_ROLE, true);
-        rolesAuthority.setUserRole(address(manager), MANAGER_ROLE, true);
-        rolesAuthority.setUserRole(address(boringVault), BORING_VAULT_ROLE, true);
-        rolesAuthority.setUserRole(getAddress(sourceChain, "vault"), BALANCER_VAULT_ROLE, true);
-
-        // Allow the boring vault to receive ETH.
-        rolesAuthority.setPublicCapability(address(boringVault), bytes4(0), true);
+        _overrideDecoder(roycoDecoder); 
     }
 
     function testRoycoERC4626Integration() external {
+        _setUpMainnet();
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
@@ -169,6 +91,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
     }
 
     function testRoycoERC4626IntegrationClaiming() external {
+        _setUpMainnet();
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
@@ -222,6 +145,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
     }
 
     function testRoycoWeirollForfeitIntegration() external {
+        _setUpMainnet();
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
 
         bytes32 stkGHOMarketHash = 0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b;
@@ -304,6 +228,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
     }
 
     function testRoycoWeirollExecuteWithdrawIntegrationComplete() external {
+        _setUpMainnet();
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e6);
 
         bytes32 stkGHOMarketHash = 0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b;
@@ -391,6 +316,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
     }
 
     function testRoycoWeirollExecuteWithdrawIntegration() external {
+        _setUpMainnet();
         deal(getAddress(sourceChain, "WBTC"), address(boringVault), 1_000e6);
 
         bytes32 wbtcMarketHash = 0xb36f14fd392b9a1d6c3fabedb9a62a63d2067ca0ebeb63bbc2c93b11cc8eb3a2;
@@ -447,6 +373,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
     }
 
     function testRoycoWeirollVaultMarketHubIntegration() external {
+        _setUpMainnet();
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 100_000e6);
 
         address[] memory incentivesRequested = new address[](2);
@@ -510,6 +437,7 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
     }
 
     function testRoycoWeirollRecipeMarketHubIntegration() external {
+        _setUpMainnet();
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 100_000e6);
         bytes32 targetMarketHash = 0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b; //swap USDC to stkGHO market hash
 
@@ -573,15 +501,9 @@ contract RoycoIntegrationTest is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
-
-    // ========================================= HELPER FUNCTIONS =========================================
-
-    function _startFork(string memory rpcKey, uint256 blockNumber) internal returns (uint256 forkId) {
-        forkId = vm.createFork(vm.envString(rpcKey), blockNumber);
-        vm.selectFork(forkId);
-    }
 }
 
+// NOTE: Big Decoder will inherit from RoycoWeirollDecoderAndSanitizer and ERC4626DecoderAndSanitizer
 contract FullRoycoDecoderAndSaniziter is RoycoWeirollDecoderAndSanitizer, ERC4626DecoderAndSanitizer {
     constructor(address _recipeMarketHub) RoycoWeirollDecoderAndSanitizer(_recipeMarketHub) {}
 }
