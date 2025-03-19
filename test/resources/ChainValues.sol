@@ -1624,6 +1624,7 @@ contract ChainValues {
         values[sonicMainnet]["rEUL"] = 0x09E6cab47B7199b9d3839A2C40654f246d518a80.toBytes32(); 
         values[sonicMainnet]["EUL"] = 0x8e15C8D399e86d4FD7B427D42f06c60cDD9397e7.toBytes32(); 
         values[sonicMainnet]["ZRO"] = address(1).toBytes32();
+        values[sonicMainnet]["OS"] = 0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794.toBytes32();
 
         values[sonicMainnet]["balancerVault"] = address(1).toBytes32();
         values[sonicMainnet]["vault"] = address(1).toBytes32();
@@ -1714,6 +1715,11 @@ contract ChainValues {
          
         // Merkl
         values[sonicMainnet]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
+
+        // Royco
+        values[sonicMainnet]["recipeMarketHub"] = 0xFcc593aD3705EBcd72eC961c63eb484BE795BDbD.toBytes32();
+        values[sonicMainnet]["vaultMarketHub"] = 0x1e3fCccbafDBdf3cB17b7470c8A6cC64eb5f94A2.toBytes32();
+        values[sonicMainnet]["originSonicWrappedVault"] = 0x7F24390EF4F8c1a372524fF1fA3a1d79D66D86cA.toBytes32();
     }
 
     function _addSepoliaValues() private {
