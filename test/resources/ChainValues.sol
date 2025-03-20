@@ -1961,5 +1961,10 @@ contract ChainValues {
         // Standard Bridge
         values[bob]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
         values[bob]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
+
+
+        // Euler
+        values[bob]["ethereumVaultConnector"] = 0x59f0FeEc4fA474Ad4ffC357cC8d8595B68abE47d.toBytes32(); 
+        values[bob]["eulerWBTC"] = 0x11DA346d3Fdb62641BDbfebfd54b81CAA871aEf6.toBytes32();  
     }
 }

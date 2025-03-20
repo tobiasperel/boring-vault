@@ -17,7 +17,7 @@ contract CreateHybridBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x9998e05030Aee3Af9AD3df35A34F5C51e1628779; 
     address public managerAddress = 0x2A1512a030D6eb71A5864968d795e1b6D382735D;
     address public accountantAddress = 0x22b025037ff1F6206F41b7b28968726bDBB5E7D5;
-    address public rawDataDecoderAndSanitizer = 0xD98b43eac40112F014Db5af5bDF19CD931E85C64; 
+    address public rawDataDecoderAndSanitizer = 0x782fEe69B109419B9548BB5798CB4c1a2A43D00E; 
 
     function setUp() external {}
 
@@ -35,18 +35,18 @@ contract CreateHybridBtcMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, bob, "accountantAddress", accountantAddress);
         setAddress(false, bob, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
 
 
         // ========================== Standard Bridge ==========================
         
-         ERC20[] memory localTokens = new ERC20[](2);
+        ERC20[] memory localTokens = new ERC20[](2);
         localTokens[0] = getERC20(sourceChain, "WBTC");
         localTokens[1] = getERC20(sourceChain, "LBTC");
 
         ERC20[] memory remoteTokens = new ERC20[](2);
-        remoteTokens[0] = getERC20(bob, "WBTC");
-        remoteTokens[1] = getERC20(bob, "LBTC");
+        remoteTokens[0] = getERC20(mainnet, "WBTC");
+        remoteTokens[1] = getERC20(mainnet, "LBTC");
 
         _addStandardBridgeLeafs(
             leafs,
@@ -57,7 +57,17 @@ contract CreateHybridBtcMerkleRoot is Script, MerkleTreeHelper {
             address(0),
             localTokens,
             remoteTokens
-        );  //?
+        );
+
+        // ========================== Euler ==========================
+            
+        ERC4626[] memory depositVaults = new ERC4626[](1); 
+        depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerWBTC")); 
+
+        address[] memory subaccounts = new address[](1); 
+        subaccounts[0] = getAddress(sourceChain, "boringVault");  
+
+        _addEulerDepositLeafs(leafs, depositVaults, subaccounts); 
 
         // ========================== Verify & Generate ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
