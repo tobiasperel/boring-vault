@@ -26,7 +26,7 @@ contract GenericRateProvider is IRateProvider {
      * @notice boolean indicating if we need to check for a signed return value.
      * @dev if true, this indicates an int256 return value or similar signed number
      */
-    bool signed; 
+    bool public immutable signed; 
 
     /**
      * @notice Static arguments to pass to the target.
@@ -78,21 +78,22 @@ contract GenericRateProvider is IRateProvider {
      * @dev If staticArgumentN is not used, it can be left as 0.
      */
     function getRate() public view returns (uint256) {
+        bytes memory callData = abi.encodeWithSelector(
+            selector,
+            staticArgument0,
+            staticArgument1,
+            staticArgument2,
+            staticArgument3,
+            staticArgument4,
+            staticArgument5,
+            staticArgument6,
+            staticArgument7
+        );
+        bytes memory result = target.functionStaticCall(callData);
+
+
         if (signed) {
             //if target func() returns an int, we get the result and then cast it to a uint256
-            bytes memory callData = abi.encodeWithSelector(
-                selector,
-                staticArgument0,
-                staticArgument1,
-                staticArgument2,
-                staticArgument3,
-                staticArgument4,
-                staticArgument5,
-                staticArgument6,
-                staticArgument7
-            );
-            bytes memory result = target.functionStaticCall(callData);
-
             int256 res = abi.decode(result, (int256)); 
             if (res < 0) revert GenericRateProvider__PriceCannotBeLtZero(); 
 
