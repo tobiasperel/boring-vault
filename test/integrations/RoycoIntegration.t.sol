@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import {BaseTestIntegration} from "test/integrations/BaseTestIntegration.t.sol"; 
+import {BaseTestIntegration} from "test/integrations/BaseTestIntegration.t.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {RoycoWeirollDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/RoycoDecoderAndSanitizer.sol";
@@ -11,21 +11,21 @@ import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.s
 
 contract RoycoIntegrationTest is BaseTestIntegration {
     function _setUpMainnet() internal {
-        super.setUp(); 
-        _setupChain("mainnet", 21713448); 
-            
-        address roycoDecoder = address(new FullRoycoDecoderAndSaniziter(0x783251f103555068c1E9D755f69458f39eD937c0)); 
+        super.setUp();
+        _setupChain("mainnet", 21713448);
 
-        _overrideDecoder(roycoDecoder); 
+        address roycoDecoder = address(new FullRoycoDecoderAndSaniziter(0x783251f103555068c1E9D755f69458f39eD937c0));
+
+        _overrideDecoder(roycoDecoder);
     }
 
     function _setUpSonic() internal {
-        super.setUp(); 
-        _setupChain("sonicMainnet", 14684422); 
-            
-        address roycoDecoder = address(new FullRoycoDecoderAndSaniziter(0xFcc593aD3705EBcd72eC961c63eb484BE795BDbD)); 
+        super.setUp();
+        _setupChain("sonicMainnet", 14684422);
 
-        _overrideDecoder(roycoDecoder); 
+        address roycoDecoder = address(new FullRoycoDecoderAndSaniziter(0xFcc593aD3705EBcd72eC961c63eb484BE795BDbD));
+
+        _overrideDecoder(roycoDecoder);
     }
 
     function testRoycoERC4626Integration() external {
@@ -60,7 +60,6 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         bytes32 stkGHOHash = 0x8349eff9a17d01f2e9fa015121d0d03cd4b15ae9f2b8b17add16bbad006a1c6a;
         address expectedWeirollWallet = 0xF2075aBc3cC8EE8F75F28Ac9A3c5CAeBe1E9C7Cb;
         runRoycoWeirollExecuteWithdrawIntegrationComplete(asset, stkGHOMarketHash, stkGHOHash, expectedWeirollWallet);
-
     }
 
     function testRoycoWeirollExecuteWithdrawIntegration() external {
@@ -77,7 +76,7 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         address asset = getAddress(sourceChain, "USDC");
         address vault = getAddress(sourceChain, "supplyUSDCAaveWrappedVault");
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 100_000e6);
-        runRoycoWeirollVaultMarketHubIntegration(asset, vault);    
+        runRoycoWeirollVaultMarketHubIntegration(asset, vault);
     }
 
     function testRoycoWeirollRecipeMarketHubIntegration() external {
@@ -115,8 +114,6 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         address expectedWeirollWallet = 0x119D69120c9940a9D8eE78A35f865d39bF08A622;
 
         runRoycoWeirollForfeitIntegration(asset, scUSDMarketHash, ipOfferHash, expectedWeirollWallet);
-
-
     }
 
     function testRoycoWeirollExecuteWithdrawIntegrationCompleteSonic() external {
@@ -126,7 +123,7 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         bytes32 scUSDMarketHash = 0x7d1f2a66eabf9142dd30d1355efcbfd4cfbefd2872d24ca9855641434816a525;
         bytes32 ipOfferHash = 0xcd3b9f1c7a3f90bf397c46f2a641315d6e81d063811d4ccfc683046e33f323e9;
         address expectedWeirollWallet = 0x119D69120c9940a9D8eE78A35f865d39bF08A622;
-       runRoycoWeirollExecuteWithdrawIntegrationComplete(asset, scUSDMarketHash, ipOfferHash, expectedWeirollWallet);
+        runRoycoWeirollExecuteWithdrawIntegrationComplete(asset, scUSDMarketHash, ipOfferHash, expectedWeirollWallet);
     }
 
     function testRoycoWeirollExecuteWithdrawIntegrationSonic() external {
@@ -187,11 +184,10 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         targets[4] = vault;
 
         bytes[] memory targetData = new bytes[](5);
-        targetData[0] = abi.encodeWithSignature(
-            "approve(address,uint256)", vault, type(uint256).max
+        targetData[0] = abi.encodeWithSignature("approve(address,uint256)", vault, type(uint256).max);
+        targetData[1] = abi.encodeWithSignature(
+            "deposit(uint256,address)", 100 * (10 ** ERC20(asset).decimals()), getAddress(sourceChain, "boringVault")
         );
-        targetData[1] =
-            abi.encodeWithSignature("deposit(uint256,address)", 100 * (10 ** ERC20(asset).decimals()), getAddress(sourceChain, "boringVault"));
         targetData[2] = abi.encodeWithSignature(
             "withdraw(uint256,address,address)",
             90 * (10 ** ERC20(asset).decimals()),
@@ -199,7 +195,9 @@ contract RoycoIntegrationTest is BaseTestIntegration {
             getAddress(sourceChain, "boringVault")
         );
         targetData[3] = //mint 10 shares
-         abi.encodeWithSignature("mint(uint256,address)", 10 * (10 ** ERC4626(vault).decimals()), getAddress(sourceChain, "boringVault"));
+        abi.encodeWithSignature(
+            "mint(uint256,address)", 10 * (10 ** ERC4626(vault).decimals()), getAddress(sourceChain, "boringVault")
+        );
         targetData[4] = //redeem 10 shares
         abi.encodeWithSignature(
             "redeem(uint256,address,address)",
@@ -241,11 +239,10 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         targets[1] = vault;
 
         bytes[] memory targetData = new bytes[](2);
-        targetData[0] = abi.encodeWithSignature(
-            "approve(address,uint256)", vault, type(uint256).max
+        targetData[0] = abi.encodeWithSignature("approve(address,uint256)", vault, type(uint256).max);
+        targetData[1] = abi.encodeWithSignature(
+            "deposit(uint256,address)", 100 * (10 ** ERC20(asset).decimals()), getAddress(sourceChain, "boringVault")
         );
-        targetData[1] =
-            abi.encodeWithSignature("deposit(uint256,address)", 100 * (10 ** ERC20(asset).decimals()), getAddress(sourceChain, "boringVault"));
 
         address[] memory decodersAndSanitizers = new address[](2);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -272,7 +269,12 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
-    function runRoycoWeirollForfeitIntegration(address asset, bytes32 marketHash, bytes32 offerHash, address expectedWeirollWallet) internal {
+    function runRoycoWeirollForfeitIntegration(
+        address asset,
+        bytes32 marketHash,
+        bytes32 offerHash,
+        address expectedWeirollWallet
+    ) internal {
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         _addRoycoWeirollLeafs(leafs, ERC20(asset), marketHash, getAddress(sourceChain, "boringVault"));
 
@@ -345,7 +347,12 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
-    function runRoycoWeirollExecuteWithdrawIntegrationComplete(address asset, bytes32 marketHash, bytes32 offerHash, address expectedWeirollWallet) internal {
+    function runRoycoWeirollExecuteWithdrawIntegrationComplete(
+        address asset,
+        bytes32 marketHash,
+        bytes32 offerHash,
+        address expectedWeirollWallet
+    ) internal {
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         _addRoycoWeirollLeafs(leafs, ERC20(asset), marketHash, getAddress(sourceChain, "boringVault"));
 
@@ -425,9 +432,7 @@ contract RoycoIntegrationTest is BaseTestIntegration {
 
     function runRoycoWeirollExecuteWithdrawIntegration(address asset, bytes32 marketHash, bytes32 offerHash) internal {
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addRoycoWeirollLeafs(
-            leafs, ERC20(asset), marketHash, getAddress(sourceChain, "boringVault")
-        );
+        _addRoycoWeirollLeafs(leafs, ERC20(asset), marketHash, getAddress(sourceChain, "boringVault"));
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -505,11 +510,12 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         targets[3] = getAddress(sourceChain, "vaultMarketHub");
 
         bytes[] memory targetData = new bytes[](4);
-        targetData[0] = abi.encodeWithSignature(
-            "approve(address,uint256)", vault, type(uint256).max
-        );
+        targetData[0] = abi.encodeWithSignature("approve(address,uint256)", vault, type(uint256).max);
         targetData[1] = abi.encodeWithSignature(
-            "safeDeposit(uint256,address,uint256)", 100 * (10 ** ERC20(asset).decimals()), getAddress(sourceChain, "boringVault"), 88 * (10 ** ERC20(asset).decimals())
+            "safeDeposit(uint256,address,uint256)",
+            100 * (10 ** ERC20(asset).decimals()),
+            getAddress(sourceChain, "boringVault"),
+            88 * (10 ** ERC20(asset).decimals())
         );
         targetData[2] = abi.encodeWithSignature(
             "approve(address,uint256)", getAddress(sourceChain, "vaultMarketHub"), type(uint256).max
@@ -535,7 +541,9 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
-    function runRoycoWeirollRecipeMarketHubIntegration(address asset, bytes32 targetMarketHash, uint256 offerId) internal {
+    function runRoycoWeirollRecipeMarketHubIntegration(address asset, bytes32 targetMarketHash, uint256 offerId)
+        internal
+    {
         address[] memory incentivesRequested = new address[](2);
         incentivesRequested[0] = getAddress(sourceChain, "WBTC");
         incentivesRequested[1] = getAddress(sourceChain, "WETH");
@@ -577,14 +585,16 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         );
         targetData[2] = abi.encodeWithSignature(
             "cancelAPOffer((uint256,bytes32,address,address,uint256,uint256,address[],uint256[]))",
-            DecoderCustomTypes.APOffer(offerId, // this depends on when we are forking from
-            targetMarketHash,
-            getAddress(sourceChain, "boringVault"), // msg.sender of createAPOffer call
-            address(0),
-            100e6,
-            1773880121, // March 19 2026
-            incentivesRequested,
-            amountsRequested)
+            DecoderCustomTypes.APOffer(
+                offerId, // this depends on when we are forking from
+                targetMarketHash,
+                getAddress(sourceChain, "boringVault"), // msg.sender of createAPOffer call
+                address(0),
+                100e6,
+                1773880121, // March 19 2026
+                incentivesRequested,
+                amountsRequested
+            )
         );
 
         address[] memory decodersAndSanitizers = new address[](3);
