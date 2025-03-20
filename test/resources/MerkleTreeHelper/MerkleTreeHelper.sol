@@ -7399,19 +7399,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDT");
-
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "UsrExternalRequestsManager"),
-            false,
-            "requestBurn(uint256,address,uint256)",
-            new address[](1),
-            string.concat("Convert USR to USDT"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDT");
     }
 
     function _addResolvStUSRLeafs(ManageLeaf[] memory leafs) internal {

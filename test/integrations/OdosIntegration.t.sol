@@ -579,14 +579,14 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        //_generateTestLeafs(leafs, manageTree);
+        _generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
         manageLeafs[0] = leafs[9]; //approve weth
-        manageLeafs[1] = leafs[10]; //swap() weth -> usdt
-        manageLeafs[2] = leafs[11]; //swapCompact() weth -> usdt
+        manageLeafs[1] = leafs[3]; //swap() weth -> usdc
+        manageLeafs[2] = leafs[4]; //swapCompact() weth -> usdc
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -654,7 +654,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
