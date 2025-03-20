@@ -251,6 +251,7 @@ contract ChainValues {
         values[mainnet]["FXUSD"] = 0x085780639CC2cACd35E474e71f4d000e2405d8f6.toBytes32(); 
         values[mainnet]["FXN"] = 0x365AccFCa291e7D3914637ABf1F7635dB165Bb09.toBytes32(); 
         values[mainnet]["RLUSD"] = 0x8292Bb45bf1Ee4d140127049757C2E0fF06317eD.toBytes32(); 
+        values[mainnet]["ELX"] = 0x89A8c847f41C0dfA6c8B88638bACca8a0b777Da7.toBytes32(); 
 
 
         // Rate providers
