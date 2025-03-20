@@ -18,7 +18,7 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x455d5f11Fea33A8fa9D3e285930b478B6bF85265;
     address public managerAddress = 0xB77F31E02797724021F822181dff29F966A7B2cb;
     address public accountantAddress = 0x61bE1eC20dfE0197c27B80bA0f7fcdb1a6B236E2;
-    address public rawDataDecoderAndSanitizer = 0xf1BeC14BB66F5349Fe42C14fEb66BA1fa53F869b;
+    address public rawDataDecoderAndSanitizer = 0x476465EABBc951Bd9506a1237EB8b64286a0B461;
 
     function setUp() external {}
 
@@ -66,6 +66,19 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
             leafs, getBytes32(sourceChain, "scETH_WETH_PoolId"), getAddress(sourceChain, "scETH_WETH_gauge")
         );
 
+
+        // ========================== Odos ==========================
+        
+        address[] memory tokens = new address[](5);   
+        tokens[0] = getAddress(sourceChain, "WETH"); 
+        tokens[1] = getAddress(sourceChain, "stS"); 
+        tokens[2] = getAddress(sourceChain, "wS"); 
+        tokens[3] = getAddress(sourceChain, "scETH"); 
+        tokens[4] = getAddress(sourceChain, "BEETS"); 
+
+        //TODO update this on next root change w/ new odos function api
+        _addOdosSwapLeafs(leafs, tokens); 
+
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "WETH");
@@ -100,6 +113,11 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
          // ========================== Native =========================
         _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));
        
+        // ========================== Merkl =========================
+        ERC20[] memory tokensToClaim = new ERC20[](2); 
+        tokensToClaim[0] = getERC20(sourceChain, "rEUL"); 
+        tokensToClaim[1] = getERC20(sourceChain, "wS"); 
+        _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim); 
 
         // ========================== Verify =========================
 

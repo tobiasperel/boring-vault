@@ -37,6 +37,11 @@ import {LidoDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/
 import {MorphoRewardsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/MorphoRewardsDecoderAndSanitizer.sol";
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 import {ResolvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ResolvDecoderAndSanitizer.sol";
+import {ConvexFXDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ConvexFXDecoderAndSanitizer.sol";
+import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol";
+import {LBTCBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/LBTCBridgeDecoderAndSanitizer.sol"; 
+import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol"; 
+
 
 contract LombardBtcDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -65,10 +70,16 @@ contract LombardBtcDecoderAndSanitizer is
     LidoDecoderAndSanitizer,
     MorphoRewardsDecoderAndSanitizer,
     TellerDecoderAndSanitizer,
-    ResolvDecoderAndSanitizer
+    ResolvDecoderAndSanitizer,
+    ConvexFXDecoderAndSanitizer,
+    OdosDecoderAndSanitizer,
+    LBTCBridgeDecoderAndSanitizer,
+    FluidDexDecoderAndSanitizer
 {
-    constructor(address _uniswapV3NonFungiblePositionManager)
+    constructor(address _uniswapV3NonFungiblePositionManager, address _poolRegistry, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
+        ConvexFXDecoderAndSanitizer(_poolRegistry)
+        OdosDecoderAndSanitizer(_odosRouter)
     {}
 
     //============================== HANDLE FUNCTION COLLISIONS ===============================
@@ -123,7 +134,8 @@ contract LombardBtcDecoderAndSanitizer is
             CurveDecoderAndSanitizer,
             NativeWrapperDecoderAndSanitizer,
             GearboxDecoderAndSanitizer,
-            ResolvDecoderAndSanitizer
+            ResolvDecoderAndSanitizer,
+            ConvexFXDecoderAndSanitizer
         )
         returns (bytes memory addressesFound)
     {

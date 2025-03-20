@@ -127,23 +127,21 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
         ERC20[] memory assets = new ERC20[](1);
         assets[0] = getERC20(sourceChain, "WBTC");
         _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets, false);
-
         _addWithdrawQueueLeafs(
             leafs, getAddress(sourceChain, "eBTCOnChainQueue"), getAddress(sourceChain, "eBTC"), assets
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        string memory filePath = "./testTEST.json";
-        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+        _generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
         manageLeafs[0] = leafs[0]; //approve
         manageLeafs[1] = leafs[3]; //deposit
-        manageLeafs[2] = leafs[5]; //approve queue
-        manageLeafs[3] = leafs[6]; //withdraw w/ queue
+        manageLeafs[2] = leafs[4]; //approve queue
+        manageLeafs[3] = leafs[5]; //withdraw w/ queue
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
