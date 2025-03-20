@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
+import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";  
+
 // Swell
 interface INonFungiblePositionManager {
     struct Position {
@@ -85,6 +87,11 @@ interface IRecipeMarketHub {
         external
         view
         returns (uint256, bytes32, address, uint256, uint256, uint256);
+}
+
+
+interface IUniswapV4PositionManager {
+    function getPoolAndPositionInfo(uint256 tokenId) external view returns (DecoderCustomTypes.PoolKey memory, uint256); 
 }
 
 interface IPoolRegistry {
