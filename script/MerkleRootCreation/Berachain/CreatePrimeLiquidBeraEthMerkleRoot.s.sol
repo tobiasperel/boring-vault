@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+ // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
@@ -18,7 +18,7 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xB83742330443f7413DBD2aBdfc046dB0474a944e; 
     address public managerAddress = 0x58d32BCfa335B1EE9E25A291408409ceA890Be6b; 
     address public accountantAddress = 0x0B24A469d7c155a588C8a4ee24020F9f27090B0d;
-    address public rawDataDecoderAndSanitizer = 0xEB56349683478f76c10535231347145D7E02BDEc;
+    address public rawDataDecoderAndSanitizer = 0x0745e969e15C12D1430247a636AC6e7ae7896A4f;
 
     function setUp() external {}
 
@@ -68,6 +68,10 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
         _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WETH"), false);          
         _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "WEETH"), false);          
 
+        // ========================== Dolomite Borrow ==========================
+        
+        _addDolomiteBorrowLeafs(leafs, getAddress(sourceChain, "WETH"));
+        _addDolomiteBorrowLeafs(leafs, getAddress(sourceChain, "WEETH"));
 
         // ========================== dTokens ==========================
         
@@ -84,6 +88,8 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
         // ========================== beraETH ==========================
         _addBeraETHLeafs(leafs); 
 
+        // ========================== Etherfi ==========================
+        _addWeETHLeafs(leafs, getAddress(sourceChain, "WETH"), getAddress(sourceChain, "boringVault"));  
 
         // ========================== Verify ==========================
         

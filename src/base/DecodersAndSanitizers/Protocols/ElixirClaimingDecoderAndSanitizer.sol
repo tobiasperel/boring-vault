@@ -8,5 +8,4 @@ abstract contract ElixirClaimingDecoderAndSanitizer is BaseDecoderAndSanitizer {
     function claim(uint256 /*_amount*/, bytes32[] calldata /*_merkleProof*/, bytes calldata /*_signature*/) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound; 
     }
-
 }

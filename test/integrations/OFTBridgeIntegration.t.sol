@@ -40,7 +40,7 @@ contract OFTBridgeIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName(mainnet);
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 20227663;
+        uint256 blockNumber = 22046375;
 
         _startFork(rpcKey, blockNumber);
 
