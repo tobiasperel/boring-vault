@@ -8,11 +8,11 @@ import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoco
 import {CurveDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/CurveDecoderAndSanitizer.sol"; 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
-contract FullBalancerV3DecoderAndSanitizer is BalancerV3DecoderAndSanitizer, CurveDecoderAndSanitizer {
+contract FullBalancerV3DecoderAndSanitizer is BalancerV3DecoderAndSanitizer {
 
-    function deposit(uint256, address receiver) external pure override(ERC4626DecoderAndSanitizer, CurveDecoderAndSanitizer) returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(receiver);
-    }
+    //function deposit(uint256, address receiver) external pure override(ERC4626DecoderAndSanitizer, CurveDecoderAndSanitizer) returns (bytes memory addressesFound) {
+    //    addressesFound = abi.encodePacked(receiver);
+    //}
 
 }
 

@@ -4,15 +4,23 @@ pragma solidity 0.8.21;
 import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 import {Permit2DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/Permit2DecoderAndSanitizer.sol";
 import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ERC4626DecoderAndSanitizer.sol";
+import {CurveDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/CurveDecoderAndSanitizer.sol";
 
 abstract contract BalancerV3DecoderAndSanitizer is 
     BaseDecoderAndSanitizer, 
     Permit2DecoderAndSanitizer, 
-    ERC4626DecoderAndSanitizer 
+    ERC4626DecoderAndSanitizer,
+    CurveDecoderAndSanitizer
 {
     //============================== ERRORS ===============================
     
     error BalancerV3DecoderAndSanitizer__UserDataLengthNonZero(); 
+
+    //============================== Function Collisions ===============================
+
+    function deposit(uint256 /*amount*/, address receiver) external pure override(ERC4626DecoderAndSanitizer, CurveDecoderAndSanitizer) returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(receiver);
+    }
 
     // Router 
     // Add Liquidity
