@@ -497,4 +497,11 @@ contract DecoderCustomTypes {
         address[] addresses;
         uint256[] ratios;
     }
+
+    // ========================================= Permit2 ==================================
+    
+    struct TokenSpenderPair {
+        address token; 
+        address spender;
+    }
 }

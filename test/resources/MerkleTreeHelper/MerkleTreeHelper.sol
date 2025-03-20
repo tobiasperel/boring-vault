@@ -4370,6 +4370,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             _addCurveGaugeLeafs(leafs, gauge); 
         }
 
+        console.log("LOCKDOWN"); 
+         
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "permit2"),
+            false,
+            "lockdown((address,address)[])",
+            new address[](2),
+            string.concat("Remove Liquidity in recovery mode from ", pool.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
     }
 
     function _addBalancerV3SwapLeafs(ManageLeaf[] memory leafs, address _pool) internal {
