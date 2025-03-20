@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
+import {DecoderCustomTypes} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
+import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ERC4626DecoderAndSanitizer.sol";
 import {IRecipeMarketHub} from "src/interfaces/RawDataDecoderAndSanitizerInterfaces.sol";
 
-abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
+abstract contract RoycoWeirollDecoderAndSanitizer is ERC4626DecoderAndSanitizer {
     //============================== ERRORS ===============================
 
     error RoycoWeirollDecoderAndSanitizer__TooManyOfferHashes();
@@ -13,7 +14,7 @@ abstract contract RoycoWeirollDecoderAndSanitizer is BaseDecoderAndSanitizer {
 
     IRecipeMarketHub internal immutable recipeMarketHub;
 
-    constructor(address _recipeMarketHub) {
+    constructor(address _recipeMarketHub) ERC4626DecoderAndSanitizer() {
         recipeMarketHub = IRecipeMarketHub(_recipeMarketHub);
     }
 

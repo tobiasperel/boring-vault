@@ -578,7 +578,7 @@ contract RoycoIntegrationTest is BaseTestIntegration {
             "createAPOffer(bytes32,address,uint256,uint256,address[],uint256[])",
             targetMarketHash,
             address(0),
-            100e6,
+            100 * (10 ** ERC20(asset).decimals()),
             1773880121, // March 19 2026
             incentivesRequested,
             amountsRequested
@@ -590,7 +590,7 @@ contract RoycoIntegrationTest is BaseTestIntegration {
                 targetMarketHash,
                 getAddress(sourceChain, "boringVault"), // msg.sender of createAPOffer call
                 address(0),
-                100e6,
+                100 * (10 ** ERC20(asset).decimals()),
                 1773880121, // March 19 2026
                 incentivesRequested,
                 amountsRequested
@@ -608,7 +608,6 @@ contract RoycoIntegrationTest is BaseTestIntegration {
     }
 }
 
-// NOTE: Big Decoder will inherit from RoycoWeirollDecoderAndSanitizer and ERC4626DecoderAndSanitizer
-contract FullRoycoDecoderAndSaniziter is RoycoWeirollDecoderAndSanitizer, ERC4626DecoderAndSanitizer {
+contract FullRoycoDecoderAndSaniziter is RoycoWeirollDecoderAndSanitizer {
     constructor(address _recipeMarketHub) RoycoWeirollDecoderAndSanitizer(_recipeMarketHub) {}
 }
