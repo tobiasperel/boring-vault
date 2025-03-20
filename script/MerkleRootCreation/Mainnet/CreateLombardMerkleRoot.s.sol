@@ -15,7 +15,7 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0x5401b8620E5FB570064CA9114fd1e135fd77D57c;
-    address public rawDataDecoderAndSanitizer = 0x10F4f657C157b61849f2a7278384fAcd2043d150;
+    address public rawDataDecoderAndSanitizer = 0x6EF6328d610F96174960cdd96E0C6556E6Ac2795;
     address public managerAddress = 0xcf38e37872748E3b66741A42560672A6cef75e9B;
     address public accountantAddress = 0x28634D0c5edC67CF2450E74deA49B90a4FF93dCE;
 
@@ -148,11 +148,12 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[0] = getERC20(sourceChain, "WBTC");
             tellerAssets[1] = getERC20(sourceChain, "LBTC");
             tellerAssets[2] = getERC20(sourceChain, "cbBTC");
-            address eBTCTeller = 0xe19a43B1b8af6CeE71749Af2332627338B3242D1;
+             address eBTCTeller = 0x458797A320e6313c980C2bC7D270466A6288A8bB;
             _addTellerLeafs(leafs, eBTCTeller, tellerAssets, false);
 
-            address newEBTCTeller = 0x458797A320e6313c980C2bC7D270466A6288A8bB;
+            address newEBTCTeller = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268;
             _addTellerLeafs(leafs, newEBTCTeller, tellerAssets, false);
+
         }
 
         {
@@ -164,6 +165,13 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[4] = getERC20(sourceChain, "BTCN");
             
             _addTellerLeafs(leafs, getAddress(sourceChain, "sBTCNTeller"), tellerAssets, false);
+        }
+
+        {
+            ERC20[] memory sonicBTCTellerAssets = new ERC20[](2);
+            sonicBTCTellerAssets[0] = getERC20(sourceChain, "LBTC");
+            sonicBTCTellerAssets[1] = getERC20(sourceChain, "EBTC");
+            _addTellerLeafs(leafs, getAddress(sourceChain, "sonicLBTCTeller"), sonicBTCTellerAssets, false);
         }
 
         // ========================== Pendle ==========================
@@ -201,6 +209,26 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         _addLBTCBridgeLeafs(leafs, 0x0000000000000000000000000000000000000000000000000000000000000038); 
         // To Base
         _addLBTCBridgeLeafs(leafs, 0x0000000000000000000000000000000000000000000000000000000000002105); 
+
+        // ========================== Fluid Dex ==========================
+        { 
+
+        ERC20[] memory supplyTokens = new ERC20[](2); 
+        supplyTokens[0] = getERC20(sourceChain, "LBTC"); 
+        supplyTokens[1] = getERC20(sourceChain, "cbBTC"); 
+        ERC20[] memory borrowTokens = new ERC20[](1); 
+        borrowTokens[0] = getERC20(sourceChain, "WBTC"); 
+        
+        _addFluidDexLeafs(
+            leafs,  
+            getAddress(sourceChain, "LBTC_cbBTCDex_WBTC"),
+            2000, 
+            supplyTokens,
+            borrowTokens,
+            false //no native leaves
+        ); 
+
+        }
 
         // ========================== PancakeSwapV3 ==========================
         setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", pancakeSwapDataDecoderAndSanitizer);

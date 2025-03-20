@@ -40,6 +40,7 @@ import {ResolvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocol
 import {ConvexFXDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ConvexFXDecoderAndSanitizer.sol";
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol";
 import {LBTCBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/LBTCBridgeDecoderAndSanitizer.sol"; 
+import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol"; 
 
 
 contract LombardBtcDecoderAndSanitizer is
@@ -72,7 +73,8 @@ contract LombardBtcDecoderAndSanitizer is
     ResolvDecoderAndSanitizer,
     ConvexFXDecoderAndSanitizer,
     OdosDecoderAndSanitizer,
-    LBTCBridgeDecoderAndSanitizer
+    LBTCBridgeDecoderAndSanitizer,
+    FluidDexDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager, address _poolRegistry, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)

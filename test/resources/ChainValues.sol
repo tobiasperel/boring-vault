@@ -141,6 +141,7 @@ contract ChainValues {
         values[mainnet]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32();
         values[mainnet]["liquidBeraBTCTeller"] = 0x07951756b68427e7554AB4c9091344cB8De1Ad5a.toBytes32();
         values[mainnet]["sBTCNTeller"] = 0xeAd024098eE05e8e975043eCc6189b49CfBe35fd.toBytes32(); 
+        values[mainnet]["sonicLBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32(); 
 
         // DeFi Ecosystem
         values[mainnet]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
@@ -892,6 +893,7 @@ contract ChainValues {
         values[mainnet]["wBTC-cbBTCDex-USDT"] = 0xf7FA55D14C71241e3c970E30C509Ff58b5f5D557.toBytes32();
         values[mainnet]["weETH_ETHDex_wstETH"] = 0xb4a15526d427f4d20b0dAdaF3baB4177C85A699A.toBytes32();
         values[mainnet]["GHO_USDCDex_GHO_USDCDex"] = 0x20b32C597633f12B44CFAFe0ab27408028CA0f6A.toBytes32(); 
+        values[mainnet]["LBTC_cbBTCDex_WBTC"] = 0x96B2A29823d475468eE6f15e07878adf79E8199b.toBytes32(); 
 
         // Symbiotic
         values[mainnet]["wstETHDefaultCollateral"] = 0xC329400492c6ff2438472D4651Ad17389fCb843a.toBytes32();
