@@ -14,7 +14,7 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         super.setUp();
         _setupChain("mainnet", 21713448);
 
-        address roycoDecoder = address(new FullRoycoDecoderAndSaniziter(0x783251f103555068c1E9D755f69458f39eD937c0));
+        address roycoDecoder = address(new FullRoycoDecoderAndSanitizer(0x783251f103555068c1E9D755f69458f39eD937c0));
 
         _overrideDecoder(roycoDecoder);
     }
@@ -23,7 +23,7 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         super.setUp();
         _setupChain("sonicMainnet", 14684422);
 
-        address roycoDecoder = address(new FullRoycoDecoderAndSaniziter(0xFcc593aD3705EBcd72eC961c63eb484BE795BDbD));
+        address roycoDecoder = address(new FullRoycoDecoderAndSanitizer(0xFcc593aD3705EBcd72eC961c63eb484BE795BDbD));
 
         _overrideDecoder(roycoDecoder);
     }
@@ -608,6 +608,6 @@ contract RoycoIntegrationTest is BaseTestIntegration {
     }
 }
 
-contract FullRoycoDecoderAndSaniziter is RoycoWeirollDecoderAndSanitizer {
+contract FullRoycoDecoderAndSanitizer is RoycoWeirollDecoderAndSanitizer {
     constructor(address _recipeMarketHub) RoycoWeirollDecoderAndSanitizer(_recipeMarketHub) {}
 }
