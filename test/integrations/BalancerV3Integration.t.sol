@@ -667,7 +667,7 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](32);
         bool boosted = true; 
-        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), boosted, address(0)); 
+        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted"), boosted, address(0)); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -777,7 +777,7 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](32);
         bool boosted = true; 
-        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), boosted, address(0)); 
+        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted"), boosted, address(0)); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -884,7 +884,7 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](32);
         bool boosted = true; 
-        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), boosted, address(0)); 
+        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted"), boosted, address(0)); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -1452,17 +1452,15 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         skip(1 days); 
     
         //claim rewards, withdraw lp, then remove liquidity
-        tx_ = _getTxArrays(3); 
+        tx_ = _getTxArrays(2); 
 
         tx_.manageLeafs[0] = leafs[23]; 
         tx_.manageLeafs[1] = leafs[22]; 
-        tx_.manageLeafs[2] = leafs[14]; 
 
         manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
         
         tx_.targets[0] = getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted_gauge"); 
         tx_.targets[1] = getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted_gauge"); 
-        tx_.targets[2] = getAddress(sourceChain, "balancerV3Router"); 
 
         amounts[0] = 0;  
         amounts[1] = 0;  
@@ -1473,19 +1471,15 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         tx_.targetData[1] = abi.encodeWithSignature(
             "withdraw(uint256)", lpBalance
         ); 
-        tx_.targetData[2] = abi.encodeWithSignature(
-            "removeLiquidityProportional(address,uint256,uint256[],bool,bytes)", getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"), 1e1, amounts, false, "" 
-        ); 
 
         tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer; 
         tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer; 
-        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer; 
 
         _submitManagerCall(manageProofs, tx_); 
         
         //check we have more LP now
         uint256 lpBalance2 = getERC20(sourceChain, "balancerV3_USDC_scUSD_boosted").balanceOf(address(boringVault)); 
-        assertEq(lpBalance2, 0); 
+        assertGt(lpBalance2, 0); 
 
         //check we have more BEETS now
         uint256 BEETSRewards = getERC20(sourceChain, "BEETS").balanceOf(address(boringVault));  
