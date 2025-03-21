@@ -4745,6 +4745,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = _pool;
 
+        if (hasEth) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "balancerV3Router"),
+                true,
+                "addLiquidityUnbalanced(address,uint256[],uint256,bool,bytes)",
+                new address[](1),
+                string.concat("Add liquidty proportional to ", pool.name(), " on BalancerV3"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = _pool;
+        }
+
         unchecked {
             leafIndex++;
         }
@@ -4758,7 +4773,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = _pool;
         //leafs[leafIndex].argumentAddresses[1] = _pool;
-
+        
+        if (hasEth) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "balancerV3Router"),
+                true,
+                "addLiquiditySingleTokenExactOut(address,address,uint256,uint256,bool,bytes)",
+                new address[](1),
+                string.concat("Add liquidty proportional to ", pool.name(), " on BalancerV3"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = _pool;
+        }
+        
         unchecked {
             leafIndex++;
         }
@@ -4767,10 +4797,25 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "addLiquidityCustom(address,uint256[],uint256,bool,bytes)",
             new address[](1),
-            string.concat("Add liquidty unbalanced to ", pool.name(), " on BalancerV3"),
+            string.concat("Add liquidty custom to ", pool.name(), " on BalancerV3"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        if (hasEth) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "balancerV3Router"),
+                true,
+                "addLiquidityCustom(address,uint256[],uint256,bool,bytes)",
+                new address[](1),
+                string.concat("Add liquidty custom to ", pool.name(), " on BalancerV3"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = _pool;
+        }
 
         unchecked {
             leafIndex++;
@@ -4780,10 +4825,25 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "removeLiquidityProportional(address,uint256,uint256[],bool,bytes)",
             new address[](1),
-            string.concat("Add liquidty unbalanced to ", pool.name(), " on BalancerV3"),
+            string.concat("Remove liquidity proportional to ", pool.name(), " on BalancerV3"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        if (hasEth) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "balancerV3Router"),
+                true,
+                "removeLiquidityProportional(address,uint256,uint256[],bool,bytes)",
+                new address[](1),
+                string.concat("Remove liquidity proportional to ", pool.name(), " on BalancerV3"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = _pool;
+        }
 
         unchecked {
             leafIndex++;
@@ -4798,6 +4858,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = _pool;
 
+        if (hasEth) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "balancerV3Router"),
+                true,
+                "removeLiquiditySingleTokenExactIn(address,uint256,address,uint256,bool,bytes)",
+                new address[](1),
+                string.concat("Remove liquidty single token exact in from ", pool.name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = _pool;
+        }
+
         unchecked {
             leafIndex++;
         }
@@ -4811,18 +4886,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = _pool;
 
-        unchecked {
-            leafIndex++;
+        if (hasEth) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "balancerV3Router"),
+                true,
+                "removeLiquiditySingleTokenExactOut(address,uint256,address,uint256,bool,bytes)",
+                new address[](1),
+                string.concat("Remove liquidty single token exact in from ", pool.name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = _pool;
         }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "balancerV3Router"),
-            false,
-            "removeLiquidityCustom(address,uint256,uint256[],bool,bytes)",
-            new address[](1),
-            string.concat("Remove Liquidity custom from ", pool.name()),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = _pool;
+
 
         unchecked {
             leafIndex++;
@@ -4836,6 +4914,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        if (hasEth) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "balancerV3Router"),
+                true,
+                "removeLiquidityCustom(address,uint256,uint256[],bool,bytes)",
+                new address[](1),
+                string.concat("Remove Liquidity custom from ", pool.name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = _pool;
+        }
 
         unchecked {
             leafIndex++;
@@ -4856,13 +4949,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
          
     }
 
-    function _addBalancerV3SwapLeafs(ManageLeaf[] memory leafs, address _pool) internal {
+    function _addBalancerV3SwapLeafs(ManageLeaf[] memory leafs, address _pool, bool hasEth) internal {
         address[] memory tokens = IVaultExplorer(getAddress(sourceChain, "balancerV3VaultExplorer")).getPoolTokens(_pool);  
 
         IBalancerV3Pool pool = IBalancerV3Pool(_pool);  
         
         //if the pool as WETH, you can use native eth and wrap it  
-        //bool hasEth = false;  
 
         //I think the router uses permit2, but will double check 
         uint256 length = tokens.length; 
@@ -4927,6 +5019,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = _pool; 
         //leafs[leafIndex].argumentAddresses[1] = tokens[0]; //token0
         //leafs[leafIndex].argumentAddresses[2] = tokens[1]; //token1...tokenN
+       
+        if (hasEth) { 
+            unchecked {
+                leafIndex++; 
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "balancerV3Router"),
+                true,
+                "swapSingleTokenExactIn(address,address,address,uint256,uint256,uint256,bool,bytes)",
+                new address[](1),
+                string.concat("Swap tokens using ", ERC20(_pool).name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = _pool; 
+        } 
 
         unchecked {
             leafIndex++; 
@@ -4942,6 +5049,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = _pool; 
         //leafs[leafIndex].argumentAddresses[1] = tokens[0]; //token0
         //leafs[leafIndex].argumentAddresses[2] = tokens[1]; //token1...tokenN
+        
+        if (hasEth) { 
+            unchecked {
+                leafIndex++; 
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "balancerV3Router"),
+                false,
+                "swapSingleTokenExactOut(address,address,address,uint256,uint256,uint256,bool,bytes)",
+                new address[](1),
+                string.concat("Swap tokens using ", ERC20(_pool).name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = _pool; 
+        }
 
     }
 
