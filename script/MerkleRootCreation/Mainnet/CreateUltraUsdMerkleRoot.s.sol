@@ -183,7 +183,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         oneInchKind[26] = SwapKind.BuyAndSell;
         oneInchAssets[27] = getAddress(sourceChain, "syrupUSDT");
         oneInchKind[27] = SwapKind.BuyAndSell;
-        oneInchAssets[28] = getAddress(sourceChain, "wstUSR");
+        oneInchAssets[28] = getAddress(sourceChain, "WSTUSR");
         oneInchKind[28] = SwapKind.BuyAndSell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
@@ -294,7 +294,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Fluid ==========================
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDC"));
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDT"));            
-        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fsUSDe"));            
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fsUSDe")); // TODO check if this should exist
 
         // ========================== Fluid Dex ========================== // TODO find + fix addresses
          {
@@ -305,10 +305,10 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
             borrowTokens[0] = getERC20(sourceChain, "USDT");
             borrowTokens[1] = getERC20(sourceChain, "USDC");
 
-            uint256 dexType = 4000;
+            uint256 dexType = 3000; // TODO check this, it would make more sense for it to be 30000
 
             _addFluidDexLeafs(
-                leafs, getAddress(sourceChain, "TODO_PLACEHOLDER"), dexType, supplyTokens, borrowTokens, false //no native ETH leaves
+                leafs, getAddress(sourceChain, "sUSDe_DEX-USDC-USDT"), dexType, supplyTokens, borrowTokens, false //no native ETH leaves
             );
         }
 
@@ -372,7 +372,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "USD0_plusPT03_USDC_915"));
 
         // ========================== Morpho Rewards ==========================
-        _addMorphoRewardMerkleClaimerLeafs(leafs, universalRewardsDistributor); // TODO find address
+        _addMorphoRewardMerkleClaimerLeafs(leafs, getAddress(sourceChain, "universalRewardsDistributor"));
 
         // ========================== Usual ==========================
         _addUsualMoneyLeafs(leafs);
@@ -497,7 +497,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Fluid ==========================
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDC"));
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDT"));            
-        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fsUSDe"));            
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fsUSDe")); // TODO check if this should exist
 
         // ========================== Fluid Dex ========================== // TODO find + fix addresses
          {
@@ -511,9 +511,12 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
             uint256 dexType = 4000;
 
             _addFluidDexLeafs(
-                leafs, getAddress(sourceChain, "TODO_PLACEHOLDER"), dexType, supplyTokens, borrowTokens, false //no native ETH leaves
+                leafs, getAddress(sourceChain, "sUSDe_DEX-USDC-USDT"), dexType, supplyTokens, borrowTokens, false //no native ETH leaves
             );
         }
+
+        // ========================== King ==========================
+        // TODO add redeem leaf
 
         // ========================== Drone Transfers ==========================
         localTokens = new ERC20[](22);
@@ -548,8 +551,17 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         localTokens[28] = getERC20("mainnet", "ELX");
         localTokens[29] = getERC20("mainnet", "KING");
         localTokens[30] = getERC20("mainnet", "EIGEN");
-        localTokens[31] = getERC20("mainnet", "pendle_sUSDe_03_26_25");
-        // TODO, complete
+        localTokens[31] = getERC20("mainnet", "pendle_sUSDe_03_26_25_sy");
+        localTokens[32] = getERC20("mainnet", "pendle_sUSDe_03_26_25_pt");
+        localTokens[33] = getERC20("mainnet", "pendle_sUSDe_03_26_25_yt");
+        localTokens[34] = getERC20("mainnet", "pendle_sUSDe_05_28_25_sy");
+        localTokens[35] = getERC20("mainnet", "pendle_sUSDe_05_28_25_pt");
+        localTokens[36] = getERC20("mainnet", "pendle_sUSDe_05_28_25_yt");
+        localTokens[37] = getERC20("mainnet", "pendle_syrupUSDC_04_23_25_sy");
+        localTokens[38] = getERC20("mainnet", "pendle_syrupUSDC_04_23_25_pt");
+        localTokens[39] = getERC20("mainnet", "pendle_syrupUSDC_04_23_25_yt");
+
+        // TODO, complete determine if all wrapped tokens should be included
 
         _addLeafsForDroneTransfers(leafs, drone, localTokens);
 
