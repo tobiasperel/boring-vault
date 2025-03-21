@@ -42,7 +42,8 @@ bartio = "${BARTIO_RPC_URL}"
 holesky = "${HOLESKY_RPC_URL}"
 
 [etherscan]
-bob = { key = "${BOBSCAN_KEY}", chain = 60808, url = "https://explorer.gobob.xyz/api?"}
+#bob = { key = "${BOBSCAN_KEY}", chain = 60808, url = "https://explorer.gobob.xyz/api?"}
+mainnet = { key = "${ETHERSCAN_KEY}", chain = 1, url = "https://api.etherscan.io/api?"}
 
 [fmt]
 FOUNDRY_FMT_LINE_LENGTH = 120

@@ -37,7 +37,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
 
     LocalVars public vars = LocalVars({
         boringVault: 0xbc0f3B23930fff9f4894914bD745ABAbA9588265,
-        rawDataDecoderAndSanitizer: address(0), // TODO: deploy decoder
+        rawDataDecoderAndSanitizer: 0xf16825bF30f31329EE374e326Dcb13aA01518b37,
         managerAddress: 0x4f81c27e750A453d6206C2d10548d6566F60886C,
         accountantAddress: 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe,
         drone: 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De,
@@ -56,7 +56,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
     });
 
     // address public boringVault = 0xbc0f3B23930fff9f4894914bD745ABAbA9588265;
-    // address public rawDataDecoderAndSanitizer = 0xfB319769c34AeAf8587F386417d984BE49088338;
+    // address public rawDataDecoderAndSanitizer = 0xf16825bF30f31329EE374e326Dcb13aA01518b37;
     // address public managerAddress = 0x4f81c27e750A453d6206C2d10548d6566F60886C;
     // address public accountantAddress = 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe;
     // address public drone = 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De;
@@ -311,7 +311,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addTellerLeafs(leafs, getAddress(sourceChain, "TACTeller"), vars.tellerAssets, false);
 
         // ========================== BalancerV3 ==========================
-        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), true, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT_gauge")); // TODO: check approvals
+        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), true, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT_gauge"));
 
         // ========================== Aura ==========================
         _addAuraLeafs(leafs, getAddress(sourceChain, "aura_USDC_GHO_USDT_gauge"));
@@ -544,7 +544,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addAllSyrupLeafs(leafs);
 
         // ========================== Euler ==========================
-        vars.subaccounts[0] = address(vars.drone); // TODO: confirm any others like this
+        vars.subaccounts[0] = address(vars.drone);
         _addEulerDepositLeafs(leafs, vars.depositVaults, vars.subaccounts);
         _addEulerBorrowLeafs(leafs, vars.borrowVaults, vars.subaccounts);
 
