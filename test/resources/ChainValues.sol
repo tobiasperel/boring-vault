@@ -254,6 +254,7 @@ contract ChainValues {
         values[mainnet]["syrupUSDC"] = 0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b.toBytes32();
         values[mainnet]["syrupUSDT"] = 0x356B8d89c1e1239Cbbb9dE4815c39A1474d5BA7D.toBytes32();
         values[mainnet]["ELX"] = 0x89A8c847f41C0dfA6c8B88638bACca8a0b777Da7.toBytes32(); 
+        values[mainnet]["FRXUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -540,9 +541,14 @@ contract ChainValues {
         values[mainnet]["USDC_RLUSD_Curve_Pool"] = 0xD001aE433f254283FeCE51d4ACcE8c53263aa186.toBytes32(); 
         values[mainnet]["USDC_RLUSD_Curve_Gauge"] = 0xFc3212Bd9Ad9A28Da6B2bd50a2918969C126894F.toBytes32(); 
         
-        //FXUSD
+        //FXUSD_USDC
         values[mainnet]["fxUSD_USDC_Curve_Pool"] = 0x5018BE882DccE5E3F2f3B0913AE2096B9b3fB61f.toBytes32();
         values[mainnet]["fxUSD_USDC_Curve_Gauge"] = 0xD7f9111D529ed8859A0d5A1DC1BA7a021b61f22A.toBytes32();
+        
+        //FXUSD_GHO
+        values[mainnet]["FXUSD_GHO_Curve_Pool"] = 0x74345504Eaea3D9408fC69Ae7EB2d14095643c5b.toBytes32(); //lp token
+        values[mainnet]["FXUSD_GHO_Curve_Gauge"] = 0xec303960CF0456aC304Af45C0aDDe34921a10Fdf.toBytes32();  
+        values[mainnet]["FXUSD_GHO_Convex_Rewards"] = 0x77e69Dc146C6044b996ad5c93D88D104Ee13F186.toBytes32(); 
         
         //WETH_PXETH
         values[mainnet]["WETH_PXETH_Curve_Pool"] = 0xC8Eb2Cf2f792F77AF0Cd9e203305a585E588179D.toBytes32();
@@ -554,6 +560,32 @@ contract ChainValues {
         values[mainnet]["STETH_PXETH_Curve_Gauge"] = 0x58215F083882A5eb7056Ac34a0fdDA9D3b5665d2.toBytes32();
         values[mainnet]["STETH_PXETH_Convex_Rewards"] = 0x633556C8413FCFd45D83656290fF8d64EE41A7c1.toBytes32();
 
+        //TBTC_EBTC
+        values[mainnet]["TBTC_EBTC_Curve_Pool"] = 0x272BF7e4Ce3308B1Fb5e54d6a1Fc32113619c401.toBytes32(); //lp token
+        values[mainnet]["TBTC_EBTC_Curve_Gauge"] = 0x48727018D010Dc2e414C5A14D588385Ae112869e.toBytes32();
+        values[mainnet]["TBTC_EBTC_Convex_Rewards"] = 0xDbd17Dc03a442D4349de988533737db3fBb5eC39.toBytes32();
+
+        //TBTC/CBBTC
+        values[mainnet]["TBTC_CBBTC_Curve_Pool"] = 0xAE6Ee608b297305AbF3EB609B81FEBbb8F6A0bb3.toBytes32(); //lp token
+        values[mainnet]["TBTC_CBBTC_Curve_Gauge"] = 0xc11B5bAD6Ef7b1BDC90c85d5498a91D7F19B5806.toBytes32(); 
+        values[mainnet]["TBTC_CBBTC_Convex_Rewards"] = 0xB683a3D855D016A1c78c3e7887812A7CAB3989B0.toBytes32(); 
+        
+        //frxUSD/FRAX
+        values[mainnet]["frxUSD_FRAX_Curve_Pool"] = 0xBBaf8B2837CBbc7146F5bC978D6F84db0BE1CAcc.toBytes32(); 
+        
+        //frxUSD/SUSDS 
+        values[mainnet]["frxUSD_SUSDS_Curve_Pool"] = 0x81A2612F6dEA269a6Dd1F6DeAb45C5424EE2c4b7.toBytes32(); 
+        values[mainnet]["frxUSD_SUSDS_Curve_Gauge"] = 0x52618C40dDBA3cBbb69F3aAA4CB26Ae649844B17.toBytes32(); 
+        values[mainnet]["frxUSD_SUSDS_Convex_Rewards"] = 0x44be1A72619eDDDccAb744eE9e1E69A0B639F85f.toBytes32(); 
+
+        //frxUSD/USDE
+        values[mainnet]["frxUSD_USDE_Curve_Pool"] = 0xdBb1d219d84eaCEFb850ee04caCf2f1830934580.toBytes32(); 
+        values[mainnet]["frxUSD_USDE_Curve_Gauge"] = 0xbD7ddCe4D5a97F102DE674Ef56823b600e843C8A.toBytes32(); 
+        values[mainnet]["frxUSD_USDE_Convex_Rewards"] = 0xb5a97cFB06f9005005a79dAA27EB44106b7ad79A.toBytes32();   
+        
+        //triBTCFi
+        values[mainnet]["triBTCFi_Curve_Pool"] = 0xabaf76590478F2fE0b396996f55F0b61101e9502.toBytes32(); 
+        values[mainnet]["triBTCFi_Curve_Gauge"] = 0x8D666daED20B502e5Cf692B101028fc0058a5d4E.toBytes32(); 
 
         values[mainnet]["ezETH_wETH_Curve_Pool"] = 0x85dE3ADd465a219EE25E04d22c39aB027cF5C12E.toBytes32();
         values[mainnet]["weETH_rswETH_Curve_Pool"] = 0x278cfB6f06B1EFc09d34fC7127d6060C61d629Db.toBytes32();
@@ -581,6 +613,9 @@ contract ChainValues {
 
         values[mainnet]["convexFX_gauge_USDC_fxUSD"] = 0xf1E141C804BA39b4a031fDF46e8c08dBa7a0df60.toBytes32(); 
         values[mainnet]["convexFX_lp_USDC_fxUSD"] = 0x5018BE882DccE5E3F2f3B0913AE2096B9b3fB61f.toBytes32(); 
+
+        values[mainnet]["convexFX_gauge_fxUSD_GHO"] = 0xf0A3ECed42Dbd8353569639c0eaa833857aA0A75.toBytes32(); 
+        values[mainnet]["convexFX_lp_fxUSD_GHO"] = 0x74345504Eaea3D9408fC69Ae7EB2d14095643c5b.toBytes32(); 
 
         values[mainnet]["ethFrxethBaseRewardPool"] = 0xbD5445402B0a287cbC77cb67B2a52e2FC635dce4.toBytes32();
         values[mainnet]["ethStethNgBaseRewardPool"] = 0x6B27D7BC63F1999D14fF9bA900069ee516669ee8.toBytes32();
@@ -679,6 +714,8 @@ contract ChainValues {
         values[mainnet]["Corn_eBTC_PT03_2025_WETH_915"] = 0x4758ddbbcb96c8d0c10f46ca260d505e32399c2dd995380a832578ee84ef2d54;
         values[mainnet]["Corn_eBTC_PT03_2025_WBTC_915"] = 0x9dd533d05afa8dfce6a2ed82219e1c1dcebb16fe7722fb5912b989ef69df487f;
         values[mainnet]["eUSDe_PT05_2025_USDC_915"] = 0x21e55c99123958ff5667f824948c97d0f64dfaa6e2848062e72bc68d200d35f9; 
+        values[mainnet]["USR_USD0_915"] = 0xcc39b6c92fd03ac608b9239618db8b80a4a2034b0450bdf47b404229571312da; 
+        values[mainnet]["USR_USDC_915"] = 0x3889dee51674c6e728f7d05f11a3407c6853e433a0e63f8febbc45887a26a475; 
 
         // MetaMorpho
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();
