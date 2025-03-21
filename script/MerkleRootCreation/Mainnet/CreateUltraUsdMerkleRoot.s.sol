@@ -86,10 +86,14 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "usualBoostedUSDC")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCcore")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCprime")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCfrontier")));
 
         // ========================== MorphoBlue ==========================
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "sUSDePT03_USDC_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "USD0_plusPT03_USDC_915"));
+
+        // ========================== Morpho Rewards ==========================
+        _addMorphoRewardMerkleClaimerLeafs(leafs, universalRewardsDistributor);
 
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT03_USDC_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "USD0_plusPT03_USDC_915"));
@@ -98,6 +102,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Elixir ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sdeUSD")));
+        _addELXClaimingLeafs(leafs);
 
         // ========================== Elixir Withdraws ==========================
         _addElixirSdeUSDWithdrawLeafs(leafs);
@@ -113,6 +118,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USDe_03_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_lvlUSD_05_28_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_slvlUSD_05_28_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_05_28_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_syrupUSDC_04_23_25"), true);
 
         // ========================== 1inch ==========================
         /*
@@ -166,6 +173,18 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         oneInchKind[21] = SwapKind.BuyAndSell;
         oneInchAssets[22] = getAddress(sourceChain, "slvlUSD");
         oneInchKind[22] = SwapKind.BuyAndSell;
+        oneInchAssets[23] = getAddress(sourceChain, "EIGEN");
+        oneInchKind[23] = SwapKind.Sell;
+        oneInchAssets[24] = getAddress(sourceChain, "KING"); // TODO: double check this should be included
+        oneInchKind[24] = SwapKind.Sell;
+        oneInchAssets[25] = getAddress(sourceChain, "ELX");
+        oneInchKind[25] = SwapKind.Sell;
+        oneInchAssets[26] = getAddress(sourceChain, "syrupUSDC");
+        oneInchKind[26] = SwapKind.BuyAndSell;
+        oneInchAssets[27] = getAddress(sourceChain, "syrupUSDT");
+        oneInchKind[27] = SwapKind.BuyAndSell;
+        oneInchAssets[28] = getAddress(sourceChain, "wstUSR");
+        oneInchKind[28] = SwapKind.BuyAndSell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
 
@@ -231,8 +250,70 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
             getAddress(sourceChain, "spectra_sdeUSD_IBT")
         );
 
+        _addSpectraLeafs(
+            leafs,
+            getAddress(sourceChain, "spectra_wstUSR_Pool"),
+            getAddress(sourceChain, "spectra_wstUSR_PT"),
+            getAddress(sourceChain, "spectra_wstUSR_YT"),
+            getAddress(sourceChain, "spectra_wstUSR_IBT")
+        );
+
         // ========================== Resolv ==========================
         _addAllResolvLeafs(leafs);
+
+        // ========================== Teller ==========================
+        ERC20[] memory tellerAssets = new ERC20[](4); 
+        tellerAssets[0] = getERC20(sourceChain, "USDT");
+        tellerAssets[1] = getERC20(sourceChain, "USDC");
+        tellerAssets[2] = getERC20(sourceChain, "DAI");
+        tellerAssets[3] = getERC20(sourceChain, "USDS");
+        _addTellerLeafs(leafs, getAddress(sourceChain, "TACTeller"), tellerAssets, false); // TODO find actual TAC teller address
+
+        // ========================== BalancerV3 ==========================
+        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), true, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT_gauge")); // TODO: check approvals
+
+        // ========================== Aura ==========================
+        // TODO: add aura leafs using a new merkle tree helper function that works like _addConvexLeafs but targets aura booster
+
+        // ========================== Syrup ==========================
+        _addAllSyrupLeafs(leafs);
+
+        // ========================== Euler ==========================
+        ERC4626[] memory depositVaults = new ERC4626[](1);
+        depositVaults[0] = ERC4626(getAddress(sourceChain, "evkeUSDC-22"));
+
+        address[] memory subaccounts = new address[](1);
+        subaccounts[0] = address(boringVault);
+
+        ERC4626[] memory borrowVaults = new ERC4626[](1); 
+        borrowVaults[0] = ERC4626(getAddress(sourceChain, "evkeUSDC-22")); 
+
+        _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+        _addEulerBorrowLeafs(leafs, borrowVaults, subaccounts);
+
+        // ========================== Fluid ==========================
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDC"));
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDT"));            
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fsUSDe"));            
+
+        // ========================== Fluid Dex ========================== // TODO find + fix addresses
+         {
+            ERC20[] memory supplyTokens = new ERC20[](1);
+            supplyTokens[0] = getERC20(sourceChain, "sUSDe");
+
+            ERC20[] memory borrowTokens = new ERC20[](2);
+            borrowTokens[0] = getERC20(sourceChain, "USDT");
+            borrowTokens[1] = getERC20(sourceChain, "USDC");
+
+            uint256 dexType = 4000;
+
+            _addFluidDexLeafs(
+                leafs, getAddress(sourceChain, "TODO_PLACEHOLDER"), dexType, supplyTokens, borrowTokens, false //no native ETH leaves
+            );
+        }
+
+        // ========================== King ==========================
+        // TODO add redeem leaf
 
         // ========================== Drone Transfers ==========================
         ERC20[] memory localTokens = new ERC20[](22);
@@ -258,6 +339,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         localTokens[19] = getERC20("mainnet", "pendle_slvlUSD_05_28_25_sy");
         localTokens[20] = getERC20("mainnet", "pendle_slvlUSD_05_28_25_pt");
         localTokens[21] = getERC20("mainnet", "pendle_slvlUSD_05_28_25_yt");
+        // TODO: complete
 
         _addLeafsForDroneTransfers(leafs, drone, localTokens);
 
@@ -280,6 +362,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "usualBoostedUSDC")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCcore")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCprime")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCfrontier")));
 
         // ========================== MorphoBlue ==========================
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "sUSDePT03_USDC_915"));
@@ -288,11 +371,15 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT03_USDC_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "USD0_plusPT03_USDC_915"));
 
+        // ========================== Morpho Rewards ==========================
+        _addMorphoRewardMerkleClaimerLeafs(leafs, universalRewardsDistributor); // TODO find address
+
         // ========================== Usual ==========================
         _addUsualMoneyLeafs(leafs);
 
         // ========================== Elixir ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sdeUSD")));
+        _addELXClaimingLeafs(leafs);
 
         // ========================== Elixir Withdraws ==========================
         _addElixirSdeUSDWithdrawLeafs(leafs);
@@ -308,6 +395,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_USDe_03_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_lvlUSD_05_28_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_slvlUSD_05_28_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_05_28_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_syrupUSDC_04_23_25"), true);
 
         // ========================== 1inch ==========================
         /*
@@ -377,8 +466,54 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
             getAddress(sourceChain, "spectra_sdeUSD_IBT")
         );
 
+        _addSpectraLeafs(
+            leafs,
+            getAddress(sourceChain, "spectra_wstUSR_Pool"),
+            getAddress(sourceChain, "spectra_wstUSR_PT"),
+            getAddress(sourceChain, "spectra_wstUSR_YT"),
+            getAddress(sourceChain, "spectra_wstUSR_IBT")
+        );
+
         // ========================== Resolv ==========================
         _addAllResolvLeafs(leafs);
+
+        // ========================== Teller ==========================
+        _addTellerLeafs(leafs, getAddress(sourceChain, "TACTeller"), tellerAssets, false);
+
+        // ========================== BalancerV3 ==========================
+        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), true, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT_gauge")); // TODO: check approvals
+
+        // ========================== Aura ==========================
+        // TODO: add aura leafs using a new merkle tree helper function that works like _addConvexLeafs but targets aura booster
+
+        // ========================== Syrup ==========================
+        _addAllSyrupLeafs(leafs);
+
+        // ========================== Euler ==========================
+        subaccounts[0] = address(drone); // TODO: confirm any others like this
+        _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+        _addEulerBorrowLeafs(leafs, borrowVaults, subaccounts);
+
+        // ========================== Fluid ==========================
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDC"));
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDT"));            
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fsUSDe"));            
+
+        // ========================== Fluid Dex ========================== // TODO find + fix addresses
+         {
+            ERC20[] memory supplyTokens = new ERC20[](1);
+            supplyTokens[0] = getERC20(sourceChain, "sUSDe");
+
+            ERC20[] memory borrowTokens = new ERC20[](2);
+            borrowTokens[0] = getERC20(sourceChain, "USDT");
+            borrowTokens[1] = getERC20(sourceChain, "USDC");
+
+            uint256 dexType = 4000;
+
+            _addFluidDexLeafs(
+                leafs, getAddress(sourceChain, "TODO_PLACEHOLDER"), dexType, supplyTokens, borrowTokens, false //no native ETH leaves
+            );
+        }
 
         // ========================== Drone Transfers ==========================
         localTokens = new ERC20[](22);
@@ -404,6 +539,17 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         localTokens[19] = getERC20("mainnet", "pendle_slvlUSD_05_28_25_sy");
         localTokens[20] = getERC20("mainnet", "pendle_slvlUSD_05_28_25_pt");
         localTokens[21] = getERC20("mainnet", "pendle_slvlUSD_05_28_25_yt");
+        localTokens[22] = getERC20("mainnet", "syrupUSDC");
+        localTokens[23] = getERC20("mainnet", "syrupUSDT");
+        localTokens[24] = getERC20("mainnet", "wstUSR");
+        localTokens[25] = getERC20("mainnet", "ETHFI");
+        localTokens[26] = getERC20("mainnet", "USR");
+        localTokens[27] = getERC20("mainnet", "GHO");
+        localTokens[28] = getERC20("mainnet", "ELX");
+        localTokens[29] = getERC20("mainnet", "KING");
+        localTokens[30] = getERC20("mainnet", "EIGEN");
+        localTokens[31] = getERC20("mainnet", "pendle_sUSDe_03_26_25");
+        // TODO, complete
 
         _addLeafsForDroneTransfers(leafs, drone, localTokens);
 
