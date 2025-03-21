@@ -91,7 +91,6 @@ contract GenericRateProvider is IRateProvider {
         );
         bytes memory result = target.functionStaticCall(callData);
 
-
         if (signed) {
             //if target func() returns an int, we get the result and then cast it to a uint256
             int256 res = abi.decode(result, (int256)); 
@@ -100,19 +99,6 @@ contract GenericRateProvider is IRateProvider {
             return uint256(res); 
         
         } else {
-
-            bytes memory callData = abi.encodeWithSelector(
-                selector,
-                staticArgument0,
-                staticArgument1,
-                staticArgument2,
-                staticArgument3,
-                staticArgument4,
-                staticArgument5,
-                staticArgument6,
-                staticArgument7
-            );
-            bytes memory result = target.functionStaticCall(callData);
 
             return abi.decode(result, (uint256));
         }
