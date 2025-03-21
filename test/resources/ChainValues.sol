@@ -142,7 +142,7 @@ contract ChainValues {
         values[mainnet]["liquidBeraBTCTeller"] = 0x07951756b68427e7554AB4c9091344cB8De1Ad5a.toBytes32();
         values[mainnet]["sBTCNTeller"] = 0xeAd024098eE05e8e975043eCc6189b49CfBe35fd.toBytes32(); 
         values[mainnet]["sonicLBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32();
-        values[mainnet]["TACTeller"] = 0x.toBytes32(); // TODO FILL
+        values[mainnet]["TACTeller"] = 0xBbf9E8718D83CF67b568bfFd9d3034BfF02A0103.toBytes32();
 
         // DeFi Ecosystem
         values[mainnet]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
@@ -846,10 +846,10 @@ contract ChainValues {
         values[mainnet]["pendle_sUSDe_05_29_25_sy"] = 0xE877B2A8a53763C8B0534a15e87da28f3aC1257e.toBytes32();
         values[mainnet]["pendle_sUSDe_05_29_25_pt"] = 0xb7de5dFCb74d25c2f21841fbd6230355C50d9308.toBytes32();
         values[mainnet]["pendle_sUSDe_05_29_25_yt"] = 0x1de6Ff19FDA7496DdC12f2161f6ad6427c52aBBe.toBytes32();
-        values[mainnet]["pendle_syrupUSDC_04_23_25"] = 0x580e40c15261f7baf18ea50f562118ae99361096.toBytes32();
-        values[mainnet]["pendle_syrupUSDC_04_23_25_sy"] = 0xc9e9c85b33e87fde85c44dbf72b4b842a071551d.toBytes32();
-        values[mainnet]["pendle_syrupUSDC_04_23_25_pt"] = 0x2beeb2c4809954e5b514a3205afbdc097eb810b4.toBytes32();
-        values[mainnet]["pendle_syrupUSDC_04_23_25_yt"] = 0x01ece02951395b7adba57ca3281c4d6a565d347e.toBytes32();
+        values[mainnet]["pendle_syrupUSDC_04_23_25"] = 0x580E40c15261F7Baf18eA50F562118aE99361096.toBytes32();
+        values[mainnet]["pendle_syrupUSDC_04_23_25_sy"] = 0xc9e9C85B33E87fde85c44DBf72b4B842A071551D.toBytes32();
+        values[mainnet]["pendle_syrupUSDC_04_23_25_pt"] = 0x2beEb2c4809954e5b514a3205afbDC097eb810B4.toBytes32();
+        values[mainnet]["pendle_syrupUSDC_04_23_25_yt"] = 0x01eCe02951395b7AdBa57cA3281C4d6a565d347e.toBytes32();
 
         // Aave V3 Core
         values[mainnet]["v3Pool"] = 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2.toBytes32();
@@ -925,7 +925,6 @@ contract ChainValues {
         values[mainnet]["fWETH"] = 0x90551c1795392094FE6D29B758EcCD233cFAa260.toBytes32();
         values[mainnet]["fWSTETH"] = 0x2411802D8BEA09be0aF8fD8D08314a63e706b29C.toBytes32();
         values[mainnet]["fGHO"] = 0x6A29A46E21C730DcA1d8b23d637c101cec605C5B.toBytes32();
-        values[mainnet]["fsUSDe"] = .toBytes32(); // TODO??
 
         // Fluid Dex
         values[mainnet]["WeETHDexUSDC-USDT"] = 0x01F0D07fdE184614216e76782c6b7dF663F5375e.toBytes32();
@@ -1178,10 +1177,10 @@ contract ChainValues {
         values[mainnet]["spectra_sdeUSD_PT"] = 0xb4B8925c4CBce692F37C9D946883f2E330a042a9.toBytes32();
         values[mainnet]["spectra_sdeUSD_YT"] = 0xE9677Bfde5830B100281178681C7e78c7d861D1C.toBytes32();
         values[mainnet]["spectra_sdeUSD_IBT"] = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326.toBytes32();
-        values[mainnet]["spectra_wstUSR_Pool"] = 0x16d050778b6599ce94993d2ff83f8da7136421a9.toBytes32();
-        values[mainnet]["spectra_wstUSR_PT"] = 0x4a977653c58cfd82d42fd706cf68a0c1b6d0ca56.toBytes32();
+        values[mainnet]["spectra_wstUSR_Pool"] = 0x16D050778B6599ce94993d2Ff83F8dA7136421A9.toBytes32();
+        values[mainnet]["spectra_wstUSR_PT"] = 0x4A977653c58CFD82d42fd706cf68A0c1B6d0ca56.toBytes32();
         values[mainnet]["spectra_wstUSR_YT"] = 0x4aA2D6c3d8c0FD28C968057DBc109ddf00a0b281.toBytes32();
-        values[mainnet]["spectra_wstUSR_IBT"] = 0x1202f5c7b4b9e47a1a484e8b270be34dbbc75055.toBytes32();
+        values[mainnet]["spectra_wstUSR_IBT"] = 0x1202F5C7b4B9E47a1A484E8B270be34dbbC75055.toBytes32();
 
         // Odos
         values[mainnet]["odosRouterV2"] = 0xCf5540fFFCdC3d510B18bFcA6d2b9987b0772559.toBytes32();
