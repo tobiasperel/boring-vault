@@ -9,13 +9,13 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateMultiChainLiquidEthMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateMultiChainLiquidEthMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL --gas-limit 100000000000000000
  */
 contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
-    address public rawDataDecoderAndSanitizer = 0xB0D19CDA2BD3035767CDb5D81cB387976De52117;
+    address public rawDataDecoderAndSanitizer = 0x2b38cF84736E4C7C47Eaa3a2d443881F807337e0;
     address public managerAddress = 0x227975088C28DBBb4b421c6d96781a53578f19a8;
     address public accountantAddress = 0x0d05D94a5F1E76C18fbeB7A13d17C8a314088198;
     address public pancakeSwapDataDecoderAndSanitizer = 0xfdC73Fc6B60e4959b71969165876213918A443Cd;
@@ -196,6 +196,9 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "wETH_weETH_05"));
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "GEAR_wETH_100"));
 
+        // ========================== Odos ==========================
+        _addOdosSwapLeafs(leafs, assets, kind); 
+
         // ========================== Curve Swapping ==========================
         _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "weETH_wETH_Pool"));
         _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "weETH_wETH_NG_Pool"));
@@ -331,22 +334,26 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Term ==========================
         {
             setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", termFinanceDecoderAndSanitizer);
-            ERC20[] memory purchaseTokens = new ERC20[](3);
+            ERC20[] memory purchaseTokens = new ERC20[](4);
             purchaseTokens[0] = getERC20(sourceChain, "WETH");
             purchaseTokens[1] = getERC20(sourceChain, "WETH");
             purchaseTokens[2] = getERC20(sourceChain, "WETH");
-            address[] memory termAuctionOfferLockerAddresses = new address[](3);
+            purchaseTokens[3] = getERC20(sourceChain, "WETH");
+            address[] memory termAuctionOfferLockerAddresses = new address[](4);
             termAuctionOfferLockerAddresses[0] = 0x8b051F8Bc836EC4B01da563dB82df9CD22CA4884;
             termAuctionOfferLockerAddresses[1] = 0x8a98076a97dc3e905b6beEb47268a92658bCf9C1;
             termAuctionOfferLockerAddresses[2] = 0x87b1ac843B0d41EeeE8BD29ad448F8C249E27350;
-            address[] memory termRepoLockers = new address[](3);
+            termAuctionOfferLockerAddresses[3] = 0x63bbB8925F5Dc5C4786fbE2B01a34Dd04672dB37;
+            address[] memory termRepoLockers = new address[](4);
             termRepoLockers[0] = 0x330e701F0523b445958f0484E6Ea3656c55932A4;
             termRepoLockers[1] = 0x46044AccFa442cDd1f4958847CC05F01a59b9610;
             termRepoLockers[2] = 0xe78a151b155115e829423055Cc9f7B1b4c63C2a6;
-            address[] memory termRepoServicers = new address[](3);
+            termRepoLockers[3] = 0x5ec96157b5c9296A6383E4Cd63B9aA61E0b2da01;
+            address[] memory termRepoServicers = new address[](4);
             termRepoServicers[0] = 0x4895958D1F170Db5fD71bcf3B2cE0dA40A0e38FF;
             termRepoServicers[1] = 0x859B4aDc287E76fe7076F6Af9bfB56e3E9253c1c;
             termRepoServicers[2] = 0xC419779ffDc0DEf108Cc26935ec4DaAC89e7ed40;
+            termRepoServicers[3] = 0xc9a1b71211455b25c93E6d7e8cC60E065F62C1a4;
             _addTermFinanceLockOfferLeafs(leafs, purchaseTokens, termAuctionOfferLockerAddresses, termRepoLockers);
             _addTermFinanceUnlockOfferLeafs(leafs, termAuctionOfferLockerAddresses);
             _addTermFinanceRevealOfferLeafs(leafs, termAuctionOfferLockerAddresses);

@@ -579,7 +579,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        //_generateTestLeafs(leafs, manageTree);
+        _generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -654,7 +654,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -706,7 +706,6 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         uint256 usdcBal = getERC20(sourceChain, "USDC").balanceOf(address(boringVault)); 
         assertGt(usdcBal, 0); 
     }
-
 
     // ========================================= HELPER FUNCTIONS =========================================
 
