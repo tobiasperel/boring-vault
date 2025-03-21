@@ -678,6 +678,7 @@ contract ChainValues {
         values[mainnet]["EBTC_USR_86"] = 0xa4577bf93e8c70d9f91b6e000ae084ae0a7a29d4ebe28cbfea24975c28dccfb5;
         values[mainnet]["Corn_eBTC_PT03_2025_WETH_915"] = 0x4758ddbbcb96c8d0c10f46ca260d505e32399c2dd995380a832578ee84ef2d54;
         values[mainnet]["Corn_eBTC_PT03_2025_WBTC_915"] = 0x9dd533d05afa8dfce6a2ed82219e1c1dcebb16fe7722fb5912b989ef69df487f;
+        values[mainnet]["eUSDe_PT05_2025_USDC_915"] = 0x21e55c99123958ff5667f824948c97d0f64dfaa6e2848062e72bc68d200d35f9; 
 
         // MetaMorpho
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();
@@ -824,6 +825,10 @@ contract ChainValues {
 
         values[mainnet]["pendle_beraSTONE_04_09_2025"] = 0x7561C5CCfe41A26B33944B58C70D6a3CB63E881c.toBytes32();
 
+        values[mainnet]["pendle_syrupUSDC_04_23_2025"] = 0x580E40c15261F7Baf18eA50F562118aE99361096.toBytes32();
+
+        values[mainnet]["pendle_eUSDe_05_28_2025"] = 0x85667e484a32d884010Cf16427D90049CCf46e97.toBytes32(); 
+
         values[mainnet]["pendle_lvlUSD_05_28_25"] = 0xE45d2CE15aBbA3c67b9fF1E7A69225C855d3DA82.toBytes32(); 
         values[mainnet]["pendle_lvlUSD_05_28_25_sy"] = 0x8b9D898327C0Ac74b946Ca3cA9FcfCBE9bc29c48.toBytes32(); 
         values[mainnet]["pendle_lvlUSD_05_28_25_pt"] = 0x9BcA74F805AB0a22DDD0886dB0942199a0feBa71.toBytes32(); 
@@ -914,6 +919,7 @@ contract ChainValues {
         values[mainnet]["weETH_ETHDex_wstETH"] = 0xb4a15526d427f4d20b0dAdaF3baB4177C85A699A.toBytes32();
         values[mainnet]["GHO_USDCDex_GHO_USDCDex"] = 0x20b32C597633f12B44CFAFe0ab27408028CA0f6A.toBytes32(); 
         values[mainnet]["LBTC_cbBTCDex_WBTC"] = 0x96B2A29823d475468eE6f15e07878adf79E8199b.toBytes32(); 
+        values[mainnet]["wBTC_cbBTCDex_wBTC_cbBTC"] = 0xDCe03288F9A109150f314ED0Ca9b59a690300d9d.toBytes32(); 
 
         // Symbiotic
         values[mainnet]["wstETHDefaultCollateral"] = 0xC329400492c6ff2438472D4651Ad17389fCb843a.toBytes32();

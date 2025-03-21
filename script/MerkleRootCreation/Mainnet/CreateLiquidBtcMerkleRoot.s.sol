@@ -40,7 +40,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](2048);
 
         // ========================== UniswapV3 ==========================
-        address[] memory token0 = new address[](16);
+        address[] memory token0 = new address[](17);
         token0[0] = getAddress(sourceChain, "WBTC");
         token0[1] = getAddress(sourceChain, "WBTC");
         token0[2] = getAddress(sourceChain, "LBTC");
@@ -64,7 +64,9 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
 
         token0[15] = getAddress(sourceChain, "WETH");
 
-        address[] memory token1 = new address[](16);
+        token0[16] = getAddress(sourceChain, "USDC");
+
+        address[] memory token1 = new address[](17);
         token1[0] = getAddress(sourceChain, "LBTC");
         token1[1] = getAddress(sourceChain, "cbBTC");
         token1[2] = getAddress(sourceChain, "cbBTC");
@@ -87,6 +89,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         token1[14] = getAddress(sourceChain, "eBTC");
 
         token1[15] = getAddress(sourceChain, "beraSTONE");
+
+        token1[16] = getAddress(sourceChain, "USR");
 
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
@@ -182,6 +186,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "Corn_eBTC_PT03_2025_WETH_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WBTC_USR_86"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "Corn_eBTC_PT03_2025_WBTC_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "eUSDe_PT05_2025_USDC_915"));
 
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USDC_86"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USDT_86"));
@@ -196,6 +201,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "Corn_eBTC_PT03_2025_WETH_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USR_86"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "Corn_eBTC_PT03_2025_WBTC_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "eUSDe_PT05_2025_USDC_915"));
 
         // ========================== MorphoRewards ==========================
         _addMorphoRewardWrapperLeafs(leafs);
@@ -213,6 +219,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_wstUSR_market_03_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_tETH_03_28_2025"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_beraSTONE_04_09_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_syrupUSDC_04_23_2025"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eUSDe_05_28_2025"), true);
 
         // ========================== Native Wrapping ==========================
         _addNativeLeafs(leafs, getAddress(sourceChain, "WETH"));
@@ -261,6 +269,40 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         //leafs, lpToken, rewardsContract
         _addConvexLeafs(leafs, getERC20(sourceChain, "WETH_PXETH_Curve_Pool"), getAddress(sourceChain, "WETH_PXETH_Convex_Rewards"));  
         _addConvexLeafs(leafs, getERC20(sourceChain, "STETH_PXETH_Curve_Pool"), getAddress(sourceChain, "STETH_PXETH_Convex_Rewards"));  
+        _addConvexLeafs(leafs, getERC20(sourceChain, ""), getAddress(sourceChain, ""); 
+
+
+        // ========================== Fluid Dex ==========================
+        {
+            uint256 dexType = 4000; 
+            ERC20[] memory supplyTokens = new ERC20[](2);    
+            supplyTokens[0] = getERC20(sourceChain, "WBTC"); 
+            supplyTokens[1] = getERC20(sourceChain, "cbBTC"); 
+
+            ERC20[] memory borrowTokens = new ERC20[](2);    
+            borrowTokens[0] = getERC20(sourceChain, "WBTC"); 
+            borrowTokens[1] = getERC20(sourceChain, "cbBTC"); 
+            _addFluidDexLeafs(
+                leafs,
+                getAddress(sourceChain, "wBTC_cbBTCDex_wBTC_cbBTC"),
+                dexType,
+                supplyTokens,
+                borrowTokens  
+            ); 
+        }
+
+        // ========================== Syrup ==========================
+        _addAllSyrupLeafs(leafs);   
+
+        // ========================== Spectra ==========================
+        _addSpectraLeafs(
+            leafs,
+            getAddress(sourceChain, "spectra_stkGHO_pool"),
+            getAddress(sourceChain, "spectra_stkGHO_PT"),
+            getAddress(sourceChain, "spectra_stkGHO_YT"),
+            getAddress(sourceChain, "spectra_stkGHO") //IBT or swToken 
+        );  
+
 
         // ========================== Verify ==========================
 
