@@ -17,6 +17,6 @@ abstract contract Permit2DecoderAndSanitizer is BaseDecoderAndSanitizer {
 
     function lockdown(DecoderCustomTypes.TokenSpenderPair[] memory approvals) external pure returns (bytes memory addressesFound) {
         if (approvals.length > 1) revert Permit2DecoderAndSanitizer__LengthGtOne(); 
-        addressesFound = abi.encodePacked(approvals.token, approvals.spender); 
+        addressesFound = abi.encodePacked(approvals[0].token, approvals[0].spender); 
     }
 }
