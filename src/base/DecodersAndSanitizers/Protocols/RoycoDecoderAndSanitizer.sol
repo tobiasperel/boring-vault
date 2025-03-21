@@ -114,6 +114,13 @@ abstract contract RoycoWeirollDecoderAndSanitizer is ERC4626DecoderAndSanitizer 
         addressesFound = abi.encodePacked(targetVault, fundingVault, addressesFound);
     }
 
+    function cancelOffer(DecoderCustomTypes.APOfferVault calldata offer) external pure virtual returns (bytes memory addressesFound) {
+        for (uint256 i = 0; i < offer.incentivesRequested.length; i++) {
+            addressesFound = abi.encodePacked(addressesFound, offer.incentivesRequested[i]);
+        }
+        addressesFound = abi.encodePacked(offer.targetVault, offer.ap, offer.fundingVault, addressesFound);
+    }
+
     // WrappedVault (other functions handled by ERC4626 decoder)
     function safeDeposit(
         uint256, /*assets*/

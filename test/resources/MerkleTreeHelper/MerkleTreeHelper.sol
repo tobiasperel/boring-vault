@@ -7407,6 +7407,24 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         for (uint256 i = 0; i < incentivesRequested.length; i++) {
             leafs[leafIndex].argumentAddresses[2 + i] = incentivesRequested[i];
         }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "vaultMarketHub"),
+            false,
+            "cancelOffer((uint256,address,address,address,uint256,address[],uint256[]))",
+            new address[](3 + incentivesRequested.length),
+            string.concat("Create AP Offer for Vault Market"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = targetVault;
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[2] = fundingVault;
+        for (uint256 i = 0; i < incentivesRequested.length; i++) {
+            leafs[leafIndex].argumentAddresses[3 + i] = incentivesRequested[i];
+        }
     }
 
     // ========================================= Resolv =========================================

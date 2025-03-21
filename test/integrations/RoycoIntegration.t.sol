@@ -76,7 +76,8 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         address asset = getAddress(sourceChain, "USDC");
         address vault = getAddress(sourceChain, "supplyUSDCAaveWrappedVault");
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 100_000e6);
-        runRoycoWeirollVaultMarketHubIntegration(asset, vault);
+        uint256 offerId = 1;
+        runRoycoWeirollVaultMarketHubIntegration(asset, vault, offerId);
     }
 
     function testRoycoWeirollRecipeMarketHubIntegration() external {
@@ -143,7 +144,8 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         address vault = getAddress(sourceChain, "originSonicWrappedVault");
         vm.prank(0x86D888C3fA8A7F67452eF2Eccc1C5EE9751Ec8d6); // account with a lot of OS
         ERC20(getAddress(sourceChain, "OS")).transfer(address(boringVault), 100_000e18);
-        runRoycoWeirollVaultMarketHubIntegration(asset, vault);
+        uint256 offerID = 0;
+        runRoycoWeirollVaultMarketHubIntegration(asset, vault, offerID); //TODO find offerId
     }
 
     function testRoycoWeirollRecipeMarketHubIntegrationSonic() external {
@@ -478,7 +480,7 @@ contract RoycoIntegrationTest is BaseTestIntegration {
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
 
-    function runRoycoWeirollVaultMarketHubIntegration(address asset, address vault) internal {
+    function runRoycoWeirollVaultMarketHubIntegration(address asset, address vault, uint256 offerId) internal {
         // we can request arbitrary assets in return for our actions
         address[] memory incentivesRequested = new address[](2);
         incentivesRequested[0] = getAddress(sourceChain, "WBTC");
@@ -495,21 +497,23 @@ contract RoycoIntegrationTest is BaseTestIntegration {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](5);
         manageLeafs[0] = leafs[0]; //approve WrappedVault
         manageLeafs[1] = leafs[1]; //safeDeposit
         manageLeafs[2] = leafs[2]; //approve VaultMarketHub
         manageLeafs[3] = leafs[3]; //createAPOffer
+        manageLeafs[4] = leafs[4]; //cancelOffer
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](4);
+        address[] memory targets = new address[](5);
         targets[0] = asset;
         targets[1] = vault;
         targets[2] = asset;
         targets[3] = getAddress(sourceChain, "vaultMarketHub");
+        targets[4] = getAddress(sourceChain, "vaultMarketHub");
 
-        bytes[] memory targetData = new bytes[](4);
+        bytes[] memory targetData = new bytes[](5);
         targetData[0] = abi.encodeWithSignature("approve(address,uint256)", vault, type(uint256).max);
         targetData[1] = abi.encodeWithSignature(
             "safeDeposit(uint256,address,uint256)",
@@ -529,14 +533,27 @@ contract RoycoIntegrationTest is BaseTestIntegration {
             incentivesRequested,
             amountsRequested
         );
+        targetData[4] = abi.encodeWithSignature(
+            "cancelOffer((uint256,address,address,address,uint256,address[],uint256[]))",
+            DecoderCustomTypes.APOfferVault(
+                offerId, // this depends on when we are forking from
+                vault, // msg.sender of createAPOffer call
+                getAddress(sourceChain, "boringVault"),
+                address(0), // funding vault
+                1773880121, // March 19 2026
+                incentivesRequested,
+                amountsRequested
+            )
+        );
 
-        address[] memory decodersAndSanitizers = new address[](4);
+        address[] memory decodersAndSanitizers = new address[](5);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
 
-        uint256[] memory values = new uint256[](4);
+        uint256[] memory values = new uint256[](5);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
