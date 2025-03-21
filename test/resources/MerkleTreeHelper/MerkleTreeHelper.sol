@@ -9943,6 +9943,32 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
         }
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "siloIncentivesController"),
+                false,
+                "claimRewards(address)",
+                new address[](1),
+                string.concat("Claim All Rewards from Silo Incentives Controller"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "siloIncentivesController"),
+                false,
+                "claimRewards(address,string[])",
+                new address[](1),
+                string.concat("Claim Rewards from market from Silo Incentives Controller"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
 
     // ========================================= LBTC Bridge =========================================
