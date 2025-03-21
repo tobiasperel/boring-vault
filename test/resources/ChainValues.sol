@@ -367,6 +367,19 @@ contract ChainValues {
         // values[mainnet]["ezETH_wETH"] = 0x596192bB6e41802428Ac943D2f1476C1Af25CC0E.toBytes32();
         // values[mainnet]["ezETH_wETH_gauge"] = 0xa8B309a75f0D64ED632d45A003c68A30e59A1D8b.toBytes32();
         // values[mainnet]["aura_ezETH_wETH"] = 0x95eC73Baa0eCF8159b4EE897D973E41f51978E50.toBytes32();
+        
+        // Balancer V3
+        values[mainnet]["balancerV3Router"] = 0x5C6fb490BDFD3246EB0bB062c168DeCAF4bD9FDd.toBytes32();
+        values[mainnet]["balancerV3Router2"] = 0xAE563E3f8219521950555F5962419C8919758Ea2.toBytes32();
+        values[mainnet]["balancerV3Vault"] = 0xbA1333333333a1BA1108E8412f11850A5C319bA9.toBytes32();
+        values[mainnet]["balancerV3VaultExplorer"] = 0x774cB66e2B2dB59A9daF175e9b2B7A142E17EB94.toBytes32();
+
+        // Balancer V3 Pools & Gauges
+        values[mainnet]["balancerV3_USDC_GHO_USDT"] = 0x85B2b559bC2D21104C4DEFdd6EFcA8A20343361D.toBytes32();
+        values[mainnet]["balancerV3_USDC_GHO_USDT_gauge"] = 0x9fdD52eFEb601E4Bc78b89C6490505B8aC637E9f.toBytes32();
+        values[mainnet]["balancerV3_WETH_WSTETH_boosted"] = 0xc4Ce391d82D164c166dF9c8336DDF84206b2F812.toBytes32();
+        values[mainnet]["balancerV3_WSTETH_TETH_stablesurge"] = 0x9ED5175aeCB6653C1BDaa19793c16fd74fBeEB37.toBytes32();
+
 
         // Linear Pools.
         values[mainnet]["bb_a_dai"] = 0x6667c6fa9f2b3Fc1Cc8D85320b62703d938E4385.toBytes32();
@@ -1152,6 +1165,9 @@ contract ChainValues {
 
         // Level
         values[mainnet]["levelMinter"] = 0x8E7046e27D14d09bdacDE9260ff7c8c2be68a41f.toBytes32();
+        
+        // Permit2 
+        values[mainnet]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32(); 
 
         // ELX Claiming
         values[mainnet]["elxTokenDistributor"] = 0xeb5D4b79e95Edb5567f3f9703FbD56a107905c0C.toBytes32();
@@ -1728,6 +1744,19 @@ contract ChainValues {
          
         // Merkl
         values[sonicMainnet]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
+
+        // Permit2
+        values[sonicMainnet]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32();
+
+        // BalancerV3
+        values[sonicMainnet]["balancerV3Router"] = 0x6077b9801B5627a65A5eeE70697C793751D1a71c.toBytes32();
+        values[sonicMainnet]["balancerV3Vault"] = 0xbA1333333333a1BA1108E8412f11850A5C319bA9.toBytes32(); 
+        values[sonicMainnet]["balancerV3VaultExplorer"] = 0x6F6CD1a69A19d45df0C300A57829b21713637300.toBytes32(); 
+
+        values[sonicMainnet]["balancerV3_USDC_scUSD_boosted"] = 0x43026d483f42fB35efe03c20B251142D022783f2.toBytes32();  
+        values[sonicMainnet]["balancerV3_USDC_scUSD_boosted_gauge"] = 0x5D9e8B588F1D9e28ea1963681180d8b5938D26BA.toBytes32();  
+        
+
     }
 
     function _addSepoliaValues() private {

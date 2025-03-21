@@ -320,6 +320,65 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
+    function _addCurveGaugeLeafs(ManageLeaf[] memory leafs, address gauge) internal {
+        address lpToken = ICurveGauge(gauge).lp_token(); 
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                lpToken,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve Curve gauge to spend ", ERC20(lpToken).name()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = gauge; 
+
+
+            // Deposit into gauge.
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                gauge,
+                false,
+                "deposit(uint256,address)",
+                new address[](1),
+                string.concat("Deposit ", ERC20(lpToken).name(), " into Curve gauge"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            // Withdraw from gauge.
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                gauge,
+                false,
+                "withdraw(uint256)",
+                new address[](0),
+                string.concat("Withdraw ", ERC20(lpToken).name(), " from Curve gauge"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+
+            // Claim rewards.
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                gauge,
+                false,
+                "claim_rewards(address)",
+                new address[](1),
+                string.concat("Claim rewards from Curve gauge"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+    }
+
     function _addConvexLeafs(ManageLeaf[] memory leafs, ERC20 token, address rewardsContract) internal {
         // Approve convexCurveMainnetBooster to spend lp tokens.
         if (
@@ -4549,6 +4608,341 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[2] = address(tokens[0]);
         leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
         leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
+    }
+
+    function _addBalancerV3Leafs(ManageLeaf[] memory leafs, address _pool, bool boosted, address gauge) internal {
+        // if it's a boosted pool, these will be wrapped YB tokens, so we will need to somehow get the underlying of those pools
+        // it appears like they are a standard ERC4626(?) compliant wrapper vault, so we can proably just check if the pool is boosted, and if it is, then we add ERC4626 leaves
+        address[] memory tokens = IVaultExplorer(getAddress(sourceChain, "balancerV3VaultExplorer")).getPoolTokens(_pool);  
+
+        IBalancerV3Pool pool = IBalancerV3Pool(_pool);  
+        
+        // NOTE: the router functions are all payable, but pool creation does not seem to support Native ETH? so it might be payable for something else, idk yet        
+        bool hasEth = false;  
+
+        //I think the router uses permit2, but will double check 
+        uint256 length = tokens.length; 
+        for (uint256 i = 0; i < length; ++i) {
+            //if ETH is not used on chain, will have to add it to `ChainValues`, but this should revert during root creation alerting us of that
+            if (tokens[i] == address(0) || tokens[i] == getAddress(sourceChain, "ETH")) {
+                hasEth = true; 
+            }
+
+            if (boosted) {
+                  try ERC4626(tokens[i]).asset() returns (ERC20 assetAddress) {
+                    if (address(assetAddress) != address(0)) {
+                        _addERC4626Leafs(leafs, ERC4626(tokens[i]));
+                    }
+                } catch {
+                    // Token doesn't implement asset() or isn't a valid ERC4626
+                    // Skip this token or handle the error as needed
+                }
+            }
+            
+
+            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][_pool]) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    address(tokens[i]),
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve Permit2 to spend ", ERC20(tokens[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2"); 
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(sourceChain, "permit2")] = true;
+            
+                //use permit2 to approve router
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "permit2"),
+                    false,
+                    "approve(address,address,uint160,uint48)",
+                    new address[](2),
+                    string.concat("Use Permit2 to approve ", pool.name(), " to spend ", ERC20(tokens[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = tokens[i]; 
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "balancerV3Router"); 
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(sourceChain, "balancerV3Router")] = true;
+            }
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "permit2"),
+                false,
+                "lockdown((address,address)[])",
+                new address[](2),
+                string.concat("Revoke approval from BalancerV3Router for ", ERC20(tokens[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = tokens[i];
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "balancerV3Router");
+
+        }
+
+        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(_pool)][getAddress(sourceChain, "permit2")]) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                address(_pool),
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve Router to spend bpt: ", ERC20(_pool).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "balancerV3Router"); 
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(_pool)][getAddress(sourceChain, "balancerV3Router")] = true;
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "addLiquidityProportional(address,uint256[],uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Add liquidty proportional to ", pool.name(), " on BalancerV3"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        if (hasEth) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "balancerV3Router"),
+                true,
+                "addLiquidityProportional(address,uint256[],uint256,bool,bytes)",
+                new address[](1),
+                string.concat("Add liquidty proportional to ", pool.name(), " on BalancerV3"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = _pool;
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "addLiquidityUnbalanced(address,uint256[],uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Add liquidty unbalanced to ", pool.name(), " on BalancerV3"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "addLiquiditySingleTokenExactOut(address,address,uint256,uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Add liquidty unbalanced to ", pool.name(), " on BalancerV3"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+        //leafs[leafIndex].argumentAddresses[1] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "addLiquidityCustom(address,uint256[],uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Add liquidty unbalanced to ", pool.name(), " on BalancerV3"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "removeLiquidityProportional(address,uint256,uint256[],bool,bytes)",
+            new address[](1),
+            string.concat("Add liquidty unbalanced to ", pool.name(), " on BalancerV3"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "removeLiquiditySingleTokenExactIn(address,uint256,address,uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Remove liquidty single token exact in from ", pool.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "removeLiquiditySingleTokenExactOut(address,uint256,address,uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Remove Liquidity single token exact out from ", pool.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "removeLiquidityCustom(address,uint256,uint256[],bool,bytes)",
+            new address[](1),
+            string.concat("Remove Liquidity custom from ", pool.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "removeLiquidityCustom(address,uint256,uint256[],bool,bytes)",
+            new address[](1),
+            string.concat("Remove Liquidity custom from ", pool.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "removeLiquidityRecovery(address,uint256,uint256[])",
+            new address[](1),
+            string.concat("Remove Liquidity in recovery mode from ", pool.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool;
+
+        if (gauge != address(0)) {
+            _addCurveGaugeLeafs(leafs, gauge); 
+        }
+         
+    }
+
+    function _addBalancerV3SwapLeafs(ManageLeaf[] memory leafs, address _pool) internal {
+        address[] memory tokens = IVaultExplorer(getAddress(sourceChain, "balancerV3VaultExplorer")).getPoolTokens(_pool);  
+
+        IBalancerV3Pool pool = IBalancerV3Pool(_pool);  
+        
+        //if the pool as WETH, you can use native eth and wrap it  
+        //bool hasEth = false;  
+
+        //I think the router uses permit2, but will double check 
+        uint256 length = tokens.length; 
+        for (uint256 i = 0; i < length; ++i) {
+
+            //unchecked {
+            //    leafIndex++; 
+            //}
+
+            //leafs[leafIndex] = ManageLeaf(
+            //    address(tokens[i]),
+            //    false,
+            //    "approve(address,uint256)",
+            //    new address[](1),
+            //    string.concat("Approve BalancerV3 Vault to spend ", ERC20(tokens[i]).symbol()),
+            //    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            //);
+            //leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "balancerV3Vault"); 
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                address(tokens[i]),
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve Permit2 to spend ", ERC20(tokens[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2"); 
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(sourceChain, "permit2")] = true;
+            
+            //use permit2 to approve router
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "permit2"),
+                false,
+                "approve(address,address,uint160,uint48)",
+                new address[](2),
+                string.concat("Use Permit2 to approve ", pool.name(), " to spend ", ERC20(tokens[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = tokens[i]; 
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "balancerV3Router"); 
+
+        }
+
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "swapSingleTokenExactIn(address,address,address,uint256,uint256,uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Swap tokens using ", ERC20(_pool).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool; 
+        //leafs[leafIndex].argumentAddresses[1] = tokens[0]; //token0
+        //leafs[leafIndex].argumentAddresses[2] = tokens[1]; //token1...tokenN
+
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "balancerV3Router"),
+            false,
+            "swapSingleTokenExactOut(address,address,address,uint256,uint256,uint256,bool,bytes)",
+            new address[](1),
+            string.concat("Swap tokens using ", ERC20(_pool).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _pool; 
+        //leafs[leafIndex].argumentAddresses[1] = tokens[0]; //token0
+        //leafs[leafIndex].argumentAddresses[2] = tokens[1]; //token1...tokenN
+
     }
 
     // ========================================= Aura =========================================
@@ -10844,4 +11238,12 @@ interface ISpectraVault {
 
 interface IConvexFXVault {
     function stakingToken() external view returns (address);
+}
+
+interface IVaultExplorer {
+    function getPoolTokens(address _pool) external view returns (address[] memory tokens); 
+}
+
+interface IBalancerV3Pool {
+    function name() external view returns (string memory);  
 }
