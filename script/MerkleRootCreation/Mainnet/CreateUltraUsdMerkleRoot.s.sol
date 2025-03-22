@@ -37,7 +37,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
 
     LocalVars public vars = LocalVars({
         boringVault: 0xbc0f3B23930fff9f4894914bD745ABAbA9588265,
-        rawDataDecoderAndSanitizer: 0xf16825bF30f31329EE374e326Dcb13aA01518b37,
+        rawDataDecoderAndSanitizer: 0xcc547695869e20F69832Bd9A4De9AF65274C2e77,
         managerAddress: 0x4f81c27e750A453d6206C2d10548d6566F60886C,
         accountantAddress: 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe,
         drone: 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De,
@@ -56,7 +56,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
     });
 
     // address public boringVault = 0xbc0f3B23930fff9f4894914bD745ABAbA9588265;
-    // address public rawDataDecoderAndSanitizer = 0xf16825bF30f31329EE374e326Dcb13aA01518b37;
+    // address public rawDataDecoderAndSanitizer = 0xcc547695869e20F69832Bd9A4De9AF65274C2e77;
     // address public managerAddress = 0x4f81c27e750A453d6206C2d10548d6566F60886C;
     // address public accountantAddress = 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe;
     // address public drone = 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De;
@@ -77,7 +77,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", vars.accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", vars.rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](4096);
+        ManageLeaf[] memory leafs = new ManageLeaf[](8192);
 
         // ========================== Fee Claiming ==========================
         //ERC20[] memory feeAssets = new ERC20[](4);
@@ -113,7 +113,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         vars.sparkLendSupplyAssets[4] = getERC20(sourceChain, "WETH");
         vars.sparkLendSupplyAssets[5] = getERC20(sourceChain, "WSTETH");
         vars.sparkLendSupplyAssets[6] = getERC20(sourceChain, "WEETH");
-        ERC20[] memory sparkLendBorrowAssets = new ERC20[](5);
+        //ERC20[] memory sparkLendBorrowAssets = new ERC20[](5);
         vars.sparkLendBorrowAssets[0] = getERC20(sourceChain, "USDC");
         vars.sparkLendBorrowAssets[1] = getERC20(sourceChain, "USDT");
         vars.sparkLendBorrowAssets[2] = getERC20(sourceChain, "DAI");
@@ -409,7 +409,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addAaveV3Leafs(leafs, vars.aaveSupplyAssets, vars.aaveBorrowAssets);
 
         // ========================== SparkLend ==========================
-        _addSparkLendLeafs(leafs, vars.sparkLendSupplyAssets, sparkLendBorrowAssets);
+        _addSparkLendLeafs(leafs, vars.sparkLendSupplyAssets, vars.sparkLendBorrowAssets);
 
         // ========================== MetaMorpho ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "usualBoostedUSDC")));

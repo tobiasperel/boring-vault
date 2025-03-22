@@ -34,6 +34,10 @@ import {LevelDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol"; 
 import {SyrupDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SyrupDecoderAndSanitizer.sol";
 import {BalancerV3DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/BalancerV3DecoderAndSanitizer.sol";
+import {ElixirClaimingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ElixirClaimingDecoderAndSanitizer.sol";
+import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
+import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol";
+import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol";
 
 contract EtherFiLiquidUsdDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -63,7 +67,11 @@ contract EtherFiLiquidUsdDecoderAndSanitizer is
     LevelDecoderAndSanitizer,
     OdosDecoderAndSanitizer,
     SyrupDecoderAndSanitizer,
-    BalancerV3DecoderAndSanitizer
+    BalancerV3DecoderAndSanitizer,
+    ElixirClaimingDecoderAndSanitizer,
+    TellerDecoderAndSanitizer,
+    FluidDexDecoderAndSanitizer,
+    EulerEVKDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
@@ -72,7 +80,20 @@ contract EtherFiLiquidUsdDecoderAndSanitizer is
 
     //============================== HANDLE FUNCTION COLLISIONS ===============================
     /**
-     * @notice BalancerV2, ERC4626, Spectra, and Curve all specify a `deposit(uint256,address)`,
+     * @notice Teller and Karak specify a `deposit(address,uint256,uint256)`,
+     *         all cases are handled the same way.
+     */
+    function deposit(address vaultOrAsset, uint256, uint256)
+        external
+        pure
+        override(TellerDecoderAndSanitizer, KarakDecoderAndSanitizer)
+        returns (bytes memory addressesFound)
+    {
+        addressesFound = abi.encodePacked(vaultOrAsset);
+    }
+    
+    /**
+     * @notice BalancerV2/3, ERC4626, Spectra, and Curve all specify a `deposit(uint256,address)`,
      *         all cases are handled the same way.
      */
     function deposit(uint256, address receiver)
