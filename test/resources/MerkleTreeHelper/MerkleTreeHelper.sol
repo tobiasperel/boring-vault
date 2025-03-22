@@ -10018,7 +10018,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         address spectraPool, //curve pool
         address PT,
         address YT,
-        address swToken //spectra wrapped erc4626
+        address swToken //spectra wrapped erc4626 or IBT
     ) internal {
         address asset = address(ERC4626(swToken).asset());
         address vaultShare;
@@ -10322,7 +10322,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "add_liquidity(uint256[2],uint256)",
             new address[](0),
-            string.concat("Exchange tokens in Spectra Pool"),
+            string.concat("Add liquidity in Spectra Pool"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
 
@@ -10334,9 +10334,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "remove_liquidity(uint256,uint256[2])",
             new address[](0),
-            string.concat("Exchange tokens in Spectra Pool"),
+            string.concat("Remove liquidity from Spectra Pool"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+
+        _addERC4626Leafs(leafs, ERC4626(swToken)); 
     }
 
 

@@ -10,7 +10,7 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateLiquidBtcMerkleRoot.s.sol:CreateLiquidBtcMerkleRoot --rpc-url $MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateLiquidBtcMerkleRoot.s.sol:CreateLiquidBtcMerkleRoot --rpc-url $MAINNET_RPC_URL --gas-limit 100000000000000000
  */
 contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
@@ -18,7 +18,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
     address public managerAddress = 0xaFa8c08bedB2eC1bbEb64A7fFa44c604e7cca68d;
     address public accountantAddress = 0xEa23aC6D7D11f6b181d6B98174D334478ADAe6b0;
-    address public rawDataDecoderAndSanitizer = 0x2f96F7AB961de5C8D1039A911a1214a9766F0321;
+    address public rawDataDecoderAndSanitizer = 0x18c5DF5DEF3d9e5c5A0d7d00901ad99d0875CfFe;
 
     function setUp() external {}
 
@@ -95,8 +95,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, false);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](29);
-        SwapKind[] memory kind = new SwapKind[](29);
+        address[] memory assets = new address[](31);
+        SwapKind[] memory kind = new SwapKind[](31);
         assets[0] = getAddress(sourceChain, "WBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
@@ -155,6 +155,10 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         kind[27] = SwapKind.BuyAndSell;
         assets[28] = getAddress(sourceChain, "syrupUSDC");
         kind[28] = SwapKind.BuyAndSell;
+        assets[29] = getAddress(sourceChain, "EUSDE");
+        kind[29] = SwapKind.BuyAndSell;
+        assets[30] = getAddress(sourceChain, "USDS");
+        kind[30] = SwapKind.BuyAndSell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
@@ -197,8 +201,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WBTC_USR_86"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "Corn_eBTC_PT03_2025_WBTC_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "eUSDe_PT05_2025_USDC_915"));
-        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "USR_USD0_915"));
-        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "USR_USDC_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "MCUSR_USD0_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "MCUSR_USDC_915"));
 
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USDC_86"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USDT_86"));
@@ -214,8 +218,8 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTC_USR_86"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "Corn_eBTC_PT03_2025_WBTC_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "eUSDe_PT05_2025_USDC_915"));
-        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "USR_USD0_915"));
-        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "USR_USDC_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "MCUSR_USD0_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "MCUSR_USDC_915"));
 
         // ========================== MorphoRewards ==========================
         _addMorphoRewardWrapperLeafs(leafs);
@@ -349,15 +353,27 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Syrup ==========================
         _addAllSyrupLeafs(leafs);   
 
+
+        // ========================== Sky Money ==========================
+        _addAllSkyMoneyLeafs(leafs); //for better swaps between stables (USDC/SUSDS) 
+
+
         // ========================== Spectra ==========================
         _addSpectraLeafs(
             leafs,
-            getAddress(sourceChain, "spectra_stkGHO_Pool"),
-            getAddress(sourceChain, "spectra_stkGHO_PT"),
-            getAddress(sourceChain, "spectra_stkGHO_YT"),
-            getAddress(sourceChain, "spectra_stkGHO") //IBT or swToken 
+            getAddress(sourceChain, "spectra_stkGHO_Pool_04_28_25"),
+            getAddress(sourceChain, "spectra_stkGHO_PT_04_28_25"),
+            getAddress(sourceChain, "spectra_stkGHO_YT_04_28_25"),
+            getAddress(sourceChain, "spectra_stkGHO_IBT_04_28_25") //IBT or swToken 
         );  
 
+        // ========================== EUSDE ==========================
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "EUSDE"))); 
+
+        // ========================== SUSDS ==========================
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "SUSDS")));
+
+        // ========================== stkGHO ==========================
 
         // ========================== Verify ==========================
 

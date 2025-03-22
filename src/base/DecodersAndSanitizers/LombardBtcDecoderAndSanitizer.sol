@@ -43,6 +43,7 @@ import {LBTCBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Prot
 import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol"; 
 import {SyrupDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SyrupDecoderAndSanitizer.sol"; 
 import {SpectraDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SpectraDecoderAndSanitizer.sol"; 
+import {SkyMoneyDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SkyMoneyDecoderAndSanitizer.sol"; 
 
 
 contract LombardBtcDecoderAndSanitizer is
@@ -78,7 +79,8 @@ contract LombardBtcDecoderAndSanitizer is
     LBTCBridgeDecoderAndSanitizer,
     FluidDexDecoderAndSanitizer,
     SyrupDecoderAndSanitizer,
-    SpectraDecoderAndSanitizer
+    SpectraDecoderAndSanitizer,
+    SkyMoneyDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager, address _poolRegistry, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
