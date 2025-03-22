@@ -335,7 +335,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Fluid Dex ==========================
          {
             ERC20[] memory supplyTokens = new ERC20[](1);
-            supplyTokens[0] = getERC20(sourceChain, "sUSDe");
+            supplyTokens[0] = getERC20(sourceChain, "SUSDE");
 
             ERC20[] memory borrowTokens = new ERC20[](2);
             borrowTokens[0] = getERC20(sourceChain, "USDT");
@@ -551,7 +551,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Fluid Dex ==========================
          {
             ERC20[] memory supplyTokens = new ERC20[](1);
-            supplyTokens[0] = getERC20(sourceChain, "sUSDe");
+            supplyTokens[0] = getERC20(sourceChain, "SUSDE");
 
             ERC20[] memory borrowTokens = new ERC20[](2);
             borrowTokens[0] = getERC20(sourceChain, "USDT");

@@ -379,7 +379,7 @@ contract ChainValues {
         // Balancer V3 Pools & Gauges
         values[mainnet]["balancerV3_USDC_GHO_USDT"] = 0x85B2b559bC2D21104C4DEFdd6EFcA8A20343361D.toBytes32();
         values[mainnet]["balancerV3_USDC_GHO_USDT_gauge"] = 0x9fdD52eFEb601E4Bc78b89C6490505B8aC637E9f.toBytes32();
-        values[mainnet]["aura_USDC_GHO_USDT_gauge"] = 0xeb12FBcb0a068720EE5F7816416a3Ebfc3090A2B.toBytes32();
+        values[mainnet]["aura_USDC_GHO_USDT_gauge"] = 0x8e89d41c563e6C3d9901ad75B75e2d8e140DEF04.toBytes32();
         values[mainnet]["balancerV3_WETH_WSTETH_boosted"] = 0xc4Ce391d82D164c166dF9c8336DDF84206b2F812.toBytes32();
         values[mainnet]["balancerV3_WSTETH_TETH_stablesurge"] = 0x9ED5175aeCB6653C1BDaa19793c16fd74fBeEB37.toBytes32();
 
@@ -688,7 +688,7 @@ contract ChainValues {
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();
         values[mainnet]["gauntletUSDCcore"] = 0x8eB67A509616cd6A7c1B3c8C21D48FF57df3d458.toBytes32();
         values[mainnet]["gauntletUSDCprime"] = 0xdd0f28e19C1780eb6396170735D45153D261490d.toBytes32();
-        values[mainnet]["gauntletUSDCfrontier"] = 0xe0a80d35bB6618CBA260120b279d357978c42BCE.toBytes32();
+        values[mainnet]["gauntletUSDCfrontier"] = 0xc582F04d8a82795aa2Ff9c8bb4c1c889fe7b754e.toBytes32();
         values[mainnet]["steakhouseUSDC"] = 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB.toBytes32();
         values[mainnet]["smokehouseUSDC"] = 0xBEeFFF209270748ddd194831b3fa287a5386f5bC.toBytes32();
         values[mainnet]["steakhouseUSDCRWA"] = 0x6D4e530B8431a52FFDA4516BA4Aadc0951897F8C.toBytes32();
@@ -841,11 +841,15 @@ contract ChainValues {
         values[mainnet]["pendle_slvlUSD_05_28_25_sy"] = 0x10222f882F3594455343Abc9831213854902eD8e.toBytes32(); 
         values[mainnet]["pendle_slvlUSD_05_28_25_pt"] = 0x4D4062bAD41E03b1cdee4C06263F96EB81832341.toBytes32(); 
         values[mainnet]["pendle_slvlUSD_05_28_25_yt"] = 0x4d74Ad0287f5A3A799659AAd542e4D9d9f31D443.toBytes32(); 
+
+        values[mainnet]["pendle_sUSDe_03_26_25_sy"] = 0x3Ee118EFC826d30A29645eAf3b2EaaC9E8320185.toBytes32();
+        values[mainnet]["pendle_sUSDe_03_26_25_pt"] = 0xE00bd3Df25fb187d6ABBB620b3dfd19839947b81.toBytes32();
+        values[mainnet]["pendle_sUSDe_03_26_25_yt"] = 0x96512230bF0Fa4E20Cf02C3e8A7d983132cd2b9F.toBytes32();
         
-        values[mainnet]["pendle_sUSDe_05_29_25"] = 0xB162B764044697cf03617C2EFbcB1f42e31E4766.toBytes32();
-        values[mainnet]["pendle_sUSDe_05_29_25_sy"] = 0xE877B2A8a53763C8B0534a15e87da28f3aC1257e.toBytes32();
-        values[mainnet]["pendle_sUSDe_05_29_25_pt"] = 0xb7de5dFCb74d25c2f21841fbd6230355C50d9308.toBytes32();
-        values[mainnet]["pendle_sUSDe_05_29_25_yt"] = 0x1de6Ff19FDA7496DdC12f2161f6ad6427c52aBBe.toBytes32();
+        values[mainnet]["pendle_sUSDe_05_28_25"] = 0xB162B764044697cf03617C2EFbcB1f42e31E4766.toBytes32();
+        values[mainnet]["pendle_sUSDe_05_28_25_sy"] = 0xE877B2A8a53763C8B0534a15e87da28f3aC1257e.toBytes32();
+        values[mainnet]["pendle_sUSDe_05_28_25_pt"] = 0xb7de5dFCb74d25c2f21841fbd6230355C50d9308.toBytes32();
+        values[mainnet]["pendle_sUSDe_05_28_25_yt"] = 0x1de6Ff19FDA7496DdC12f2161f6ad6427c52aBBe.toBytes32();
         values[mainnet]["pendle_syrupUSDC_04_23_25"] = 0x580E40c15261F7Baf18eA50F562118aE99361096.toBytes32();
         values[mainnet]["pendle_syrupUSDC_04_23_25_sy"] = 0xc9e9C85B33E87fde85c44DBf72b4B842A071551D.toBytes32();
         values[mainnet]["pendle_syrupUSDC_04_23_25_pt"] = 0x2beEb2c4809954e5b514a3205afbDC097eb810B4.toBytes32();
