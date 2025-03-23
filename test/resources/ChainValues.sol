@@ -256,6 +256,8 @@ contract ChainValues {
         values[mainnet]["syrupUSDT"] = 0x356B8d89c1e1239Cbbb9dE4815c39A1474d5BA7D.toBytes32();
         values[mainnet]["ELX"] = 0x89A8c847f41C0dfA6c8B88638bACca8a0b777Da7.toBytes32();
         values[mainnet]["KING"] = 0x8F08B70456eb22f6109F57b8fafE862ED28E6040.toBytes32();
+        values[mainnet]["rEUL"] = 0xf3e621395fc714B90dA337AA9108771597b4E696.toBytes32(); 
+        values[mainnet]["EUL"] = 0xd9Fcd98c322942075A5C3860693e9f4f03AAE07b.toBytes32(); 
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
