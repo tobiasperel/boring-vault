@@ -48,7 +48,7 @@ contract BaseTestIntegration is Test, MerkleTreeHelper {
         nameToRPC["base"] = "BASE_RPC_URL";  
         nameToRPC["arbitrum"] = "ARBITRUM_RPC_URL";  
         nameToRPC["sonicMainnet"] = "SONIC_MAINNET_RPC_URL";  
-        nameToRPC["berchain"] = "BERA_CHAIN_RPC_URL";  
+        nameToRPC["berachain"] = "BERA_CHAIN_RPC_URL";  
         nameToRPC["bsc"] = "BNB_RPC_URL"; 
         nameToRPC["swell"] = "SWELL_CHAIN_RLC_URL"; 
     }

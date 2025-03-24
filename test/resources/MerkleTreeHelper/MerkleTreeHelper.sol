@@ -9894,6 +9894,126 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[2] = borrowToken;
     }
 
+    // ========================================= BGT Reward Vault =========================================
+    function _addBGTRewardVaultLeafs(ManageLeaf[] memory leafs, address vault, address delegateStaker, address operator) internal {
+        
+        address stakingToken = IBGTRewardVault(vault).stakeToken(); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            stakingToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve BGT Reward Vault to spend: ", ERC20(stakingToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = vault; 
+
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "stake(uint256)",
+            new address[](0),
+            string.concat("Stake ", ERC20(stakingToken).symbol(), " in BGT Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "withdraw(uint256)",
+            new address[](0),
+            string.concat("Withdraw ", ERC20(stakingToken).symbol(), " from BGT Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "getReward(address,address)",
+            new address[](2),
+            string.concat("Get reward for ", ERC20(stakingToken).symbol(), " BGT Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "exit(address)",
+            new address[](1),
+            string.concat("Exit ", ERC20(stakingToken).symbol(), " BGT Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+       
+        
+        if (delegateStaker != address(0)) {
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vault,
+                false,
+                "delegateStake(address,uint256)",
+                new address[](1),
+                string.concat("Delegate stake for ", ERC20(stakingToken).symbol(), " BGT Vault to: ", vm.toString(delegateStaker)),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = delegateStaker; 
+
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vault,
+                false,
+                "delegateWithdraw(address,uint256)",
+                new address[](1),
+                string.concat("Delegate withdraw for ", ERC20(stakingToken).symbol(), " BGT Vault from: ", vm.toString(delegateStaker)),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = delegateStaker; 
+        }
+
+        if (operator != address(0)) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vault,
+                false,
+                "setOperator(address)",
+                new address[](1),
+                string.concat("Get reward for ", ERC20(stakingToken).symbol(), " BGT Vault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = operator;  
+
+        }
+    }
+
     // ========================================= Silo Finance V2 =========================================
     function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket) internal {
         (address silo0, address silo1) = ISilo(siloMarket).getSilos();
@@ -11394,4 +11514,8 @@ interface IVaultExplorer {
 
 interface IBalancerV3Pool {
     function name() external view returns (string memory);  
+}
+
+interface IBGTRewardVault {
+    function stakeToken() external view returns (address); 
 }
