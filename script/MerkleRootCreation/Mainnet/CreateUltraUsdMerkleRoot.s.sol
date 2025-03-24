@@ -9,7 +9,7 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateUltraUsdMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL --gas-limit 100000000000000000
+ *  source .env && forge script script/MerkleRootCreation/Mainnet/CreateUltraUsdMerkleRoot.s.sol --rpc-url $MAINNET_RPC_URL --gas-limit 18446744073709551615 --memory-limit 671100000
  */
 /// @dev NOTE: This script contains drone leaves. If adding new functionality, be sure to include it in drones as well. 
 contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
@@ -310,7 +310,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         vars.tellerAssets[1] = getERC20(sourceChain, "USDC");
         vars.tellerAssets[2] = getERC20(sourceChain, "DAI");
         vars.tellerAssets[3] = getERC20(sourceChain, "USDS");
-        _addTellerLeafs(leafs, getAddress(sourceChain, "TACTeller"), vars.tellerAssets, false);
+        _addTellerLeafs(leafs, getAddress(sourceChain, "TACTeller"), vars.tellerAssets, false, false); // No bulkWithdraw
+        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "TACOnChainQueue"), getAddress(sourceChain, "TACTeller"), vars.tellerAssets);
 
         // ========================== BalancerV3 ==========================
         _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), true, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT_gauge"));
@@ -335,8 +336,10 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addEulerBorrowLeafs(leafs, vars.borrowVaults, vars.subaccounts);
         // Add reward claiming
         ERC20[] memory tokensToClaim = new ERC20[](1); 
-        tokensToClaim[0] = getERC20(sourceChain, "rEUL"); 
-        _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim); // TODO check operator addr and claiming addrs
+        tokensToClaim[0] = getERC20(sourceChain, "rEUL");
+
+        // ========================== Merkl Rewards for Euler ==========================
+        _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim);
 
         // ========================== Fluid Dex ==========================
          {
@@ -540,7 +543,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addAllResolvLeafs(leafs);
 
         // ========================== Teller ==========================
-        _addTellerLeafs(leafs, getAddress(sourceChain, "TACTeller"), vars.tellerAssets, false);
+        _addTellerLeafs(leafs, getAddress(sourceChain, "TACTeller"), vars.tellerAssets, false, false); // No bulkWithdraw
+        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "TACOnChainQueue"), getAddress(sourceChain, "TACTeller"), vars.tellerAssets);
 
         // ========================== BalancerV3 ==========================
         _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), true, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT_gauge"));
@@ -555,7 +559,9 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         vars.subaccounts[0] = address(vars.drone);
         _addEulerDepositLeafs(leafs, vars.depositVaults, vars.subaccounts);
         _addEulerBorrowLeafs(leafs, vars.borrowVaults, vars.subaccounts);
-        _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim); // TODO check operator addr and claiming addrs
+
+        // ========================== Merkl Rewards for Euler ==========================
+        _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim);
 
         // ========================== Fluid Dex ==========================
          {
