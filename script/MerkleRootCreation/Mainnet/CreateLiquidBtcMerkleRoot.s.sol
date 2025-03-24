@@ -328,6 +328,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addConvexLeafs(leafs, getERC20(sourceChain, "TBTC_EBTC_Curve_Pool"), getAddress(sourceChain, "TBTC_EBTC_Convex_Rewards")); 
         _addConvexLeafs(leafs, getERC20(sourceChain, "TBTC_CBBTC_Curve_Pool"), getAddress(sourceChain, "TBTC_CBBTC_Convex_Rewards")); 
         _addConvexLeafs(leafs, getERC20(sourceChain, "frxUSD_SUSDS_Curve_Pool"), getAddress(sourceChain, "frxUSD_SUSDS_Convex_Rewards")); 
+        _addConvexLeafs(leafs, getERC20(sourceChain, "frxUSD_USDE_Curve_Pool"), getAddress(sourceChain, "frxUSD_USDE_Convex_Rewards")); 
 
 
         // ========================== Fluid Dex ==========================
