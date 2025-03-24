@@ -141,12 +141,18 @@ contract ChainValues {
         values[mainnet]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32();
         values[mainnet]["liquidBeraBTCTeller"] = 0x07951756b68427e7554AB4c9091344cB8De1Ad5a.toBytes32();
         values[mainnet]["sBTCNTeller"] = 0xeAd024098eE05e8e975043eCc6189b49CfBe35fd.toBytes32(); 
+        values[mainnet]["sonicLBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32(); 
 
         // DeFi Ecosystem
         values[mainnet]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
         values[mainnet]["uniV3Router"] = 0xE592427A0AEce92De3Edee1F18E0157C05861564.toBytes32();
         values[mainnet]["uniV2Router"] = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D.toBytes32();
         values[mainnet]["uniV2Factory"] = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f.toBytes32();
+        values[mainnet]["uniV4PoolManager"] = 0x000000000004444c5dc75cB358380D2e3dE08A90.toBytes32();
+        values[mainnet]["uniV4PositionManager"] = 0xbD216513d74C8cf14cf4747E6AaA6420FF64ee9e.toBytes32();
+        values[mainnet]["uniV4UniversalRouter"] = 0x66a9893cC07D91D95644AEDD05D03f95e1dBA8Af.toBytes32();
+        values[mainnet]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32(); 
+
 
         // ERC20s
         values[mainnet]["USDC"] = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48.toBytes32();
@@ -245,7 +251,9 @@ contract ChainValues {
         values[mainnet]["FXUSD"] = 0x085780639CC2cACd35E474e71f4d000e2405d8f6.toBytes32(); 
         values[mainnet]["FXN"] = 0x365AccFCa291e7D3914637ABf1F7635dB165Bb09.toBytes32(); 
         values[mainnet]["RLUSD"] = 0x8292Bb45bf1Ee4d140127049757C2E0fF06317eD.toBytes32(); 
-
+        values[mainnet]["syrupUSDC"] = 0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b.toBytes32();
+        values[mainnet]["syrupUSDT"] = 0x356B8d89c1e1239Cbbb9dE4815c39A1474d5BA7D.toBytes32();
+        values[mainnet]["ELX"] = 0x89A8c847f41C0dfA6c8B88638bACca8a0b777Da7.toBytes32(); 
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -359,6 +367,19 @@ contract ChainValues {
         // values[mainnet]["ezETH_wETH"] = 0x596192bB6e41802428Ac943D2f1476C1Af25CC0E.toBytes32();
         // values[mainnet]["ezETH_wETH_gauge"] = 0xa8B309a75f0D64ED632d45A003c68A30e59A1D8b.toBytes32();
         // values[mainnet]["aura_ezETH_wETH"] = 0x95eC73Baa0eCF8159b4EE897D973E41f51978E50.toBytes32();
+        
+        // Balancer V3
+        values[mainnet]["balancerV3Router"] = 0x5C6fb490BDFD3246EB0bB062c168DeCAF4bD9FDd.toBytes32();
+        values[mainnet]["balancerV3Router2"] = 0xAE563E3f8219521950555F5962419C8919758Ea2.toBytes32();
+        values[mainnet]["balancerV3Vault"] = 0xbA1333333333a1BA1108E8412f11850A5C319bA9.toBytes32();
+        values[mainnet]["balancerV3VaultExplorer"] = 0x774cB66e2B2dB59A9daF175e9b2B7A142E17EB94.toBytes32();
+
+        // Balancer V3 Pools & Gauges
+        values[mainnet]["balancerV3_USDC_GHO_USDT"] = 0x85B2b559bC2D21104C4DEFdd6EFcA8A20343361D.toBytes32();
+        values[mainnet]["balancerV3_USDC_GHO_USDT_gauge"] = 0x9fdD52eFEb601E4Bc78b89C6490505B8aC637E9f.toBytes32();
+        values[mainnet]["balancerV3_WETH_WSTETH_boosted"] = 0xc4Ce391d82D164c166dF9c8336DDF84206b2F812.toBytes32();
+        values[mainnet]["balancerV3_WSTETH_TETH_stablesurge"] = 0x9ED5175aeCB6653C1BDaa19793c16fd74fBeEB37.toBytes32();
+
 
         // Linear Pools.
         values[mainnet]["bb_a_dai"] = 0x6667c6fa9f2b3Fc1Cc8D85320b62703d938E4385.toBytes32();
@@ -577,7 +598,7 @@ contract ChainValues {
         values[mainnet]["WSTETH_WETH_500"] = 0xD340B57AAcDD10F96FC1CF10e15921936F41E29c.toBytes32();
         values[mainnet]["DAI_USDC_100"] = 0x5777d92f208679DB4b9778590Fa3CAB3aC9e2168.toBytes32();
         values[mainnet]["uniswapV3NonFungiblePositionManager"] = 0xC36442b4a4522E871399CD717aBDD847Ab11FE88.toBytes32();
-
+        
         // Redstone
         values[mainnet]["swEthAdapter"] = 0x68ba9602B2AeE30847412109D2eE89063bf08Ec2.toBytes32();
         values[mainnet]["swEthDataFeedId"] = 0x5357455448000000000000000000000000000000000000000000000000000000;
@@ -892,6 +913,7 @@ contract ChainValues {
         values[mainnet]["wBTC-cbBTCDex-USDT"] = 0xf7FA55D14C71241e3c970E30C509Ff58b5f5D557.toBytes32();
         values[mainnet]["weETH_ETHDex_wstETH"] = 0xb4a15526d427f4d20b0dAdaF3baB4177C85A699A.toBytes32();
         values[mainnet]["GHO_USDCDex_GHO_USDCDex"] = 0x20b32C597633f12B44CFAFe0ab27408028CA0f6A.toBytes32(); 
+        values[mainnet]["LBTC_cbBTCDex_WBTC"] = 0x96B2A29823d475468eE6f15e07878adf79E8199b.toBytes32(); 
 
         // Symbiotic
         values[mainnet]["wstETHDefaultCollateral"] = 0xC329400492c6ff2438472D4651Ad17389fCb843a.toBytes32();
@@ -1015,7 +1037,9 @@ contract ChainValues {
         values[mainnet]["scrollCustomERC20Gateway"] = 0x67260A8B73C5B77B55c1805218A42A7A6F98F515.toBytes32(); // sendMessage
 
         // Syrup
-        values[mainnet]["syrupRouter"] = 0x134cCaaA4F1e4552eC8aEcb9E4A2360dDcF8df76.toBytes32();
+        values[mainnet]["syrupRouter"] = 0x134cCaaA4F1e4552eC8aEcb9E4A2360dDcF8df76.toBytes32(); // keep nomenclature for compatibility
+        values[mainnet]["syrupRouterUSDC"] = 0x134cCaaA4F1e4552eC8aEcb9E4A2360dDcF8df76.toBytes32();
+        values[mainnet]["syrupRouterUSDT"] = 0xF007476Bb27430795138C511F18F821e8D1e5Ee2.toBytes32();
 
         // Satlayer
         values[mainnet]["satlayerPool"] = 0x42a856dbEBB97AbC1269EAB32f3bb40C15102819.toBytes32();
@@ -1141,6 +1165,12 @@ contract ChainValues {
 
         // Level
         values[mainnet]["levelMinter"] = 0x8E7046e27D14d09bdacDE9260ff7c8c2be68a41f.toBytes32();
+        
+        // Permit2 
+        values[mainnet]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32(); 
+
+        // ELX Claiming
+        values[mainnet]["elxTokenDistributor"] = 0xeb5D4b79e95Edb5567f3f9703FbD56a107905c0C.toBytes32();
 
     }
 
@@ -1677,6 +1707,7 @@ contract ChainValues {
 
         // Silo
         values[sonicMainnet]["siloRouter"] = 0x22AacdEc57b13911dE9f188CF69633cC537BdB76.toBytes32();
+        values[sonicMainnet]["siloIncentivesController"] = 0x2D3d269334485d2D876df7363e1A50b13220a7D8.toBytes32();
         values[sonicMainnet]["silo_stS_wS_config"] = 0x78C246f67c8A6cE03a1d894d4Cf68004Bd55Deea.toBytes32();
         values[sonicMainnet]["silo_wS_USDC_id8_config"] = 0x4915F6d3C9a7B20CedFc5d3854f2802f30311d13.toBytes32();
         values[sonicMainnet]["silo_wS_USDC_id20_config"] = 0x062A36Bbe0306c2Fd7aecdf25843291fBAB96AD2.toBytes32();
@@ -1720,6 +1751,18 @@ contract ChainValues {
         values[sonicMainnet]["recipeMarketHub"] = 0xFcc593aD3705EBcd72eC961c63eb484BE795BDbD.toBytes32();
         values[sonicMainnet]["vaultMarketHub"] = 0x1e3fCccbafDBdf3cB17b7470c8A6cC64eb5f94A2.toBytes32();
         values[sonicMainnet]["originSonicWrappedVault"] = 0x7F24390EF4F8c1a372524fF1fA3a1d79D66D86cA.toBytes32();
+
+        // Permit2
+        values[sonicMainnet]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32();
+
+        // BalancerV3
+        values[sonicMainnet]["balancerV3Router"] = 0x6077b9801B5627a65A5eeE70697C793751D1a71c.toBytes32();
+        values[sonicMainnet]["balancerV3Vault"] = 0xbA1333333333a1BA1108E8412f11850A5C319bA9.toBytes32(); 
+        values[sonicMainnet]["balancerV3VaultExplorer"] = 0x6F6CD1a69A19d45df0C300A57829b21713637300.toBytes32(); 
+
+        values[sonicMainnet]["balancerV3_USDC_scUSD_boosted"] = 0x43026d483f42fB35efe03c20B251142D022783f2.toBytes32();  
+        values[sonicMainnet]["balancerV3_USDC_scUSD_boosted_gauge"] = 0x5D9e8B588F1D9e28ea1963681180d8b5938D26BA.toBytes32();  
+        
     }
 
     function _addSepoliaValues() private {
@@ -1956,5 +1999,10 @@ contract ChainValues {
         // Standard Bridge
         values[bob]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
         values[bob]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
+
+
+        // Euler
+        values[bob]["ethereumVaultConnector"] = 0x59f0FeEc4fA474Ad4ffC357cC8d8595B68abE47d.toBytes32(); 
+        values[bob]["eulerWBTC"] = 0x11DA346d3Fdb62641BDbfebfd54b81CAA871aEf6.toBytes32();  
     }
 }
