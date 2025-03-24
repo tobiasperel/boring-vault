@@ -8281,6 +8281,134 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
 
+    function _addRoycoRecipeAPOfferLeafs(ManageLeaf[] memory leafs, address baseAsset, bytes32 targetMarketHash, address fundingVault, address[] memory incentivesRequested) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            baseAsset,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve RecipeMarketHub to spend ", ERC20(baseAsset).symbol(), " (spent when offer is filled)"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "recipeMarketHub");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "recipeMarketHub"),
+            false,
+            "createAPOffer(bytes32,address,uint256,uint256,address[],uint256[])",
+            new address[](3 + incentivesRequested.length),
+            string.concat("Create AP Offer for Recipe Market"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(bytes20(bytes16(targetMarketHash)));
+        leafs[leafIndex].argumentAddresses[1] = address(bytes20(bytes16(targetMarketHash << 128)));
+        leafs[leafIndex].argumentAddresses[2] = fundingVault;
+        for (uint256 i = 0; i < incentivesRequested.length; i++) {
+            leafs[leafIndex].argumentAddresses[3 + i] = incentivesRequested[i];
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "recipeMarketHub"),
+            false,
+            "cancelAPOffer((uint256,bytes32,address,address,uint256,uint256,address[],uint256[]))",
+            new address[](4 + incentivesRequested.length),
+            string.concat("Cancel AP Offer for Recipe Market"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(bytes20(bytes16(targetMarketHash)));
+        leafs[leafIndex].argumentAddresses[1] = address(bytes20(bytes16(targetMarketHash << 128)));
+        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); // AP address is caller of create, boringVault
+        leafs[leafIndex].argumentAddresses[3] = fundingVault;
+        for (uint256 i = 0; i < incentivesRequested.length; i++) {
+            leafs[leafIndex].argumentAddresses[4 + i] = incentivesRequested[i];
+        }
+    }
+
+    function _addRoycoVaultMarketLeafs(ManageLeaf[] memory leafs, address baseAsset, address targetVault, address fundingVault, address[] memory incentivesRequested) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            baseAsset,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Wrapped Vault to spend ", ERC20(baseAsset).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = targetVault;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            targetVault,
+            false,
+            "safeDeposit(uint256,address,uint256)",
+            new address[](1),
+            string.concat("Deposit into WrappedVault using safeDeposit"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            baseAsset,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve VaultMarketHub to spend ", ERC20(baseAsset).symbol(), " (spent when offer is filled)"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "vaultMarketHub");
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "vaultMarketHub"),
+            false,
+            "createAPOffer(address,address,uint256,uint256,address[],uint256[])",
+            new address[](2 + incentivesRequested.length),
+            string.concat("Create AP Offer for Vault Market"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = targetVault;
+        leafs[leafIndex].argumentAddresses[1] = fundingVault;
+        for (uint256 i = 0; i < incentivesRequested.length; i++) {
+            leafs[leafIndex].argumentAddresses[2 + i] = incentivesRequested[i];
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "vaultMarketHub"),
+            false,
+            "cancelOffer((uint256,address,address,address,uint256,address[],uint256[]))",
+            new address[](3 + incentivesRequested.length),
+            string.concat("Create AP Offer for Vault Market"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = targetVault;
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[2] = fundingVault;
+        for (uint256 i = 0; i < incentivesRequested.length; i++) {
+            leafs[leafIndex].argumentAddresses[3 + i] = incentivesRequested[i];
+        }
+    }
+
     // ========================================= Resolv =========================================
 
     function _addAllResolvLeafs(ManageLeaf[] memory leafs) internal {
