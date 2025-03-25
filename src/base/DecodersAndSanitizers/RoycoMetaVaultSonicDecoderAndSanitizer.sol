@@ -7,22 +7,22 @@ import {SonicGatewayDecoderAndSanitizer} from
 import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol";
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
-//import {BoringChefDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/BoringChefDecoderAndSanitizer.sol";
-// TODO: import BoringChefDecoderAndSanitizer after it is made
+import {BoringChefDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/BoringChefDecoderAndSanitizer.sol";
 
-// TODO: inherit from BoringChefDecoderAndSanitizer after it is made
 contract RoycoSonicNativeDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
     SonicGatewayDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
     OdosDecoderAndSanitizer,
-    TellerDecoderAndSanitizer
+    TellerDecoderAndSanitizer,
+    BoringChefDecoderAndSanitizer
 {
-    constructor(address _odosRouter)
+    constructor(address _odosRouter, address _boringChef)
         BaseDecoderAndSanitizer()
         SonicGatewayDecoderAndSanitizer()
         OFTDecoderAndSanitizer()
         OdosDecoderAndSanitizer(_odosRouter)
         TellerDecoderAndSanitizer()
+        BoringChefDecoderAndSanitizer(_boringChef)
     {}
 }
