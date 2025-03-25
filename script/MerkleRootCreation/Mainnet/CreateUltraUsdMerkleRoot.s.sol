@@ -311,7 +311,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         vars.tellerAssets[2] = getERC20(sourceChain, "DAI");
         vars.tellerAssets[3] = getERC20(sourceChain, "USDS");
         _addTellerLeafs(leafs, getAddress(sourceChain, "TACTeller"), vars.tellerAssets, false, false); // No bulkWithdraw
-        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "TACOnChainQueue"), getAddress(sourceChain, "TACTeller"), vars.tellerAssets);
+        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "TACOnChainQueue"), getAddress(sourceChain, "TurtleTACUSD"), vars.tellerAssets);
 
         // ========================== BalancerV3 ==========================
         _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), true, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT_gauge"));
@@ -544,7 +544,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Teller ==========================
         _addTellerLeafs(leafs, getAddress(sourceChain, "TACTeller"), vars.tellerAssets, false, false); // No bulkWithdraw
-        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "TACOnChainQueue"), getAddress(sourceChain, "TACTeller"), vars.tellerAssets);
+        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "TACOnChainQueue"), getAddress(sourceChain, "TurtleTACUSD"), vars.tellerAssets);
 
         // ========================== BalancerV3 ==========================
         _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT"), true, getAddress(sourceChain, "balancerV3_USDC_GHO_USDT_gauge"));
