@@ -562,6 +562,14 @@ contract DecoderCustomTypes {
         address[] incentivesRequested;
         uint256[] incentivesRatesRequested;
     }
+
+    struct Reward {
+        uint48 startEpoch;
+        uint48 endEpoch;
+        address token;
+        uint256 rewardRate;
+    }
+
     // ========================================= Permit2 ==================================
     
     struct TokenSpenderPair {

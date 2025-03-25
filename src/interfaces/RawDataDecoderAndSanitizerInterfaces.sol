@@ -112,3 +112,7 @@ interface IUniswapV4PositionManager {
 interface IPoolRegistry {
     function poolInfo(uint256 _pid) external view returns (address, address, address, address, uint8); 
 }
+
+interface IBoringChef {
+    function rewards(uint256 rewardId) external view returns (DecoderCustomTypes.Reward memory);
+}
