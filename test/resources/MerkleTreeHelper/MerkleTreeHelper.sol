@@ -11041,7 +11041,69 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Claim ELX Airdrop"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-    } 
+    }
+
+    // ========================================= Derive =========================================
+    
+    function _addDeriveVaultLeafs(
+        ManageLeaf[] memory leafs, 
+        address depositVault, 
+        address depositConnector,
+        address withdrawVault, 
+        address withdrawConnector,
+        address connectorPlugOnDeriveChain,
+        address deriveWalletOwnedByBoringVault
+    ) internal {
+
+        address deriveDepositToken = IDeriveVault(depositVault).token(); 
+        string memory depositName = ERC20(deriveDepositToken).name(); 
+
+        address deriveWithdrawToken = IDeriveVault(withdrawVault).token(); 
+        string memory withdrawName = ERC20(deriveDepositToken).name(); 
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            deriveDepositToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Derive ", depositName, " Deposit Vault to spend ", ERC20(deriveDepositToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = depositVault; 
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            deriveWithdrawToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Derive ", withdrawName, " Withdraw Vault to spend ", ERC20(deriveWithdrawToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = depositVault; 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            assets[i],
+            false,
+            "bridge(address,uint256,uint256,address,bytes,bytes)",  
+            new address[](4),
+            string.concat("Deposit ", ERC20(deriveDepositToken).symbol(), " into Derive ", depoistName, " Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = deriveWalletOwnedByBoringVault; 
+        leafs[leafIndex].argumentAddresses[1] = depositConnector; 
+        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[3] = connectorPlugOnDeriveChain; 
+
+    }
 
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.

@@ -1171,7 +1171,14 @@ contract ChainValues {
 
         // ELX Claiming
         values[mainnet]["elxTokenDistributor"] = 0xeb5D4b79e95Edb5567f3f9703FbD56a107905c0C.toBytes32();
-
+        
+        // Derive
+        values[mainnet]["derive_LBTC_basis_deposit"] = .toBytes32();
+        values[mainnet]["derive_LBTC_basis_deposit_connector"] = .toBytes32();
+        values[mainnet]["derive_LBTC_basis_withdraw"] = .toBytes32();
+        values[mainnet]["derive_LBTC_basis_withdraw_connector"] = .toBytes32();
+        values[mainnet][""] = .toBytes32(); 
+        values[mainnet]["derive_boringTestVault_wallet"] = .toBytes32(); 
     }
 
     function _addBaseValues() private {
