@@ -40,4 +40,21 @@ abstract contract TellerDecoderAndSanitizer is BaseDecoderAndSanitizer {
     {
         addressesFound = abi.encodePacked(asset);
     }
+
+    function cancelOnChainWithdraw(DecoderCustomTypes.OnChainWithdraw memory request)
+        external
+        pure
+        virtual
+        returns (bytes memory addressesFound)
+    {
+        addressesFound = abi.encodePacked(request.user, request.assetOut);
+    }
+
+    function replaceOnChainWithdraw(
+        DecoderCustomTypes.OnChainWithdraw memory oldRequest,
+        uint16, /*discount*/
+        uint24 /*secondsToDeadline*/
+    ) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(oldRequest.user, oldRequest.assetOut);
+    }
 }
