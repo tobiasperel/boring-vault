@@ -16,7 +16,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
     //standard
     address public boringVault = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C;
-    address public rawDataDecoderAndSanitizer = 0xEa19F0293453ab73214A93Fd69773684b5Eeb98f;
+    address public rawDataDecoderAndSanitizer = 0x3e33Ccb836281CBD37356dd066b3049b39422228;
     address public managerAddress = 0xcFF411d5C54FE0583A984beE1eF43a4776854B9A;
     address public accountantAddress = 0xc315D6e14DDCDC7407784e2Caf815d131Bc1D3E7;
 
@@ -168,11 +168,13 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addMorphoBlueSupplyLeafs(leafs, 0xe7e9694b754c4d4f7e21faf7223f6fa71abaeb10296a4c43a54a7977149687d2);
         _addMorphoBlueSupplyLeafs(leafs, 0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc);
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "syrupUSDC_USDC_915"));
 
         // Borrowing
         // Collateral sUSDePT_03_27 Borrow DAI at 91.5 LLTV
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT_03_27_DAI_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "syrupUSDC_USDC_915"));
 
         // ========================== MetaMorpho ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseUSDCRWA")));
@@ -299,8 +301,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
          * Swap PYUSD <-> FRAX
          * Swap PYUSD <-> crvUSD
          */
-        address[] memory assets = new address[](26);
-        SwapKind[] memory kind = new SwapKind[](26);
+        address[] memory assets = new address[](27);
+        SwapKind[] memory kind = new SwapKind[](27);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -353,6 +355,10 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         kind[24] = SwapKind.BuyAndSell;
         assets[25] = getAddress(sourceChain, "EUSDE"); //I don't think there are any routes for this atm?
         kind[25] = SwapKind.BuyAndSell;
+        assets[25] = getAddress(sourceChain, "ELX");
+        kind[25] = SwapKind.Sell;
+        assets[26] = getAddress(sourceChain, "syrupUSDC");
+        kind[26] = SwapKind.BuyAndSell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "PENDLE_wETH_30"));
@@ -402,6 +408,11 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Elixir Withdraws ==========================
         _addElixirSdeUSDWithdrawLeafs(leafs);
 
+        // ========================== ELX Claiming ==========================
+        _addELXClaimingLeafs(leafs); 
+
+        // ========================== Syrup ==========================
+        _addAllSyrupLeafs(leafs); 
 
         // ========================== Balancer ==========================
         _addBalancerLeafs(

@@ -32,6 +32,8 @@ import {SpectraDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoco
 import {ResolvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ResolvDecoderAndSanitizer.sol"; 
 import {LevelDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/LevelDecoderAndSanitizer.sol"; 
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol"; 
+import {ElixirClaimingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ElixirClaimingDecoderAndSanitizer.sol"; 
+import {SyrupDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SyrupDecoderAndSanitizer.sol"; 
 
 contract EtherFiLiquidUsdDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -59,7 +61,9 @@ contract EtherFiLiquidUsdDecoderAndSanitizer is
     SpectraDecoderAndSanitizer,
     ResolvDecoderAndSanitizer,
     LevelDecoderAndSanitizer,
-    OdosDecoderAndSanitizer
+    OdosDecoderAndSanitizer,
+    ElixirClaimingDecoderAndSanitizer,
+    SyrupDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
