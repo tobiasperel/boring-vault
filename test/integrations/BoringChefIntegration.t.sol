@@ -52,7 +52,7 @@ contract BoringChefIntegrationTest is Test, MerkleTreeHelper {
 
         // TODO: DELETE MOCK, replace with real BoringVault using BoringChef
         mockBoringChef = address(new MockBoringChef());
-        rawDataDecoderAndSanitizer = address(new FullBoringChefDecoderAndSanitizer(mockBoringChef));
+        rawDataDecoderAndSanitizer = address(new FullBoringChefDecoderAndSanitizer());
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -123,12 +123,12 @@ contract BoringChefIntegrationTest is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](2);
 
-        address[] memory rewardTokens = new address[](2);
-        rewardTokens[0] = getAddress(sourceChain, "BEETS");
-        rewardTokens[1] = getAddress(sourceChain, "wS");
+        // address[] memory rewardTokens = new address[](2);
+        // rewardTokens[0] = getAddress(sourceChain, "BEETS");
+        // rewardTokens[1] = getAddress(sourceChain, "wS");
 
-        _addBoringChefClaimLeaf(leafs, mockBoringChef, rewardTokens);
-        _addBoringChefClaimOnBehalfOfLeaf(leafs, mockBoringChef, rewardTokens, address(this));
+        _addBoringChefClaimLeaf(leafs, mockBoringChef);
+        _addBoringChefClaimOnBehalfOfLeaf(leafs, mockBoringChef, address(this));
 
 
         //string memory filePath = "./TestTEST.json";
@@ -178,7 +178,6 @@ contract BoringChefIntegrationTest is Test, MerkleTreeHelper {
 }
 
 contract FullBoringChefDecoderAndSanitizer is BoringChefDecoderAndSanitizer {
-    constructor(address _boringChef) BoringChefDecoderAndSanitizer(_boringChef) {}
 }
 
 // Temporary Mock Contract for test until real BoringChef is deployed
