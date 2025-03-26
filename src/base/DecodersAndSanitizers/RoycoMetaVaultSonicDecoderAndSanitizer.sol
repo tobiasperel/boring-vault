@@ -9,7 +9,7 @@ import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 import {BoringChefDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/BoringChefDecoderAndSanitizer.sol";
 
-contract RoycoSonicNativeDecoderAndSanitizer is
+contract RoycoMetaVaultSonicDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
     SonicGatewayDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
@@ -23,6 +23,6 @@ contract RoycoSonicNativeDecoderAndSanitizer is
         OFTDecoderAndSanitizer()
         OdosDecoderAndSanitizer(_odosRouter)
         TellerDecoderAndSanitizer()
-        BoringChefDecoderAndSanitizer(_boringChef)
+        BoringChefDecoderAndSanitizer()
     {}
 }

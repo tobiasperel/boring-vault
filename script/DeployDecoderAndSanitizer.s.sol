@@ -46,6 +46,9 @@ import {SonicVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Soni
 import {LBTCvBNBDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LBTCvBNBDecoderAndSanitizer.sol";
 import {LBTCvBaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LBTCvBaseDecoderAndSanitizer.sol";
 import {SonicLBTCvSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvSonicDecoderAndSanitizer.sol";
+import {RoycoMetaVaultMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoMetaVaultMainnetDecoderAndSanitizer.sol";
+import {RoycoMetaVaultSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoMetaVaultSonicDecoderAndSanitizer.sol";
+import {RoycoSonicNativeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoSonicNativeDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
