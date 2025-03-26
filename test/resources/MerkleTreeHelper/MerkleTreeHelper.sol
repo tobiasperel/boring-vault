@@ -9773,7 +9773,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Silo Finance V2 =========================================
-    function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket) internal {
+    function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket, address incentivesController) internal {
         (address silo0, address silo1) = ISilo(siloMarket).getSilos();
         address[] memory silos = new address[](2);
         silos[0] = silo0;
@@ -9948,7 +9948,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "siloIncentivesController"),
+                incentivesController,
                 false,
                 "claimRewards(address)",
                 new address[](1),
@@ -9961,7 +9961,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "siloIncentivesController"),
+                incentivesController,
                 false,
                 "claimRewards(address,string[])",
                 new address[](1),
