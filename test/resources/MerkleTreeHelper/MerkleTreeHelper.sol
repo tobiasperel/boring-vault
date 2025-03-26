@@ -11171,7 +11171,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
-    function _addBoringChefClaimLeaf(ManageLeaf[] memory leafs, address boringChef, address[] memory rewardTokens) internal {
+    function _addBoringChefClaimLeaf(ManageLeaf[] memory leafs, address boringChef) internal {
         unchecked {
             leafIndex++;
         }
@@ -11179,16 +11179,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             boringChef,
             false,
             "claimRewards(uint256[])",
-            new address[](rewardTokens.length),
+            new address[](0),
             string.concat("Claim rewards from BoringChef"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        for (uint256 i = 0; i < rewardTokens.length; i++) {
-            leafs[leafIndex].argumentAddresses[i] = rewardTokens[i];
-        }
     }
 
-    function _addBoringChefClaimOnBehalfOfLeaf(ManageLeaf[] memory leafs, address boringChef, address[] memory rewardTokens, address user) internal {
+    function _addBoringChefClaimOnBehalfOfLeaf(ManageLeaf[] memory leafs, address boringChef, address user) internal {
         unchecked {
             leafIndex++;
         }
@@ -11196,14 +11193,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             boringChef,
             false,
             "claimRewardsOnBehalfOfUser(uint256[],address)",
-            new address[](rewardTokens.length + 1),
+            new address[](1),
             string.concat("Claim rewards from BoringChef on behalf of user"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        for (uint256 i = 0; i < rewardTokens.length; i++) {
-            leafs[leafIndex].argumentAddresses[i] = rewardTokens[i];
-        }
-        leafs[leafIndex].argumentAddresses[rewardTokens.length] = user;
+        leafs[leafIndex].argumentAddresses[0] = user;
     }
 
     // ========================================= JSON FUNCTIONS =========================================
