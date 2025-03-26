@@ -41,20 +41,18 @@ contract CreateTurtleTacUSDMerkleRoot is Script, MerkleTreeHelper {
 
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](6);
-        SwapKind[] memory kind = new SwapKind[](6);
+        address[] memory assets = new address[](5);
+        SwapKind[] memory kind = new SwapKind[](5);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
         kind[1] = SwapKind.BuyAndSell;
         assets[2] = getAddress(sourceChain, "DAI");
         kind[2] = SwapKind.BuyAndSell;
-        assets[3] = getAddress(sourceChain, "sDAI");
+        assets[3] = getAddress(sourceChain, "sUSDS");
         kind[3] = SwapKind.BuyAndSell;
-        assets[4] = getAddress(sourceChain, "sUSDS");
+        assets[4] = getAddress(sourceChain, "USDS");
         kind[4] = SwapKind.BuyAndSell;
-        assets[5] = getAddress(sourceChain, "USDS");
-        kind[5] = SwapKind.BuyAndSell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 

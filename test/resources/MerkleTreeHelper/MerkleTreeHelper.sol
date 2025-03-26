@@ -10023,7 +10023,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Silo Finance V2 =========================================
-    function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket) internal {
+    function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket, address incentivesController) internal {
         (address silo0, address silo1) = ISilo(siloMarket).getSilos();
         address[] memory silos = new address[](2);
         silos[0] = silo0;
@@ -10198,7 +10198,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "siloIncentivesController"),
+                incentivesController,
                 false,
                 "claimRewards(address)",
                 new address[](1),
@@ -10211,7 +10211,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "siloIncentivesController"),
+                incentivesController,
                 false,
                 "claimRewards(address,string[])",
                 new address[](1),
@@ -11169,7 +11169,42 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Claim ELX Airdrop"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-    } 
+    }
+
+    function _addBoringChefClaimLeaf(ManageLeaf[] memory leafs, address boringChef, address[] memory rewardTokens) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            boringChef,
+            false,
+            "claimRewards(uint256[])",
+            new address[](rewardTokens.length),
+            string.concat("Claim rewards from BoringChef"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        for (uint256 i = 0; i < rewardTokens.length; i++) {
+            leafs[leafIndex].argumentAddresses[i] = rewardTokens[i];
+        }
+    }
+
+    function _addBoringChefClaimOnBehalfOfLeaf(ManageLeaf[] memory leafs, address boringChef, address[] memory rewardTokens, address user) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            boringChef,
+            false,
+            "claimRewardsOnBehalfOfUser(uint256[],address)",
+            new address[](rewardTokens.length + 1),
+            string.concat("Claim rewards from BoringChef on behalf of user"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        for (uint256 i = 0; i < rewardTokens.length; i++) {
+            leafs[leafIndex].argumentAddresses[i] = rewardTokens[i];
+        }
+        leafs[leafIndex].argumentAddresses[rewardTokens.length] = user;
+    }
 
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
