@@ -17,7 +17,7 @@ contract RoycoMetaVaultSonicDecoderAndSanitizer is
     TellerDecoderAndSanitizer,
     BoringChefDecoderAndSanitizer
 {
-    constructor(address _odosRouter, address _boringChef)
+    constructor(address _odosRouter)
         BaseDecoderAndSanitizer()
         SonicGatewayDecoderAndSanitizer()
         OFTDecoderAndSanitizer()
