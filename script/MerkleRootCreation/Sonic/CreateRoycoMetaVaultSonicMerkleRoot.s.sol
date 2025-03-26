@@ -1,5 +1,3 @@
-// TODO Create Root after decoder is updated, this script is WIP
-
 pragma solidity 0.8.21;
 
 import {FixedPointMathLib} from "@solmate/utils/FixedPointMathLib.sol";
@@ -11,15 +9,15 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Sonic/CreateRoycoMetaVaultSonicVaultMerkleRoot.s.sol:CreateRoycoMetaVaultSonicVaultMerkleRoot --rpc-url $SONIC_MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Sonic/CreateRoycoMetaVaultSonicMerkleRoot.s.sol:CreateRoycoMetaVaultSonicMerkleRoot --rpc-url $SONIC_MAINNET_RPC_URL
  */
-contract CreateRoycoMetaVaultSonicVaultMerkleRoot is Script, MerkleTreeHelper {
+contract CreateRoycoMetaVaultSonicMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
-    // TODO: Fill in the addresses
-    address public boringVault = ;
-    address public managerAddress = ;
-    address public accountantAddress = ;
-    address public rawDataDecoderAndSanitizer = ;
+
+    address public boringVault = 0x0c734D3f969F2DD73E433A277B7f2aAd9A931A7D;
+    address public managerAddress = 0x74CA0a2f29fff8F375Eb49E94430015D12879a26;
+    address public accountantAddress = 0x36Bf94F0F9005C15051625d83732F7dA25DF16E6;
+    address public rawDataDecoderAndSanitizer = 0x93a42958F931E09A03023E384b6e7927dBF93EC0;
 
     function setUp() external {}
 
@@ -38,7 +36,7 @@ contract CreateRoycoMetaVaultSonicVaultMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, sonicMainnet, "accountantAddress", accountantAddress);
         setAddress(false, sonicMainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](256);
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
 
         // ========================== SonicGateway ==========================
         address[] memory mainnetAssets = new address[](1);
@@ -47,15 +45,15 @@ contract CreateRoycoMetaVaultSonicVaultMerkleRoot is Script, MerkleTreeHelper {
         sonicAssets[0] = getAddress(sonicMainnet, "USDC");
         _addSonicGatewayLeafsSonic(leafs, mainnetAssets, sonicAssets);
 
-        // ========================== LayerZero ========================== //TODO: CHECK ADDRESSES
-        _addLayerZeroLeafs(leafs, getAddress(sonicMainnet, "USDC"), getAddress(sonicMainnet, "USDC"), getAddress(sonicMainnet, "LZENDPOINT"));
+        // ========================== LayerZero ========================== //Using Stargate USDC Pool As OFT
+        _addLayerZeroLeafs(leafs, getERC20(sonicMainnet, "USDC"), getAddress(sonicMainnet, "stargateUSDC"), layerZeroMainnetEndpointId);
 
-        // ========================== Fee Claiming ========================== //TODO: CHECK
+        // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](1);
         feeAssets[0] = getERC20(sourceChain, "USDC");
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true); //add yield claiming
 
-        // ========================== Odos ========================== //TODO: CHECK OTHER TOKENS
+        // ========================== Odos ==========================
          address[] memory tokens = new address[](1);
          SwapKind[] memory kind = new SwapKind[](1);
          tokens[0] = getAddress(sourceChain, "USDC");
@@ -64,17 +62,22 @@ contract CreateRoycoMetaVaultSonicVaultMerkleRoot is Script, MerkleTreeHelper {
          _addOdosSwapLeafs(leafs, tokens, kind);
 
         // ========================== Teller ==========================
-        address[] memory tellerTokens = new address[](1);
-        tellerTokens[0] = getAddress(sourceChain, "USDC");
-        _addTellerLeafs(leafs, tellerTokens);
+    
+        ERC20[] memory tellerTokens = new ERC20[](1);
+        tellerTokens[0] = getERC20(sourceChain, "USDC");
+
+        _addTellerLeafs(leafs, getAddress(sourceChain, "roysonicUSDCTeller"), tellerTokens, false);
         _addWithdrawQueueLeafs(
-            leafs, getAddress(sourceChain, "RoycoSonicNativeOnChainQueue"), getAddress(sourceChain, "RoycoSonicNativeVault"), tellerTokens
+            leafs, getAddress(sourceChain, "roysonicUSDCQueue"), getAddress(sourceChain, "roysonicUSDC"), tellerTokens
         );
+
+        // ========================== BoringChef ==========================
+        _addBoringChefClaimLeaf(leafs, getAddress(sourceChain, "roysonicUSDC"));
 
         // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
-        string memory filePath = "./leafs/Sonic/RoycoSonicNativeStrategistLeafs.json";
+        string memory filePath = "./leafs/Sonic/RoycoMetaVaultSonicStrategistLeafs.json";
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 

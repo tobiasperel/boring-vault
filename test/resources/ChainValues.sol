@@ -1020,6 +1020,7 @@ contract ChainValues {
         values[mainnet]["EtherFiOFTAdapter"] = 0xcd2eb13D6831d4602D80E5db9230A57596CDCA63.toBytes32();
         values[mainnet]["LBTCOFTAdapter"] = 0x6bc15D7930839Ec18A57F6f7dF72aE1B439D077f.toBytes32();
         values[mainnet]["WBTCOFTAdapter"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32();
+        values[mainnet]["stargateUSDC"] = 0xc026395860Db2d07ee33e05fE50ed7bD583189C7.toBytes32();
 
         // Merkl
         values[mainnet]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
@@ -1655,6 +1656,7 @@ contract ChainValues {
         values[sonicMainnet]["EUL"] = 0x8e15C8D399e86d4FD7B427D42f06c60cDD9397e7.toBytes32(); 
         values[sonicMainnet]["ZRO"] = address(1).toBytes32();
         values[sonicMainnet]["OS"] = 0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794.toBytes32();
+        values[sonicMainnet]["roysonicUSDC"] = 0x7C2c754D0647A7Eddd176f3c02bCb4c88bf6028A.toBytes32();
 
         values[sonicMainnet]["balancerVault"] = address(1).toBytes32();
         values[sonicMainnet]["vault"] = address(1).toBytes32();
@@ -1686,6 +1688,10 @@ contract ChainValues {
         values[sonicMainnet]["scETHTeller"] = 0x31A5A9F60Dc3d62fa5168352CaF0Ee05aA18f5B8.toBytes32();
         values[sonicMainnet]["stkscUSDTeller"] = 0x5e39021Ae7D3f6267dc7995BB5Dd15669060DAe0.toBytes32();
         values[sonicMainnet]["stkscETHTeller"] = 0x49AcEbF8f0f79e1Ecb0fd47D684DAdec81cc6562.toBytes32();
+        values[sonicMainnet]["roysonicUSDCTeller"] = 0x3Dd6187b7c91E5Ea3609EA2985e9B730C84a27ca.toBytes32();
+
+        // Queues
+        values[sonicMainnet]["roysonicUSDCQueue"] = 0x6251e3931f2764EDF80a8f57A2683c2782cB1e5D.toBytes32();
 
         // Accountant
         values[sonicMainnet]["scUSDAccountant"] = 0xA76E0F54918E39A63904b51F688513043242a0BE.toBytes32();
@@ -1696,6 +1702,7 @@ contract ChainValues {
         // Layer Zero
         values[sonicMainnet]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();
         values[sonicMainnet]["LBTC_OFT"] = 0x630e12D53D4E041b8C5451aD035Ea841E08391d7.toBytes32();
+        values[sonicMainnet]["stargateUSDC"] = 0xA272fFe20cFfe769CdFc4b63088DCD2C82a2D8F9.toBytes32();
 
         // Sonic Gateway
         values[sonicMainnet]["sonicGateway"] = 0x9Ef7629F9B930168b76283AdD7120777b3c895b3.toBytes32();

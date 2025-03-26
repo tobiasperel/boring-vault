@@ -13,11 +13,11 @@ import "forge-std/Script.sol";
  */
 contract CreateRoycoSonicNativeMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
-    // TODO: Fill in the addresses
-    address public boringVault = ;
-    address public managerAddress = ;
-    address public accountantAddress = ;
-    address public rawDataDecoderAndSanitizer = ;
+
+    address public boringVault = 0x7C2c754D0647A7Eddd176f3c02bCb4c88bf6028A;
+    address public managerAddress = 0xd982e0Bd827f4FAa8ebc026f4F21b2dF188000d9;
+    address public accountantAddress = 0xE8c8e9F8Ba80844271c5e140d73b204C0aa42e28;
+    address public rawDataDecoderAndSanitizer = 0x0E599AE5c99f00567FCA64eEE5d18eeBe23a67BF;
 
     function setUp() external {}
 
@@ -36,9 +36,9 @@ contract CreateRoycoSonicNativeMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, sonicMainnet, "accountantAddress", accountantAddress);
         setAddress(false, sonicMainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](256);
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
 
-        // ========================== Fee Claiming ========================== //TODO: CHECK
+        // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](1);
         feeAssets[0] = getERC20(sourceChain, "USDC");
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true); //add yield claiming
@@ -51,9 +51,23 @@ contract CreateRoycoSonicNativeMerkleRoot is Script, MerkleTreeHelper {
 
          _addOdosSwapLeafs(leafs, tokens, kind);
 
-        // ========================== Royco ========================== //TODO: FIX INPUTS, check if other royco functions are needed
-        _addRoycoRecipeAPOfferLeafs(leafs, getAddress(sonicMainnet, "USDC"), getAddress(sonicMainnet, "USDC"), getAddress(sonicMainnet, "RoycoStrategist"));
-        _addRoycoRecipeAPOfferLeafs(leafs, getAddress(sonicMainnet, "USDC"), getAddress(sonicMainnet, "USDC"), getAddress(sonicMainnet, "RoycoStrategist"));
+        // ========================== Royco ==========================
+        bytes32 marketHash0 = 0x7d1f2a66eabf9142dd30d1355efcbfd4cfbefd2872d24ca9855641434816a525;
+        bytes32 marketHash1 = 0x4db7f85fc602e994e4043b98abecfeda8acab06bcc186ab266a07a508c8fc92f;
+
+        address[] memory incentivesRequested0 = new address[](1);
+        incentivesRequested0[0] = 0x5e75334F4270FfE07a80b28FC831BfAb2d83706e; //RP Points Wrapper Token
+
+        address[] memory incentivesRequested1 = new address[](1);
+        incentivesRequested1[0] = 0xD152f4C29fB0db011c8a5503Aee3Ce60C44F8985; //SJP Points Wrapper Token
+        
+        _addRoycoRecipeAPOfferLeafs(leafs, getAddress(sonicMainnet, "USDC"), marketHash0, address(0), incentivesRequested0);
+        _addRoycoRecipeAPOfferLeafs(leafs, getAddress(sonicMainnet, "USDC"), marketHash1, address(0), incentivesRequested1);
+        
+        address frontendFeeRecipient = 0x169C8c63aaC6433be8fdFE4AA116286329226E0a;
+        
+        _addRoycoWeirollLeafs(leafs, getERC20(sonicMainnet, "USDC"), marketHash0, frontendFeeRecipient);
+        _addRoycoWeirollLeafs(leafs, getERC20(sonicMainnet, "USDC"), marketHash1, frontendFeeRecipient);
 
         // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
