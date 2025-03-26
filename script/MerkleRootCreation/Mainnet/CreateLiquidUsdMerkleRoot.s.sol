@@ -167,13 +167,15 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addMorphoBlueSupplyLeafs(leafs, 0x39d11026eae1c6ec02aa4c0910778664089cdd97c3fd23f68f7cd05e2e95af48);
         _addMorphoBlueSupplyLeafs(leafs, 0xe7e9694b754c4d4f7e21faf7223f6fa71abaeb10296a4c43a54a7977149687d2);
         _addMorphoBlueSupplyLeafs(leafs, 0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc);
-        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_USDC_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_DAI_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "syrupUSDC_USDC_915"));
 
         // Borrowing
         // Collateral sUSDePT_03_27 Borrow DAI at 91.5 LLTV
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT_03_27_DAI_915"));
-        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_USDC_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_DAI_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "syrupUSDC_USDC_915"));
 
         // ========================== MetaMorpho ==========================
