@@ -1748,6 +1748,11 @@ contract ChainValues {
         // Merkl
         values[sonicMainnet]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
 
+        // Royco
+        values[sonicMainnet]["recipeMarketHub"] = 0xFcc593aD3705EBcd72eC961c63eb484BE795BDbD.toBytes32();
+        values[sonicMainnet]["vaultMarketHub"] = 0x1e3fCccbafDBdf3cB17b7470c8A6cC64eb5f94A2.toBytes32();
+        values[sonicMainnet]["originSonicWrappedVault"] = 0x7F24390EF4F8c1a372524fF1fA3a1d79D66D86cA.toBytes32();
+
         // Permit2
         values[sonicMainnet]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32();
 
@@ -1759,7 +1764,6 @@ contract ChainValues {
         values[sonicMainnet]["balancerV3_USDC_scUSD_boosted"] = 0x43026d483f42fB35efe03c20B251142D022783f2.toBytes32();  
         values[sonicMainnet]["balancerV3_USDC_scUSD_boosted_gauge"] = 0x5D9e8B588F1D9e28ea1963681180d8b5938D26BA.toBytes32();  
         
-
     }
 
     function _addSepoliaValues() private {
@@ -1996,5 +2000,10 @@ contract ChainValues {
         // Standard Bridge
         values[bob]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
         values[bob]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
+
+
+        // Euler
+        values[bob]["ethereumVaultConnector"] = 0x59f0FeEc4fA474Ad4ffC357cC8d8595B68abE47d.toBytes32(); 
+        values[bob]["eulerWBTC"] = 0x11DA346d3Fdb62641BDbfebfd54b81CAA871aEf6.toBytes32();  
     }
 }
