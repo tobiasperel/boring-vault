@@ -7,7 +7,7 @@ import {SonicGatewayDecoderAndSanitizer} from
 import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol";
 
-contract RoycoMetaVaultMainnetDecoderAndSanitizer is
+contract RoyUSDCMainnetDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
     SonicGatewayDecoderAndSanitizer,
     OFTDecoderAndSanitizer,

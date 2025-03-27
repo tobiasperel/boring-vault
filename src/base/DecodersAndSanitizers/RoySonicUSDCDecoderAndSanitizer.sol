@@ -5,7 +5,7 @@ import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecode
 import {RoycoWeirollDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/RoycoDecoderAndSanitizer.sol";
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol";
 
-contract RoycoSonicNativeDecoderAndSanitizer is
+contract RoySonicUSDCDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
     RoycoWeirollDecoderAndSanitizer,
     OdosDecoderAndSanitizer

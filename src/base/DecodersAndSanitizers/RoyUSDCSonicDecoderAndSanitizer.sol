@@ -9,7 +9,7 @@ import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 import {BoringChefDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/BoringChefDecoderAndSanitizer.sol";
 
-contract RoycoMetaVaultSonicDecoderAndSanitizer is
+contract RoyUSDCSonicDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
     SonicGatewayDecoderAndSanitizer,
     OFTDecoderAndSanitizer,

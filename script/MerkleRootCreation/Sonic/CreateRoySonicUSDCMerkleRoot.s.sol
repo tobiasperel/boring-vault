@@ -9,9 +9,9 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Sonic/CreateRoycoSonicNativeMerkleRoot.s.sol:CreateRoycoSonicNativeMerkleRoot --rpc-url $SONIC_MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Sonic/CreateRoySonicUSDCMerkleRoot.s.sol:CreateRoySonicUSDCMerkleRoot --rpc-url $SONIC_MAINNET_RPC_URL
  */
-contract CreateRoycoSonicNativeMerkleRoot is Script, MerkleTreeHelper {
+contract CreateRoySonicUSDCMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0x45088fb2FfEBFDcf4dFf7b7201bfA4Cd2077c30E;
@@ -72,7 +72,7 @@ contract CreateRoycoSonicNativeMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
-        string memory filePath = "./leafs/Sonic/RoycoSonicNativeStrategistLeafs.json";
+        string memory filePath = "./leafs/Sonic/RoySonicUSDCStrategistLeafs.json";
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 

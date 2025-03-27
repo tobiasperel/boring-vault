@@ -46,9 +46,9 @@ import {SonicVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Soni
 import {LBTCvBNBDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LBTCvBNBDecoderAndSanitizer.sol";
 import {LBTCvBaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LBTCvBaseDecoderAndSanitizer.sol";
 import {SonicLBTCvSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvSonicDecoderAndSanitizer.sol";
-import {RoycoMetaVaultMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoMetaVaultMainnetDecoderAndSanitizer.sol";
-import {RoycoMetaVaultSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoMetaVaultSonicDecoderAndSanitizer.sol";
-import {RoycoSonicNativeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoSonicNativeDecoderAndSanitizer.sol";
+import {RoyUSDCMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoyUSDCMainnetDecoderAndSanitizer.sol";
+import {RoyUSDCSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoyUSDCSonicDecoderAndSanitizer.sol";
+import {RoySonicUSDCDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoySonicUSDCDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -95,9 +95,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
         //deployer.deployContract("LBTCv BNB Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
         
-        creationCode = type(RoycoMetaVaultMainnetDecoderAndSanitizer).creationCode;
+        creationCode = type(RoyUSDCMainnetDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Royco MetaVault Mainnet Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+        deployer.deployContract("Royco USDC Mainnet Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
         
         vm.stopBroadcast();
 
