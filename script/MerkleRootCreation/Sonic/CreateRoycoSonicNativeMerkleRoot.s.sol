@@ -14,9 +14,9 @@ import "forge-std/Script.sol";
 contract CreateRoycoSonicNativeMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
-    address public boringVault = 0x7C2c754D0647A7Eddd176f3c02bCb4c88bf6028A;
-    address public managerAddress = 0xd982e0Bd827f4FAa8ebc026f4F21b2dF188000d9;
-    address public accountantAddress = 0xE8c8e9F8Ba80844271c5e140d73b204C0aa42e28;
+    address public boringVault = 0x45088fb2FfEBFDcf4dFf7b7201bfA4Cd2077c30E;
+    address public managerAddress = 0x0413986C24A254191c2D3fA8F0661789DE9B073B;
+    address public accountantAddress = 0x8301294E84cA5a2644E7F3CD47A86369F1b0416e;
     address public rawDataDecoderAndSanitizer = 0x0E599AE5c99f00567FCA64eEE5d18eeBe23a67BF;
 
     function setUp() external {}
