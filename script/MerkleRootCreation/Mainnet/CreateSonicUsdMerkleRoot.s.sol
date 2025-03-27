@@ -17,7 +17,7 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE;
     address public managerAddress = 0x76fda7A02B616070D3eC5902Fa3C5683AC3cB8B6;
     address public accountantAddress = 0xA76E0F54918E39A63904b51F688513043242a0BE;
-    address public rawDataDecoderAndSanitizer = 0x2F1d20557c299Bb75401DFFB31a590d072459143;
+    address public rawDataDecoderAndSanitizer = 0x1fc7364AA98ddD2Cd0b6da61c5361703fA01C327;
 
     function setUp() external {}
 
@@ -96,8 +96,8 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, true);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](7);
-        SwapKind[] memory kind = new SwapKind[](7);
+        address[] memory assets = new address[](8);
+        SwapKind[] memory kind = new SwapKind[](8);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -112,6 +112,8 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         kind[5] = SwapKind.BuyAndSell;
         assets[6] = getAddress(sourceChain, "USDS");
         kind[6] = SwapKind.BuyAndSell;
+        assets[7] = getAddress(sourceChain, "MORPHO");
+        kind[7] = SwapKind.Sell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
@@ -140,11 +142,16 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletUSDCprime")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "usualBoostedUSDC")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "smokehouseUSDC")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseUSDT"))); 
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "smokehouseUSDT"))); 
+
+        // ========================== Morpho Rewards ==========================
+        _addMorphoRewardMerkleClaimerLeafs(leafs, getAddress(sourceChain, "universalRewardsDistributor")); 
 
         // ========================== sDAI ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sDAI")));
 
-        // ========================== sUSDs  ==========================
+        // ========================== sUSDs ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sUSDs")));
 
         // ========================== Sonic Gateway ==========================
