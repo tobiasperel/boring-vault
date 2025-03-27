@@ -1714,7 +1714,7 @@ contract ChainValues {
 
         values[sonicMainnet]["silo_wS_USDC_id8_config"] = 0x4915F6d3C9a7B20CedFc5d3854f2802f30311d13.toBytes32();
         values[sonicMainnet]["silo_wS_USDC_id8_USDC_IncentivesController"] = 0x0dd368Cd6D8869F2b21BA3Cb4fd7bA107a2e3752.toBytes32();
-        values[sonicMainnet]["silo_wS_USDC_id8_wS_IncentivesController"] = 0x0dd368Cd6D8869F2b21BA3Cb4fd7bA107a2e3752.toBytes32();
+        values[sonicMainnet]["silo_wS_USDC_id8_wS_IncentivesController"] = 0x89a10bFb6b57AD89b2270d80175914C517E547D9.toBytes32();
 
         values[sonicMainnet]["silo_wS_USDC_id20_config"] = 0x062A36Bbe0306c2Fd7aecdf25843291fBAB96AD2.toBytes32();
         values[sonicMainnet]["silo_wS_USDC_id20_USDC_IncentivesController"] = 0x2D3d269334485d2D876df7363e1A50b13220a7D8.toBytes32();

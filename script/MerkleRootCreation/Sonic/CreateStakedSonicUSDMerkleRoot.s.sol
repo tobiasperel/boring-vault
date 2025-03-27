@@ -83,9 +83,9 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         tokens[5] = getAddress(sourceChain, "BEETSFRAGMENTSS1"); 
         kind[5] = SwapKind.Sell; 
         tokens[6] = getAddress(sourceChain, "CRV"); 
-        kind[6] = SwapKind.BuyAndSell; 
+        kind[6] = SwapKind.Sell; 
         tokens[7] = getAddress(sourceChain, "WETH"); 
-        kind[7] = SwapKind.BuyAndSell; 
+        kind[7] = SwapKind.Sell; 
         tokens[8] = getAddress(sourceChain, "SILO"); 
         kind[8] = SwapKind.Sell; 
 
