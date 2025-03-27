@@ -1656,7 +1656,7 @@ contract ChainValues {
         values[sonicMainnet]["EUL"] = 0x8e15C8D399e86d4FD7B427D42f06c60cDD9397e7.toBytes32(); 
         values[sonicMainnet]["ZRO"] = address(1).toBytes32();
         values[sonicMainnet]["OS"] = 0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794.toBytes32();
-        values[sonicMainnet]["roysonicUSDC"] = 0x7C2c754D0647A7Eddd176f3c02bCb4c88bf6028A.toBytes32();
+        values[sonicMainnet]["roysonicUSDC"] = 0x45088fb2FfEBFDcf4dFf7b7201bfA4Cd2077c30E.toBytes32();
 
         values[sonicMainnet]["balancerVault"] = address(1).toBytes32();
         values[sonicMainnet]["vault"] = address(1).toBytes32();
@@ -1688,10 +1688,10 @@ contract ChainValues {
         values[sonicMainnet]["scETHTeller"] = 0x31A5A9F60Dc3d62fa5168352CaF0Ee05aA18f5B8.toBytes32();
         values[sonicMainnet]["stkscUSDTeller"] = 0x5e39021Ae7D3f6267dc7995BB5Dd15669060DAe0.toBytes32();
         values[sonicMainnet]["stkscETHTeller"] = 0x49AcEbF8f0f79e1Ecb0fd47D684DAdec81cc6562.toBytes32();
-        values[sonicMainnet]["roysonicUSDCTeller"] = 0x3Dd6187b7c91E5Ea3609EA2985e9B730C84a27ca.toBytes32();
+        values[sonicMainnet]["roysonicUSDCTeller"] = 0x0F75c8176d4eBDff78d9a0c486B35d8F94b00A42.toBytes32();
 
         // Queues
-        values[sonicMainnet]["roysonicUSDCQueue"] = 0x6251e3931f2764EDF80a8f57A2683c2782cB1e5D.toBytes32();
+        values[sonicMainnet]["roysonicUSDCQueue"] = 0xd0885A285f9a00aa2d9734d2D26be1186f850E38.toBytes32();
 
         // Accountant
         values[sonicMainnet]["scUSDAccountant"] = 0xA76E0F54918E39A63904b51F688513043242a0BE.toBytes32();
