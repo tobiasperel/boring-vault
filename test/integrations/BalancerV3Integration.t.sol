@@ -260,13 +260,12 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         tx_.manageLeafs[6] = leafs[24]; //use permit2 to approve router
 
         tx_.manageLeafs[7] = leafs[25]; //addLiqProportional
-        tx_.manageLeafs[8] = leafs[35]; //approve gauge lp
-        tx_.manageLeafs[9] = leafs[36]; //deposit gauge lp
+        tx_.manageLeafs[8] = leafs[34]; //approve gauge lp
+        tx_.manageLeafs[9] = leafs[35]; //deposit gauge lp
 
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
 
-        //address[] memory targets = new address[](7);
         tx_.targets[0] = waETHUSDC; //approve 
         tx_.targets[1] = getAddress(sourceChain, "permit2"); //permit2 approves router
         tx_.targets[2] = waETHUSDT; //approve 
@@ -341,8 +340,8 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         //claim rewards, withdraw lp, then remove liquidity
         tx_ = _getTxArrays(3); 
 
-        tx_.manageLeafs[0] = leafs[38]; 
-        tx_.manageLeafs[1] = leafs[37]; 
+        tx_.manageLeafs[0] = leafs[37]; 
+        tx_.manageLeafs[1] = leafs[36]; 
         tx_.manageLeafs[2] = leafs[29]; 
 
         manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
@@ -418,8 +417,8 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         tx_.manageLeafs[12] = leafs[24]; //use permit2 to approve router
 
         tx_.manageLeafs[13] = leafs[25]; //addLiqProportional
-        tx_.manageLeafs[14] = leafs[35]; //approve gauge lp
-        tx_.manageLeafs[15] = leafs[36]; //deposit gauge lp
+        tx_.manageLeafs[14] = leafs[34]; //approve gauge lp
+        tx_.manageLeafs[15] = leafs[35]; //deposit gauge lp
 
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
@@ -533,8 +532,8 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         //claim rewards, withdraw lp, then remove liquidity, then withdraw into USDT, GHO, USDC
         tx_ = _getTxArrays(6); 
 
-        tx_.manageLeafs[0] = leafs[38]; 
-        tx_.manageLeafs[1] = leafs[37]; 
+        tx_.manageLeafs[0] = leafs[37]; 
+        tx_.manageLeafs[1] = leafs[36]; 
         tx_.manageLeafs[2] = leafs[29]; 
 
         tx_.manageLeafs[3] = leafs[2]; 
@@ -1051,7 +1050,7 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         
         //swapping assumes you already have the necessary tokens to swap into the pool
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addBalancerV3SwapLeafs(leafs, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted")); 
+        _addBalancerV3SwapLeafs(leafs, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted"), false); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -1125,7 +1124,7 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         
         //swapping assumes you already have the necessary tokens to swap into the pool
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addBalancerV3SwapLeafs(leafs, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted")); 
+        _addBalancerV3SwapLeafs(leafs, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted"), false); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -1433,15 +1432,15 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
 
         Tx memory tx_ = _getTxArrays(8); 
 
-        tx_.manageLeafs[0] = leafs[5]; //approve permit2 USDC
+        tx_.manageLeafs[0] = leafs[5]; //approve permit2 USDCe
         tx_.manageLeafs[1] = leafs[6]; //use permit2 to approve router
-        tx_.manageLeafs[2] = leafs[8]; //approve permit2 USDT
+        tx_.manageLeafs[2] = leafs[8]; //approve permit2 scUSD
         tx_.manageLeafs[3] = leafs[9]; //use permit2 to approve router
-        tx_.manageLeafs[4] = leafs[11]; //approve permit2 GHO
+        tx_.manageLeafs[4] = leafs[11]; //approve bpt
 
         tx_.manageLeafs[5] = leafs[13]; //addLiqUnbalanced
-        tx_.manageLeafs[6] = leafs[22]; //approve gauge lp
-        tx_.manageLeafs[7] = leafs[23]; //deposit gauge lp
+        tx_.manageLeafs[6] = leafs[21]; //approve gauge lp
+        tx_.manageLeafs[7] = leafs[22]; //deposit gauge lp
 
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
@@ -1515,8 +1514,8 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         //claim rewards, withdraw lp, then remove liquidity
         tx_ = _getTxArrays(2); 
 
-        tx_.manageLeafs[0] = leafs[25]; 
-        tx_.manageLeafs[1] = leafs[24]; 
+        tx_.manageLeafs[0] = leafs[24]; 
+        tx_.manageLeafs[1] = leafs[23]; 
 
         manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
         
