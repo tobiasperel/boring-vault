@@ -541,6 +541,35 @@ contract DecoderCustomTypes {
         uint256[] ratios;
     }
 
+
+    // ========================================= Royco ==================================
+    struct APOffer { // RecipeMarketHub
+        uint256 offerID;
+        bytes32 targetMarketHash;
+        address ap;
+        address fundingVault;
+        uint256 quantity;
+        uint256 expiry;
+        address[] incentivesRequested;
+        uint256[] incentiveAmountsRequested;
+    }
+    struct APOfferVault { // VaultMarketHub (renamed to avoid collision)
+        uint256 offerID;
+        address targetVault;
+        address ap;
+        address fundingVault;
+        uint256 expiry;
+        address[] incentivesRequested;
+        uint256[] incentivesRatesRequested;
+    }
+
+    struct Reward {
+        uint48 startEpoch;
+        uint48 endEpoch;
+        address token;
+        uint256 rewardRate;
+    }
+
     // ========================================= Permit2 ==================================
     
     struct TokenSpenderPair {

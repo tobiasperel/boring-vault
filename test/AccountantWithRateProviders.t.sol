@@ -451,7 +451,7 @@ contract AccountantWithRateProvidersTest is Test, MerkleTreeHelper {
         // Deploy GenericRateProvider for mETH.
         bytes4 selector = bytes4(keccak256(abi.encodePacked("mETHToETH(uint256)")));
         uint256 amount = 1e18;
-        mETHRateProvider = new GenericRateProvider(mantleLspStaking, selector, bytes32(amount), 0, 0, 0, 0, 0, 0, 0);
+        mETHRateProvider = new GenericRateProvider(mantleLspStaking, selector, bytes32(amount), 0, 0, 0, 0, 0, 0, 0, false);
 
         uint256 expectedRate = MantleLspStaking(mantleLspStaking).mETHToETH(1e18);
         uint256 gas = gasleft();
@@ -479,7 +479,7 @@ contract AccountantWithRateProvidersTest is Test, MerkleTreeHelper {
         bytes32 pt = 0x000000000000000000000000c69Ad9baB1dEE23F4605a82b3354F8E40d1E5966; // pendleEethPt
         bytes32 quote = 0x000000000000000000000000C02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2; // wETH
         ptRateProvider =
-            new GenericRateProvider(liquidV1PriceRouter, selector, pt, bytes32(amount), quote, 0, 0, 0, 0, 0);
+            new GenericRateProvider(liquidV1PriceRouter, selector, pt, bytes32(amount), quote, 0, 0, 0, 0, 0, false);
 
         uint256 expectedRate = PriceRouter(liquidV1PriceRouter).getValue(pendleEethPt, 1e18, address(WETH));
         uint256 rate = ptRateProvider.getRate();

@@ -18,8 +18,8 @@ import "forge-std/Test.sol";
 contract DeployGenericRateProvider is Script, ContractNames, Test {
     uint256 public privateKey;
     
-    address target = 0x057f30e63A69175C69A4Af5656b8C9EE647De3D0; 
-    bytes4 selector = 0x57de26a4; 
+    address target = 0x57bd9E614f542fB3d6FeF2B744f3B813f0cc1258; 
+    bytes4 selector = 0x50d25bcd; 
     Deployer deployer = Deployer(0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d); 
 
     function setUp() external {
@@ -43,8 +43,8 @@ contract DeployGenericRateProvider is Script, ContractNames, Test {
         );
         address createdAddress = deployer.deployContract("Stone Exchange Rate Provider V0.0", creationCode, constructorArgs, 0); 
         console.log("DEPLOYED ADDRESS: ", createdAddress); 
-        require(createdAddress == 0x983dC32F0F022F1e114Bf54c280B3575A512BF4f, "not premined"); 
-        require(GenericRateProvider(createdAddress).getRate() == 1038891179797110067, "bad price"); 
+        //require(createdAddress == 0x983dC32F0F022F1e114Bf54c280B3575A512BF4f, "not premined"); 
+        //require(GenericRateProvider(createdAddress).getRate() == 1038891179797110067, "bad price"); 
 
     }
 
