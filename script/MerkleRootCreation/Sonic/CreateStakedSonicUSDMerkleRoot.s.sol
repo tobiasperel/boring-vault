@@ -63,6 +63,9 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "USDC_wS_PoolId")); //USDC, wS
         _addBalancerSwapLeafs(leafs, getBytes32(sourceChain, "stS_BEETS_PoolId")); //stS, BEETS (swap BEETS for stS, then USDC, swap function leaves only support 2 token pools atm)
 
+        // ========================== BeetsV3 ==========================
+        _addBalancerV3Leafs(leafs, getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted"), true, getAddress(sourceChain, "balancerV3_USDC_scUSD_boosted_gauge")); 
+
         // ========================== Odos ==========================
         
         address[] memory tokens = new address[](5);   
@@ -77,6 +80,8 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         kind[3] = SwapKind.BuyAndSell; 
         tokens[4] = getAddress(sourceChain, "BEETS"); 
         kind[4] = SwapKind.Sell; 
+        tokens[5] = getAddress(sourceChain, "BEETSFRAGMENTSS1"); 
+        kind[5] = SwapKind.Sell; 
         _addOdosSwapLeafs(leafs, tokens, kind); 
         
         // ========================== Teller ==========================
@@ -85,12 +90,32 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         _addTellerLeafs(leafs, getAddress(sourceChain, "scUSDTeller"), tellerAssets, false);
 
         // ========================== Silo ==========================
+        
+        // ws/USDC id8
+        address[] memory incentivesControllers = new address[](2); 
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id8_USDC_IncentiveController"); 
+        incentivesControllers[1] = getAddress(sourceChain, "silo_wS_USDC_id8_wS_IncentiveController"); 
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id8_config"), incentivesControllers); 
+        
+        // ws/USDC id20
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id20_USDC_IncentiveController"); 
+        incentivesControllers[1] = address(0);
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"), incentivesControllers);
 
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id8_config"));
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"));
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_config"));
+
+        // USDC/wstkscUSD id23
+        incentivesControllers[0] = getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_USDC_IncentiveController"); 
+        incentivesControllers[1] = address(0);  
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_config"), incentivesControllers);
+
+        // S/USDC id15 (no incentives) 
+        incentivesControllers[0] = address(0); 
+        incentivesControllers[1] = address(0);  
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_scUSD_id15_config"));
 
+        incentivesControllers[0] = address(0); 
+        incentivesControllers[1] = address(0);  
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_PT-aUSDC_scUSD_id46_config"));
         // ========================== Curve =========================
 
         _addCurveLeafs(

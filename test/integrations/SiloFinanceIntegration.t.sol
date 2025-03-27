@@ -110,10 +110,13 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //24 leaves per silo v2 market
+        address[] memory incentivesControllers = new address[](2); 
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id20_USDC_IncentiveController"); 
+        incentivesControllers[1] = address(0);
         _addSiloV2Leafs(
             leafs, 
             getAddress(sourceChain, "silo_wS_USDC_id20_config"),
-            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+            incentivesControllers
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -207,10 +210,13 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
+        address[] memory incentivesControllers = new address[](2); 
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id20_USDC_IncentiveController"); 
+        incentivesControllers[1] = address(0);
         _addSiloV2Leafs(
             leafs, 
             getAddress(sourceChain, "silo_wS_USDC_id20_config"),
-            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+            incentivesControllers
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -310,10 +316,13 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
+        address[] memory incentivesControllers = new address[](2); 
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id20_USDC_IncentiveController"); 
+        incentivesControllers[1] = address(0);
         _addSiloV2Leafs(
             leafs, 
             getAddress(sourceChain, "silo_wS_USDC_id20_config"),
-            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+            incentivesControllers
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -386,16 +395,16 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
+        address[] memory incentivesControllers = new address[](2); 
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id20_USDC_IncentiveController"); 
+        incentivesControllers[1] = address(0);
         _addSiloV2Leafs(
             leafs, 
             getAddress(sourceChain, "silo_wS_USDC_id20_config"),
-            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+            incentivesControllers
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
-
-        string memory filePath = "./testTEST.json";
-        _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -453,10 +462,13 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
+        address[] memory incentivesControllers = new address[](2); 
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id20_USDC_IncentiveController"); 
+        incentivesControllers[1] = address(0);
         _addSiloV2Leafs(
             leafs, 
             getAddress(sourceChain, "silo_wS_USDC_id20_config"),
-            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+            incentivesControllers
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -516,10 +528,13 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
+        address[] memory incentivesControllers = new address[](2); 
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id20_USDC_IncentiveController"); 
+        incentivesControllers[1] = address(0);
         _addSiloV2Leafs(
             leafs, 
             getAddress(sourceChain, "silo_wS_USDC_id20_config"),
-            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+            incentivesControllers
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
