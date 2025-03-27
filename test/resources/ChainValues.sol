@@ -2010,6 +2010,7 @@ contract ChainValues {
         values[berachain]["beraETH"] = 0x6fc6545d5cDE268D5C7f1e476D444F39c995120d.toBytes32(); //wrapped LST
         values[berachain]["WEETH_OT"] = 0x46C7BdE4422b6798A09e76B555F2fea8D7FfADdc.toBytes32();
         values[berachain]["WEETH_YT"] = 0x98577aC3C6b376fc9Ee56377FEcAb6D751e40610.toBytes32();
+        values[berachain]["BGT"] = 0x656b95E550C07a9ffe548bd4085c72418Ceb1dba.toBytes32();
 
         values[berachain]["balancerVault"] = address(1).toBytes32();
         values[berachain]["vault"] = address(1).toBytes32();
@@ -2058,6 +2059,9 @@ contract ChainValues {
 
         // OFTs
         values[berachain]["LBTC_OFT"] = 0x630e12D53D4E041b8C5451aD035Ea841E08391d7.toBytes32();
+
+        // BGT Reward Vaults
+        values[berachain]["WBERA_HONEY_reward_vault"] = 0xC2BaA8443cDA8EBE51a640905A8E6bc4e1f9872c.toBytes32();
 
     }
 
