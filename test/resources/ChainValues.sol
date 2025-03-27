@@ -1657,6 +1657,7 @@ contract ChainValues {
         values[sonicMainnet]["OS"] = 0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794.toBytes32();
         values[sonicMainnet]["SILO"] = 0x53f753E4B17F4075D6fa2c6909033d224b81e698.toBytes32(); 
         values[sonicMainnet]["BEETSFRAGMENTSS1"] = 0x3419966bC74fa8f951108d15b053bEd233974d3D.toBytes32(); 
+        values[sonicMainnet]["CRV"] = 0x5Af79133999f7908953E94b7A5CF367740Ebee35.toBytes32(); 
 
         values[sonicMainnet]["balancerVault"] = address(1).toBytes32();
         values[sonicMainnet]["vault"] = address(1).toBytes32();
@@ -1728,7 +1729,7 @@ contract ChainValues {
         values[sonicMainnet]["silo_S_scUSD_id15_config"] = 0xFe514E71F0933F63B374056557AED3dBB381C646.toBytes32();
         values[sonicMainnet]["silo_LBTC_scBTC_id32_config"] = 0xe67cce118e9CcEaE51996E4d290f9B77D960E3d7.toBytes32();
 
-        values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_config"] =  
+        values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_config"] = 0xDa6787a3543a01Bf770DDF3953bE5B9C99c1cBD0.toBytes32(); 
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_scUSD_IncentivesController"] = 0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32(); 
 
 
