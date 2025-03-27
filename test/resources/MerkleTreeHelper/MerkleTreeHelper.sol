@@ -9166,7 +9166,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= BoringVault Teller =========================================
 
-    function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets, bool addNativeDeposit)
+    function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets, bool addNativeDeposit, bool addBulkWithdraw)
         internal
     {
         ERC20 boringVault = TellerWithMultiAssetSupport(teller).vault();
@@ -9201,21 +9201,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
             leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
-            // BulkWithdraw asset.
-            unchecked {
-                leafIndex++;
+            if (addBulkWithdraw) {
+                // BulkWithdraw asset.
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    teller,
+                    false,
+                    "bulkWithdraw(address,uint256,uint256,address)",
+                    new address[](2),
+                    string.concat("Bulk withdraw ", assets[i].symbol(), " from ", boringVault.name()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
             }
-            leafs[leafIndex] = ManageLeaf(
-                teller,
-                false,
-                "bulkWithdraw(address,uint256,uint256,address)",
-                new address[](2),
-                string.concat("Bulk withdraw ", assets[i].symbol(), " from ", boringVault.name()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
-            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-
             unchecked {
                 leafIndex++;
             }
