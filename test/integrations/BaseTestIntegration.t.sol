@@ -135,7 +135,7 @@ contract BaseTestIntegration is Test, MerkleTreeHelper {
         rawDataDecoderAndSanitizer = newDecoder; 
     }
 
-    function _getTxArrays(uint256 size) internal returns (Tx memory) {
+    function _getTxArrays(uint256 size) internal pure returns (Tx memory) {
         Tx memory tx_; 
 
         tx_.manageLeafs = new ManageLeaf[](size); 

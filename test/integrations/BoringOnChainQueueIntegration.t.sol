@@ -126,7 +126,7 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         ERC20[] memory assets = new ERC20[](1);
         assets[0] = getERC20(sourceChain, "WBTC");
-        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets, false);
+        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets, false, true);
         _addWithdrawQueueLeafs(
             leafs, getAddress(sourceChain, "eBTCOnChainQueue"), getAddress(sourceChain, "eBTC"), assets
         );
@@ -185,7 +185,7 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         ERC20[] memory assets = new ERC20[](1);
         assets[0] = getERC20(sourceChain, "WBTC");
-        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets, false);
+        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets, false, true);
         _addWithdrawQueueLeafs(
             leafs, getAddress(sourceChain, "eBTCOnChainQueue"), getAddress(sourceChain, "eBTC"), assets
         );
@@ -228,7 +228,7 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
             uint24(2592000)
         );
         
-        uint96 nonce = vm.getNonce(address(boringVault));         
+        //uint96 nonce = vm.getNonce(address(boringVault));         
 
         DecoderCustomTypes.OnChainWithdraw memory request = DecoderCustomTypes.OnChainWithdraw(
             1,
@@ -268,7 +268,7 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         ERC20[] memory assets = new ERC20[](1);
         assets[0] = getERC20(sourceChain, "WBTC");
-        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets, false);
+        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), assets, false, true);
         _addWithdrawQueueLeafs(
             leafs, getAddress(sourceChain, "eBTCOnChainQueue"), getAddress(sourceChain, "eBTC"), assets
         );
@@ -311,7 +311,7 @@ contract BoringOnChainQueueIntegration is Test, MerkleTreeHelper {
             uint24(2592000)
         );
         
-        uint96 nonce = vm.getNonce(address(boringVault));         
+        //uint96 nonce = vm.getNonce(address(boringVault));         
 
         DecoderCustomTypes.OnChainWithdraw memory request = DecoderCustomTypes.OnChainWithdraw(
             1,
