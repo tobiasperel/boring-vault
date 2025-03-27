@@ -10632,15 +10632,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         getAddress(sourceChain, "odosRouterV2"),
                         false,
                         "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)",
-                        new address[](5),
+                        new address[](4),
                         string.concat("Swap ", ERC20(tokens[i]).symbol(), " for ", ERC20(tokens[j]).symbol()),
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
                     leafs[leafIndex].argumentAddresses[0] = tokens[i];
-                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor");
-                    leafs[leafIndex].argumentAddresses[2] = tokens[j];
-                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
-                    leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor");
+                    leafs[leafIndex].argumentAddresses[1] = tokens[j];
+                    leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "odosExecutor");
 
                     unchecked {
                         leafIndex++;
@@ -10649,15 +10648,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         getAddress(sourceChain, "odosRouterV2"),
                         false,
                         "swapCompact()",
-                        new address[](5),
+                        new address[](4),
                         string.concat("Swap Compact ", ERC20(tokens[i]).symbol(), " for ", ERC20(tokens[j]).symbol()),
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
                     leafs[leafIndex].argumentAddresses[0] = tokens[i];
-                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor");
-                    leafs[leafIndex].argumentAddresses[2] = tokens[j];
-                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
-                    leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor");
+                    leafs[leafIndex].argumentAddresses[1] = tokens[j];
+                    leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "odosExecutor");
 
                     ownerToOdosSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][tokens[i]][tokens[j]]
                     = true;
@@ -10674,15 +10672,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         getAddress(sourceChain, "odosRouterV2"),
                         false,
                         "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)",
-                        new address[](5),
+                        new address[](4),
                         string.concat("Swap ", ERC20(tokens[j]).symbol(), " for ", ERC20(tokens[i]).symbol()),
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
                     leafs[leafIndex].argumentAddresses[0] = tokens[j];
-                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor");
-                    leafs[leafIndex].argumentAddresses[2] = tokens[i];
-                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
-                    leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor");
+                    leafs[leafIndex].argumentAddresses[1] = tokens[i];
+                    leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "odosExecutor");
 
                     unchecked {
                         leafIndex++;
@@ -10691,15 +10688,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         getAddress(sourceChain, "odosRouterV2"),
                         false,
                         "swapCompact()",
-                        new address[](5),
+                        new address[](4),
                         string.concat("Swap Compact ", ERC20(tokens[j]).symbol(), " for ", ERC20(tokens[i]).symbol()),
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
                     leafs[leafIndex].argumentAddresses[0] = tokens[j];
-                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "odosExecutor");
-                    leafs[leafIndex].argumentAddresses[2] = tokens[i];
-                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
-                    leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "odosExecutor");
+                    leafs[leafIndex].argumentAddresses[1] = tokens[i];
+                    leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+                    leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "odosExecutor");
 
                     ownerToOdosSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][tokens[j]][tokens[i]]
                     = true;
