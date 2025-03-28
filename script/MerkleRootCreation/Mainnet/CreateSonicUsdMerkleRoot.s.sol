@@ -96,8 +96,8 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, true);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](8);
-        SwapKind[] memory kind = new SwapKind[](8);
+        address[] memory assets = new address[](9);
+        SwapKind[] memory kind = new SwapKind[](9);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -114,6 +114,8 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         kind[6] = SwapKind.BuyAndSell;
         assets[7] = getAddress(sourceChain, "MORPHO");
         kind[7] = SwapKind.Sell;
+        assets[8] = getAddress(sourceChain, "FLUID");
+        kind[8] = SwapKind.Sell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
