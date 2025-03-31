@@ -35,7 +35,7 @@ contract CreateHybridBtcMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, bob, "accountantAddress", accountantAddress);
         setAddress(false, bob, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
 
 
         // ========================== Standard Bridge ==========================
@@ -58,16 +58,6 @@ contract CreateHybridBtcMerkleRoot is Script, MerkleTreeHelper {
             localTokens,
             remoteTokens
         );
-
-        // ========================== Euler ==========================
-            
-        ERC4626[] memory depositVaults = new ERC4626[](1); 
-        depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerWBTC")); 
-
-        address[] memory subaccounts = new address[](1); 
-        subaccounts[0] = getAddress(sourceChain, "boringVault");  
-
-        _addEulerDepositLeafs(leafs, depositVaults, subaccounts); 
 
         // ========================== Verify & Generate ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
