@@ -18,7 +18,7 @@ abstract contract BalancerV3DecoderAndSanitizer is
 
     //============================== Function Collisions ===============================
 
-    function deposit(uint256 /*amount*/, address receiver) external pure override(ERC4626DecoderAndSanitizer, CurveDecoderAndSanitizer) returns (bytes memory addressesFound) {
+    function deposit(uint256 /*amount*/, address receiver) external pure virtual override(ERC4626DecoderAndSanitizer, CurveDecoderAndSanitizer) returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(receiver);
     }
 

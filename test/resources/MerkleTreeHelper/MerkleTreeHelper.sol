@@ -263,8 +263,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
 
         if (gauge != address(0)) {
-            
-            address lpToken = ICurveGauge(gauge).lp_token(); 
+            address lpToken = ICurveGauge(gauge).lp_token();
 
             unchecked {
                 leafIndex++;
@@ -277,7 +276,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 string.concat("Approve Curve gauge to spend ", ERC20(lpToken).name()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = gauge; 
+            leafs[leafIndex].argumentAddresses[0] = gauge;
 
             // Deposit into gauge.
             unchecked {
@@ -323,62 +322,61 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     function _addCurveGaugeLeafs(ManageLeaf[] memory leafs, address gauge) internal {
-        address lpToken = ICurveGauge(gauge).lp_token(); 
+        address lpToken = ICurveGauge(gauge).lp_token();
 
-            unchecked {
-                leafIndex++;
-            }
-            leafs[leafIndex] = ManageLeaf(
-                lpToken,
-                false,
-                "approve(address,uint256)",
-                new address[](1),
-                string.concat("Approve Curve gauge to spend ", ERC20(lpToken).name()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = gauge; 
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            lpToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Curve gauge to spend ", ERC20(lpToken).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = gauge;
 
+        // Deposit into gauge.
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            gauge,
+            false,
+            "deposit(uint256,address)",
+            new address[](1),
+            string.concat("Deposit ", ERC20(lpToken).name(), " into Curve gauge"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
 
-            // Deposit into gauge.
-            unchecked {
-                leafIndex++;
-            }
-            leafs[leafIndex] = ManageLeaf(
-                gauge,
-                false,
-                "deposit(uint256,address)",
-                new address[](1),
-                string.concat("Deposit ", ERC20(lpToken).name(), " into Curve gauge"),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        // Withdraw from gauge.
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            gauge,
+            false,
+            "withdraw(uint256)",
+            new address[](0),
+            string.concat("Withdraw ", ERC20(lpToken).name(), " from Curve gauge"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
 
-            // Withdraw from gauge.
-            unchecked {
-                leafIndex++;
-            }
-            leafs[leafIndex] = ManageLeaf(
-                gauge,
-                false,
-                "withdraw(uint256)",
-                new address[](0),
-                string.concat("Withdraw ", ERC20(lpToken).name(), " from Curve gauge"),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-
-            // Claim rewards.
-            unchecked {
-                leafIndex++;
-            }
-            leafs[leafIndex] = ManageLeaf(
-                gauge,
-                false,
-                "claim_rewards(address)",
-                new address[](1),
-                string.concat("Claim rewards from Curve gauge"),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        // Claim rewards.
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            gauge,
+            false,
+            "claim_rewards(address)",
+            new address[](1),
+            string.concat("Claim rewards from Curve gauge"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
 
     function _addConvexLeafs(ManageLeaf[] memory leafs, ERC20 token, address rewardsContract) internal {
@@ -3236,17 +3234,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Uniswap V4 =========================================
-    
-    /// @dev NOTE that for decreasing and burning positions, the decoder has the option to include a SWEEP, but isn't needed for regular functionality and thus 
+
+    /// @dev NOTE that for decreasing and burning positions, the decoder has the option to include a SWEEP, but isn't needed for regular functionality and thus
     /// is not included in the leaves at this time
     /// -- if in the future it is required for a specific hook, these leaves could be added, but as no ETH is sent during these calls, SWEEP shouldn't be needed
-    function _addUniswapV4Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1, address[] memory hooks) internal {
+    function _addUniswapV4Leafs(
+        ManageLeaf[] memory leafs,
+        address[] memory token0,
+        address[] memory token1,
+        address[] memory hooks
+    ) internal {
         require(token0.length == token1.length, "Token arrays must be of equal length");
         require(token1.length == hooks.length, "Token and hook arrays must be of equal length");
         for (uint256 i; i < token0.length; ++i) {
-                
-            console.log("TOKEN 0: ", token0[i]);      
-            console.log("TOKEN 1: ", token1[i]);      
+            console.log("TOKEN 0: ", token0[i]);
+            console.log("TOKEN 1: ", token1[i]);
 
             //after sorting, ETH can only ever be token0, and is always token0 in univ4 pools (iirc)
             if (token0[i] == getAddress(sourceChain, "ETH")) {
@@ -3265,7 +3267,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         sourceChain, "uniV4UniversalRouter"
                     )]
                 ) {
-                
                     //approve token0 after sorting
                     unchecked {
                         leafIndex++;
@@ -3324,8 +3325,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         string.concat("Use Permit2 to approve ", ERC20(token0[i]).symbol(), " for Universal Router"),
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
-                    leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4UniversalRouter"); 
+                    leafs[leafIndex].argumentAddresses[0] = token0[i];
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4UniversalRouter");
 
                     unchecked {
                         leafIndex++;
@@ -3338,12 +3339,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         string.concat("Use Permit2 to approve ", ERC20(token0[i]).symbol(), " for POSM"),
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
-                    leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4PositionManager"); 
-
-                } 
+                    leafs[leafIndex].argumentAddresses[0] = token0[i];
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4PositionManager");
+                }
             }
-            
+
             if (token1[i] != address(0)) {
                 if (
                     !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
@@ -3406,8 +3406,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol()),
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
-                    leafs[leafIndex].argumentAddresses[0] = token1[i]; 
-                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4UniversalRouter"); 
+                    leafs[leafIndex].argumentAddresses[0] = token1[i];
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4UniversalRouter");
 
                     unchecked {
                         leafIndex++;
@@ -3420,15 +3420,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         string.concat("Approve Permit2 to spend ", ERC20(token1[i]).symbol(), " for POSM"),
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
-                    leafs[leafIndex].argumentAddresses[0] = token1[i]; 
-                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4PositionManager"); 
-
+                    leafs[leafIndex].argumentAddresses[0] = token1[i];
+                    leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "uniV4PositionManager");
                 } //end if
             }
-            
+
             if (token0[i] != address(0)) {
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4UniversalRouter"),
@@ -3438,14 +3437,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Swap ", ERC20(token0[i]).symbol(), " for ", ERC20(token1[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = address(token0[i]);  
-                leafs[leafIndex].argumentAddresses[1] = address(token1[i]);  
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = address(token0[i]);  
-                leafs[leafIndex].argumentAddresses[4] = address(token1[i]);  
+                leafs[leafIndex].argumentAddresses[0] = address(token0[i]);
+                leafs[leafIndex].argumentAddresses[1] = address(token1[i]);
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = address(token0[i]);
+                leafs[leafIndex].argumentAddresses[4] = address(token1[i]);
 
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4UniversalRouter"),
@@ -3455,15 +3454,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Swap ", ERC20(token1[i]).symbol(), " for ", ERC20(token0[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = address(token0[i]);  
-                leafs[leafIndex].argumentAddresses[1] = address(token1[i]);  
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = address(token1[i]);  
-                leafs[leafIndex].argumentAddresses[4] = address(token0[i]);  
-
+                leafs[leafIndex].argumentAddresses[0] = address(token0[i]);
+                leafs[leafIndex].argumentAddresses[1] = address(token1[i]);
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = address(token1[i]);
+                leafs[leafIndex].argumentAddresses[4] = address(token0[i]);
             } else {
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4UniversalRouter"),
@@ -3474,16 +3472,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
 
-                leafs[leafIndex].argumentAddresses[0] = address(token0[i]);  
-                leafs[leafIndex].argumentAddresses[1] = address(token1[i]); 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = address(token0[i]);  
-                leafs[leafIndex].argumentAddresses[4] = address(token1[i]); 
+                leafs[leafIndex].argumentAddresses[0] = address(token0[i]);
+                leafs[leafIndex].argumentAddresses[1] = address(token1[i]);
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = address(token0[i]);
+                leafs[leafIndex].argumentAddresses[4] = address(token1[i]);
                 leafs[leafIndex].argumentAddresses[5] = address(token0[i]); //should be ETH
-                leafs[leafIndex].argumentAddresses[6] = getAddress(sourceChain, "boringVault"); 
+                leafs[leafIndex].argumentAddresses[6] = getAddress(sourceChain, "boringVault");
 
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4UniversalRouter"),
@@ -3494,36 +3492,38 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
 
-                leafs[leafIndex].argumentAddresses[0] = address(token0[i]);  
-                leafs[leafIndex].argumentAddresses[1] = address(token1[i]);  
-                leafs[leafIndex].argumentAddresses[2] = hooks[i];  
-                leafs[leafIndex].argumentAddresses[3] = address(token1[i]);  
-                leafs[leafIndex].argumentAddresses[4] = address(token0[i]);  
+                leafs[leafIndex].argumentAddresses[0] = address(token0[i]);
+                leafs[leafIndex].argumentAddresses[1] = address(token1[i]);
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = address(token1[i]);
+                leafs[leafIndex].argumentAddresses[4] = address(token0[i]);
             }
-            
+
             //MINT POSITION LEAVES
-            
+
             if (token0[i] != address(0)) {
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4PositionManager"),
                     false,
                     "modifyLiquidities(bytes,uint256)",
                     new address[](6),
-                    string.concat("Mint UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
+                    string.concat(
+                        "Mint UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()
+                    ),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
-                leafs[leafIndex].argumentAddresses[4] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[5] = token1[i]; 
-            } else { 
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+                leafs[leafIndex].argumentAddresses[4] = token0[i];
+                leafs[leafIndex].argumentAddresses[5] = token1[i];
+            } else {
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4PositionManager"),
@@ -3533,40 +3533,44 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Mint UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault"); 
-                leafs[leafIndex].argumentAddresses[4] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[5] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[6] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[7] = getAddress(sourceChain, "boringVault");  
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+                leafs[leafIndex].argumentAddresses[4] = token0[i];
+                leafs[leafIndex].argumentAddresses[5] = token1[i];
+                leafs[leafIndex].argumentAddresses[6] = token0[i];
+                leafs[leafIndex].argumentAddresses[7] = getAddress(sourceChain, "boringVault");
             }
 
             //INCREASE LIQUIDITY
             //all variations of this function give back 2 addressess
             if (token0[i] != address(0)) {
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4PositionManager"),
                     false,
                     "modifyLiquidities(bytes,uint256)",
                     new address[](5),
-                    string.concat("Increase liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol(), " using SETTLE_PAIR, CLOSE_CURRENCY (both pairs), or CLEAR_AND_TAKE (both pairs)"),
+                    string.concat(
+                        "Increase liquidity for UniswapV4 position for ",
+                        ERC20(token0[i]).symbol(),
+                        " and ",
+                        ERC20(token1[i]).symbol(),
+                        " using SETTLE_PAIR, CLOSE_CURRENCY (both pairs), or CLEAR_AND_TAKE (both pairs)"
+                    ),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[4] = token1[i]; 
-
-            } else {     
-            
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = token0[i];
+                leafs[leafIndex].argumentAddresses[4] = token1[i];
+            } else {
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4PositionManager"),
@@ -3576,127 +3580,152 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Increase liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[4] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[5] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[6] = getAddress(sourceChain, "boringVault");  
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = token0[i];
+                leafs[leafIndex].argumentAddresses[4] = token1[i];
+                leafs[leafIndex].argumentAddresses[5] = token0[i];
+                leafs[leafIndex].argumentAddresses[6] = getAddress(sourceChain, "boringVault");
             }
 
             //DECREASE LIQUIDITY
             if (token0[i] != address(0)) {
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4PositionManager"),
                     false,
                     "modifyLiquidities(bytes,uint256)",
                     new address[](6),
-                    string.concat("Decrease liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol(), " using SETTLE"),
+                    string.concat(
+                        "Decrease liquidity for UniswapV4 position for ",
+                        ERC20(token0[i]).symbol(),
+                        " and ",
+                        ERC20(token1[i]).symbol(),
+                        " using SETTLE"
+                    ),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[4] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault"); 
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = token0[i];
+                leafs[leafIndex].argumentAddresses[4] = token1[i];
+                leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault");
 
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4PositionManager"),
                     false,
                     "modifyLiquidities(bytes,uint256)",
                     new address[](5),
-                    string.concat("Decrease liquidity for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol(), " using CLEAR_OR_TAKE or CLOSE_CURRENCY"),
+                    string.concat(
+                        "Decrease liquidity for UniswapV4 position for ",
+                        ERC20(token0[i]).symbol(),
+                        " and ",
+                        ERC20(token1[i]).symbol(),
+                        " using CLEAR_OR_TAKE or CLOSE_CURRENCY"
+                    ),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[4] = token1[i]; 
-
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = token0[i];
+                leafs[leafIndex].argumentAddresses[4] = token1[i];
             } else {
-
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4PositionManager"),
                     false,
                     "modifyLiquidities(bytes,uint256)",
                     new address[](6),
-                    string.concat("Decrease liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol(), " using SETTLE"),
+                    string.concat(
+                        "Decrease liquidity for UniswapV4 position for ETH and ",
+                        ERC20(token1[i]).symbol(),
+                        " using SETTLE"
+                    ),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[4] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault"); 
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = token0[i];
+                leafs[leafIndex].argumentAddresses[4] = token1[i];
+                leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault");
 
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4PositionManager"),
                     false,
                     "modifyLiquidities(bytes,uint256)",
                     new address[](5),
-                    string.concat("Decrease liquidity for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol(), " using CLEAR_OR_TAKE or CLOSE_CURRENCY"),
+                    string.concat(
+                        "Decrease liquidity for UniswapV4 position for ETH and ",
+                        ERC20(token1[i]).symbol(),
+                        " using CLEAR_OR_TAKE or CLOSE_CURRENCY"
+                    ),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[4] = token1[i]; 
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = token0[i];
+                leafs[leafIndex].argumentAddresses[4] = token1[i];
             }
 
             //BURN LIQUIDITY
             if (token0[i] != address(0)) {
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4PositionManager"),
                     false,
                     "modifyLiquidities(bytes,uint256)",
                     new address[](6),
-                    string.concat("Burn liquidity position for UniswapV4 position for ", ERC20(token0[i]).symbol(), " and ", ERC20(token1[i]).symbol()),
+                    string.concat(
+                        "Burn liquidity position for UniswapV4 position for ",
+                        ERC20(token0[i]).symbol(),
+                        " and ",
+                        ERC20(token1[i]).symbol()
+                    ),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[4] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault"); 
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = token0[i];
+                leafs[leafIndex].argumentAddresses[4] = token1[i];
+                leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault");
             } else {
                 unchecked {
-                    leafIndex++; 
+                    leafIndex++;
                 }
                 leafs[leafIndex] = ManageLeaf(
                     getAddress(sourceChain, "uniV4PositionManager"),
                     false,
                     "modifyLiquidities(bytes,uint256)",
                     new address[](6),
-                    string.concat("Burn liquidity position for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()),
+                    string.concat(
+                        "Burn liquidity position for UniswapV4 position for ETH and ", ERC20(token1[i]).symbol()
+                    ),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[1] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[2] = hooks[i]; 
-                leafs[leafIndex].argumentAddresses[3] = token0[i]; 
-                leafs[leafIndex].argumentAddresses[4] = token1[i]; 
-                leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault"); 
+                leafs[leafIndex].argumentAddresses[0] = token0[i];
+                leafs[leafIndex].argumentAddresses[1] = token1[i];
+                leafs[leafIndex].argumentAddresses[2] = hooks[i];
+                leafs[leafIndex].argumentAddresses[3] = token0[i];
+                leafs[leafIndex].argumentAddresses[4] = token1[i];
+                leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault");
             }
         }
     }
@@ -4615,23 +4644,24 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     function _addBalancerV3Leafs(ManageLeaf[] memory leafs, address _pool, bool boosted, address gauge) internal {
         // if it's a boosted pool, these will be wrapped YB tokens, so we will need to somehow get the underlying of those pools
         // it appears like they are a standard ERC4626(?) compliant wrapper vault, so we can proably just check if the pool is boosted, and if it is, then we add ERC4626 leaves
-        address[] memory tokens = IVaultExplorer(getAddress(sourceChain, "balancerV3VaultExplorer")).getPoolTokens(_pool);  
+        address[] memory tokens =
+            IVaultExplorer(getAddress(sourceChain, "balancerV3VaultExplorer")).getPoolTokens(_pool);
 
-        IBalancerV3Pool pool = IBalancerV3Pool(_pool);  
-        
-        // NOTE: the router functions are all payable, but pool creation does not seem to support Native ETH? so it might be payable for something else, idk yet        
-        bool hasEth = false;  
+        IBalancerV3Pool pool = IBalancerV3Pool(_pool);
 
-        //I think the router uses permit2, but will double check 
-        uint256 length = tokens.length; 
+        // NOTE: the router functions are all payable, but pool creation does not seem to support Native ETH? so it might be payable for something else, idk yet
+        bool hasEth = false;
+
+        //I think the router uses permit2, but will double check
+        uint256 length = tokens.length;
         for (uint256 i = 0; i < length; ++i) {
             //if ETH is not used on chain, will have to add it to `ChainValues`, but this should revert during root creation alerting us of that
             if (tokens[i] == address(0) || tokens[i] == getAddress(sourceChain, "ETH")) {
-                hasEth = true; 
+                hasEth = true;
             }
 
             if (boosted) {
-                  try ERC4626(tokens[i]).asset() returns (ERC20 assetAddress) {
+                try ERC4626(tokens[i]).asset() returns (ERC20 assetAddress) {
                     if (address(assetAddress) != address(0)) {
                         _addERC4626Leafs(leafs, ERC4626(tokens[i]));
                     }
@@ -4640,9 +4670,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     // Skip this token or handle the error as needed
                 }
             }
-            
 
-            if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][_pool]) {
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][_pool]
+            ) {
                 unchecked {
                     leafIndex++;
                 }
@@ -4654,9 +4685,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Approve Permit2 to spend ", ERC20(tokens[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2"); 
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(sourceChain, "permit2")] = true;
-            
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2");
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(
+                    sourceChain, "permit2"
+                )] = true;
+
                 //use permit2 to approve router
                 unchecked {
                     leafIndex++;
@@ -4669,9 +4702,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     string.concat("Use Permit2 to approve ", pool.name(), " to spend ", ERC20(tokens[i]).symbol()),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
-                leafs[leafIndex].argumentAddresses[0] = tokens[i]; 
-                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "balancerV3Router"); 
-                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(sourceChain, "balancerV3Router")] = true;
+                leafs[leafIndex].argumentAddresses[0] = tokens[i];
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "balancerV3Router");
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(
+                    sourceChain, "balancerV3Router"
+                )] = true;
             }
 
             unchecked {
@@ -4687,10 +4722,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = tokens[i];
             leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "balancerV3Router");
-
         }
 
-        if (!ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(_pool)][getAddress(sourceChain, "permit2")]) {
+        if (
+            !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(_pool)][getAddress(
+                sourceChain, "permit2"
+            )]
+        ) {
             unchecked {
                 leafIndex++;
             }
@@ -4702,8 +4740,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 string.concat("Approve Router to spend bpt: ", ERC20(_pool).symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "balancerV3Router"); 
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(_pool)][getAddress(sourceChain, "balancerV3Router")] = true;
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "balancerV3Router");
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(_pool)][getAddress(
+                sourceChain, "balancerV3Router"
+            )] = true;
         }
 
         unchecked {
@@ -4775,7 +4815,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = _pool;
         //leafs[leafIndex].argumentAddresses[1] = _pool;
-        
+
         if (hasEth) {
             unchecked {
                 leafIndex++;
@@ -4790,7 +4830,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = _pool;
         }
-        
+
         unchecked {
             leafIndex++;
         }
@@ -4903,7 +4943,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = _pool;
         }
 
-
         unchecked {
             leafIndex++;
         }
@@ -4946,24 +4985,23 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = _pool;
 
         if (gauge != address(0)) {
-            _addCurveGaugeLeafs(leafs, gauge); 
+            _addCurveGaugeLeafs(leafs, gauge);
         }
-         
     }
 
     function _addBalancerV3SwapLeafs(ManageLeaf[] memory leafs, address _pool, bool hasEth) internal {
-        address[] memory tokens = IVaultExplorer(getAddress(sourceChain, "balancerV3VaultExplorer")).getPoolTokens(_pool);  
+        address[] memory tokens =
+            IVaultExplorer(getAddress(sourceChain, "balancerV3VaultExplorer")).getPoolTokens(_pool);
 
-        IBalancerV3Pool pool = IBalancerV3Pool(_pool);  
-        
-        //if the pool as WETH, you can use native eth and wrap it  
+        IBalancerV3Pool pool = IBalancerV3Pool(_pool);
 
-        //I think the router uses permit2, but will double check 
-        uint256 length = tokens.length; 
+        //if the pool as WETH, you can use native eth and wrap it
+
+        //I think the router uses permit2, but will double check
+        uint256 length = tokens.length;
         for (uint256 i = 0; i < length; ++i) {
-
             //unchecked {
-            //    leafIndex++; 
+            //    leafIndex++;
             //}
 
             //leafs[leafIndex] = ManageLeaf(
@@ -4974,7 +5012,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             //    string.concat("Approve BalancerV3 Vault to spend ", ERC20(tokens[i]).symbol()),
             //    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             //);
-            //leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "balancerV3Vault"); 
+            //leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "balancerV3Vault");
 
             unchecked {
                 leafIndex++;
@@ -4987,9 +5025,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 string.concat("Approve Permit2 to spend ", ERC20(tokens[i]).symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2"); 
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(sourceChain, "permit2")] = true;
-            
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "permit2");
+            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][address(tokens[i])][getAddress(
+                sourceChain, "permit2"
+            )] = true;
+
             //use permit2 to approve router
             unchecked {
                 leafIndex++;
@@ -5002,13 +5042,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 string.concat("Use Permit2 to approve ", pool.name(), " to spend ", ERC20(tokens[i]).symbol()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = tokens[i]; 
-            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "balancerV3Router"); 
-
+            leafs[leafIndex].argumentAddresses[0] = tokens[i];
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "balancerV3Router");
         }
 
         unchecked {
-            leafIndex++; 
+            leafIndex++;
         }
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "balancerV3Router"),
@@ -5018,13 +5057,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Swap tokens using ", ERC20(_pool).name()),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = _pool; 
+        leafs[leafIndex].argumentAddresses[0] = _pool;
         //leafs[leafIndex].argumentAddresses[1] = tokens[0]; //token0
         //leafs[leafIndex].argumentAddresses[2] = tokens[1]; //token1...tokenN
-       
-        if (hasEth) { 
+
+        if (hasEth) {
             unchecked {
-                leafIndex++; 
+                leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
                 getAddress(sourceChain, "balancerV3Router"),
@@ -5034,11 +5073,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 string.concat("Swap tokens using ", ERC20(_pool).name()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = _pool; 
-        } 
+            leafs[leafIndex].argumentAddresses[0] = _pool;
+        }
 
         unchecked {
-            leafIndex++; 
+            leafIndex++;
         }
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "balancerV3Router"),
@@ -5048,13 +5087,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Swap tokens using ", ERC20(_pool).name()),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = _pool; 
+        leafs[leafIndex].argumentAddresses[0] = _pool;
         //leafs[leafIndex].argumentAddresses[1] = tokens[0]; //token0
         //leafs[leafIndex].argumentAddresses[2] = tokens[1]; //token1...tokenN
-        
-        if (hasEth) { 
+
+        if (hasEth) {
             unchecked {
-                leafIndex++; 
+                leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
                 getAddress(sourceChain, "balancerV3Router"),
@@ -5064,9 +5103,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 string.concat("Swap tokens using ", ERC20(_pool).name()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = _pool; 
+            leafs[leafIndex].argumentAddresses[0] = _pool;
         }
-
     }
 
     // ========================================= Aura =========================================
@@ -9168,7 +9206,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= BoringVault Teller =========================================
 
-    function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets, bool addNativeDeposit)
+    function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets, bool addNativeDeposit, bool addBulkWithdraw)
         internal
     {
         ERC20 boringVault = TellerWithMultiAssetSupport(teller).vault();
@@ -9203,21 +9241,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
             leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
-            // BulkWithdraw asset.
-            unchecked {
-                leafIndex++;
+            if (addBulkWithdraw) {
+                // BulkWithdraw asset.
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    teller,
+                    false,
+                    "bulkWithdraw(address,uint256,uint256,address)",
+                    new address[](2),
+                    string.concat("Bulk withdraw ", assets[i].symbol(), " from ", boringVault.name()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
             }
-            leafs[leafIndex] = ManageLeaf(
-                teller,
-                false,
-                "bulkWithdraw(address,uint256,uint256,address)",
-                new address[](2),
-                string.concat("Bulk withdraw ", assets[i].symbol(), " from ", boringVault.name()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
-            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-
             unchecked {
                 leafIndex++;
             }
@@ -9404,6 +9443,35 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                withdrawQueue,
+                false,
+                "cancelOnChainWithdraw((uint96,address,address,uint128,uint128,uint40,uint24,uint24))",
+                new address[](2),
+                string.concat("Cancel Withdraw of ", assets[i].symbol(), ", from queue"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+            leafs[leafIndex].argumentAddresses[1] = address(assets[i]);
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                withdrawQueue,
+                false,
+                "replaceOnChainWithdraw((uint96,address,address,uint128,uint128,uint40,uint24,uint24),uint16,uint24)",
+                new address[](2),
+                string.concat("Replace Withdraw of ", assets[i].symbol(), ", from queue"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+            leafs[leafIndex].argumentAddresses[1] = address(assets[i]);
+
         }
     }
 
@@ -10024,8 +10092,128 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[2] = borrowToken;
     }
 
+    // ========================================= BGT Reward Vault =========================================
+    function _addBGTRewardVaultLeafs(ManageLeaf[] memory leafs, address vault, address delegateStaker, address operator) internal {
+        
+        address stakingToken = IBGTRewardVault(vault).stakeToken(); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            stakingToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve BGT Reward Vault to spend: ", ERC20(stakingToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = vault; 
+
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "stake(uint256)",
+            new address[](0),
+            string.concat("Stake ", ERC20(stakingToken).symbol(), " in BGT Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "withdraw(uint256)",
+            new address[](0),
+            string.concat("Withdraw ", ERC20(stakingToken).symbol(), " from BGT Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "getReward(address,address)",
+            new address[](2),
+            string.concat("Get reward for ", ERC20(stakingToken).symbol(), " BGT Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "exit(address)",
+            new address[](1),
+            string.concat("Exit ", ERC20(stakingToken).symbol(), " BGT Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+       
+        
+        if (delegateStaker != address(0)) {
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vault,
+                false,
+                "delegateStake(address,uint256)",
+                new address[](1),
+                string.concat("Delegate stake for ", ERC20(stakingToken).symbol(), " BGT Vault to: ", vm.toString(delegateStaker)),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = delegateStaker; 
+
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vault,
+                false,
+                "delegateWithdraw(address,uint256)",
+                new address[](1),
+                string.concat("Delegate withdraw for ", ERC20(stakingToken).symbol(), " BGT Vault from: ", vm.toString(delegateStaker)),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = delegateStaker; 
+        }
+
+        if (operator != address(0)) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                vault,
+                false,
+                "setOperator(address)",
+                new address[](1),
+                string.concat("Get reward for ", ERC20(stakingToken).symbol(), " BGT Vault"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = operator;  
+
+        }
+    }
+
     // ========================================= Silo Finance V2 =========================================
-    function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket) internal {
+    function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket, address incentivesController) internal {
         (address silo0, address silo1) = ISilo(siloMarket).getSilos();
         address[] memory silos = new address[](2);
         silos[0] = silo0;
@@ -10195,12 +10383,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
         }
-
+ 
             unchecked {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "siloIncentivesController"),
+                incentivesController,
                 false,
                 "claimRewards(address)",
                 new address[](1),
@@ -10213,7 +10401,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafIndex++;
             }
             leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "siloIncentivesController"),
+                incentivesController,
                 false,
                 "claimRewards(address,string[])",
                 new address[](1),
@@ -10270,7 +10458,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         address spectraPool, //curve pool
         address PT,
         address YT,
-        address swToken //spectra wrapped erc4626
+        address swToken //spectra wrapped erc4626 or IBT
     ) internal {
         address asset = address(ERC4626(swToken).asset());
         address vaultShare;
@@ -10574,7 +10762,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "add_liquidity(uint256[2],uint256)",
             new address[](0),
-            string.concat("Exchange tokens in Spectra Pool"),
+            string.concat("Add liquidity in Spectra Pool"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
 
@@ -10586,16 +10774,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "remove_liquidity(uint256,uint256[2])",
             new address[](0),
-            string.concat("Exchange tokens in Spectra Pool"),
+            string.concat("Remove liquidity from Spectra Pool"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-    }
 
+        _addERC4626Leafs(leafs, ERC4626(swToken)); 
+    }
 
     // ========================================= Odos =========================================
 
     function _addOdosSwapLeafs(ManageLeaf[] memory leafs, address[] memory tokens, SwapKind[] memory kind) internal {
-
         for (uint256 i = 0; i < tokens.length; i++) {
             if (
                 !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][tokens[i]][getAddress(
@@ -10617,14 +10805,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             }
 
             for (uint256 j = 0; j < tokens.length; j++) {
-
                 if (i == j) continue;
 
                 if (
                     !ownerToOdosSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][tokens[i]][tokens[j]]
                         && kind[j] != SwapKind.Sell
                 ) {
-
                     unchecked {
                         leafIndex++;
                     }
@@ -10699,21 +10885,17 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
                     ownerToOdosSellTokenToBuyTokenToInTree[getAddress(sourceChain, "boringVault")][tokens[j]][tokens[i]]
                     = true;
-
                 }
             }
         }
     }
 
-
     // ========================================= Ambient =========================================
-    
+
     /// @dev baseToken/quoteToken
-    /// these are not interchangeable and must be exact for the pool being swapped or minting liq. ie USDE/ETH is not the same as ETH/USDE 
+    /// these are not interchangeable and must be exact for the pool being swapped or minting liq. ie USDE/ETH is not the same as ETH/USDE
     function _addAmbientLPLeafs(ManageLeaf[] memory leafs, address baseToken, address quoteToken) internal {
-
         if (baseToken != getAddress(sourceChain, "ETH")) {
-
             unchecked {
                 leafIndex++;
             }
@@ -10727,7 +10909,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
         }
-        
+
         if (quoteToken != getAddress(sourceChain, "ETH")) {
             unchecked {
                 leafIndex++;
@@ -10742,10 +10924,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
         }
-        
-        if (baseToken != getAddress(sourceChain, "ETH") && quoteToken != getAddress(sourceChain, "ETH")) {
 
-            //used for every command that includes the warm path 
+        if (baseToken != getAddress(sourceChain, "ETH") && quoteToken != getAddress(sourceChain, "ETH")) {
+            //used for every command that includes the warm path
             unchecked {
                 leafIndex++;
             }
@@ -10774,11 +10955,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
             leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
-
         } else {
-            if (baseToken == getAddress(sourceChain, "ETH")) baseToken = address(0); 
-            if (quoteToken == getAddress(sourceChain, "ETH")) quoteToken = address(0); 
-            
+            if (baseToken == getAddress(sourceChain, "ETH")) baseToken = address(0);
+            if (quoteToken == getAddress(sourceChain, "ETH")) quoteToken = address(0);
+
             // used for minting positions
             unchecked {
                 leafIndex++;
@@ -10794,7 +10974,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
             leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
             leafs[leafIndex].argumentAddresses[2] = address(0); //lp conduit (user owned)
-            
+
             //Used for commands that don't include sending ETH (harvest, burn)
             unchecked {
                 leafIndex++;
@@ -10825,7 +11005,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
             leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
-            
+
             //swapping token to eth, using knockout
             unchecked {
                 leafIndex++;
@@ -10841,12 +11021,10 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = baseToken; //base (these are set by pool maybe?)
             leafs[leafIndex].argumentAddresses[1] = quoteToken; //quote
         }
-        
     }
 
     function _addAmbientSwapLeafs(ManageLeaf[] memory leafs, address baseToken, address quoteToken) internal {
         if (baseToken != getAddress(sourceChain, "ETH")) {
-
             unchecked {
                 leafIndex++;
             }
@@ -10860,7 +11038,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
         }
-        
+
         if (quoteToken != getAddress(sourceChain, "ETH")) {
             unchecked {
                 leafIndex++;
@@ -10875,68 +11053,71 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "crocSwapDex");
         }
-        
-       // address base,
-       // address quote,
-       // uint256, /*poolIdx*/
-       // bool, /*isBuy*/
-       // bool, /*inBaseQty*/
-       // uint128, /*qty*/
-       // uint16, /*tip*/
-       // uint128, /*limitPrice*/
-       // uint128, /*minOut*/
-       // uint8 /*reserveFlags*/
+
+        // address base,
+        // address quote,
+        // uint256, /*poolIdx*/
+        // bool, /*isBuy*/
+        // bool, /*inBaseQty*/
+        // uint128, /*qty*/
+        // uint16, /*tip*/
+        // uint128, /*limitPrice*/
+        // uint128, /*minOut*/
+        // uint8 /*reserveFlags*/
         if (baseToken != getAddress(sourceChain, "ETH") && quoteToken != getAddress(sourceChain, "ETH")) {
             unchecked {
-                 leafIndex++;
-             }
-             leafs[leafIndex] = ManageLeaf(
-                 getAddress(sourceChain, "crocSwapDex"),
-                 false,
-                 "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
-                 new address[](2),
-                 string.concat("Swap using CrocSwapDex (Ambient) between ", ERC20(baseToken).symbol(), " and ", ERC20(quoteToken).symbol()),
-                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-             );
-             leafs[leafIndex].argumentAddresses[0] = baseToken;
-             leafs[leafIndex].argumentAddresses[1] = quoteToken;
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                false,
+                "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
+                new address[](2),
+                string.concat(
+                    "Swap using CrocSwapDex (Ambient) between ",
+                    ERC20(baseToken).symbol(),
+                    " and ",
+                    ERC20(quoteToken).symbol()
+                ),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken;
+            leafs[leafIndex].argumentAddresses[1] = quoteToken;
         } else {
-            if (baseToken == getAddress(sourceChain, "ETH")) baseToken = address(0); 
-            if (quoteToken == getAddress(sourceChain, "ETH")) quoteToken = address(0); 
-            
-            //add correct swap symbol if eth is quote or base (since it can be either) 
-            address erc20Token = baseToken == address(0) ? quoteToken : baseToken; 
+            if (baseToken == getAddress(sourceChain, "ETH")) baseToken = address(0);
+            if (quoteToken == getAddress(sourceChain, "ETH")) quoteToken = address(0);
+
+            //add correct swap symbol if eth is quote or base (since it can be either)
+            address erc20Token = baseToken == address(0) ? quoteToken : baseToken;
 
             unchecked {
-                 leafIndex++;
-             }
-             leafs[leafIndex] = ManageLeaf(
-                 getAddress(sourceChain, "crocSwapDex"),
-                 true,
-                 "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
-                 new address[](2),
-                 string.concat("Swap using CrocSwapDex (Ambient) between ETH and ", ERC20(erc20Token).symbol()),
-                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-             );
-             leafs[leafIndex].argumentAddresses[0] = baseToken;
-             leafs[leafIndex].argumentAddresses[1] = quoteToken;
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                true,
+                "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
+                new address[](2),
+                string.concat("Swap using CrocSwapDex (Ambient) between ETH and ", ERC20(erc20Token).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken;
+            leafs[leafIndex].argumentAddresses[1] = quoteToken;
 
             unchecked {
-                 leafIndex++;
-             }
-             leafs[leafIndex] = ManageLeaf(
-                 getAddress(sourceChain, "crocSwapDex"),
-                 false,
-                 "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
-                 new address[](2),
-                 string.concat("Swap using CrocSwapDex (Ambient) between ", ERC20(erc20Token).symbol(), " and ETH"),
-                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-             );
-             leafs[leafIndex].argumentAddresses[0] = baseToken;
-             leafs[leafIndex].argumentAddresses[1] = quoteToken;
-
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "crocSwapDex"),
+                false,
+                "swap(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)",
+                new address[](2),
+                string.concat("Swap using CrocSwapDex (Ambient) between ", ERC20(erc20Token).symbol(), " and ETH"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = baseToken;
+            leafs[leafIndex].argumentAddresses[1] = quoteToken;
         }
-         
     }
 
     // ========================================= Level Money / LevelUSD =========================================
@@ -11157,7 +11338,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     // ========================================= ELX Claiming =========================================
     function _addELXClaimingLeafs(ManageLeaf[] memory leafs) internal {
         unchecked {
-            leafIndex++; 
+            leafIndex++;
         }
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "elxTokenDistributor"),
@@ -11167,7 +11348,43 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Claim ELX Airdrop"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-    } 
+    }
+
+ // ========================================= BoringChef =========================================
+    function _addBoringChefClaimLeaf(ManageLeaf[] memory leafs, address boringChef, address[] memory rewardTokens) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            boringChef,
+            false,
+            "claimRewards(uint256[])",
+            new address[](rewardTokens.length),
+            string.concat("Claim rewards from BoringChef"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        for (uint256 i = 0; i < rewardTokens.length; i++) {
+            leafs[leafIndex].argumentAddresses[i] = rewardTokens[i];
+        }
+    }
+
+    function _addBoringChefClaimOnBehalfOfLeaf(ManageLeaf[] memory leafs, address boringChef, address[] memory rewardTokens, address user) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            boringChef,
+            false,
+            "claimRewardsOnBehalfOfUser(uint256[],address)",
+            new address[](rewardTokens.length + 1),
+            string.concat("Claim rewards from BoringChef on behalf of user"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        for (uint256 i = 0; i < rewardTokens.length; i++) {
+            leafs[leafIndex].argumentAddresses[i] = rewardTokens[i];
+        }
+        leafs[leafIndex].argumentAddresses[rewardTokens.length] = user;
+    }
 
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
@@ -11461,7 +11678,7 @@ interface CurvePool {
 }
 
 interface ICurveGauge {
-    function lp_token() external view returns (address); 
+    function lp_token() external view returns (address);
 }
 
 interface BalancerVault {
@@ -11515,9 +11732,13 @@ interface IConvexFXVault {
 }
 
 interface IVaultExplorer {
-    function getPoolTokens(address _pool) external view returns (address[] memory tokens); 
+    function getPoolTokens(address _pool) external view returns (address[] memory tokens);
 }
 
 interface IBalancerV3Pool {
-    function name() external view returns (string memory);  
+    function name() external view returns (string memory);
+}
+
+interface IBGTRewardVault {
+    function stakeToken() external view returns (address); 
 }

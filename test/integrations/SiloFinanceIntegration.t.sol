@@ -36,7 +36,7 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("sonicMainnet");
         // Setup forked environment.
         string memory rpcKey = "SONIC_MAINNET_RPC_URL";
-        uint256 blockNumber = 14832655;
+        uint256 blockNumber = 16092216;
 
         _startFork(rpcKey, blockNumber);
 
@@ -110,7 +110,11 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //24 leaves per silo v2 market
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));
+        _addSiloV2Leafs(
+            leafs, 
+            getAddress(sourceChain, "silo_wS_USDC_id20_config"),
+            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+        );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -203,7 +207,11 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));
+        _addSiloV2Leafs(
+            leafs, 
+            getAddress(sourceChain, "silo_wS_USDC_id20_config"),
+            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+        );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -302,7 +310,11 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));
+        _addSiloV2Leafs(
+            leafs, 
+            getAddress(sourceChain, "silo_wS_USDC_id20_config"),
+            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+        );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -374,7 +386,11 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));
+        _addSiloV2Leafs(
+            leafs, 
+            getAddress(sourceChain, "silo_wS_USDC_id20_config"),
+            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+        );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -437,7 +453,11 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));
+        _addSiloV2Leafs(
+            leafs, 
+            getAddress(sourceChain, "silo_wS_USDC_id20_config"),
+            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+        );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -493,10 +513,14 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
 
     function testSiloRewardsClaiming() external {
         deal(getAddress(sourceChain, "wS"), address(boringVault), 1_000e18);
-        deal(getAddress(sourceChain, "stS"), address(boringVault), 1_000e18);
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64); //17 leaves per silo v2 market
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_stS_wS_config"));
+        _addSiloV2Leafs(
+            leafs, 
+            getAddress(sourceChain, "silo_wS_USDC_id20_config"),
+            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+        );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -504,52 +528,91 @@ contract SiloFinanceIntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](5);
-        manageLeafs[0] = leafs[0]; //approve stS
-        manageLeafs[1] = leafs[17]; //approve wS
-        manageLeafs[2] = leafs[5]; //deposit stS
-        manageLeafs[3] = leafs[34]; //claim(to)
-        manageLeafs[4] = leafs[35]; //claim(to, name)
-
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](3);
+        manageLeafs[0] = leafs[0]; //approve wS
+        manageLeafs[1] = leafs[17]; //approve USDC
+        manageLeafs[2] = leafs[22]; //deposit USDC
+        //manageLeafs[3] = leafs[34]; //claim(to)
+        //manageLeafs[4] = leafs[35]; //claim(to, name)
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
-        (address silo0, address silo1) = ISiloConfig(getAddress(sourceChain, "silo_stS_wS_config")).getSilos();
+        (address silo0, address silo1) = ISiloConfig(getAddress(sourceChain, "silo_wS_USDC_id20_config")).getSilos();
 
-        address[] memory targets = new address[](5);
-        targets[0] = getAddress(sourceChain, "stS");
-        targets[1] = getAddress(sourceChain, "wS");
-        targets[2] = silo0;
-        targets[3] = getAddress(sourceChain, "siloIncentivesController");
-        targets[4] = getAddress(sourceChain, "siloIncentivesController");
+        address[] memory targets = new address[](3);
+        targets[0] = getAddress(sourceChain, "wS");
+        targets[1] = getAddress(sourceChain, "USDC");
+        targets[2] = silo1;
 
-        bytes[] memory targetData = new bytes[](5);
+
+        //targets[3] = getAddress(sourceChain, "siloIncentivesController");
+        //targets[4] = getAddress(sourceChain, "siloIncentivesController");
+
+        bytes[] memory targetData = new bytes[](3);
         targetData[0] = abi.encodeWithSignature("approve(address,uint256)", silo0, type(uint256).max);
         targetData[1] = abi.encodeWithSignature("approve(address,uint256)", silo1, type(uint256).max);
         targetData[2] = abi.encodeWithSignature(
-            "deposit(uint256,address,uint8)", 1000e18, getAddress(sourceChain, "boringVault"), 0
+            "deposit(uint256,address,uint8)", 2_000_000e8, getAddress(sourceChain, "boringVault"), 0
         );
-        targetData[3] = abi.encodeWithSignature(
+        //targetData[3] = abi.encodeWithSignature(
+        //    "claimRewards(address)", getAddress(sourceChain, "boringVault")
+        //);
+
+        //string[] memory programNames = new string[](1); 
+        //programNames[0] = "wS_sUSDC_0020"; 
+
+        //targetData[4] = abi.encodeWithSignature(
+        //    "claimRewards(address,string[])", getAddress(sourceChain, "boringVault"), programNames
+        //);
+
+        address[] memory decodersAndSanitizers = new address[](3);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](3);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+        
+        //skip some time to accrue rewards 
+        skip(2 weeks); 
+
+        manageLeafs = new ManageLeaf[](2);
+        manageLeafs[0] = leafs[34]; //claim(to)
+        manageLeafs[1] = leafs[35]; //claim(to, name)
+
+        manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        targets = new address[](2);
+        targets[0] = getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController");
+        targets[1] = getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController");
+
+        targetData = new bytes[](2);
+        targetData[0] = abi.encodeWithSignature(
             "claimRewards(address)", getAddress(sourceChain, "boringVault")
         );
 
         string[] memory programNames = new string[](1); 
         programNames[0] = "wS_sUSDC_0020"; 
 
-        targetData[4] = abi.encodeWithSignature(
+        targetData[1] = abi.encodeWithSignature(
             "claimRewards(address,string[])", getAddress(sourceChain, "boringVault"), programNames
         );
 
-        address[] memory decodersAndSanitizers = new address[](5);
+        decodersAndSanitizers = new address[](2);
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
         decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
-        decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
-        decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
-        decodersAndSanitizers[4] = rawDataDecoderAndSanitizer;
 
-        uint256[] memory values = new uint256[](5);
+        values = new uint256[](2);
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+        
+        uint256 siloBalance = getERC20(sourceChain, "SILO").balanceOf(address(boringVault)); 
+        uint256 wSBalance= getERC20(sourceChain, "wS").balanceOf(address(boringVault)); 
+        assertGt(siloBalance, 0); 
+        assertGt(wSBalance, 1000e18); 
+
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
