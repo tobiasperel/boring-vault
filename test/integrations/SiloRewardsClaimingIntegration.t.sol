@@ -109,10 +109,13 @@ contract SiloFinanceClaimingIntegrationTest is Test, MerkleTreeHelper {
         address stkscUSDStrategist = 0xE89CeE9837e6Fce3b1Ebd8E1C779b76fd6E20136;  
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64);
+        address[] memory incentivesControllers = new address[](2); 
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id20_USDC_IncentivesController"); 
+        incentivesControllers[1] = address(0);
         _addSiloV2Leafs(
             leafs, 
             getAddress(sourceChain, "silo_wS_USDC_id20_config"),
-            getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController")
+            incentivesControllers
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -128,7 +131,7 @@ contract SiloFinanceClaimingIntegrationTest is Test, MerkleTreeHelper {
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
         address[] memory targets = new address[](1);
-        targets[0] = getAddress(sourceChain, "silo_wS_USDC_id20_IncentivesController");
+        targets[0] = getAddress(sourceChain, "silo_wS_USDC_id20_USDC_IncentivesController");
 
         bytes[] memory targetData = new bytes[](1);
         targetData[0] = abi.encodeWithSignature(

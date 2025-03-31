@@ -229,6 +229,7 @@ contract ChainValues {
         values[mainnet]["ZRO"] = 0x6985884C4392D348587B19cb9eAAf157F13271cd.toBytes32();
         values[mainnet]["eBTC"] = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642.toBytes32();
         values[mainnet]["USDS"] = 0xdC035D45d973E3EC169d2276DDab16f1e407384F.toBytes32();
+        values[mainnet]["sUSDS"] = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD.toBytes32();
         values[mainnet]["uniBTC"] = 0x004E9C3EF86bc1ca1f0bB5C7662861Ee93350568.toBytes32();
         values[mainnet]["BTCN"] = 0x386E7A3a0c0919c9d53c3b04FF67E73Ff9e45Fb6.toBytes32();
         values[mainnet]["sUSDs"] = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD.toBytes32();
@@ -714,6 +715,9 @@ contract ChainValues {
         values[mainnet]["sUSDePT03_USDC_915"] = 0x346afa2b6d528222a2f9721ded6e7e2c40ac94877a598f5dae5013c651d2a462;
         values[mainnet]["USD0_plusPT03_USDC_915"] = 0x8411eeb07c8e32de0b3784b6b967346a45593bfd8baeb291cc209dc195c7b3ad;
         values[mainnet]["sUSDePT_03_27_DAI_915"] = 0x5e3e6b1e01c5708055548d82d01db741e37d03b948a7ef9f3d4b962648bcbfa7;
+        values[mainnet]["eUSDePT_05_28_25_USDC_915"] = 0x21e55c99123958ff5667f824948c97d0f64dfaa6e2848062e72bc68d200d35f9; 
+        values[mainnet]["eUSDePT_05_28_25_DAI_915"] = 0xae4571cdcad4191b9a59d1bb27a10a1b05c92c84fe423e4886d5781a30a9c8f1; 
+        values[mainnet]["syrupUSDC_USDC_915"] = 0x729badf297ee9f2f6b3f717b96fd355fc6ec00422284ce1968e76647b258cf44; 
 
         values[mainnet]["WBTC_USDC_86"] = 0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49;
         values[mainnet]["WBTC_USDT_86"] = 0xa921ef34e2fc7a27ccc50ae7e4b154e16c9799d3387076c421423ef52ac4df99;
@@ -837,6 +841,7 @@ contract ChainValues {
         values[mainnet]["pendle_sUSDe_karak_01_29_25"] = 0xDbE4D359D4E48087586Ec04b93809bA647343548.toBytes32();
         values[mainnet]["pendle_USDe_karak_01_29_25"] = 0x6C06bBFa3B63eD344ceb3312Df795eDC8d29BDD5.toBytes32();
         values[mainnet]["pendle_USDe_03_26_25"] = 0xB451A36c8B6b2EAc77AD0737BA732818143A0E25.toBytes32();
+        values[mainnet]["pendle_eUSDe_market_05_28_25"] = 0x85667e484a32d884010Cf16427D90049CCf46e97.toBytes32();
         values[mainnet]["pendle_sUSDe_05_28_25"] = 0xB162B764044697cf03617C2EFbcB1f42e31E4766.toBytes32();
 
         values[mainnet]["pendle_weETHs_market_08_28_24"] = 0xcAa8ABB72A75C623BECe1f4D5c218F425d47A0D0.toBytes32();
@@ -1745,6 +1750,8 @@ contract ChainValues {
         values[sonicMainnet]["ZRO"] = address(1).toBytes32();
         values[sonicMainnet]["OS"] = 0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794.toBytes32();
         values[sonicMainnet]["SILO"] = 0x53f753E4B17F4075D6fa2c6909033d224b81e698.toBytes32(); 
+        values[sonicMainnet]["BEETSFRAGMENTSS1"] = 0x3419966bC74fa8f951108d15b053bEd233974d3D.toBytes32();
+        values[sonicMainnet]["CRV"] = 0x5Af79133999f7908953E94b7A5CF367740Ebee35.toBytes32();
 
         values[sonicMainnet]["balancerVault"] = address(1).toBytes32();
         values[sonicMainnet]["vault"] = address(1).toBytes32();
@@ -1798,14 +1805,26 @@ contract ChainValues {
         // Silo
         values[sonicMainnet]["siloRouter"] = 0x22AacdEc57b13911dE9f188CF69633cC537BdB76.toBytes32();
         values[sonicMainnet]["silo_stS_wS_config"] = 0x78C246f67c8A6cE03a1d894d4Cf68004Bd55Deea.toBytes32();
+
         values[sonicMainnet]["silo_wS_USDC_id8_config"] = 0x4915F6d3C9a7B20CedFc5d3854f2802f30311d13.toBytes32();
+        values[sonicMainnet]["silo_wS_USDC_id8_USDC_IncentivesController"] = 0x0dd368Cd6D8869F2b21BA3Cb4fd7bA107a2e3752.toBytes32();
+        values[sonicMainnet]["silo_wS_USDC_id8_wS_IncentivesController"] = 0x89a10bFb6b57AD89b2270d80175914C517E547D9.toBytes32();
+
         values[sonicMainnet]["silo_wS_USDC_id20_config"] = 0x062A36Bbe0306c2Fd7aecdf25843291fBAB96AD2.toBytes32();
-        values[sonicMainnet]["silo_wS_USDC_id20_IncentivesController"] = 0x2D3d269334485d2D876df7363e1A50b13220a7D8.toBytes32();
+        values[sonicMainnet]["silo_wS_USDC_id20_USDC_IncentivesController"] = 0x2D3d269334485d2D876df7363e1A50b13220a7D8.toBytes32();
+
         values[sonicMainnet]["silo_USDC_wstkscUSD_id23_config"] = 0xbC24c0F594ECA381956895957c771437D61400D3.toBytes32();
+        values[sonicMainnet]["silo_USDC_wstkscUSD_id23_USDC_IncentivesController"] = 0xD4599CC9Bb91E84e55620A4E550DF0868aC45175.toBytes32();
+
         values[sonicMainnet]["silo_S_ETH_config"] = 0x9603Af53dC37F4BB6386f358A51a04fA8f599101.toBytes32();
-        values[sonicMainnet]["silo_ETH_wstkscETH_config"] = 0xefA367570B11f8745B403c0D458b9D2EAf424686.toBytes32();
+        
+        values[sonicMainnet]["silo_ETH_wstkscETH_id26_config"] = 0xefA367570B11f8745B403c0D458b9D2EAf424686.toBytes32();
+
         values[sonicMainnet]["silo_S_scUSD_id15_config"] = 0xFe514E71F0933F63B374056557AED3dBB381C646.toBytes32();
         values[sonicMainnet]["silo_LBTC_scBTC_id32_config"] = 0xe67cce118e9CcEaE51996E4d290f9B77D960E3d7.toBytes32();
+
+        values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_config"] = 0xDa6787a3543a01Bf770DDF3953bE5B9C99c1cBD0.toBytes32(); 
+        values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_scUSD_IncentivesController"] = 0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32(); 
 
 
          // Curve
@@ -1827,7 +1846,7 @@ contract ChainValues {
 
         // Odos
         values[sonicMainnet]["odosRouterV2"] = 0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D.toBytes32();
-        values[sonicMainnet]["odosExecutor"] = 0xB28Ca7e465C452cE4252598e0Bc96Aeba553CF82.toBytes32();
+        values[sonicMainnet]["odosExecutor"] = 0xECDfcB1dD81d07c3551CbA94023EE443450353E1.toBytes32();
         
         // Aave
         values[sonicMainnet]["v3Pool"] = 0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3.toBytes32();

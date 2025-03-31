@@ -12,6 +12,7 @@ import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoc
 import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol"; 
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol"; 
 import {MerklDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MerklDecoderAndSanitizer.sol"; 
+import {BalancerV3DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/BalancerV3DecoderAndSanitizer.sol"; 
 
 
 contract StakedSonicDecoderAndSanitizer is
@@ -24,7 +25,8 @@ contract StakedSonicDecoderAndSanitizer is
     EulerEVKDecoderAndSanitizer,
     NativeWrapperDecoderAndSanitizer,
     OdosDecoderAndSanitizer,
-    MerklDecoderAndSanitizer
+    MerklDecoderAndSanitizer,
+    BalancerV3DecoderAndSanitizer
 {
     constructor(address _nonFungiblePositionManager, address _odosRouter) 
         UniswapV3SwapRouter02DecoderAndSanitizer(_nonFungiblePositionManager) 
@@ -38,7 +40,7 @@ contract StakedSonicDecoderAndSanitizer is
     function deposit(uint256, address receiver)
         external
         pure
-        override(BalancerV2DecoderAndSanitizer, CurveDecoderAndSanitizer, ERC4626DecoderAndSanitizer)
+        override(BalancerV2DecoderAndSanitizer, CurveDecoderAndSanitizer, ERC4626DecoderAndSanitizer, BalancerV3DecoderAndSanitizer)
         returns (bytes memory addressesFound)
     {
         addressesFound = abi.encodePacked(receiver);
