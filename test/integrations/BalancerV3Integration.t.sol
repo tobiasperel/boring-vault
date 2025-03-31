@@ -1509,7 +1509,7 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         uint256 lpBalance = getERC20(sourceChain, "balancerV3_USDC_scUSD_boosted_gauge").balanceOf(address(boringVault)); 
         assertGt(lpBalance, 0); 
 
-        skip(1 days); 
+        skip(10 days); 
     
         //claim rewards, withdraw lp, then remove liquidity
         tx_ = _getTxArrays(2); 

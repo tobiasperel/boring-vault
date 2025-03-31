@@ -69,15 +69,26 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Odos ==========================
         
-        address[] memory tokens = new address[](5);   
+        address[] memory tokens = new address[](8);   
+        SwapKind[] memory kind = new SwapKind[](8);
         tokens[0] = getAddress(sourceChain, "WETH"); 
+        kind[0] = SwapKind.BuyAndSell;
         tokens[1] = getAddress(sourceChain, "stS"); 
+        kind[1] = SwapKind.BuyAndSell;
         tokens[2] = getAddress(sourceChain, "wS"); 
+        kind[2] = SwapKind.BuyAndSell;
         tokens[3] = getAddress(sourceChain, "scETH"); 
+        kind[3] = SwapKind.BuyAndSell;
         tokens[4] = getAddress(sourceChain, "BEETS"); 
+        kind[4] = SwapKind.Sell;
+        tokens[5] = getAddress(sourceChain, "CRV");
+        kind[5] = SwapKind.Sell;
+        tokens[6] = getAddress(sourceChain, "WETH");
+        kind[6] = SwapKind.Sell;
+        tokens[7] = getAddress(sourceChain, "SILO");
+        kind[7] = SwapKind.Sell;
 
-        //TODO update this on next root change w/ new odos function api
-        _addOdosSwapLeafs(leafs, tokens); 
+        _addOdosSwapLeafs(leafs, tokens, kind); 
 
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
@@ -85,9 +96,11 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         _addTellerLeafs(leafs, getAddress(sourceChain, "scETHTeller"), tellerAssets, false);
 
         // ========================== Silo ==========================
-
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_ETH_config"));
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_ETH_wstkscETH_config"));
+        address[] memory incentivesControllers = new address[](2); 
+        incentivesControllers[0] = address(0);  
+        incentivesControllers[0] = address(0);   
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_ETH_config"), incentivesControllers);
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_ETH_wstkscETH_config"), incentivesControllers);
 
         // ========================== Curve =========================
 
