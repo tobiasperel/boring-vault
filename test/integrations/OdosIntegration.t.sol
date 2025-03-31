@@ -36,7 +36,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 21953429;
+        uint256 blockNumber = 22140604;
 
         _startFork(rpcKey, blockNumber);
 
@@ -106,7 +106,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 21953754;
+        uint256 blockNumber = 22140604;
 
         _startFork(rpcKey, blockNumber);
 
@@ -176,7 +176,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("sonicMainnet");
         // Setup forked environment.
         string memory rpcKey = "SONIC_MAINNET_RPC_URL";
-        uint256 blockNumber = 11169032; 
+        uint256 blockNumber = 16413113; 
 
         _startFork(rpcKey, blockNumber);
 
@@ -316,7 +316,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("base");
         // Setup forked environment.
         string memory rpcKey = "BASE_RPC_URL";
-        uint256 blockNumber = 27469585; 
+        uint256 blockNumber = 28158816; 
 
         _startFork(rpcKey, blockNumber);
 
