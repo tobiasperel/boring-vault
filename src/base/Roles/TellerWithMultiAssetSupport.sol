@@ -323,6 +323,16 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
         if (shareUnlockTime[from] > block.timestamp) revert TellerWithMultiAssetSupport__SharesAreLocked();
     }
 
+    /**
+     * @notice Implement legacy beforeTransfer hook to check if shares are locked, or if `from`is on the deny list.
+     */
+    function beforeTransfer(address from) public view virtual {
+        if (fromDenyList[from]) {
+            revert TellerWithMultiAssetSupport__TransferDenied(from, address(0), address(0));
+        }
+        if (shareUnlockTime[from] > block.timestamp) revert TellerWithMultiAssetSupport__SharesAreLocked();
+    }
+
     // ========================================= REVERT DEPOSIT FUNCTIONS =========================================
 
     /**
