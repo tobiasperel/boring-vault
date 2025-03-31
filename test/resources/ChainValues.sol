@@ -756,6 +756,7 @@ contract ChainValues {
         values[mainnet]["gauntletWETHPrime"] = 0x2371e134e3455e0593363cBF89d3b6cf53740618.toBytes32();
         values[mainnet]["gauntletWETHCore"] = 0x4881Ef0BF6d2365D3dd6499ccd7532bcdBCE0658.toBytes32();
         values[mainnet]["mevCapitalwWeth"] = 0x9a8bC3B04b7f3D87cfC09ba407dCED575f2d61D8.toBytes32();
+        values[mainnet]["steakhouseETH"] = 0xBEEf050ecd6a16c4e7bfFbB52Ebba7846C4b8cD4.toBytes32();
         values[mainnet]["Re7WETH"] = 0x78Fc2c2eD1A4cDb5402365934aE5648aDAd094d0.toBytes32();
         values[mainnet]["PendleWBTC"] = 0x2f1aBb81ed86Be95bcf8178bA62C8e72D6834775.toBytes32();
 
