@@ -2,8 +2,8 @@
 pragma solidity 0.8.21;
 
 import {ERC20} from "@solmate/tokens/ERC20.sol";
-import {AddressToBytes32Lib} from "src/helper/AddressToBytes32Lib.sol";
-import {ChainValues} from "test/resources/ChainValues.sol";
+import {AddressToBytes32Lib} from "src/helper/AddressToBytes32Lib.sol"; 
+import {ChainValues} from "test/resources/ChainValues.sol"; 
 import {Strings} from "lib/openzeppelin-contracts/contracts/utils/Strings.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {Address} from "@openzeppelin/contracts/utils/Address.sol";
@@ -10214,7 +10214,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= Silo Finance V2 =========================================
-    function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket, address incentivesController) internal {
+    function _addSiloV2Leafs(ManageLeaf[] memory leafs, address siloMarket, address[] memory incentivesControllers) internal {
         (address silo0, address silo1) = ISilo(siloMarket).getSilos();
         address[] memory silos = new address[](2);
         silos[0] = silo0;
@@ -10384,32 +10384,36 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
         }
- 
-            unchecked {
-                leafIndex++;
-            }
-            leafs[leafIndex] = ManageLeaf(
-                incentivesController,
-                false,
-                "claimRewards(address)",
-                new address[](1),
-                string.concat("Claim All Rewards from Silo Incentives Controller"),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        
+        for (uint256 i = 0; i < incentivesControllers.length; i++) { 
+            if (incentivesControllers[i] != address(0)) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    incentivesControllers[i],
+                    false,
+                    "claimRewards(address)",
+                    new address[](1),
+                    string.concat("Claim All Rewards from Silo Incentives Controller"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
 
-            unchecked {
-                leafIndex++;
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    incentivesControllers[i],
+                    false,
+                    "claimRewards(address,string[])",
+                    new address[](1),
+                    string.concat("Claim Rewards from market from Silo Incentives Controller"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
             }
-            leafs[leafIndex] = ManageLeaf(
-                incentivesController,
-                false,
-                "claimRewards(address,string[])",
-                new address[](1),
-                string.concat("Claim Rewards from market from Silo Incentives Controller"),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        }
     }
 
     // ========================================= LBTC Bridge =========================================
