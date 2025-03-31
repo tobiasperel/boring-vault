@@ -46,6 +46,8 @@ import {SonicVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Soni
 import {LBTCvBNBDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LBTCvBNBDecoderAndSanitizer.sol";
 import {LBTCvBaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LBTCvBaseDecoderAndSanitizer.sol";
 import {SonicLBTCvSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvSonicDecoderAndSanitizer.sol";
+import {TacETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TacETHDecoderAndSanitizer.sol";
+import {TacUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TacUSDDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -83,10 +85,13 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode();
         //deployer.deployContract("Sonic LBTCv Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
 
-        //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0); 
-
+        creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(
+            getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"),
+            getAddress(sourceChain, "convexFXPoolRegistry"),
+            getAddress(sourceChain, "odosRouterV2")
+        );
+        deployer.deployContract("Lombard BTC Decoder And Sanitizer V0.9", creationCode, constructorArgs, 0); 
         
         //creationCode = type(LBTCvBNBDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
@@ -95,7 +100,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         creationCode = type(StakedSonicDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
         deployer.deployContract("Staked Sonic Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
-        
+       
         vm.stopBroadcast();
     }
 }
