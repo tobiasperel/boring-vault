@@ -519,6 +519,15 @@ contract DecoderCustomTypes {
         uint256 outputMin;
         address outputReceiver;
     }
+
+    struct swapTokenInfoOogaBooga {
+        address inputToken;
+        uint256 inputAmount;
+        address outputToken;
+        uint256 outputQuote;
+        uint256 outputMin;
+        address outputReceiver;
+    }
     // ========================================= Level ==================================
     
     /// @dev for reference 
