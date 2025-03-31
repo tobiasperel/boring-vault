@@ -22,6 +22,15 @@ contract DeriveIntegrationTest is BaseTestIntegration {
         _overrideDecoder(deriveDecoder); 
     }
 
+    function _setUpDerive() internal {
+        super.setUp(); 
+        _setupChain("derive", 21711962); 
+            
+        address deriveDecoder = address(new FullDeriveDecoderAndSanitizer()); 
+
+        _overrideDecoder(deriveDecoder); 
+    }
+
 
     function testDeriveDeposit() public {
         _setUpMainnet(); 
@@ -141,4 +150,122 @@ contract DeriveIntegrationTest is BaseTestIntegration {
         
     }
 
+    function testDeriveClaim() public {
+        _setUpDerive(); 
+
+        //deal(getAddress(sourceChain, "LBTC"), address(boringVault), 0.5e8); 
+        //deal(address(boringVault), 0.5e18); 
+
+        //address connectorPlugOnDeriveChain = 0x2E1245D57a304C7314687E529D610071628117f3;
+        //address controllerOnMainnet = 0x52CB41109b637F03B81b3FD6Dce4E3948b2F0923; 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        _addDeriveClaimLeafs(leafs); 
+        
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(1); 
+        
+        //manage leafs
+        tx_.manageLeafs[0] = leafs[0]; //claimAll
+
+        //generate proofs
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //targets
+        tx_.targets[0] = getAddress(sourceChain, "rewardDistributor"); //approve 
+
+        //targetDatas
+        tx_.targetData[0] = abi.encodeWithSignature("claimAll()");
+        
+        //decoders
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        
+        //submit the call 
+        _submitManagerCall(manageProofs, tx_); 
+
+        //mock some rewards of stDRV so we can unwrap
+        deal(getAddress(sourceChain, "stDRV"), address(boringVault), 10e18); 
+
+        tx_ = _getTxArrays(1); 
+        
+        //manage leafs
+        tx_.manageLeafs[0] = leafs[1]; //redeem stDRV
+
+        //generate proofs
+        manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //targets
+        tx_.targets[0] = getAddress(sourceChain, "stDRV"); //redeem
+
+        //targetDatas
+        tx_.targetData[0] = abi.encodeWithSignature("redeem(uint256,uint256)", 10e18, 0); //no redeem time
+        
+        //decoders
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        
+        //submit the call 
+        _submitManagerCall(manageProofs, tx_); 
+        
+        //looks like we get 80% of our rewards if we insta-claim? makes sense since there is a vesting feature
+        uint256 drvBalance = getERC20(sourceChain, "DRV").balanceOf(address(boringVault)); 
+        assertGt(drvBalance, 0); 
+
+        //===== test finalize =====
+
+        //mock some rewards of stDRV so we can unwrap
+        deal(getAddress(sourceChain, "stDRV"), address(boringVault), 10e18); 
+
+        tx_ = _getTxArrays(1); 
+        
+        //manage leafs
+        tx_.manageLeafs[0] = leafs[1]; //redeem stDRV
+
+        //generate proofs
+        manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //targets
+        tx_.targets[0] = getAddress(sourceChain, "stDRV"); //redeem
+
+        //targetDatas
+        tx_.targetData[0] = abi.encodeWithSignature("redeem(uint256,uint256)", 10e18, 4 weeks); 
+        
+        //decoders
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        
+        //submit the call 
+        _submitManagerCall(manageProofs, tx_); 
+        
+        skip(4 weeks);     
+
+        tx_ = _getTxArrays(1); 
+        
+        //manage leafs
+        tx_.manageLeafs[0] = leafs[2]; //redeem stDRV
+
+        //generate proofs
+        manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //targets
+        tx_.targets[0] = getAddress(sourceChain, "stDRV"); //redeem
+        
+        uint256 redeemIndex; 
+
+        //targetDatas
+        tx_.targetData[0] = abi.encodeWithSignature("finalizeRedeem(uint256)", redeemIndex); 
+        
+        //decoders
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        
+        //submit the call 
+        _submitManagerCall(manageProofs, tx_); 
+    
+        
+        drvBalance = getERC20(sourceChain, "DRV").balanceOf(address(boringVault)); 
+        assertEq(drvBalance, 18e18); 
+    }
 }

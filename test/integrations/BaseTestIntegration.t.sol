@@ -50,7 +50,8 @@ contract BaseTestIntegration is Test, MerkleTreeHelper {
         nameToRPC["sonicMainnet"] = "SONIC_MAINNET_RPC_URL";  
         nameToRPC["berchain"] = "BERA_CHAIN_RPC_URL";  
         nameToRPC["bsc"] = "BNB_RPC_URL"; 
-        nameToRPC["swell"] = "SWELL_CHAIN_RLC_URL"; 
+        nameToRPC["swell"] = "SWELL_CHAIN_RPC_URL"; 
+        nameToRPC["derive"] = "DERIVE_RPC_URL"; 
     }
     
     function _setupChain(string memory chain, uint256 blockNumber) internal {

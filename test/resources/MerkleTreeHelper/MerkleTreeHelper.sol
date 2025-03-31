@@ -11121,6 +11121,60 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[3] = controllerOnMainnet; 
     }
 
+
+    function _addDeriveClaimLeafs(ManageLeaf[] memory leafs) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "rewardDistributor"),
+            false,
+            "claimAll()",
+            new address[](0),
+            string.concat("Claim rewards on Derive"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        //====== stDRV ======
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "stDRV"),
+            false,
+            "redeem(uint256,uint256)",
+            new address[](0),
+            string.concat("Claim rewards on Derive"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "stDRV"),
+            false,
+            "finalizeRedeem(uint256)",
+            new address[](0),
+            string.concat("Finalize Redeem of Staked Derive"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+         
+         
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "stDRV"),
+            false,
+            "cancelRedeem(uint256)",
+            new address[](0),
+            string.concat("Cancel Redeem of Staked Derive"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+    }
+
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
     bool addLeafIndex = false;
