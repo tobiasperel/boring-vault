@@ -1173,12 +1173,13 @@ contract ChainValues {
         values[mainnet]["elxTokenDistributor"] = 0xeb5D4b79e95Edb5567f3f9703FbD56a107905c0C.toBytes32();
         
         // Derive
-        values[mainnet]["derive_LBTC_basis_deposit"] = .toBytes32();
-        values[mainnet]["derive_LBTC_basis_deposit_connector"] = .toBytes32();
-        values[mainnet]["derive_LBTC_basis_withdraw"] = .toBytes32();
-        values[mainnet]["derive_LBTC_basis_withdraw_connector"] = .toBytes32();
-        values[mainnet][""] = .toBytes32(); 
-        values[mainnet]["derive_boringTestVault_wallet"] = .toBytes32(); 
+        values[mainnet]["derive_LBTC_basis_deposit"] = 0x76624ff43D610F64177Bb9c194A2503642e9B803.toBytes32();
+        values[mainnet]["derive_LBTC_basis_deposit_connector"] = 0x457379de638CAFeB1759a22457fe893b288E2e89.toBytes32();
+        values[mainnet]["derive_LBTC_basis_token"] = 0xdFd366D941A51e1f53Fbddb19FB4eE3af17FF991.toBytes32(); 
+        values[mainnet]["derive_LBTC_basis_withdraw"] = 0x954bE1803546150bfd887c9ff70fd221F2F505d3.toBytes32();
+        values[mainnet]["derive_LBTC_basis_withdraw_connector"] = 0x5E72430EC945CCc183c34e2860FFC2b5bac712c2.toBytes32();
+        //values[mainnet][""] = .toBytes32(); 
+        //values[mainnet]["derive_boringTestVault_wallet"] = .toBytes32(); 
     }
 
     function _addBaseValues() private {

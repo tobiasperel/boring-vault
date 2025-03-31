@@ -11052,6 +11052,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         address withdrawVault, 
         address withdrawConnector,
         address connectorPlugOnDeriveChain,
+        address controllerOnMainnet,
         address deriveWalletOwnedByBoringVault
     ) internal {
 
@@ -11085,17 +11086,17 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Approve Derive ", withdrawName, " Withdraw Vault to spend ", ERC20(deriveWithdrawToken).symbol()),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = depositVault; 
+        leafs[leafIndex].argumentAddresses[0] = withdrawVault; 
 
         unchecked {
             leafIndex++;
         }
         leafs[leafIndex] = ManageLeaf(
-            assets[i],
-            false,
+            depositVault,
+            true, //fees
             "bridge(address,uint256,uint256,address,bytes,bytes)",  
             new address[](4),
-            string.concat("Deposit ", ERC20(deriveDepositToken).symbol(), " into Derive ", depoistName, " Vault"),
+            string.concat("Deposit ", ERC20(deriveDepositToken).symbol(), " into Derive ", depositName, " Vault"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = deriveWalletOwnedByBoringVault; 
@@ -11103,6 +11104,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
         leafs[leafIndex].argumentAddresses[3] = connectorPlugOnDeriveChain; 
 
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            withdrawVault,
+            true, //fees
+            "bridge(address,uint256,uint256,address,bytes,bytes)",  
+            new address[](4),
+            string.concat("Withdraw ", ERC20(deriveWithdrawToken).symbol(), " From Derive ", withdrawName, " Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = deriveWalletOwnedByBoringVault; 
+        leafs[leafIndex].argumentAddresses[1] = withdrawConnector; 
+        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[3] = controllerOnMainnet; 
     }
 
     // ========================================= JSON FUNCTIONS =========================================
@@ -11456,4 +11472,8 @@ interface IVaultExplorer {
 
 interface IBalancerV3Pool {
     function name() external view returns (string memory);  
+}
+
+interface IDeriveVault {
+    function token() external view returns (address); 
 }
