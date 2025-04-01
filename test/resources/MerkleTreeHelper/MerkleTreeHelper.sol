@@ -11596,7 +11596,23 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
- // ========================================= BoringChef =========================================
+    // ========================================= ELX Claiming =========================================
+    function _addFluidRewardsClaiming(ManageLeaf[] memory leafs) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "fluidMerkleDistributor"),
+            false,
+            "claim(address,uint256,uint8,bytes32,uint256,bytes32[],bytes)",
+            new address[](1),
+            string.concat("Claim ELX Airdrop"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+    }
+
+    // ========================================= BoringChef =========================================
     function _addBoringChefClaimLeaf(ManageLeaf[] memory leafs, address boringChef) internal {
         unchecked {
             leafIndex++;
