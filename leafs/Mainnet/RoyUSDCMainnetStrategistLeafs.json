@@ -1,0 +1,261 @@
+{
+    "metadata": {
+        "AccountantAddress": "0x80f0B206B7E5dAa1b1ba4ea1478A33241ee6baC9",
+        "BoringVaultAddress": "0x74D1fAfa4e0163b2f1035F1b052137F3f9baD5cC",
+        "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+        "DigestComposition": [
+            "Bytes20(DECODER_AND_SANITIZER_ADDRESS)",
+            "Bytes20(TARGET_ADDRESS)",
+            "Bytes1(CAN_SEND_VALUE)",
+            "Bytes4(TARGET_FUNCTION_SELECTOR)",
+            "Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"
+        ],
+        "LeafCount": 10,
+        "ManageRoot": "0xb1d32134a80742c4f2a36283322c84cf2625085171174cb920e84502af801eae",
+        "ManagerAddress": "0xD4F870516a3B67b64238Bb803392Cd1A52D54Fb2",
+        "TreeCapacity": 16
+    },
+    "leafs": [
+        {
+            "AddressArguments": [
+                "0xa1E2481a9CD0Cb0447EeB1cbc26F1b3fff3bec20"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+            "Description": "Approve Sonic Gateway L1 to spendUSDC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xc86a6b117e3918fe16cff489a1bea99c5b6e4bf507d82d2c6b6986325ea60b64",
+            "PackedArgumentAddresses": "0xa1e2481a9cd0cb0447eeb1cbc26f1b3fff3bec20",
+            "TargetAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        },
+        {
+            "AddressArguments": [
+                "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+            "Description": "Deposit USDC into Sonic Gateway",
+            "FunctionSelector": "0x9f635224",
+            "FunctionSignature": "deposit(uint96,address,uint256)",
+            "LeafDigest": "0x2e4620115b432d74bc947a8f32845dbcd959949f793f6030096c0f4d7e471e4e",
+            "PackedArgumentAddresses": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "TargetAddress": "0xa1E2481a9CD0Cb0447EeB1cbc26F1b3fff3bec20"
+        },
+        {
+            "AddressArguments": [
+                "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+            "Description": "Claim USDC from Sonic Gateway",
+            "FunctionSelector": "0x99016142",
+            "FunctionSignature": "claim(uint256,address,uint256,bytes)",
+            "LeafDigest": "0xc3178e068084f4027456c418743f7ef12e71de3dfcf13dffef9c0ebead773e36",
+            "PackedArgumentAddresses": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "TargetAddress": "0xa1E2481a9CD0Cb0447EeB1cbc26F1b3fff3bec20"
+        },
+        {
+            "AddressArguments": [
+                "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+            "Description": "Cancel deposit of USDC from Sonic Gateway while dead",
+            "FunctionSelector": "0x5eaf5260",
+            "FunctionSignature": "cancelDepositWhileDead(uint256,address,uint256,bytes)",
+            "LeafDigest": "0x7421763b6cd2f40d830783b392665022226c0d1a3e9881965b4eef37745f0350",
+            "PackedArgumentAddresses": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "TargetAddress": "0xa1E2481a9CD0Cb0447EeB1cbc26F1b3fff3bec20"
+        },
+        {
+            "AddressArguments": [
+                "0xc026395860Db2d07ee33e05fE50ed7bD583189C7"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+            "Description": "Approve LayerZero to spend USDC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xa92a5242a75fcc92403b4c6a2b7f3f014d68eece6c16877e3e2fb3607dbf1de8",
+            "PackedArgumentAddresses": "0xc026395860db2d07ee33e05fe50ed7bd583189c7",
+            "TargetAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        },
+        {
+            "AddressArguments": [
+                "0x000000000000000000000000000000000000767C",
+                "0x74D1fAfa4e0163b2f1035F1b052137F3f9baD5cC",
+                "0x74D1fAfa4e0163b2f1035F1b052137F3f9baD5cC"
+            ],
+            "CanSendValue": true,
+            "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+            "Description": "Bridge USDC to LayerZero endpoint: 30332",
+            "FunctionSelector": "0xc7c7f5b3",
+            "FunctionSignature": "send((uint32,bytes32,uint256,uint256,bytes,bytes,bytes),(uint256,uint256),address)",
+            "LeafDigest": "0xe3f7e746c638a2cf2b6936b568f9f5942e8bdd1edac3a0616d159a6dcb73030c",
+            "PackedArgumentAddresses": "0x000000000000000000000000000000000000767c74d1fafa4e0163b2f1035f1b052137f3f9bad5cc74d1fafa4e0163b2f1035f1b052137f3f9bad5cc",
+            "TargetAddress": "0xc026395860Db2d07ee33e05fE50ed7bD583189C7"
+        },
+        {
+            "AddressArguments": [
+                "0x80f0B206B7E5dAa1b1ba4ea1478A33241ee6baC9"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+            "Description": "Approve Accountant to spend USDC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x2d1bb1c97a1c81260580c72018a552cc4bccc3b19b74d662155e481de40d6854",
+            "PackedArgumentAddresses": "0x80f0b206b7e5daa1b1ba4ea1478a33241ee6bac9",
+            "TargetAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        },
+        {
+            "AddressArguments": [
+                "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+            "Description": "Claim fees in USDC",
+            "FunctionSelector": "0x15a0ea6a",
+            "FunctionSignature": "claimFees(address)",
+            "LeafDigest": "0xa59902863ace907ee454549a3c0a61c51d1f6e80f0cf062bd8b5571b2fbd3603",
+            "PackedArgumentAddresses": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "TargetAddress": "0x80f0B206B7E5dAa1b1ba4ea1478A33241ee6baC9"
+        },
+        {
+            "AddressArguments": [
+                "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+            "Description": "Claim yield in USDC",
+            "FunctionSelector": "0x999927df",
+            "FunctionSignature": "claimYield(address)",
+            "LeafDigest": "0x38c5229cbd9303c55a9cb4569cb2c0b7c55ab999252d4da1d63a907871b1a544",
+            "PackedArgumentAddresses": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "TargetAddress": "0x80f0B206B7E5dAa1b1ba4ea1478A33241ee6baC9"
+        },
+        {
+            "AddressArguments": [
+                "0xCf5540fFFCdC3d510B18bFcA6d2b9987b0772559"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x1ce013130d069B505f193022eB39f918Bd108bE0",
+            "Description": "Approve Odos Router V2 to spend USDC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xba6386f50cbffef745e8e9e291cac2c4cef83206f882bba3c922ece6e1fd335d",
+            "PackedArgumentAddresses": "0xcf5540fffcdc3d510b18bfca6d2b9987b0772559",
+            "TargetAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        }
+    ],
+    "MerkleTree": {
+        "0": [
+            "0xb1d32134a80742c4f2a36283322c84cf2625085171174cb920e84502af801eae"
+        ],
+        "1": [
+            "0xb1ab600576893e0a2a5a140996df2e735dcf3faabc9ddc0647110056bc887c22",
+            "0x54835aea318d15d205f7008d9f1c9e35db68980466e0d8d8547556dc802ac3eb"
+        ],
+        "2": [
+            "0x9265e82739fe7a0ad70846bcfa75654358b1db4d1d49e1676ffbaa90b89c4acc",
+            "0xf01bc7846aa201ad3d041fd83a83b54e4b3773e92fadc84147d9afff0e0b6dee",
+            "0x9efeac4ef7787b36ab0a54ee8364f90c0f98902b6b46913582d9ff3236c7a0f8",
+            "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe"
+        ],
+        "3": [
+            "0x933f296ae7a2dad9961f6bf8b85006671a44889b852cd1f00ea945e1ea591266",
+            "0x7884a93932c54ec3c2543c5f0accdf35158207c9cb7c3c113e5694bf48783a77",
+            "0xfecb1d61731c0772d094ef8617842c9fc63cbde4d80f2ffdb5a9b7014f8faeb0",
+            "0x5e9315d66624b64b855b944b5d0f6fc365561df9bedadf278c7efa78791d2578",
+            "0xad6a5ad915a0068394328e9f43864b06496f5be5d3fdfde0b1ce50935050120b",
+            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
+            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
+            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba"
+        ],
+        "4": [
+            "0xc86a6b117e3918fe16cff489a1bea99c5b6e4bf507d82d2c6b6986325ea60b64",
+            "0x2e4620115b432d74bc947a8f32845dbcd959949f793f6030096c0f4d7e471e4e",
+            "0xc3178e068084f4027456c418743f7ef12e71de3dfcf13dffef9c0ebead773e36",
+            "0x7421763b6cd2f40d830783b392665022226c0d1a3e9881965b4eef37745f0350",
+            "0xa92a5242a75fcc92403b4c6a2b7f3f014d68eece6c16877e3e2fb3607dbf1de8",
+            "0xe3f7e746c638a2cf2b6936b568f9f5942e8bdd1edac3a0616d159a6dcb73030c",
+            "0x2d1bb1c97a1c81260580c72018a552cc4bccc3b19b74d662155e481de40d6854",
+            "0xa59902863ace907ee454549a3c0a61c51d1f6e80f0cf062bd8b5571b2fbd3603",
+            "0x38c5229cbd9303c55a9cb4569cb2c0b7c55ab999252d4da1d63a907871b1a544",
+            "0xba6386f50cbffef745e8e9e291cac2c4cef83206f882bba3c922ece6e1fd335d",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400"
+        ]
+    }
+}

@@ -83,12 +83,36 @@ interface CamelotNonFungiblePositionManager {
 }
 
 interface IRecipeMarketHub {
+    enum RewardStyle {
+        Upfront,
+        Arrear,
+        Forfeitable
+    }
+    /// @custom:field weirollCommands The weiroll script that will be executed on an AP's weiroll wallet after receiving the inputToken
+    /// @custom:field weirollState State of the weiroll VM, necessary for executing the weiroll script
+    struct Recipe {
+        bytes32[] weirollCommands;
+        bytes[] weirollState;
+    }
     function offerHashToIPOffer(bytes32 offer)
         external
         view
         returns (uint256, bytes32, address, uint256, uint256, uint256);
+    function marketHashToWeirollMarket(bytes32 marketHash)
+        external
+        view
+        returns (uint256, address, uint256, uint256, Recipe memory, Recipe memory, RewardStyle);
 }
+
 
 interface IUniswapV4PositionManager {
     function getPoolAndPositionInfo(uint256 tokenId) external view returns (DecoderCustomTypes.PoolKey memory, uint256); 
+}
+
+interface IPoolRegistry {
+    function poolInfo(uint256 _pid) external view returns (address, address, address, address, uint8); 
+}
+
+interface IBoringChef {
+    function rewards(uint256 rewardId) external view returns (DecoderCustomTypes.Reward memory);
 }

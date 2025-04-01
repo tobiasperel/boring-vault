@@ -42,6 +42,14 @@ import {BTCNMinterDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Prot
 import {MorphoRewardsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/MorphoRewardsDecoderAndSanitizer.sol";
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 import {ResolvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ResolvDecoderAndSanitizer.sol";
+import {ConvexFXDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ConvexFXDecoderAndSanitizer.sol";
+import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol";
+import {LBTCBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/LBTCBridgeDecoderAndSanitizer.sol"; 
+import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol"; 
+import {SyrupDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SyrupDecoderAndSanitizer.sol"; 
+import {SpectraDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SpectraDecoderAndSanitizer.sol"; 
+import {SkyMoneyDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SkyMoneyDecoderAndSanitizer.sol"; 
+
 
 contract LombardBtcDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -70,12 +78,21 @@ contract LombardBtcDecoderAndSanitizer is
     LidoDecoderAndSanitizer,
     MorphoRewardsDecoderAndSanitizer,
     TellerDecoderAndSanitizer,
+    ResolvDecoderAndSanitizer,
+    ConvexFXDecoderAndSanitizer,
+    OdosDecoderAndSanitizer,
+    LBTCBridgeDecoderAndSanitizer,
+    FluidDexDecoderAndSanitizer,
+    SyrupDecoderAndSanitizer,
+    SpectraDecoderAndSanitizer,
+    SkyMoneyDecoderAndSanitizer,
     LombardBTCMinterDecoderAndSanitizer,
-    BTCNMinterDecoderAndSanitizer,
-    ResolvDecoderAndSanitizer
+    BTCNMinterDecoderAndSanitizer
 {
-    constructor(address _uniswapV3NonFungiblePositionManager)
+    constructor(address _uniswapV3NonFungiblePositionManager, address _poolRegistry, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
+        ConvexFXDecoderAndSanitizer(_poolRegistry)
+        OdosDecoderAndSanitizer(_odosRouter)
     {}
 
     //============================== HANDLE FUNCTION COLLISIONS ===============================
@@ -130,7 +147,8 @@ contract LombardBtcDecoderAndSanitizer is
             CurveDecoderAndSanitizer,
             NativeWrapperDecoderAndSanitizer,
             GearboxDecoderAndSanitizer,
-            ResolvDecoderAndSanitizer
+            ResolvDecoderAndSanitizer,
+            ConvexFXDecoderAndSanitizer
         )
         returns (bytes memory addressesFound)
     {
@@ -149,6 +167,19 @@ contract LombardBtcDecoderAndSanitizer is
         returns (bytes memory addressesFound)
     {
         addressesFound = abi.encodePacked(a);
+    }
+    
+    /**
+     * @notice Spectra, FluidFToken both specify a `withdraw(uint256,address,address,uint256)`,
+     *         all cases are handled the same way.
+     */
+    function withdraw(
+        uint256, /*assets_*/ 
+        address receiver_, 
+        address owner_, 
+        uint256 /*maxSharesBurn_*/ 
+    ) external pure override (FluidFTokenDecoderAndSanitizer, SpectraDecoderAndSanitizer) returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(receiver_, owner_); 
     }
 
     /**
@@ -184,7 +215,7 @@ contract LombardBtcDecoderAndSanitizer is
     function redeem(uint256, address a, address b, uint256)
         external
         pure
-        override(FluidFTokenDecoderAndSanitizer, ResolvDecoderAndSanitizer)
+        override(FluidFTokenDecoderAndSanitizer, ResolvDecoderAndSanitizer, SpectraDecoderAndSanitizer)
         returns (bytes memory addressesFound)
     {
         addressesFound = abi.encodePacked(a, b); 
@@ -208,5 +239,13 @@ contract LombardBtcDecoderAndSanitizer is
     {
         // Nothing to sanitize or return
         return addressesFound;
+    }
+
+    /**
+     * @notice UniswapV3, and Spectra both specify a `burn(uint256)`,
+     *         all cases are handled the same way.
+     */
+    function burn(uint256 /*amount*/) external pure override(UniswapV3DecoderAndSanitizer, SpectraDecoderAndSanitizer) returns (bytes memory addressesFound) {
+        return addressesFound; 
     }
 }

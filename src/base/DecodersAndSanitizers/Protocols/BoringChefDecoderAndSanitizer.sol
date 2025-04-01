@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity 0.8.21;
+
+import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
+import {IBoringChef} from "src/interfaces/RawDataDecoderAndSanitizerInterfaces.sol";
+
+abstract contract BoringChefDecoderAndSanitizer is BaseDecoderAndSanitizer {
+    //============================== BoringChef ===============================
+
+    function claimRewards(uint256[] calldata /*rewardIds*/) external view virtual returns (bytes memory addressesFound) {
+        return addressesFound;
+    }
+
+    function claimRewardsOnBehalfOfUser(uint256[] calldata /*rewardIds*/, address user)
+        external
+        view
+        virtual
+        returns (bytes memory addressesFound)
+    {
+        addressesFound = abi.encodePacked(user);
+    }
+}

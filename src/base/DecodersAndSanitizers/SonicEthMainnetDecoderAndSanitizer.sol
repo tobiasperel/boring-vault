@@ -15,9 +15,13 @@ import {FluidFTokenDecoderAndSanitizer} from
 import {OFTDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol"; 
+import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol"; 
+import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol"; 
+import {SonicGatewayDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SonicGatewayDecoderAndSanitizer.sol"; 
+import {MorphoRewardsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/MorphoRewardsDecoderAndSanitizer.sol"; 
 
 
-contract SonicMainnetDecoderAndSanitizer is
+contract SonicEthMainnetDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
     ERC4626DecoderAndSanitizer,
     EtherFiDecoderAndSanitizer,
@@ -27,10 +31,15 @@ contract SonicMainnetDecoderAndSanitizer is
     LidoDecoderAndSanitizer,
     FluidFTokenDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
-    TellerDecoderAndSanitizer
+    TellerDecoderAndSanitizer,
+    OdosDecoderAndSanitizer,
+    FluidDexDecoderAndSanitizer,
+    SonicGatewayDecoderAndSanitizer,
+    MorphoRewardsDecoderAndSanitizer
 {
-    constructor(address _uniswapV3NonFungiblePositionManager)
+    constructor(address _uniswapV3NonFungiblePositionManager, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
+        OdosDecoderAndSanitizer(_odosRouter)
     {}
 
     //============================== HANDLE FUNCTION COLLISIONS ===============================
