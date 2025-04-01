@@ -870,6 +870,7 @@ contract ChainValues {
         values[mainnet]["pendle_LBTC_corn_market_02_26_25"] = 0xC118635bcde024c5B01C6be2B0569a2608A8032C.toBytes32();
         values[mainnet]["pendle_eBTC_corn_market_3_26_25"] = 0x2C71Ead7ac9AE53D05F8664e77031d4F9ebA064B.toBytes32();
         values[mainnet]["pendle_LBTC_concrete_market_04_09_25"] = 0x83916356556f51dcBcB226202c3efeEfc88d5eaA.toBytes32();
+        values[mainnet]["pendle_LBTC_corn_concrete_market_05_21_25"] = 0x08946D1070bab757931d39285C12FEf4313b667B.toBytes32();
         values[mainnet]["pendle_WBTC_concrete_market_04_09_25"] = 0x9471d9c5B57b59d42B739b00389a6d520c33A7a9.toBytes32();
         values[mainnet]["pendle_eBTC_market_06_25_25"] = 0x523f9441853467477b4dDE653c554942f8E17162.toBytes32();
         values[mainnet]["pendle_zeBTC_market_03_26_25"] = 0x98ffeFd1a51D322c8DeF6d0Ba183e71547216F7f.toBytes32();
