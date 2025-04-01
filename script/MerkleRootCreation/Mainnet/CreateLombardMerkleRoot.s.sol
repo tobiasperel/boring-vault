@@ -19,6 +19,7 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
     address public managerAddress = 0xcf38e37872748E3b66741A42560672A6cef75e9B;
     address public accountantAddress = 0x28634D0c5edC67CF2450E74deA49B90a4FF93dCE;
 
+    //one offs
     address public pancakeSwapDataDecoderAndSanitizer = 0xac226f3e2677d79c0688A9f6f05B9B4eBBeDdebD;
 
     function setUp() external {}
@@ -149,10 +150,10 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[1] = getERC20(sourceChain, "LBTC");
             tellerAssets[2] = getERC20(sourceChain, "cbBTC");
              address eBTCTeller = 0x458797A320e6313c980C2bC7D270466A6288A8bB;
-            _addTellerLeafs(leafs, eBTCTeller, tellerAssets, false);
+            _addTellerLeafs(leafs, eBTCTeller, tellerAssets, false, true);
 
             address newEBTCTeller = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268;
-            _addTellerLeafs(leafs, newEBTCTeller, tellerAssets, false);
+            _addTellerLeafs(leafs, newEBTCTeller, tellerAssets, false, true);
 
         }
 
@@ -164,14 +165,14 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[3] = getERC20(sourceChain, "EBTC");
             tellerAssets[4] = getERC20(sourceChain, "BTCN");
             
-            _addTellerLeafs(leafs, getAddress(sourceChain, "sBTCNTeller"), tellerAssets, false);
+            _addTellerLeafs(leafs, getAddress(sourceChain, "sBTCNTeller"), tellerAssets, false, true);
         }
 
         {
             ERC20[] memory sonicBTCTellerAssets = new ERC20[](2);
             sonicBTCTellerAssets[0] = getERC20(sourceChain, "LBTC");
             sonicBTCTellerAssets[1] = getERC20(sourceChain, "EBTC");
-            _addTellerLeafs(leafs, getAddress(sourceChain, "sonicLBTCTeller"), sonicBTCTellerAssets, false);
+            _addTellerLeafs(leafs, getAddress(sourceChain, "sonicLBTCTeller"), sonicBTCTellerAssets, false, true);
         }
 
         // ========================== Pendle ==========================
@@ -179,8 +180,10 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_corn_market_12_26_24"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_market_03_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_corn_market_3_26_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_corn_market_02_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_concrete_market_04_09_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_WBTC_concrete_market_04_09_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_liquidBeraBTC_04_09_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_market_06_25_25"), true); 
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_market_06_25_25"), true); 
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_market_06_25_25"), true); 
@@ -240,6 +243,29 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         token1[0] = getAddress(sourceChain, "LBTC");
 
         _addPancakeSwapV3Leafs(leafs, token0, token1);
+
+        setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        // ========================== Corn BTCN ==========================
+        _addBTCNLeafs(
+            leafs,
+            getERC20(sourceChain, "WBTC"),
+            getERC20(sourceChain, "BTCN"),
+            getAddress(sourceChain, "cornSwapFacilityWBTC")
+        );
+        _addBTCNLeafs(
+            leafs,
+            getERC20(sourceChain, "cbBTC"),
+            getERC20(sourceChain, "BTCN"),
+            getAddress(sourceChain, "cornSwapFacilitycbBTC")
+        );
+
+        // ========================== LayerZero ==========================
+        _addLayerZeroLeafs(
+            leafs, getERC20(sourceChain, "BTCN"), getAddress(sourceChain, "BTCN"), layerZeroCornEndpointId
+        );
+        _addLayerZeroLeafs(
+            leafs, getERC20(sourceChain, "LBTC"), getAddress(sourceChain, "LBTCOFTAdapter"), layerZeroCornEndpointId
+        );
 
         // ========================== Verify ==========================
 
