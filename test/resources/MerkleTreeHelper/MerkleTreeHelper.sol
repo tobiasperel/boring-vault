@@ -2465,6 +2465,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         _addAaveV3ForkLeafs("SparkLend", getAddress(sourceChain, "sparkLendPool"), leafs, supplyAssets, borrowAssets);
     }
 
+    function _addZerolendLeafs(ManageLeaf[] memory leafs, ERC20[] memory supplyAssets, ERC20[] memory borrowAssets) 
+        internal
+    {
+        _addAaveV3ForkLeafs("Zerolend", getAddress(sourceChain, "zeroLendPool"), leafs, supplyAssets, borrowAssets);
+    }
+
     function _addAaveV3ForkLeafs(
         string memory protocolName,
         address protocolAddress,
@@ -9591,7 +9597,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Approve BoringOnChainQueue to spend ", assets[i].symbol()),
+                string.concat("Approve BoringOnChainQueue to spend ", ERC20(boringVault).name()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = withdrawQueue;
