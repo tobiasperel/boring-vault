@@ -18,7 +18,7 @@ contract CreateStakedBTCNMerkleRoot is Script, MerkleTreeHelper {
     address boringVault = 0x5E272ca4bD94e57Ec5C51D26703621Ccac1A7089;
     address managerAddress = 0x5239158272D1f626aF9ef3353489D3Cb68439D66;
     address accountantAddress = 0x9A22F5dC4Ec86184D4771E620eb75D52E7b9E043; 
-    address rawDataDecoderAndSanitizer = 0xCAc92301f96e3b6554EF11366482f464c6f87cFB; 
+    address rawDataDecoderAndSanitizer = 0x1f81B7DdFBcefFA558A1d8287E94520AF7C3f584; 
 
 
     function run() external {
@@ -33,7 +33,7 @@ contract CreateStakedBTCNMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](64);
+        ManageLeaf[] memory leafs = new ManageLeaf[](128);
 
         // ========================== UniswapV3 ==========================
         address[] memory token0 = new address[](3);
@@ -75,19 +75,20 @@ contract CreateStakedBTCNMerkleRoot is Script, MerkleTreeHelper {
         ); 
 
         // ========================== Pendle ==========================
-        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_corn_concrete_05_21_25"), true); 
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_corn_concrete_market_05_21_25"), true); 
 
         // ========================== Tellers ==========================
         
         ERC20[] memory vaultAssets = new ERC20[](3);  
-        vaultAssets[0] = getAddress(sourceChain, "WBTC"); 
-        vaultAssets[1] = getAddress(sourceChain, "cbBTC"); 
-        vaultAssets[2] = getAddress(sourceChain, "LBTC"); 
+        vaultAssets[0] = getERC20(sourceChain, "WBTC"); 
+        vaultAssets[1] = getERC20(sourceChain, "cbBTC"); 
+        vaultAssets[2] = getERC20(sourceChain, "LBTC"); 
         address eBTCTeller = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268; 
-        _addTellerLeafs(leafs, eBTCTeller, vaultAssets, false, true);  
+        _addTellerLeafs(leafs, eBTCTeller, vaultAssets, false, false);  
         
         // ========================== Withdraw Queues ==========================
-        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "eBTCOnChainQueue"), getAddress(sourceChain, "EBTC"), vaultAssets);    
+         
+        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "eBTCOnChainQueueFast"), getAddress(sourceChain, "EBTC"), vaultAssets); 
 
         // ========================== Verify ==========================
 
