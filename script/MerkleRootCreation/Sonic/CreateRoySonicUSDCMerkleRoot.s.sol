@@ -54,20 +54,26 @@ contract CreateRoySonicUSDCMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Royco ==========================
         bytes32 marketHash0 = 0x7d1f2a66eabf9142dd30d1355efcbfd4cfbefd2872d24ca9855641434816a525;
         bytes32 marketHash1 = 0x4db7f85fc602e994e4043b98abecfeda8acab06bcc186ab266a07a508c8fc92f;
+        bytes32 marketHash2 = 0x31bdffd0bbab9391f6c2903be86b89a7d5107e26e091ccb6c0c9239107ab02e7; // this is a test royco market
 
         address[] memory incentivesRequested0 = new address[](1);
         incentivesRequested0[0] = 0x5e75334F4270FfE07a80b28FC831BfAb2d83706e; //RP Points Wrapper Token
 
         address[] memory incentivesRequested1 = new address[](1);
         incentivesRequested1[0] = 0xD152f4C29fB0db011c8a5503Aee3Ce60C44F8985; //SJP Points Wrapper Token
+
+        address[] memory incentivesRequested2 = new address[](1);
+        incentivesRequested2[0] = getAddress(sonicMainnet, "USDC"); // USDC Token (this is a test royco market)
         
         _addRoycoRecipeAPOfferLeafs(leafs, getAddress(sonicMainnet, "USDC"), marketHash0, address(0), incentivesRequested0);
         _addRoycoRecipeAPOfferLeafs(leafs, getAddress(sonicMainnet, "USDC"), marketHash1, address(0), incentivesRequested1);
+        _addRoycoRecipeAPOfferLeafs(leafs, getAddress(sonicMainnet, "USDC"), marketHash2, address(0), incentivesRequested2);
         
         address frontendFeeRecipient = 0x169C8c63aaC6433be8fdFE4AA116286329226E0a;
         
         _addRoycoWeirollLeafs(leafs, getERC20(sonicMainnet, "USDC"), marketHash0, frontendFeeRecipient);
         _addRoycoWeirollLeafs(leafs, getERC20(sonicMainnet, "USDC"), marketHash1, frontendFeeRecipient);
+        _addRoycoWeirollLeafs(leafs, getERC20(sonicMainnet, "USDC"), marketHash2, frontendFeeRecipient);
 
         // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
