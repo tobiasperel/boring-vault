@@ -17,7 +17,7 @@ contract CreateRoySonicUSDCMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x45088fb2FfEBFDcf4dFf7b7201bfA4Cd2077c30E;
     address public managerAddress = 0x0413986C24A254191c2D3fA8F0661789DE9B073B;
     address public accountantAddress = 0x8301294E84cA5a2644E7F3CD47A86369F1b0416e;
-    address public rawDataDecoderAndSanitizer = 0x0E599AE5c99f00567FCA64eEE5d18eeBe23a67BF;
+    address public rawDataDecoderAndSanitizer = 0xe4B958cc989EB9Bb47179D406279767b675e33FC;
 
     function setUp() external {}
 

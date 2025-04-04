@@ -103,13 +103,21 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // constructorArgs = abi.encode();
         // bobDeployer.deployContract("Hybrid BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
         
-        // creationCode = type(RoyUSDCMainnetDecoderAndSanitizer).creationCode;
+        creationCode = type(RoyUSDCMainnetDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("Royco USDC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
+
+        // creationCode = type(RoyUSDCSonicDecoderAndSanitizer).creationCode;
         // constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
-        // deployer.deployContract("Royco USDC Mainnet Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+        // deployer.deployContract("Royco USDC Sonic Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
+
+        // creationCode = type(RoySonicUSDCDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode(getAddress(sourceChain, "recipeMarketHub"), getAddress(sourceChain, "odosRouterV2"));
+        // deployer.deployContract("Royco Sonic USDC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
         
-        creationCode = type(SonicEthMainnetDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Sonic Mainnet Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
+        // creationCode = type(SonicEthMainnetDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        // deployer.deployContract("Sonic Mainnet Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
