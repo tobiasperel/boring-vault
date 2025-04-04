@@ -81,10 +81,10 @@
       "allowPublicDeposits": true,
       "shareLockPeriod": 86400,
       "kind": {
-        "teller": true,
+        "teller": false,
         "tellerWithRemediation": false,
         "tellerWithCcip": false,
-        "tellerWithLayerZero": false
+        "tellerWithLayerZero": true
       },
       "layerZero": {
         "endpointAddressOrName": {
