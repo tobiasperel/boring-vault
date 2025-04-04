@@ -11626,6 +11626,38 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = user;
     }
 
+    function _addBoringChefDistributeRewardsLeaf(ManageLeaf[] memory leafs, address boringChef, address[] memory tokens) internal {
+        for (uint256 i = 0; i < tokens.length; i++) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                tokens[i],
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Distribute rewards from BoringChef"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = boringChef;
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            boringChef,
+            false,
+            "distributeRewards(address[],uint256[],uint48[],uint48[])",
+            new address[](tokens.length),
+            string.concat("Distribute rewards from BoringChef"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        for (uint256 i = 0; i < tokens.length; i++) {
+            leafs[leafIndex].argumentAddresses[i] = tokens[i];
+        }
+    }
+
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
     bool addLeafIndex = false;
