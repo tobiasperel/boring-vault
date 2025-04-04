@@ -11626,8 +11626,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = user;
     }
 
-    function _addBoringChefDistributeRewardsLeaf(ManageLeaf[] memory leafs, address boringChef, address[] memory tokens) internal {
-        for (uint256 i = 0; i < tokens.length; i++) {
+    function _addBoringChefApproveRewardsLeafs(ManageLeaf[] memory leafs, address boringChef, address[] memory tokens) internal {
+        for (uint256 i = 0; i < tokens.length; i++){
             unchecked {
                 leafIndex++;
             }
@@ -11636,12 +11636,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Distribute rewards from BoringChef"),
+                string.concat("Approve BoringChef to spend ", ERC20(tokens[i]).symbol(), " rewards owned by itself"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = boringChef;
         }
+    }
 
+    function _addBoringChefDistributeRewardsLeaf(ManageLeaf[] memory leafs, address boringChef, address[] memory tokens) internal {
         unchecked {
             leafIndex++;
         }

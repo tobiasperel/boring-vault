@@ -69,6 +69,39 @@ contract CreateRoySonicUSDCMerkleRoot is Script, MerkleTreeHelper {
         _addRoycoWeirollLeafs(leafs, getERC20(sonicMainnet, "USDC"), marketHash0, frontendFeeRecipient);
         _addRoycoWeirollLeafs(leafs, getERC20(sonicMainnet, "USDC"), marketHash1, frontendFeeRecipient);
 
+        // ========================== BoringChef ==========================
+        address[] memory allRewardsTokens = new address[](2);
+        allRewardsTokens[0] = 0x5e75334F4270FfE07a80b28FC831BfAb2d83706e; //RP Points Wrapper Token
+        allRewardsTokens[1] = 0xD152f4C29fB0db011c8a5503Aee3Ce60C44F8985; //SJP Points Wrapper Token
+
+        address[] memory rewardsTokensCombo0 = new address[](1);
+        rewardsTokensCombo0[0] = 0x5e75334F4270FfE07a80b28FC831BfAb2d83706e; //RP Points Wrapper Token
+
+        address[] memory rewardsTokensCombo1 = new address[](1);
+        rewardsTokensCombo1[0] = 0xD152f4C29fB0db011c8a5503Aee3Ce60C44F8985; //SJP Points Wrapper Token
+
+        _addBoringChefApproveRewardsLeafs(
+            leafs,
+            boringVault,
+            allRewardsTokens
+        );
+
+        _addBoringChefDistributeRewardsLeaf(
+            leafs,
+            boringVault,
+            allRewardsTokens
+        );
+        _addBoringChefDistributeRewardsLeaf(
+            leafs,
+            boringVault,
+            rewardsTokensCombo0
+        );
+        _addBoringChefDistributeRewardsLeaf(
+            leafs,
+            boringVault,
+            rewardsTokensCombo1
+        );
+
         // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
