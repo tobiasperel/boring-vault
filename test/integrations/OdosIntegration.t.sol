@@ -36,7 +36,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 21953429;
+        uint256 blockNumber = 22140604;
 
         _startFork(rpcKey, blockNumber);
 
@@ -106,7 +106,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 21953754;
+        uint256 blockNumber = 22140604;
 
         _startFork(rpcKey, blockNumber);
 
@@ -176,7 +176,77 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("sonicMainnet");
         // Setup forked environment.
         string memory rpcKey = "SONIC_MAINNET_RPC_URL";
-        uint256 blockNumber = 11169032; 
+        uint256 blockNumber = 16413113; 
+
+        _startFork(rpcKey, blockNumber);
+
+        boringVault = new BoringVault(address(this), "Boring Vault", "BV", 18);
+
+        manager =
+            new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
+
+        rawDataDecoderAndSanitizer = address(new FullOdosDecoderAndSanitizer(getAddress(sourceChain, "odosRouterV2")));
+
+        setAddress(false, sourceChain, "boringVault", address(boringVault));
+        setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        setAddress(false, sourceChain, "manager", address(manager));
+        setAddress(false, sourceChain, "managerAddress", address(manager));
+        setAddress(false, sourceChain, "accountantAddress", address(1));
+
+        rolesAuthority = new RolesAuthority(address(this), Authority(address(0)));
+        boringVault.setAuthority(rolesAuthority);
+        manager.setAuthority(rolesAuthority);
+
+        // Setup roles authority.
+        rolesAuthority.setRoleCapability(
+            MANAGER_ROLE,
+            address(boringVault),
+            bytes4(keccak256(abi.encodePacked("manage(address,bytes,uint256)"))),
+            true
+        );
+        rolesAuthority.setRoleCapability(
+            MANAGER_ROLE,
+            address(boringVault),
+            bytes4(keccak256(abi.encodePacked("manage(address[],bytes[],uint256[])"))),
+            true
+        );
+
+        rolesAuthority.setRoleCapability(
+            STRATEGIST_ROLE,
+            address(manager),
+            ManagerWithMerkleVerification.manageVaultWithMerkleVerification.selector,
+            true
+        );
+        rolesAuthority.setRoleCapability(
+            MANGER_INTERNAL_ROLE,
+            address(manager),
+            ManagerWithMerkleVerification.manageVaultWithMerkleVerification.selector,
+            true
+        );
+        rolesAuthority.setRoleCapability(
+            ADMIN_ROLE, address(manager), ManagerWithMerkleVerification.setManageRoot.selector, true
+        );
+        rolesAuthority.setRoleCapability(
+            BORING_VAULT_ROLE, address(manager), ManagerWithMerkleVerification.flashLoan.selector, true
+        );
+        rolesAuthority.setRoleCapability(
+            BALANCER_VAULT_ROLE, address(manager), ManagerWithMerkleVerification.receiveFlashLoan.selector, true
+        );
+
+        // Grant roles
+        rolesAuthority.setUserRole(address(this), STRATEGIST_ROLE, true);
+        rolesAuthority.setUserRole(address(manager), MANGER_INTERNAL_ROLE, true);
+        rolesAuthority.setUserRole(address(this), ADMIN_ROLE, true);
+        rolesAuthority.setUserRole(address(manager), MANAGER_ROLE, true);
+        rolesAuthority.setUserRole(address(boringVault), BORING_VAULT_ROLE, true);
+        rolesAuthority.setUserRole(getAddress(sourceChain, "vault"), BALANCER_VAULT_ROLE, true);
+    }
+
+    function _setUpSpecificBlock_SonicWETHSwap2() internal {
+        setSourceChainName("sonicMainnet");
+        // Setup forked environment.
+        string memory rpcKey = "SONIC_MAINNET_RPC_URL";
+        uint256 blockNumber = 16175047; 
 
         _startFork(rpcKey, blockNumber);
 
@@ -246,7 +316,7 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("base");
         // Setup forked environment.
         string memory rpcKey = "BASE_RPC_URL";
-        uint256 blockNumber = 27469585; 
+        uint256 blockNumber = 28158816; 
 
         _startFork(rpcKey, blockNumber);
 
@@ -631,6 +701,61 @@ contract OdosIntegrationTest is Test, MerkleTreeHelper {
 
 
         uint256 usdcBal = getERC20(sourceChain, "USDC").balanceOf(address(boringVault)); 
+        assertGt(usdcBal, 0); 
+    }
+
+    function testOdosSwapERC20_Sonic2() external {
+        _setUpSpecificBlock_SonicWETHSwap2(); 
+
+        deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e18);
+        
+        address[] memory tokens = new address[](3);   
+        SwapKind[] memory kind = new SwapKind[](3); 
+        tokens[0] = getAddress(sourceChain, "USDC"); 
+        kind[0] = SwapKind.BuyAndSell; 
+        tokens[1] = getAddress(sourceChain, "WETH"); 
+        kind[1] = SwapKind.BuyAndSell; 
+        tokens[2] = getAddress(sourceChain, "USDT"); 
+        kind[2] = SwapKind.BuyAndSell; 
+       
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        _addOdosSwapLeafs(leafs, tokens, kind);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
+        manageLeafs[0] = leafs[0]; //approve usdc
+        manageLeafs[1] = leafs[2]; //swapCompact() usdc -> weth
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
+
+        address[] memory targets = new address[](2);
+        targets[0] = getAddress(sourceChain, "USDC"); //approve
+        targets[1] = getAddress(sourceChain, "odosRouterV2"); //approve
+
+        bytes[] memory targetData = new bytes[](2);
+        targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "odosRouterV2"), type(uint256).max
+        );
+        
+        
+        // @dev NOTE: this is swapCompact ABI-encoded. This tx data was retrieved directly from the Odos API. After assembling the tx, the output from the /assemble endpoint will return the following data in the data field. This includes everything needed for swapping. Submit the entire tx data as the targetData. Note that is already includes the function signature, etc.  
+        targetData[1] = hex"83bd37f9000129219dd400f2bf60e5a23d13be72b486d4038894000150c42deacd8fc9773493ed674b675be577f2634b0405f5e10007b0b44379e0fb18028f5c0001ECDfcB1dD81d07c3551CbA94023EE443450353E1000000015615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f0000000006030205000701000102cd4d2b142235d5650ffa6a38787ed0b7d7a51c0c000000000000000000000037020700000203e7734b495a552ab6f4c78406e672cca7175181e10002000000000000000000c500060101040301ff00000000000000000029219dd400f2bf60e5a23d13be72b486d4038894d3dce716f3ef535c5ff8d041c1a41c3bd89b97ae3bce5cb273f0f148010bbea2470e7b5df84c7812c291ca0a0a0e793dc6a0442a34e1607ce190538900000000000000000000000000000000"; 
+
+        address[] memory decodersAndSanitizers = new address[](2);
+        decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+
+        uint256[] memory values = new uint256[](2);
+
+        manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
+
+
+        uint256 usdcBal = getERC20(sourceChain, "WETH").balanceOf(address(boringVault)); 
         assertGt(usdcBal, 0); 
     }
 

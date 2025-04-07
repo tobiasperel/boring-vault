@@ -23,12 +23,12 @@ import {UniBTCDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/UniBTCDe
 import {EdgeCapitalDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EdgeCapitalDecoderAndSanitizer.sol";
 import {EtherFiLiquidBtcDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/EtherFiLiquidBtcDecoderAndSanitizer.sol";
-import {SonicMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicEthMainnetDecoderAndSanitizer.sol";
+import {SonicEthMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicEthMainnetDecoderAndSanitizer.sol";
 import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AaveV3FullDecoderAndSanitizer.sol"; 
 import {LombardBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LombardBtcDecoderAndSanitizer.sol"; 
+import {StakedSonicUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/StakedSonicUSDDecoderAndSanitizer.sol"; 
 import {TestVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TestVaultDecoderAndSanitizer.sol";
 import {LiquidBeraEthDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidBeraEthDecoderAndSanitizer.sol"; 
-import {SonicMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicEthMainnetDecoderAndSanitizer.sol"; 
 import {SonicIncentivesHandlerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicIncentivesHandlerDecoderAndSanitizer.sol";
 import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AaveV3FullDecoderAndSanitizer.sol";
 import {LombardBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LombardBtcDecoderAndSanitizer.sol";
@@ -46,6 +46,11 @@ import {SonicVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Soni
 import {LBTCvBNBDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LBTCvBNBDecoderAndSanitizer.sol";
 import {LBTCvBaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LBTCvBaseDecoderAndSanitizer.sol";
 import {SonicLBTCvSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvSonicDecoderAndSanitizer.sol";
+import {RoyUSDCMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoyUSDCMainnetDecoderAndSanitizer.sol";
+import {RoyUSDCSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoyUSDCSonicDecoderAndSanitizer.sol";
+import {RoySonicUSDCDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoySonicUSDCDecoderAndSanitizer.sol";
+import {TacETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TacETHDecoderAndSanitizer.sol";
+import {TacUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TacUSDDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -60,12 +65,12 @@ import "forge-std/StdJson.sol";
 contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddresses, MerkleTreeHelper {
     uint256 public privateKey;
     Deployer public deployer = Deployer(deployerAddress);
-    Deployer public bobDeployer = Deployer(0xF3d0672a91Fd56C9ef04C79ec67d60c34c6148a0); 
+    //Deployer public bobDeployer = Deployer(0xF3d0672a91Fd56C9ef04C79ec67d60c34c6148a0); 
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("bob");
-        setSourceChainName("bob"); 
+        vm.createSelectFork("mainnet");
+        setSourceChainName("mainnet"); 
     }
 
     function run() external {
@@ -78,25 +83,37 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //deployer.deployContract("EtherFi Liquid ETH Decoder And Sanitizer V0.9", creationCode, constructorArgs, 0);
 
 
+<<<<<<< HEAD
         //address sonicUniV3 = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c; 
         //creationCode = type(SonicLBTCvSonicDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode();
         //deployer.deployContract("Sonic LBTCv Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
-
+=======
         //creationCode = type(LombardBtcDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0); 
+        //deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
+        creationCode = type(SonicMainnetDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(uniswapV3NonFungiblePositionManager);
+        deployer.deployContract("Sonic BTC Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
+>>>>>>> main
         
         //creationCode = type(LBTCvBNBDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
         //deployer.deployContract("LBTCv BNB Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-        
-        creationCode = type(HybridBtcBobDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode();
-        bobDeployer.deployContract("Hybrid BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
-        
-        vm.stopBroadcast();
 
+        // creationCode = type(HybridBtcBobDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode();
+        // bobDeployer.deployContract("Hybrid BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
+        
+        // creationCode = type(RoyUSDCMainnetDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
+        // deployer.deployContract("Royco USDC Mainnet Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+        
+        creationCode = type(SonicEthMainnetDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("Sonic Mainnet Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
+
+        vm.stopBroadcast();
     }
 }

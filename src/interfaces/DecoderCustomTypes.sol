@@ -519,6 +519,15 @@ contract DecoderCustomTypes {
         uint256 outputMin;
         address outputReceiver;
     }
+
+    struct swapTokenInfoOogaBooga {
+        address inputToken;
+        uint256 inputAmount;
+        address outputToken;
+        uint256 outputQuote;
+        uint256 outputMin;
+        address outputReceiver;
+    }
     // ========================================= Level ==================================
     
     /// @dev for reference 
@@ -541,11 +550,53 @@ contract DecoderCustomTypes {
         uint256[] ratios;
     }
 
+
+    // ========================================= Royco ==================================
+    struct APOffer { // RecipeMarketHub
+        uint256 offerID;
+        bytes32 targetMarketHash;
+        address ap;
+        address fundingVault;
+        uint256 quantity;
+        uint256 expiry;
+        address[] incentivesRequested;
+        uint256[] incentiveAmountsRequested;
+    }
+    struct APOfferVault { // VaultMarketHub (renamed to avoid collision)
+        uint256 offerID;
+        address targetVault;
+        address ap;
+        address fundingVault;
+        uint256 expiry;
+        address[] incentivesRequested;
+        uint256[] incentivesRatesRequested;
+    }
+
+    struct Reward {
+        uint48 startEpoch;
+        uint48 endEpoch;
+        address token;
+        uint256 rewardRate;
+    }
+
     // ========================================= Permit2 ==================================
     
     struct TokenSpenderPair {
         address token; 
         address spender;
+    }
+
+    // ========================================= OnChainQueue ==================================
+    
+    struct OnChainWithdraw {
+        uint96 nonce; // read from state, used to make it impossible for request Ids to be repeated.
+        address user; // msg.sender
+        address assetOut; // input sanitized
+        uint128 amountOfShares; // input transfered in
+        uint128 amountOfAssets; // derived from amountOfShares and price
+        uint40 creationTime; // time withdraw was made
+        uint24 secondsToMaturity; // in contract, from withdrawAsset?
+        uint24 secondsToDeadline; // in contract, from withdrawAsset? To get the deadline you take the creationTime add seconds to maturity, add the secondsToDeadline
     }
 }
 
