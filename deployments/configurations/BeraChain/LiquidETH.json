@@ -3,7 +3,7 @@
     "logLevel": 4,
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "berachain",
-    "evmVersion": "cancun",
+    "evmVersion": "shanghai",
     "desiredNumberOfDeploymentTxs": 5,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
@@ -31,26 +31,26 @@
     "deploymentFileName": "addresses/BeraChain/LiquidETH.json"
   },
   "rolesAuthorityConfiguration": {
-    "rolesAuthorityDeploymentName": "EtherFi Liquid ETH RolesAuthority Version 0.10"
+    "rolesAuthorityDeploymentName": "EtherFi Liquid ETH RolesAuthority Version 0.0"
   },
   "lensConfiguration": {
-    "lensDeploymentName": "Arctic Architecture Lens V0.10"
+    "lensDeploymentName": "Arctic Architecture Lens V0.0"
   },
   "boringVaultConfiguration": {
-    "boringVaultDeploymentName": "EtherFi Liquid ETH V0.100",
+    "boringVaultDeploymentName": "EtherFi Liquid ETH V0.1",
     "boringVaultName": "Ether.Fi Liquid ETH",
     "boringVaultSymbol": "liquidETH",
     "boringVaultDecimals": 18
   },
   "managerConfiguration": {
-    "managerDeploymentName": "EtherFi Liquid ETH Manager With Merkle Verification V0.10",
+    "managerDeploymentName": "EtherFi Liquid ETH Manager With Merkle Verification V0.1",
     "balancerVaultAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "balancerVault"
     }
   },
   "accountantConfiguration": {
-    "accountantDeploymentName": "EtherFi Liquid ETH Accountant With Rate Providers V0.10",
+    "accountantDeploymentName": "EtherFi Liquid ETH Accountant With Rate Providers V0.1",
     "accountantParameters": {
       "kind": {
         "variableRate": true,
@@ -58,7 +58,7 @@
       },
       "payoutConfiguration": {
         "payoutTo": "0xA9962a5BfBea6918E958DeE0647E99fD7863b95A",
-        "optionalPaymentSplitterName": "EtherFi Liquid ETH Payment Splitter V0.10",
+        "optionalPaymentSplitterName": "EtherFi Liquid ETH Payment Splitter V0.0",
         "splits": []
       },
       "accountantDeploymentParameters": {
@@ -76,7 +76,7 @@
     }
   },
   "tellerConfiguration": {
-    "tellerDeploymentName": "LiquidETH LayerZero Teller V0.10",
+    "tellerDeploymentName": "LiquidETH LayerZero Teller V0.0",
     "tellerParameters": {
       "allowPublicDeposits": true,
       "shareLockPeriod": 86400,
@@ -100,8 +100,8 @@
     }
   },
   "boringQueueConfiguration": {
-    "boringQueueDeploymentName": "EtherFi Liquid ETH Boring Queue V0.10",
-    "boringQueueSolverName": "EtherFi Liquid ETH Boring Solver V0.10",
+    "boringQueueDeploymentName": "EtherFi Liquid ETH Boring Queue V0.0",
+    "boringQueueSolverName": "EtherFi Liquid ETH Boring Solver V0.0",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
@@ -112,13 +112,13 @@
     }
   },
   "droneConfiguration": {
-    "droneDeploymentBaseName": "EtherFi Liquid ETH Drone V0.10",
+    "droneDeploymentBaseName": "EtherFi Liquid ETH Drone V0.0",
     "droneCount": 0,
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
     "shouldDeploy": true,
-    "pauserDeploymentName": "EtherFi Liquid ETH Pauser V0.10",
+    "pauserDeploymentName": "EtherFi Liquid ETH Pauser V0.0",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
     "makePauseAll": ["0x0000000000000000000000000000000000000000"],
@@ -132,7 +132,7 @@
   },
   "timelockConfiguration": {
     "shouldDeploy": true,
-    "timelockDeploymentName": "EtherFi Liquid ETH Timelock V0.10",
+    "timelockDeploymentName": "EtherFi Liquid ETH Timelock V0.0",
     "timelockParameters": {
       "executors": ["0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b"],
       "minDelay": 0,
