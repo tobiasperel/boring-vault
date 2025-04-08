@@ -105,7 +105,6 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         tellerAssets[0] = getERC20(sourceChain, "USDC");
         _addTellerLeafs(leafs, getAddress(sourceChain, "scUSDTeller"), tellerAssets, false);
 
-<<<<<<< HEAD
         // ========================== Silo ==========================
         
         // ws/USDC id8
@@ -119,14 +118,12 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         incentivesControllers[1] = address(0);
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"), incentivesControllers);
 
-=======
         // ========================== SiloV2 ==========================
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_scUSD_config"));
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_USDC_config"));
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id8_config"));
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"));
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_config"));
->>>>>>> main
+        //_addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_scUSD_config"));
+        //_addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_USDC_config"));
+        //_addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id8_config"));
+        //_addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"));
+        //_addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_config"));
 
         // USDC/wstkscUSD id23
         incentivesControllers[0] = getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_USDC_IncentivesController"); 

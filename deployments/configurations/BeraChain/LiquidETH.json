@@ -146,7 +146,7 @@
         "name": "WEETH"
       },
       "isPeggedToBase": false,
-      "rateProvider": "0x7EC57a1168C96067aD4270DAaB31203C9c7387D5"
+      "rateProvider": "0x65d8ff27983089B41A578a8DE572d8BCED4beC22"
     }
   ],
   "depositAssets": [
