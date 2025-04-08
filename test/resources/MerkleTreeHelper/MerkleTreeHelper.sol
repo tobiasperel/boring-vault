@@ -11714,7 +11714,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         
-         unchecked {
+        unchecked {
             leafIndex++;
         }
         leafs[leafIndex] = ManageLeaf(
@@ -11725,6 +11725,73 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Finalize Redeem of Staked Derive"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+    }
+
+    function _addDeriveBridgeLeafs(
+        ManageLeaf[] memory leafs, 
+        address mintableERC20OnDerive, 
+        address socketControllerOnDerive,
+        address connectorPlugOnDeriveChain
+    ) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            mintableERC20OnDerive,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Withdraw Wrapper to spend ", ERC20(mintableERC20OnDerive).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "deriveWithdrawWrapper"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            mintableERC20OnDerive,
+            false,
+            "withdrawToChain(address,uint256,address,address,address,uint256)",
+            new address[](4),
+            string.concat("Approve Withdraw Wrapper to spend ", ERC20(mintableERC20OnDerive).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = mintableERC20OnDerive;
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[2] = socketControllerOnDerive; 
+        leafs[leafIndex].argumentAddresses[3] = connectorPlugOnDeriveChain; 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            mintableERC20OnDerive,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Socket Controller to spend ", ERC20(mintableERC20OnDerive).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = socketControllerOnDerive; 
+        
+        //bridge "token" back to mainnet
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            socketControllerOnDerive,
+            true,
+            "bridge(address,uint256,uint256,address,bytes,bytes)",
+            new address[](4),
+            string.concat("Bridge using controller"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); //NOTE: this should be the address of the mainnet vault so make sure they match across chains
+        leafs[leafIndex].argumentAddresses[1] = connectorPlugOnDeriveChain;  
+        leafs[leafIndex].argumentAddresses[2] = address(0);  
+        leafs[leafIndex].argumentAddresses[3] = address(0);  
+
     }
 
     // ========================================= BoringChef =========================================
