@@ -9398,6 +9398,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = address(boringVault);
 
             // BulkDeposit asset.
+            if (addBulkWithdraw) {
             unchecked {
                 leafIndex++;
             }
@@ -9412,7 +9413,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
             leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
-            if (addBulkWithdraw) {
                 // BulkWithdraw asset.
                 unchecked {
                     leafIndex++;
@@ -9428,6 +9428,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
                 leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
             }
+
             unchecked {
                 leafIndex++;
             }
