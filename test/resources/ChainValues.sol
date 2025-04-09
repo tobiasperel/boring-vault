@@ -143,6 +143,7 @@ contract ChainValues {
         values[mainnet]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32();
         values[mainnet]["liquidBeraBTCTeller"] = 0x07951756b68427e7554AB4c9091344cB8De1Ad5a.toBytes32();
         values[mainnet]["sBTCNTeller"] = 0xeAd024098eE05e8e975043eCc6189b49CfBe35fd.toBytes32(); 
+        values[mainnet]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32(); 
         values[mainnet]["sonicLBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32();
         values[mainnet]["sonicBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32(); 
 
@@ -1727,6 +1728,7 @@ contract ChainValues {
         // Tokens
         values[corn]["WBTCN"] = 0xda5dDd7270381A7C2717aD10D1c0ecB19e3CDFb2.toBytes32();
         values[corn]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
+        values[corn]["EBTC"] = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642.toBytes32();
 
         values[corn]["balancerVault"] = address(1).toBytes32();
 
@@ -1741,6 +1743,29 @@ contract ChainValues {
         // Curve
         values[corn]["curve_pool_LBTC_WBTCN"] = 0xAB3291b73a1087265E126E330cEDe0cFd4B8A693.toBytes32();
         values[corn]["curve_gauge_LBTC_WBTCN"] = 0xaE8f74c9eD7F72CA3Ea16955369f13D3d4b78Cd6.toBytes32();
+
+        values[corn]["curve_pool_LBTC_WBTCN_2"] = 0xc77478B0e4eeCEE34EbE2fC4be7eC9Bba20a5ccD.toBytes32();
+        values[corn]["curve_gauge_LBTC_WBTCN_2"] = 0xF481735c5e6Dc7C467236aF7D7C7b9c82893c0e4.toBytes32();
+
+        values[corn]["curve_pool_LBTC_WBTCN_EBTC"] = 0xebe423b5466f9675669B2a4521b6E9F852Dd1f52.toBytes32();
+        values[corn]["curve_gauge_LBTC_WBTCN_EBTC"] = 0x1AECbE26fA95D63df3F294Ba8C2ee214970df96f.toBytes32();
+
+        // Zerolend
+        values[corn]["zeroLendPool"] = 0x927b3A8e5068840C9758b0b88207b28aeeb7a3fd.toBytes32(); 
+        values[corn]["v3RewardsController"] = 0xd9f43fa0ff772b806cbcDd36d0B264fCAd46d677.toBytes32(); 
+
+        // UniswapV3
+        values[corn]["uniswapV3NonFungiblePositionManager"] = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c.toBytes32();
+        values[corn]["uniV3Router"] = 0x807F4E281B7A3B324825C64ca53c69F0b418dE40.toBytes32();
+
+        // CamelotV3
+        values[corn]["camelotNonFungiblePositionManager"] = 0x9CC2B9F9a6194C5CC827C88571E42cEAA76FDF47.toBytes32(); 
+        values[corn]["camelotRouterV3"] = 0x30A4bD5b1a9e9C0D80e9a45ef486bc1f1bc8e230.toBytes32(); 
+
+        // Tellers 
+        //values[corn]["sBTCNTeller"] = .toBytes32(); 
+        values[corn]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32(); 
+        values[corn]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32(); 
     }
 
     function _addSonicMainnetValues() private {
