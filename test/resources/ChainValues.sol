@@ -25,6 +25,7 @@ contract ChainValues {
     string public constant sonicMainnet = "sonicMainnet";
     string public constant berachain = "berachain";
     string public constant bob = "bob";
+    string public constant derive = "derive";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
@@ -104,6 +105,7 @@ contract ChainValues {
         _addSonicMainnetValues();
         _addBerachainValues();
         _addBobValues();
+        _addDeriveValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -1275,7 +1277,15 @@ contract ChainValues {
 
         // ELX Claiming
         values[mainnet]["elxTokenDistributor"] = 0xeb5D4b79e95Edb5567f3f9703FbD56a107905c0C.toBytes32();
-
+        
+        // Derive
+        values[mainnet]["derive_LBTC_basis_deposit"] = 0x76624ff43D610F64177Bb9c194A2503642e9B803.toBytes32();
+        values[mainnet]["derive_LBTC_basis_deposit_connector"] = 0x457379de638CAFeB1759a22457fe893b288E2e89.toBytes32();
+        values[mainnet]["derive_LBTC_basis_token"] = 0xdFd366D941A51e1f53Fbddb19FB4eE3af17FF991.toBytes32(); 
+        values[mainnet]["derive_LBTC_basis_withdraw"] = 0x954bE1803546150bfd887c9ff70fd221F2F505d3.toBytes32();
+        values[mainnet]["derive_LBTC_basis_withdraw_connector"] = 0x5E72430EC945CCc183c34e2860FFC2b5bac712c2.toBytes32();
+        //values[mainnet][""] = .toBytes32(); 
+        //values[mainnet]["derive_boringTestVault_wallet"] = .toBytes32(); 
     }
 
     function _addBaseValues() private {
@@ -2163,5 +2173,32 @@ contract ChainValues {
         // Euler
         values[bob]["ethereumVaultConnector"] = 0x59f0FeEc4fA474Ad4ffC357cC8d8595B68abE47d.toBytes32(); 
         values[bob]["eulerWBTC"] = 0x11DA346d3Fdb62641BDbfebfd54b81CAA871aEf6.toBytes32();  
+    }
+
+    function _addDeriveValues() private {
+        values[derive]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[derive]["deployerAddress2"] = 0xF3d0672a91Fd56C9ef04C79ec67d60c34c6148a0.toBytes32();
+        values[derive]["txBundlerAddress"] = 0xF3d0672a91Fd56C9ef04C79ec67d60c34c6148a0.toBytes32();
+        values[derive]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[derive]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        // ERC20s
+        values[derive]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
+        values[derive]["LBTC"] = 0xA45d4121b3D47719FF57a947A9d961539Ba33204.toBytes32();
+        values[derive]["stDRV"] = 0x7499d654422023a407d92e1D83D387d81BC68De1.toBytes32(); 
+        values[derive]["DRV"] = 0x2EE0fd70756EDC663AcC9676658A1497C247693A.toBytes32(); 
+
+        values[derive]["balancerVault"] = address(1).toBytes32();
+        values[derive]["vault"] = address(1).toBytes32();
+
+        values[derive]["ZRO"] = address(1).toBytes32();
+        
+        // Reward Distributor
+        values[derive]["rewardDistributor"] = 0x2f8C5a3BBd69443B6e462F563bA0EaB4317F995b.toBytes32(); 
+        
+        // Standard Bridge
+        values[derive]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
+        values[derive]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
+        values[derive]["uniswapV3NonFungiblePositionManager"] = 0xC36442b4a4522E871399CD717aBDD847Ab11FE88.toBytes32();
     }
 }
