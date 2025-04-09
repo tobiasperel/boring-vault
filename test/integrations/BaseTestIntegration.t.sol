@@ -34,6 +34,8 @@ contract BaseTestIntegration is Test, MerkleTreeHelper {
     address public rawDataDecoderAndSanitizer;
     RolesAuthority public rolesAuthority;
 
+    address public strategist; 
+
     uint8 public constant MANAGER_ROLE = 1;
     uint8 public constant STRATEGIST_ROLE = 2;
     uint8 public constant MANGER_INTERNAL_ROLE = 3;
@@ -134,6 +136,24 @@ contract BaseTestIntegration is Test, MerkleTreeHelper {
     function _overrideDecoder(address newDecoder) internal {
         setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", newDecoder);
         rawDataDecoderAndSanitizer = newDecoder; 
+    }
+
+    function _overrideBoringVault(address newBoringVault) internal {
+        setAddress(true, sourceChain, "boringVault", newBoringVault);
+        boringVault = BoringVault(payable(newBoringVault)); 
+    }
+
+    function _overrideManager(address newManager) internal {
+        setAddress(true, sourceChain, "manager", newManager);
+        manager = ManagerWithMerkleVerification(newManager); 
+    }
+
+    function _overrideRolesAuthority() internal {
+        rolesAuthority = RolesAuthority(address(boringVault.authority()));
+    }
+
+    function _setStrategist(address _strategist) internal {
+        strategist = _strategist;  
     }
 
     function _getTxArrays(uint256 size) internal pure returns (Tx memory) {

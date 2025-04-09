@@ -1880,7 +1880,8 @@ contract ChainValues {
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_scUSD_IncentivesController"] = 0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32(); 
 
 
-         // Curve
+        // Curve
+        values[sonicMainnet]["curve_CRV_claiming"] = 0xf3A431008396df8A8b2DF492C913706BDB0874ef.toBytes32();
         values[sonicMainnet]["curve_USDC_scUSD_pool"] = 0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3.toBytes32();
         values[sonicMainnet]["curve_USDC_scUSD_gauge"] = 0x12F89168C995e54Ec2ce9ee461D663a6dC72793A.toBytes32();
 

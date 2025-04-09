@@ -380,6 +380,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
 
+    function _addCRVClaimingLeafs(ManageLeaf[] memory leafs, address gauge) internal {
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "curve_CRV_claiming"),
+            false,
+            "mint(address)",
+            new address[](1),
+            string.concat("Claim CRV Rewards from Curve gauge"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = gauge; 
+    }
+
     function _addConvexLeafs(ManageLeaf[] memory leafs, ERC20 token, address rewardsContract) internal {
         // Approve convexCurveMainnetBooster to spend lp tokens.
         if (
