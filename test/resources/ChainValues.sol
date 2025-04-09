@@ -25,6 +25,7 @@ contract ChainValues {
     string public constant sonicMainnet = "sonicMainnet";
     string public constant berachain = "berachain";
     string public constant bob = "bob";
+    string public constant derive = "derive";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
@@ -104,6 +105,7 @@ contract ChainValues {
         _addSonicMainnetValues();
         _addBerachainValues();
         _addBobValues();
+        _addDeriveValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -142,6 +144,7 @@ contract ChainValues {
         values[mainnet]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32();
         values[mainnet]["liquidBeraBTCTeller"] = 0x07951756b68427e7554AB4c9091344cB8De1Ad5a.toBytes32();
         values[mainnet]["sBTCNTeller"] = 0xeAd024098eE05e8e975043eCc6189b49CfBe35fd.toBytes32(); 
+        values[mainnet]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32(); 
         values[mainnet]["sonicLBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32();
         values[mainnet]["sonicBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32(); 
 
@@ -1276,7 +1279,15 @@ contract ChainValues {
 
         // ELX Claiming
         values[mainnet]["elxTokenDistributor"] = 0xeb5D4b79e95Edb5567f3f9703FbD56a107905c0C.toBytes32();
-
+        
+        // Derive
+        values[mainnet]["derive_LBTC_basis_deposit"] = 0x76624ff43D610F64177Bb9c194A2503642e9B803.toBytes32();
+        values[mainnet]["derive_LBTC_basis_deposit_connector"] = 0x457379de638CAFeB1759a22457fe893b288E2e89.toBytes32();
+        values[mainnet]["derive_LBTC_basis_token"] = 0xdFd366D941A51e1f53Fbddb19FB4eE3af17FF991.toBytes32(); 
+        values[mainnet]["derive_LBTC_basis_withdraw"] = 0x954bE1803546150bfd887c9ff70fd221F2F505d3.toBytes32();
+        values[mainnet]["derive_LBTC_basis_withdraw_connector"] = 0x5E72430EC945CCc183c34e2860FFC2b5bac712c2.toBytes32();
+        //values[mainnet][""] = .toBytes32(); 
+        //values[mainnet]["derive_boringTestVault_wallet"] = .toBytes32(); 
     }
 
     function _addBaseValues() private {
@@ -1719,6 +1730,7 @@ contract ChainValues {
         // Tokens
         values[corn]["WBTCN"] = 0xda5dDd7270381A7C2717aD10D1c0ecB19e3CDFb2.toBytes32();
         values[corn]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
+        values[corn]["EBTC"] = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642.toBytes32();
 
         values[corn]["balancerVault"] = address(1).toBytes32();
 
@@ -1733,6 +1745,29 @@ contract ChainValues {
         // Curve
         values[corn]["curve_pool_LBTC_WBTCN"] = 0xAB3291b73a1087265E126E330cEDe0cFd4B8A693.toBytes32();
         values[corn]["curve_gauge_LBTC_WBTCN"] = 0xaE8f74c9eD7F72CA3Ea16955369f13D3d4b78Cd6.toBytes32();
+
+        values[corn]["curve_pool_LBTC_WBTCN_2"] = 0xc77478B0e4eeCEE34EbE2fC4be7eC9Bba20a5ccD.toBytes32();
+        values[corn]["curve_gauge_LBTC_WBTCN_2"] = 0xF481735c5e6Dc7C467236aF7D7C7b9c82893c0e4.toBytes32();
+
+        values[corn]["curve_pool_LBTC_WBTCN_EBTC"] = 0xebe423b5466f9675669B2a4521b6E9F852Dd1f52.toBytes32();
+        values[corn]["curve_gauge_LBTC_WBTCN_EBTC"] = 0x1AECbE26fA95D63df3F294Ba8C2ee214970df96f.toBytes32();
+
+        // Zerolend
+        values[corn]["zeroLendPool"] = 0x927b3A8e5068840C9758b0b88207b28aeeb7a3fd.toBytes32(); 
+        values[corn]["v3RewardsController"] = 0xd9f43fa0ff772b806cbcDd36d0B264fCAd46d677.toBytes32(); 
+
+        // UniswapV3
+        values[corn]["uniswapV3NonFungiblePositionManager"] = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c.toBytes32();
+        values[corn]["uniV3Router"] = 0x807F4E281B7A3B324825C64ca53c69F0b418dE40.toBytes32();
+
+        // CamelotV3
+        values[corn]["camelotNonFungiblePositionManager"] = 0x9CC2B9F9a6194C5CC827C88571E42cEAA76FDF47.toBytes32(); 
+        values[corn]["camelotRouterV3"] = 0x30A4bD5b1a9e9C0D80e9a45ef486bc1f1bc8e230.toBytes32(); 
+
+        // Tellers 
+        //values[corn]["sBTCNTeller"] = .toBytes32(); 
+        values[corn]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32(); 
+        values[corn]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32(); 
     }
 
     function _addSonicMainnetValues() private {
@@ -2140,5 +2175,32 @@ contract ChainValues {
         // Euler
         values[bob]["ethereumVaultConnector"] = 0x59f0FeEc4fA474Ad4ffC357cC8d8595B68abE47d.toBytes32(); 
         values[bob]["eulerWBTC"] = 0x11DA346d3Fdb62641BDbfebfd54b81CAA871aEf6.toBytes32();  
+    }
+
+    function _addDeriveValues() private {
+        values[derive]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[derive]["deployerAddress2"] = 0xF3d0672a91Fd56C9ef04C79ec67d60c34c6148a0.toBytes32();
+        values[derive]["txBundlerAddress"] = 0xF3d0672a91Fd56C9ef04C79ec67d60c34c6148a0.toBytes32();
+        values[derive]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[derive]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        // ERC20s
+        values[derive]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
+        values[derive]["LBTC"] = 0xA45d4121b3D47719FF57a947A9d961539Ba33204.toBytes32();
+        values[derive]["stDRV"] = 0x7499d654422023a407d92e1D83D387d81BC68De1.toBytes32(); 
+        values[derive]["DRV"] = 0x2EE0fd70756EDC663AcC9676658A1497C247693A.toBytes32(); 
+
+        values[derive]["balancerVault"] = address(1).toBytes32();
+        values[derive]["vault"] = address(1).toBytes32();
+
+        values[derive]["ZRO"] = address(1).toBytes32();
+        
+        // Reward Distributor
+        values[derive]["rewardDistributor"] = 0x2f8C5a3BBd69443B6e462F563bA0EaB4317F995b.toBytes32(); 
+        
+        // Standard Bridge
+        values[derive]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
+        values[derive]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
+        values[derive]["uniswapV3NonFungiblePositionManager"] = 0xC36442b4a4522E871399CD717aBDD847Ab11FE88.toBytes32();
     }
 }

@@ -2465,6 +2465,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         _addAaveV3ForkLeafs("SparkLend", getAddress(sourceChain, "sparkLendPool"), leafs, supplyAssets, borrowAssets);
     }
 
+    function _addZerolendLeafs(ManageLeaf[] memory leafs, ERC20[] memory supplyAssets, ERC20[] memory borrowAssets) 
+        internal
+    {
+        _addAaveV3ForkLeafs("Zerolend", getAddress(sourceChain, "zeroLendPool"), leafs, supplyAssets, borrowAssets);
+    }
+
     function _addAaveV3ForkLeafs(
         string memory protocolName,
         address protocolAddress,
@@ -9592,7 +9598,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                string.concat("Approve BoringOnChainQueue to spend ", assets[i].symbol()),
+                string.concat("Approve BoringOnChainQueue to spend ", ERC20(boringVault).name()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = withdrawQueue;
@@ -11597,7 +11603,138 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
- // ========================================= BoringChef =========================================
+    // ========================================= Derive =========================================
+    
+    function _addDeriveVaultLeafs(
+        ManageLeaf[] memory leafs, 
+        address depositVault, 
+        address depositConnector,
+        address withdrawVault, 
+        address withdrawConnector,
+        address connectorPlugOnDeriveChain,
+        address controllerOnMainnet,
+        address deriveWalletOwnedByBoringVault
+    ) internal {
+
+        address deriveDepositToken = IDeriveVault(depositVault).token(); 
+        string memory depositName = ERC20(deriveDepositToken).name(); 
+
+        address deriveWithdrawToken = IDeriveVault(withdrawVault).token(); 
+        string memory withdrawName = ERC20(deriveDepositToken).name(); 
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            deriveDepositToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Derive ", depositName, " Deposit Vault to spend ", ERC20(deriveDepositToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = depositVault; 
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+              deriveWithdrawToken,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Derive ", withdrawName, " Withdraw Vault to spend ", ERC20(deriveWithdrawToken).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = withdrawVault; 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            depositVault,
+            true, //fees
+            "bridge(address,uint256,uint256,address,bytes,bytes)",  
+            new address[](4),
+            string.concat("Deposit ", ERC20(deriveDepositToken).symbol(), " into Derive ", depositName, " Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = deriveWalletOwnedByBoringVault; 
+        leafs[leafIndex].argumentAddresses[1] = depositConnector; 
+        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[3] = connectorPlugOnDeriveChain; 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            withdrawVault,
+            true, //fees
+            "bridge(address,uint256,uint256,address,bytes,bytes)",  
+            new address[](4),
+            string.concat("Withdraw ", ERC20(deriveWithdrawToken).symbol(), " From Derive ", withdrawName, " Vault"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = deriveWalletOwnedByBoringVault; 
+        leafs[leafIndex].argumentAddresses[1] = withdrawConnector; 
+        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[3] = controllerOnMainnet; 
+    }
+
+
+    function _addDeriveClaimLeafs(ManageLeaf[] memory leafs) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "rewardDistributor"),
+            false,
+            "claimAll()",
+            new address[](0),
+            string.concat("Claim rewards on Derive"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        //====== stDRV ======
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "stDRV"),
+            false,
+            "redeem(uint256,uint256)",
+            new address[](0),
+            string.concat("Claim rewards on Derive"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "stDRV"),
+            false,
+            "cancelRedeem(uint256)",
+            new address[](0),
+            string.concat("Cancel Redeem of Staked Derive"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        
+         unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "stDRV"),
+            false,
+            "finalizeRedeem(uint256)",
+            new address[](0),
+            string.concat("Finalize Redeem of Staked Derive"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+    }
+
+    // ========================================= BoringChef =========================================
     function _addBoringChefClaimLeaf(ManageLeaf[] memory leafs, address boringChef) internal {
         unchecked {
             leafIndex++;
@@ -11625,6 +11762,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = user;
+
     }
 
     // ========================================= JSON FUNCTIONS =========================================
@@ -11982,4 +12120,8 @@ interface IBalancerV3Pool {
 
 interface IBGTRewardVault {
     function stakeToken() external view returns (address); 
+}
+
+interface IDeriveVault {
+    function token() external view returns (address); 
 }
