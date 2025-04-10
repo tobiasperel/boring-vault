@@ -254,7 +254,7 @@ contract OFTBridgeIntegrationTest is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](2);
         _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "EtherFiOFTAdapter"), layerZeroMovementEndpointId, moveAddress
+            leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "weETHOFTAdapterMovement"), layerZeroMovementEndpointId, moveAddress
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -269,11 +269,11 @@ contract OFTBridgeIntegrationTest is Test, MerkleTreeHelper {
 
         address[] memory targets = new address[](2);
         targets[0] = getAddress(sourceChain, "WEETH");
-        targets[1] = getAddress(sourceChain, "EtherFiOFTAdapter");
+        targets[1] = getAddress(sourceChain, "weETHOFTAdapterMovement");
 
         bytes[] memory targetData = new bytes[](2);
         targetData[0] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "EtherFiOFTAdapter"), type(uint256).max
+            "approve(address,uint256)", getAddress(sourceChain, "weETHOFTAdapterMovement"), type(uint256).max
         );
         DecoderCustomTypes.SendParam memory param;
         param.dstEid = layerZeroMovementEndpointId;
