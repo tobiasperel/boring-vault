@@ -2088,6 +2088,7 @@ contract ChainValues {
         values[berachain]["WEETH_YT"] = 0x98577aC3C6b376fc9Ee56377FEcAb6D751e40610.toBytes32();
         values[berachain]["BGT"] = 0x656b95E550C07a9ffe548bd4085c72418Ceb1dba.toBytes32();
         values[berachain]["iBGT"] = 0xac03CABA51e17c86c921E1f6CBFBdC91F8BB2E6b.toBytes32();
+        values[berachain]["USDC"] = 0x549943e04f40284185054145c6E4e9568C1D3241.toBytes32(); 
 
         values[berachain]["balancerVault"] = address(1).toBytes32();
         values[berachain]["vault"] = address(1).toBytes32();
@@ -2133,6 +2134,10 @@ contract ChainValues {
 
         // etherFi
         values[berachain]["etherFiL2SyncPool"] = 0xC9475e18E2C5C26EA6ADCD55fabE07920beA887e.toBytes32();
+
+        // Layer Zero
+        values[berachain]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();
+        values[berachain]["ZRO"] = address(1).toBytes32();
 
         // OFTs
         values[berachain]["LBTC_OFT"] = 0x630e12D53D4E041b8C5451aD035Ea841E08391d7.toBytes32();
