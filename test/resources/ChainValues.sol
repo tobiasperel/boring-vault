@@ -49,6 +49,7 @@ contract ChainValues {
     uint32 public constant layerZeroSonicMainnetEndpointId = 30332;
     uint32 public constant layerZeroSepoliaEndpointId = 40161;
     uint32 public constant layerZeroSonicBlazeEndpointId = 40349;
+    uint32 public constant layerZeroMovementEndpointId = 30325;
     uint32 public constant hyperlaneMainnetEndpointId = 1;
     uint32 public constant hyperlaneEclipseEndpointId = 1408864445;
 
