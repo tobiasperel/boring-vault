@@ -32,27 +32,6 @@ abstract contract DeriveDecoderAndSanitizer is BaseDecoderAndSanitizer {
         addressesFound = abi.encodePacked(connector_); 
     }
 
-    //============================== Bridge From Derive to ETH ===============================
-    function withdrawToChain(
-        address token,
-        uint256 /*amount*/,
-        address recipient,
-        address socketController,
-        address connector,
-        uint256 /*gasLimit*/
-    ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(token, recipient, socketController, connector); 
-    }
-
-     function withdrawFromAppChain(
-         address receiver_,
-         uint256 /*burnAmount_*/, 
-         uint256 /*msgGasLimit_*/, 
-         address connector_
-     ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(receiver_, connector_); 
-     }
-
     //============================== Rewards ===============================
     
     function claimAll() external pure virtual returns (bytes memory addressesFound) {
