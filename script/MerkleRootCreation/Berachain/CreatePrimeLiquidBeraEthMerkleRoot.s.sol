@@ -91,6 +91,25 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Etherfi ==========================
         _addWeETHLeafs(leafs, getAddress(sourceChain, "WETH"), getAddress(sourceChain, "boringVault"));  
 
+        // ========================== Ooga Booga ==========================
+        address[] memory assets = new address[](5); 
+        SwapKind[] memory kind = new SwapKind[](5); 
+        assets[0] = getAddress(sourceChain, "iBGT"); 
+        kind[0] = SwapKind.Sell; 
+        assets[1] = getAddress(sourceChain, "WETH"); 
+        kind[1] = SwapKind.BuyAndSell; 
+        assets[2] = getAddress(sourceChain, "WEETH"); 
+        kind[2] = SwapKind.BuyAndSell; 
+        assets[3] = getAddress(sourceChain, "beraETH"); 
+        kind[3] = SwapKind.BuyAndSell; 
+        assets[4] = getAddress(sourceChain, "BGT"); //just in case
+        kind[4] = SwapKind.Sell; 
+        
+        _addOogaBoogaSwapLeafs(leafs, assets, kind); 
+
+        // ========================== Infrared ==========================
+        _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_vault_weth_weeth")); 
+
         // ========================== Verify ==========================
         
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
