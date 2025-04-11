@@ -18,7 +18,7 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xB83742330443f7413DBD2aBdfc046dB0474a944e; 
     address public managerAddress = 0x58d32BCfa335B1EE9E25A291408409ceA890Be6b; 
     address public accountantAddress = 0x0B24A469d7c155a588C8a4ee24020F9f27090B0d;
-    address public rawDataDecoderAndSanitizer = 0x0745e969e15C12D1430247a636AC6e7ae7896A4f;
+    address public rawDataDecoderAndSanitizer = 0x661B04bF5C0D66F8D923fEC2FCD0C9b20C96c150;
 
     function setUp() external {}
 
