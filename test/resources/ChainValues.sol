@@ -267,7 +267,7 @@ contract ChainValues {
         values[mainnet]["ELX"] = 0x89A8c847f41C0dfA6c8B88638bACca8a0b777Da7.toBytes32(); 
         values[mainnet]["FRXUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
         values[mainnet]["EUSDE"] = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F.toBytes32(); 
-        values[mainnet]["SUSDS"] = 0x4e7991e5C547ce825BdEb665EE14a3274f9F61e0.toBytes32(); 
+        values[mainnet]["SUSDS"] =  0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD.toBytes32(); 
         values[mainnet]["KING"] = 0x8F08B70456eb22f6109F57b8fafE862ED28E6040.toBytes32();
         values[mainnet]["rEUL"] = 0xf3e621395fc714B90dA337AA9108771597b4E696.toBytes32(); 
         values[mainnet]["EUL"] = 0xd9Fcd98c322942075A5C3860693e9f4f03AAE07b.toBytes32(); 
