@@ -104,6 +104,12 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Infrared ==========================
         _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_vault_wbtc_ebtc"));
+
+        // ========================== Fee Claiming ==========================
+        ERC20[] memory feeAssets = new ERC20[](2);
+        feeAssets[0] = getERC20(sourceChain, "WBTC");
+        feeAssets[1] = getERC20(sourceChain, "EBTC");
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true);
         
 
         // ========================== Verify ==========================
