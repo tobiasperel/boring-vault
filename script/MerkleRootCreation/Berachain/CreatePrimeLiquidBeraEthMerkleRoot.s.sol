@@ -110,6 +110,12 @@ contract CreatePrimeLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Infrared ==========================
         _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_vault_weth_weeth")); 
 
+        // ========================== Fee Claiming ==========================
+        ERC20[] memory feeAssets = new ERC20[](2);
+        feeAssets[0] = getERC20(sourceChain, "WETH");
+        feeAssets[1] = getERC20(sourceChain, "WEETH");
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true);
+
         // ========================== Verify ==========================
         
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
