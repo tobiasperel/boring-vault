@@ -12,11 +12,8 @@ import "forge-std/Script.sol";
 /**
  *  source .env && forge script script/MerkleRootCreation/Sonic/CreateSfrxUSDScUSDMerkleRoot.s.sol:CreateSfrxUSDScUSDMerkleRoot --rpc-url $SONIC_RPC_URL
  * 
- *  NOTE: This script does not work in its current state because some contracts are not yet activated
- *  - The sfrxUSD_scUSD_id48 Silo is not activated: error "NotActivated" when calling getSilos()
- *  - The rawDataDecoderAndSanitizer contract is not activated: error "NotActivated" when calling functions
- *
- *  The Silo pool is already created but is not accessible at the moment.
+ *  NOTE: The Silo contract at 0x4E09FF794D255a123b00efa30162667A8054a845 is deployed but NOT activated.
+ *  Confirmed from execution trace: it returns "NotActivated" when calling getSilos().
  */
 contract CreateSfrxUSDScUSDMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
@@ -29,13 +26,10 @@ contract CreateSfrxUSDScUSDMerkleRoot is Script, MerkleTreeHelper {
     function setUp() external {}
 
     function run() external {
-        console.log("This script is currently waiting for the activation of the necessary contracts on Sonic.");
-        console.log("Contracts that need to be activated:");
-        console.log("- Silo sfrxUSD_scUSD_id48 at address: 0x4E09FF794D255a123b00efa30162667A8054a845");
-        console.log("- Decoder at address: 0xfdD1309DeDB4336c9fABef3150b24cB64732dEDF");
+        console.log("Running Merkle root generation for sfrxUSD/scUSD pool (without Silo functionality)");
         
-        // Commented out to avoid errors
-        // generateAdminStrategistMerkleRoot();
+        // Run the actual generation
+        generateAdminStrategistMerkleRoot();
     }
 
     function generateAdminStrategistMerkleRoot() public {
@@ -63,9 +57,16 @@ contract CreateSfrxUSDScUSDMerkleRoot is Script, MerkleTreeHelper {
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true);
 
         // ========================== SiloV2 ==========================
-        // Commented out because the silo contract is not yet activated
-        // The Silo contract 0x4E09FF794D255a123b00efa30162667A8054a845 returns a "NotActivated" error when calling getSilos()
-        // _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_sfrxUSD_scUSD_id48_config"));
+        // IMPORTANT: This section is completely disabled because the Silo is not activated yet
+        // Contract at address 0x4E09FF794D255a123b00efa30162667A8054a845 returns "NotActivated" 
+        // when calling getSilos() - confirmed from execution trace
+        // 
+        // When Silo is activated, uncomment the following code:
+        //
+        // address[] memory incentivesControllers = new address[](2);
+        // incentivesControllers[0] = address(0); 
+        // incentivesControllers[1] = address(0);
+        // _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_sfrxUSD_scUSD_id48_config"), incentivesControllers);
 
         // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
