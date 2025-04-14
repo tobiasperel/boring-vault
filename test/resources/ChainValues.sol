@@ -1879,6 +1879,8 @@ contract ChainValues {
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_config"] = 0xDa6787a3543a01Bf770DDF3953bE5B9C99c1cBD0.toBytes32(); 
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_scUSD_IncentivesController"] = 0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32(); 
 
+        values[sonicMainnet]["silo_sfrxUSD_scUSD_id48_config"] = 0x4E09FF794D255a123b00efa30162667A8054a845.toBytes32();
+        values[sonicMainnet]["silo_sfrxUSD_scUSD_id48_IncentivesController"] = 0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32();
 
         // Curve
         values[sonicMainnet]["curve_CRV_claiming"] = 0xf3A431008396df8A8b2DF492C913706BDB0874ef.toBytes32();
