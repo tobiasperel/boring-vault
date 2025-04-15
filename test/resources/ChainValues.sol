@@ -355,7 +355,7 @@ contract ChainValues {
         values[mainnet]["rETH_weETH_id"] = 0x05ff47afada98a98982113758878f9a8b9fdda0a000000000000000000000645;
         values[mainnet]["rETH_weETH"] = 0x05ff47AFADa98a98982113758878F9A8B9FddA0a.toBytes32();
         values[mainnet]["rETH_weETH_gauge"] = 0xC859BF9d7B8C557bBd229565124c2C09269F3aEF.toBytes32();
-        values[mainnet]["aura_reth_weeth"] = 0xDd1fE5AD401D4777cE89959b7fa587e569Bf125D.toBytes32();
+        values[mainnet]["aura_reth_weeth"] = 0x07A319A023859BbD49CC9C38ee891c3EA9283Cc5.toBytes32();
 
         values[mainnet]["ezETH_wETH"] = 0x596192bB6e41802428Ac943D2f1476C1Af25CC0E.toBytes32();
         values[mainnet]["ezETH_wETH_gauge"] = 0xa8B309a75f0D64ED632d45A003c68A30e59A1D8b.toBytes32();
@@ -595,9 +595,9 @@ contract ChainValues {
         values[mainnet]["frxUSD_FRAX_Curve_Pool"] = 0xBBaf8B2837CBbc7146F5bC978D6F84db0BE1CAcc.toBytes32(); 
         
         //frxUSD/SUSDS 
-        values[mainnet]["frxUSD_SUSDS_Curve_Pool"] = 0x81A2612F6dEA269a6Dd1F6DeAb45C5424EE2c4b7.toBytes32();
-        values[mainnet]["frxUSD_SUSDS_Curve_Gauge"] = 0x52618C40dDBA3cBbb69F3aAA4CB26Ae649844B17.toBytes32();
-        values[mainnet]["frxUSD_SUSDS_Convex_Rewards"] = 0x44be1A72619eDDDccAb744eE9e1E69A0B639F85f.toBytes32();
+        values[mainnet]["frxUSD_SUSDS_Curve_Pool"] = 0x81A2612F6dEA269a6Dd1F6DeAb45C5424EE2c4b7.toBytes32(); 
+        values[mainnet]["frxUSD_SUSDS_Curve_Gauge"] = 0x52618C40dDBA3cBbb69F3aAA4CB26Ae649844B17.toBytes32(); 
+        values[mainnet]["frxUSD_SUSDS_Convex_Rewards"] = 0x44be1A72619eDDDccAb744eE9e1E69A0B639F85f.toBytes32(); 
 
         //frxUSD/USDE
         values[mainnet]["frxUSD_USDE_Curve_Pool"] = 0xdBb1d219d84eaCEFb850ee04caCf2f1830934580.toBytes32();
@@ -737,7 +737,7 @@ contract ChainValues {
         values[mainnet]["EBTC_USR_86"] = 0xa4577bf93e8c70d9f91b6e000ae084ae0a7a29d4ebe28cbfea24975c28dccfb5;
         values[mainnet]["Corn_eBTC_PT03_2025_WETH_915"] = 0x4758ddbbcb96c8d0c10f46ca260d505e32399c2dd995380a832578ee84ef2d54;
         values[mainnet]["Corn_eBTC_PT03_2025_WBTC_915"] = 0x9dd533d05afa8dfce6a2ed82219e1c1dcebb16fe7722fb5912b989ef69df487f;
-        values[mainnet]["eUSDePT_05_2025_USDC_915"] = 0x21e55c99123958ff5667f824948c97d0f64dfaa6e2848062e72bc68d200d35f9; 
+        values[mainnet]["eUSDe_PT05_2025_USDC_915"] = 0x21e55c99123958ff5667f824948c97d0f64dfaa6e2848062e72bc68d200d35f9; 
         values[mainnet]["MCUSR_USD0_915"] = 0xcc39b6c92fd03ac608b9239618db8b80a4a2034b0450bdf47b404229571312da; 
         values[mainnet]["MCUSR_USDC_915"] = 0x3889dee51674c6e728f7d05f11a3407c6853e433a0e63f8febbc45887a26a475; 
 
@@ -1518,7 +1518,7 @@ contract ChainValues {
         values[arbitrum]["aura_rsETH_wETH"] = 0x90cedFDb5284a274720f1dB339eEe9798f4fa29d.toBytes32();
         values[arbitrum]["wstETH_sfrxETH_BPT"] = 0xc2598280bFeA1Fe18dFcaBD21C7165c40c6859d3.toBytes32();
         values[arbitrum]["wstETH_sfrxETH_Id"] = 0xc2598280bfea1fe18dfcabd21c7165c40c6859d30000000000000000000004f3;
-        values[arbitrum]["wstETH_sfrxETH_Gauge"] = 0x06eaF7bAaBecE962301Ee21296e711B3052F2C0d.toBytes32();
+        values[arbitrum]["wstETH_sfrxETH_Gauge"] = 0x06eaf7bAabEac962301eE21296e711B3052F2c0d.toBytes32();
         values[arbitrum]["aura_wstETH_sfrxETH"] = 0x83D37cbA332ffd53A4336Ee06f3c301B8929E684.toBytes32();
         values[arbitrum]["wstETH_wETH_Gyro_BPT"] = 0x7967FA58B9501600D96bD843173b9334983EE6E6.toBytes32();
         values[arbitrum]["wstETH_wETH_Gyro_Id"] = 0x7967fa58b9501600d96bd843173b9334983ee6e600020000000000000000056e;
