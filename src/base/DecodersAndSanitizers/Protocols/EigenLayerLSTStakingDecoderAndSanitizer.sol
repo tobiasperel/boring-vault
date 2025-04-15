@@ -53,6 +53,27 @@ abstract contract EigenLayerLSTStakingDecoderAndSanitizer is BaseDecoderAndSanit
             }
         }
     }
+    
+    /// @notice support the new ELIP version
+    function completeQueuedWithdrawals(
+        DecoderCustomTypes.Withdrawal[] calldata withdrawals,
+        address[][] calldata tokens,
+        bool[] calldata receiveAsTokens
+    ) external pure virtual returns (bytes memory addressesFound) {
+        for (uint256 i = 0; i < withdrawals.length; i++) {
+            if (!receiveAsTokens[i]) revert EigenLayerLSTStakingDecoderAndSanitizer__CanOnlyReceiveAsTokens();
+
+            addressesFound = abi.encodePacked(
+                addressesFound, withdrawals[i].staker, withdrawals[i].delegatedTo, withdrawals[i].withdrawer
+            );
+            for (uint256 j = 0; j < withdrawals[i].strategies.length; j++) {
+                addressesFound = abi.encodePacked(addressesFound, withdrawals[i].strategies[j]);
+            }
+            for (uint256 j = 0; j < tokens.length; j++) {
+                addressesFound = abi.encodePacked(addressesFound, tokens[i][j]);
+            }
+        }
+    }
 
     function delegateTo(
         address operator,
