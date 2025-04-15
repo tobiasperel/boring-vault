@@ -2193,7 +2193,7 @@ contract ChainValues {
 
         // ERC20s
         values[derive]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
-        values[derive]["LBTC"] = 0xA45d4121b3D47719FF57a947A9d961539Ba33204.toBytes32();
+        values[derive]["LBTC"] = 0x36b5C126A3D7B25F6032653A0d18823Ee48a890e.toBytes32();
         values[derive]["stDRV"] = 0x7499d654422023a407d92e1D83D387d81BC68De1.toBytes32(); 
         values[derive]["DRV"] = 0x2EE0fd70756EDC663AcC9676658A1497C247693A.toBytes32(); 
 
@@ -2209,5 +2209,9 @@ contract ChainValues {
         values[derive]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
         values[derive]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
         values[derive]["uniswapV3NonFungiblePositionManager"] = 0xC36442b4a4522E871399CD717aBDD847Ab11FE88.toBytes32();
+
+        // Derive
+        values[derive]["deriveWithdrawWrapper"] = 0xea8E683D8C46ff05B871822a00461995F93df800.toBytes32(); 
+        values[derive]["derive_LBTC_controller"] = 0x5eFC527B2640681289E31E1e29f94EA397b6c589.toBytes32(); 
     }
 }
