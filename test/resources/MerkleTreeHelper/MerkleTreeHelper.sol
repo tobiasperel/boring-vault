@@ -9414,19 +9414,20 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
             // BulkDeposit asset.
             if (addBulkWithdraw) {
-            unchecked {
-                leafIndex++;
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    teller,
+                    false,
+                    "bulkDeposit(address,uint256,uint256,address)",
+                    new address[](2),
+                    string.concat("Bulk deposit ", assets[i].symbol(), " into ", boringVault.name()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
             }
-            leafs[leafIndex] = ManageLeaf(
-                teller,
-                false,
-                "bulkDeposit(address,uint256,uint256,address)",
-                new address[](2),
-                string.concat("Bulk deposit ", assets[i].symbol(), " into ", boringVault.name()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
-            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
                 // BulkWithdraw asset.
                 unchecked {
@@ -9613,6 +9614,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 false,
                 "approve(address,uint256)",
                 new address[](1),
+                string.concat("Approve BoringOnChainQueue to spend ", ERC20(boringVault).symbol()),
                 string.concat("Approve BoringOnChainQueue to spend ", ERC20(boringVault).name()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
