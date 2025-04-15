@@ -267,7 +267,7 @@ contract ChainValues {
         values[mainnet]["ELX"] = 0x89A8c847f41C0dfA6c8B88638bACca8a0b777Da7.toBytes32(); 
         values[mainnet]["FRXUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
         values[mainnet]["EUSDE"] = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F.toBytes32(); 
-        values[mainnet]["SUSDS"] = 0x4e7991e5C547ce825BdEb665EE14a3274f9F61e0.toBytes32(); 
+        values[mainnet]["SUSDS"] =  0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD.toBytes32(); 
         values[mainnet]["KING"] = 0x8F08B70456eb22f6109F57b8fafE862ED28E6040.toBytes32();
         values[mainnet]["rEUL"] = 0xf3e621395fc714B90dA337AA9108771597b4E696.toBytes32(); 
         values[mainnet]["EUL"] = 0xd9Fcd98c322942075A5C3860693e9f4f03AAE07b.toBytes32(); 
@@ -1286,7 +1286,8 @@ contract ChainValues {
         values[mainnet]["derive_LBTC_basis_token"] = 0xdFd366D941A51e1f53Fbddb19FB4eE3af17FF991.toBytes32(); 
         values[mainnet]["derive_LBTC_basis_withdraw"] = 0x954bE1803546150bfd887c9ff70fd221F2F505d3.toBytes32();
         values[mainnet]["derive_LBTC_basis_withdraw_connector"] = 0x5E72430EC945CCc183c34e2860FFC2b5bac712c2.toBytes32();
-        //values[mainnet][""] = .toBytes32(); 
+        values[mainnet]["derive_controller"] = 0x52CB41109b637F03B81b3FD6Dce4E3948b2F0923.toBytes32(); 
+        values[mainnet]["derive_LBTC_connectorPlugOnDeriveChain"] = 0x2E1245D57a304C7314687E529D610071628117f3.toBytes32(); 
         //values[mainnet]["derive_boringTestVault_wallet"] = .toBytes32(); 
     }
 
@@ -2088,6 +2089,7 @@ contract ChainValues {
         values[berachain]["WEETH_YT"] = 0x98577aC3C6b376fc9Ee56377FEcAb6D751e40610.toBytes32();
         values[berachain]["BGT"] = 0x656b95E550C07a9ffe548bd4085c72418Ceb1dba.toBytes32();
         values[berachain]["iBGT"] = 0xac03CABA51e17c86c921E1f6CBFBdC91F8BB2E6b.toBytes32();
+        values[berachain]["USDC"] = 0x549943e04f40284185054145c6E4e9568C1D3241.toBytes32(); 
 
         values[berachain]["balancerVault"] = address(1).toBytes32();
         values[berachain]["vault"] = address(1).toBytes32();
@@ -2133,6 +2135,10 @@ contract ChainValues {
 
         // etherFi
         values[berachain]["etherFiL2SyncPool"] = 0xC9475e18E2C5C26EA6ADCD55fabE07920beA887e.toBytes32();
+
+        // Layer Zero
+        values[berachain]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();
+        values[berachain]["ZRO"] = address(1).toBytes32();
 
         // OFTs
         values[berachain]["LBTC_OFT"] = 0x630e12D53D4E041b8C5451aD035Ea841E08391d7.toBytes32();
@@ -2187,7 +2193,7 @@ contract ChainValues {
 
         // ERC20s
         values[derive]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
-        values[derive]["LBTC"] = 0xA45d4121b3D47719FF57a947A9d961539Ba33204.toBytes32();
+        values[derive]["LBTC"] = 0x36b5C126A3D7B25F6032653A0d18823Ee48a890e.toBytes32();
         values[derive]["stDRV"] = 0x7499d654422023a407d92e1D83D387d81BC68De1.toBytes32(); 
         values[derive]["DRV"] = 0x2EE0fd70756EDC663AcC9676658A1497C247693A.toBytes32(); 
 
@@ -2203,5 +2209,9 @@ contract ChainValues {
         values[derive]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
         values[derive]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
         values[derive]["uniswapV3NonFungiblePositionManager"] = 0xC36442b4a4522E871399CD717aBDD847Ab11FE88.toBytes32();
+
+        // Derive
+        values[derive]["deriveWithdrawWrapper"] = 0xea8E683D8C46ff05B871822a00461995F93df800.toBytes32(); 
+        values[derive]["derive_LBTC_controller"] = 0x5eFC527B2640681289E31E1e29f94EA397b6c589.toBytes32(); 
     }
 }
