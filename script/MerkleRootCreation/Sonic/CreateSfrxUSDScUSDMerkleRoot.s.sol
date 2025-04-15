@@ -39,9 +39,6 @@ contract CreateSfrxUSDScUSDMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, sonicMainnet, "accountantAddress", accountantAddress);
         setAddress(false, sonicMainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        // Set sfrxUSD address on mainnet
-        setAddress(false, mainnet, "sfrxUSD", 0xac3E018457B222d93114458476f3E3416Abbe38F);
-
         ManageLeaf[] memory leafs = new ManageLeaf[](256);
 
         // ========================== SonicGateway ==========================
