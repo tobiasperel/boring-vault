@@ -380,6 +380,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
 
+    function _addCRVClaimingLeafs(ManageLeaf[] memory leafs, address gauge) internal {
+        unchecked {
+            leafIndex++; 
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "curve_CRV_claiming"),
+            false,
+            "mint(address)",
+            new address[](1),
+            string.concat("Claim CRV Rewards from Curve gauge"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = gauge; 
+    }
+
     function _addConvexLeafs(ManageLeaf[] memory leafs, ERC20 token, address rewardsContract) internal {
         // Approve convexCurveMainnetBooster to spend lp tokens.
         if (
@@ -2463,6 +2478,12 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         internal
     {
         _addAaveV3ForkLeafs("SparkLend", getAddress(sourceChain, "sparkLendPool"), leafs, supplyAssets, borrowAssets);
+    }
+
+    function _addZerolendLeafs(ManageLeaf[] memory leafs, ERC20[] memory supplyAssets, ERC20[] memory borrowAssets) 
+        internal
+    {
+        _addAaveV3ForkLeafs("Zerolend", getAddress(sourceChain, "zeroLendPool"), leafs, supplyAssets, borrowAssets);
     }
 
     function _addAaveV3ForkLeafs(
@@ -9408,7 +9429,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
             }
 
-            if (addBulkWithdraw) {
                 // BulkWithdraw asset.
                 unchecked {
                     leafIndex++;
@@ -9424,6 +9444,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
                 leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
             }
+
             unchecked {
                 leafIndex++;
             }
@@ -9594,6 +9615,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 "approve(address,uint256)",
                 new address[](1),
                 string.concat("Approve BoringOnChainQueue to spend ", ERC20(boringVault).symbol()),
+                string.concat("Approve BoringOnChainQueue to spend ", ERC20(boringVault).name()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = withdrawQueue;
