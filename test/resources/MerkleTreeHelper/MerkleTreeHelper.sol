@@ -11620,6 +11620,23 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
+
+    // ========================================= FLUID Claiming =========================================
+    function _addFluidRewardsClaiming(ManageLeaf[] memory leafs) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "fluidMerkleDistributor"),
+            false,
+            "claim(address,uint256,uint8,bytes32,uint256,bytes32[],bytes)",
+            new address[](1),
+            string.concat("Claim ELX Airdrop"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+    }
+
     // ========================================= Derive =========================================
     
     function _addDeriveVaultLeafs(
@@ -11815,7 +11832,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[1] = connectorPlugOnDeriveChain;  
         leafs[leafIndex].argumentAddresses[2] = address(0);  
         leafs[leafIndex].argumentAddresses[3] = address(0);  
-
     }
 
     // ========================================= BoringChef =========================================
