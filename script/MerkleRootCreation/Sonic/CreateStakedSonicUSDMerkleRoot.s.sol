@@ -124,7 +124,7 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_PT-aUSDC_scUSD_id46_config"), incentivesControllers);
 
         // sfrxUSD/scUSD id48
-        incentivesControllers[0] = getAddress(sourceChain, "silo_sfrxUSD_scUSD_id48_IncentivesController"); 
+        incentivesControllers[0] = address(0); 
         incentivesControllers[1] = address(0);  
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_sfrxUSD_scUSD_id48_config"), incentivesControllers);
 
