@@ -2111,6 +2111,10 @@ contract ChainValues {
         values[berachain]["kodiak_island_EBTC_WBTC_005%"] = 0xfC4994e0A4780ba7536d7e79611468B6bde14CaE.toBytes32();
         values[berachain]["kodiak_island_beraETH_WEETH_005%"] = 0x2f8C651E2F576C8c4B6DE3c32210d9b4A4461d5c.toBytes32();
 
+        // Infrared
+        values[berachain]["infrared_vault_weth_weeth"] = 0x16ed36cB22b298085d10b119030408C7BbfFC24E.toBytes32();
+
+
         // Dolomite
         values[berachain]["dolomiteMargin"] = 0x003Ca23Fd5F0ca87D01F6eC6CD14A8AE60c2b97D.toBytes32();
         values[berachain]["dolomiteDepositWithdrawRouter"] = 0xd6a31B6AeA4d26A19bF479b5032D9DDc481187e6.toBytes32();
@@ -2148,7 +2152,7 @@ contract ChainValues {
         
         // Ooga Booga 
         values[berachain]["OBRouter"] = 0xFd88aD4849BA0F729D6fF4bC27Ff948Ab1Ac3dE7.toBytes32();
-        values[berachain]["OBExecutor"] = 0xa700f8e594098a3607fFb603c91e9DFd37017Cf7.toBytes32();
+        values[berachain]["OBExecutor"] = 0x2242B1c1B429c799D5584dC4B59732fb6B1A6BE6.toBytes32();
 
     }
 
