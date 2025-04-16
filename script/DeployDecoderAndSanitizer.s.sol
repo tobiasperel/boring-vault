@@ -73,8 +73,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
 
-        vm.createSelectFork("berachain");
-        setSourceChainName("berachain"); 
+        vm.createSelectFork("mainnet");
+        setSourceChainName("mainnet"); 
     }
 
     function run() external {
@@ -99,9 +99,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(getAddress(sourceChain, "camelotNonFungiblePositionManager"));
         //deployer.deployContract("Camelot Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
-        creationCode = type(BerachainDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
-        deployer.deployContract("Berachain Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
+        creationCode = type(SonicEthMainnetDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("Sonic ETH Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
 
 
         vm.stopBroadcast();

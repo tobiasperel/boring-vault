@@ -96,8 +96,8 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, true);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](9);
-        SwapKind[] memory kind = new SwapKind[](9);
+        address[] memory assets = new address[](12);
+        SwapKind[] memory kind = new SwapKind[](12);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -116,6 +116,15 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         kind[7] = SwapKind.Sell;
         assets[8] = getAddress(sourceChain, "FLUID");
         kind[8] = SwapKind.Sell;
+        assets[9] = getAddress(sourceChain, "EUL");
+        kind[9] = SwapKind.Sell;
+        assets[10] = getAddress(sourceChain, "rEUL");
+        kind[10] = SwapKind.Sell;
+        assets[10] = getAddress(sourceChain, "frxUSD");
+        kind[10] = SwapKind.BuyAndSell;
+        assets[11] = getAddress(sourceChain, "sfrxUSD");
+        kind[11] = SwapKind.BuyAndSell;
+        
 
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
@@ -155,6 +164,12 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== sUSDs ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sUSDs")));
+
+        // ========================== sUSDC ==========================
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sUSDC")));
+
+        // ========================== sfrxUSD ==========================
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sfrxUSD")));
 
         // ========================== Sonic Gateway ==========================
         {
@@ -199,7 +214,38 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         ERC20[] memory borrowAssetsSparklend = new ERC20[](0);
         _addSparkLendLeafs(leafs, supplyAssetsSparklend, borrowAssetsSparklend); 
         }
-    
+
+        // ========================== Euler ==========================
+        {
+        ERC4626[] memory depositVaults = new ERC4626[](4);      
+        depositVaults[0] = ERC4626(getAddress(sourceChain, "evkeUSDC-2")); //Prime
+        depositVaults[1] = ERC4626(getAddress(sourceChain, "evkeUSDT-2"); //Prime
+        depositVaults[2] = ERC4626(getAddress(sourceChain, "evkeUSDC-22")); //Yield 
+        depositVaults[4] = ERC4626(getAddress(sourceChain, "evkeUSDT-9"); //Yield
+        
+        address[] memory subaccounts = new address[](1); 
+        subaccounts[0] = getAddress(sourceChain, "boringVault"); 
+
+        _addEulerDepoistLeafs(leafs,  depositVaults, subaccounts); 
+
+        }
+
+        // ========================== Merkl ==========================
+        //claim rEUL
+        {
+        ERC20[] memory tokensToClaim = ERC20[](1); 
+        tokensToClaim[0] = getERC20(sourceChain, "rEUL"); 
+        _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim);  
+        }
+
+         // ========================== Gearbox ==========================
+         /**
+         * USDC, USDT, GHO deposit, withdraw,  dUSDCV3, dUSDTV3, dGHOV3 deposit, withdraw, claim
+         */
+        _addGearboxLeafs(leafs, ERC4626(getAddress(sourceChain, "dUSDCV3")), getAddress(sourceChain, "sdUSDCV3"));
+        _addGearboxLeafs(leafs, ERC4626(getAddress(sourceChain, "dUSDTV3")), getAddress(sourceChain, "sdUSDTV3"));
+        _addGearboxLeafs(leafs, ERC4626(getAddress(sourceChain, "dGHOV3")), getAddress(sourceChain, "sdGHOV3"));
+
         // ========================== Verify & Generate ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 

@@ -9475,7 +9475,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 );
                 leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
                 leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-            }
 
             unchecked {
                 leafIndex++;
@@ -9489,6 +9488,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+        }
 
             if (addNativeDeposit) {
                 unchecked {
@@ -9503,7 +9503,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "ETH");
-            }
         }
     }
 
@@ -9772,7 +9771,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 "approve(address,uint256)",
                 new address[](1),
                 string.concat("Approve BoringOnChainQueue to spend ", ERC20(boringVault).symbol()),
-                string.concat("Approve BoringOnChainQueue to spend ", ERC20(boringVault).name()),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = withdrawQueue;

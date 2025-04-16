@@ -19,6 +19,9 @@ import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/
 import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol"; 
 import {SonicGatewayDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SonicGatewayDecoderAndSanitizer.sol"; 
 import {MorphoRewardsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/MorphoRewardsDecoderAndSanitizer.sol"; 
+import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol";
+import {GearboxDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/GearboxDecoderAndSanitizer.sol"; 
+import {MerklDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MerklDecoderAndSanitizer.sol"; 
 
 
 contract SonicEthMainnetDecoderAndSanitizer is
@@ -35,7 +38,10 @@ contract SonicEthMainnetDecoderAndSanitizer is
     OdosDecoderAndSanitizer,
     FluidDexDecoderAndSanitizer,
     SonicGatewayDecoderAndSanitizer,
-    MorphoRewardsDecoderAndSanitizer
+    MorphoRewardsDecoderAndSanitizer,
+    EulerEVKDecoderAndSanitizer,
+    GearboxDecoderAndSanitizer,
+    MerklDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
