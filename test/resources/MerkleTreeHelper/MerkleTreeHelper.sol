@@ -11792,6 +11792,23 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
     }
 
+
+    // ========================================= KING Claiming =========================================
+    function _addKingRewardsClaiming(ManageLeaf[] memory leafs) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "fluidMerkleDistributor"),
+            false,
+            "claim(address,uint256,bytes32,bytes32[])",
+            new address[](1),
+            string.concat("Claim KING rewards"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+    }
+
     // ========================================= Derive =========================================
     
     function _addDeriveVaultLeafs(
