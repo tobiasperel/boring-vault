@@ -268,7 +268,7 @@ contract ChainValues {
         values[mainnet]["ELX"] = 0x89A8c847f41C0dfA6c8B88638bACca8a0b777Da7.toBytes32(); 
         values[mainnet]["FRXUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
         values[mainnet]["EUSDE"] = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F.toBytes32(); 
-        values[mainnet]["SUSDS"] = 0x4e7991e5C547ce825BdEb665EE14a3274f9F61e0.toBytes32(); 
+        values[mainnet]["SUSDS"] =  0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD.toBytes32(); 
         values[mainnet]["KING"] = 0x8F08B70456eb22f6109F57b8fafE862ED28E6040.toBytes32();
         values[mainnet]["rEUL"] = 0xf3e621395fc714B90dA337AA9108771597b4E696.toBytes32(); 
         values[mainnet]["EUL"] = 0xd9Fcd98c322942075A5C3860693e9f4f03AAE07b.toBytes32(); 
@@ -1288,7 +1288,8 @@ contract ChainValues {
         values[mainnet]["derive_LBTC_basis_token"] = 0xdFd366D941A51e1f53Fbddb19FB4eE3af17FF991.toBytes32(); 
         values[mainnet]["derive_LBTC_basis_withdraw"] = 0x954bE1803546150bfd887c9ff70fd221F2F505d3.toBytes32();
         values[mainnet]["derive_LBTC_basis_withdraw_connector"] = 0x5E72430EC945CCc183c34e2860FFC2b5bac712c2.toBytes32();
-        //values[mainnet][""] = .toBytes32(); 
+        values[mainnet]["derive_controller"] = 0x52CB41109b637F03B81b3FD6Dce4E3948b2F0923.toBytes32(); 
+        values[mainnet]["derive_LBTC_connectorPlugOnDeriveChain"] = 0x2E1245D57a304C7314687E529D610071628117f3.toBytes32(); 
         //values[mainnet]["derive_boringTestVault_wallet"] = .toBytes32(); 
     }
 
@@ -2112,6 +2113,10 @@ contract ChainValues {
         values[berachain]["kodiak_island_EBTC_WBTC_005%"] = 0xfC4994e0A4780ba7536d7e79611468B6bde14CaE.toBytes32();
         values[berachain]["kodiak_island_beraETH_WEETH_005%"] = 0x2f8C651E2F576C8c4B6DE3c32210d9b4A4461d5c.toBytes32();
 
+        // Infrared
+        values[berachain]["infrared_vault_weth_weeth"] = 0x16ed36cB22b298085d10b119030408C7BbfFC24E.toBytes32();
+
+
         // Dolomite
         values[berachain]["dolomiteMargin"] = 0x003Ca23Fd5F0ca87D01F6eC6CD14A8AE60c2b97D.toBytes32();
         values[berachain]["dolomiteDepositWithdrawRouter"] = 0xd6a31B6AeA4d26A19bF479b5032D9DDc481187e6.toBytes32();
@@ -2149,7 +2154,7 @@ contract ChainValues {
         
         // Ooga Booga 
         values[berachain]["OBRouter"] = 0xFd88aD4849BA0F729D6fF4bC27Ff948Ab1Ac3dE7.toBytes32();
-        values[berachain]["OBExecutor"] = 0xa700f8e594098a3607fFb603c91e9DFd37017Cf7.toBytes32();
+        values[berachain]["OBExecutor"] = 0x2242B1c1B429c799D5584dC4B59732fb6B1A6BE6.toBytes32();
 
     }
 
@@ -2194,7 +2199,7 @@ contract ChainValues {
 
         // ERC20s
         values[derive]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
-        values[derive]["LBTC"] = 0xA45d4121b3D47719FF57a947A9d961539Ba33204.toBytes32();
+        values[derive]["LBTC"] = 0x36b5C126A3D7B25F6032653A0d18823Ee48a890e.toBytes32();
         values[derive]["stDRV"] = 0x7499d654422023a407d92e1D83D387d81BC68De1.toBytes32(); 
         values[derive]["DRV"] = 0x2EE0fd70756EDC663AcC9676658A1497C247693A.toBytes32(); 
 
@@ -2210,5 +2215,9 @@ contract ChainValues {
         values[derive]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
         values[derive]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
         values[derive]["uniswapV3NonFungiblePositionManager"] = 0xC36442b4a4522E871399CD717aBDD847Ab11FE88.toBytes32();
+
+        // Derive
+        values[derive]["deriveWithdrawWrapper"] = 0xea8E683D8C46ff05B871822a00461995F93df800.toBytes32(); 
+        values[derive]["derive_LBTC_controller"] = 0x5eFC527B2640681289E31E1e29f94EA397b6c589.toBytes32(); 
     }
 }
