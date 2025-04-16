@@ -2114,8 +2114,8 @@ contract ChainValues {
         values[berachain]["kodiak_island_beraETH_WEETH_005%"] = 0x2f8C651E2F576C8c4B6DE3c32210d9b4A4461d5c.toBytes32();
 
         // Infrared
+        values[berachain]["infrared_vault_wbtc_ebtc"] = 0x5C5FCb568a98DA28C9D2DF4852b102aa814c3a4c.toBytes32();
         values[berachain]["infrared_vault_weth_weeth"] = 0x16ed36cB22b298085d10b119030408C7BbfFC24E.toBytes32();
-
 
         // Dolomite
         values[berachain]["dolomiteMargin"] = 0x003Ca23Fd5F0ca87D01F6eC6CD14A8AE60c2b97D.toBytes32();
