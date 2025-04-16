@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 
-abstract contract FluidRewardsClaiming is BaseDecoderAndSanitizer {
+abstract contract FluidRewardsClaimingDecoderAndSanitizer is BaseDecoderAndSanitizer {
     function claim(
         address recipient_,
         uint256 /*cumulativeAmount_*/,
