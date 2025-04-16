@@ -4,7 +4,7 @@
       "privateKeyEnvName": "BORING_DEVELOPER",
       "chainName": "unichain",
       "evmVersion": "shanghai",
-      "desiredNumberOfDeploymentTxs": 2,
+      "desiredNumberOfDeploymentTxs": 16,
       "txBundlerAddressOrName": {
         "address": "0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d",
         "name": "txBundlerAddress"
@@ -31,26 +31,26 @@
       "deploymentFileName": "addresses/UniChain/AlphaSTETH.json"
     },
     "rolesAuthorityConfiguration": {
-      "rolesAuthorityDeploymentName": "AlphaSTETH Roles Authority V8.0"
+      "rolesAuthorityDeploymentName": "AlphaSTETH Roles Authority V0.0"
     },
     "lensConfiguration": {
-      "lensDeploymentName": "Arctic Architecture Lens V8.0"
+      "lensDeploymentName": "Arctic Architecture Lens V0.0"
     },
     "boringVaultConfiguration": {
-      "boringVaultDeploymentName": "AlphaSTETH Boring Vault V8.0",
+      "boringVaultDeploymentName": "AlphaSTETH Boring Vault V0.0",
       "boringVaultName": "Alpha STETH",
       "boringVaultSymbol": "AlphaSTETH",
       "boringVaultDecimals": 18
     },
     "managerConfiguration": {
-      "managerDeploymentName": "AlphaSTETH Manager V8.0",
+      "managerDeploymentName": "AlphaSTETH Manager V0.0",
       "balancerVaultAddressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
         "name": "balancerVault"
       }
     },
     "accountantConfiguration": {
-      "accountantDeploymentName": "AlphaSTETH Accountant V8.0",
+      "accountantDeploymentName": "AlphaSTETH Accountant V0.0",
       "accountantParameters": {
         "kind": {
           "variableRate": true,
@@ -58,7 +58,7 @@
         },
         "payoutConfiguration": {
           "payoutTo": "0x0000000000000000000000000000000000000000",
-          "optionalPaymentSplitterName": "AlphaSTETH Payment Splitter V8.0",
+          "optionalPaymentSplitterName": "AlphaSTETH Payment Splitter V0.0",
           "splits": []
         },
         "accountantDeploymentParameters": {
@@ -76,7 +76,7 @@
       }
     },
     "tellerConfiguration": {
-      "tellerDeploymentName": "AlphaSTETH Teller V8.0",
+      "tellerDeploymentName": "AlphaSTETH Teller V0.0",
       "tellerParameters": {
         "allowPublicDeposits": false,
         "shareLockPeriod": 0,
@@ -112,8 +112,8 @@
       }
     },
     "boringQueueConfiguration": {
-      "boringQueueDeploymentName": "AlphaSTETH Boring Queue V8.0",
-      "boringQueueSolverName": "AlphaSTETH Boring Solver V8.0",
+      "boringQueueDeploymentName": "AlphaSTETH Boring Queue V0.0",
+      "boringQueueSolverName": "AlphaSTETH Boring Solver V0.0",
       "queueParameters": {
         "allowPublicWithdrawals": false,
         "allowPublicSelfWithdrawals": false,
@@ -124,13 +124,13 @@
       }
     },
     "droneConfiguration": {
-      "droneDeploymentBaseName": "AlphaSTETH Drone V8.0",
+      "droneDeploymentBaseName": "AlphaSTETH Drone V0.0",
       "droneCount": 0,
       "safeGasToForwardNative": 21000
     },
     "pauserConfiguration": {
       "shouldDeploy": true,
-      "pauserDeploymentName": "AlphaSTETH Pauser V8.0",
+      "pauserDeploymentName": "AlphaSTETH Pauser V0.0",
       "makeGenericPauser": [
         "0x0000000000000000000000000000000000000000"
       ],
@@ -152,7 +152,7 @@
     },
     "timelockConfiguration": {
       "shouldDeploy": true,
-      "timelockDeploymentName": "AlphaSTETH Timelock V8.0",
+      "timelockDeploymentName": "AlphaSTETH Timelock V0.0",
       "timelockParameters": {
         "executors": [
             "0xf8553c8552f906C19286F21711721E206EE4909E"
@@ -167,14 +167,6 @@
       {
         "addressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "WSTETH"
-        },
-        "isPeggedToBase": false,
-        "rateProvider": "0x8A4207Bfc6fc475F172F929468aCDD4A2c4C3C19"
-      },
-      {
-        "addressOrName": {
-          "address": "0x0000000000000000000000000000000000000000",
           "name": "ETH"
         },
         "isPeggedToBase": true,
@@ -182,15 +174,6 @@
       }
     ],
     "depositAssets": [
-      {
-        "addressOrName": {
-          "address": "0x0000000000000000000000000000000000000000",
-          "name": "WSTETH"
-        },
-        "allowDeposits": true,
-        "allowWithdraws": true,
-        "sharePremium": 0
-      },
       {
         "addressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
@@ -211,17 +194,6 @@
       }
     ],
     "withdrawAssets": [
-      {
-        "addressOrName": {
-          "address": "0x0000000000000000000000000000000000000000",
-          "name": "WSTETH"
-        },
-        "maxDiscount": 10,
-        "minDiscount": 1,
-        "minimumSecondsToDeadline": 259200,
-        "minimumShares": 0,
-        "secondsToMaturity": 172800
-      },
       {
         "addressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
