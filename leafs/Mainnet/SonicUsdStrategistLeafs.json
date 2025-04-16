@@ -10,8 +10,8 @@
             "Bytes4(TARGET_FUNCTION_SELECTOR)",
             "Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"
         ],
-        "LeafCount": 570,
-        "ManageRoot": "0x09350dd90f1196a6ca0d63b680c99c723fa1effd7d6f368a5b9202756be20f61",
+        "LeafCount": 574,
+        "ManageRoot": "0xef04d248777b5c8c56662ba3d96aceff1664a6fbf7d9820b65a10d0faee3e5e9",
         "ManagerAddress": "0x76fda7A02B616070D3eC5902Fa3C5683AC3cB8B6",
         "TreeCapacity": 1024
     },
@@ -8291,48 +8291,58 @@
             "TargetAddress": "0xE2037090f896A858E3168B978668F22026AC52e7"
         },
         {
-            "AddressArguments": [],
+            "AddressArguments": ["0xc026395860Db2d07ee33e05fE50ed7bD583189C7"],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "DecoderAndSanitizerAddress": "0x9E6279f66E6e7B91DaE93b2E9F08D9108833Ea28",
+            "Description": "Approve LayerZero to spend USDC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x72d426f6d944f928acd35a5006a138b7340c721f0eca55843c459850a3af743c",
+            "PackedArgumentAddresses": "0xc026395860db2d07ee33e05fe50ed7bd583189c7",
+            "TargetAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
         },
         {
-            "AddressArguments": [],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "AddressArguments": [
+                "0x000000000000000000000000000000000000767C",
+                "0x000000000000000000000000d3dce71600000000",
+                "0xf3ef535c5Ff8D041c1A41C3BD89b97AE00000000",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": true,
+            "DecoderAndSanitizerAddress": "0x9E6279f66E6e7B91DaE93b2E9F08D9108833Ea28",
+            "Description": "Bridge USDC to LayerZero endpoint: 30332",
+            "FunctionSelector": "0xc7c7f5b3",
+            "FunctionSignature": "send((uint32,bytes32,uint256,uint256,bytes,bytes,bytes),(uint256,uint256),address)",
+            "LeafDigest": "0x6e4681dddf70d6843ebc16e5c8132c5f7905ea4a83a7e09f702a3c75c128eb4a",
+            "PackedArgumentAddresses": "0x000000000000000000000000000000000000767c000000000000000000000000d3dce71600000000f3ef535c5ff8d041c1a41c3bd89b97ae00000000d3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0xc026395860Db2d07ee33e05fE50ed7bD583189C7"
         },
         {
-            "AddressArguments": [],
+            "AddressArguments": ["0x566a6442A5A6e9895B9dCA97cC7879D632c6e4B0"],
             "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "DecoderAndSanitizerAddress": "0x9E6279f66E6e7B91DaE93b2E9F08D9108833Ea28",
+            "Description": "Approve LayerZero to spend frxUSD",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x8f54a5d789dffcc9d938a3bf3db4d0c61fa40a84abc823382ab468356e4e049e",
+            "PackedArgumentAddresses": "0x566a6442a5a6e9895b9dca97cc7879d632c6e4b0",
+            "TargetAddress": "0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29"
         },
         {
-            "AddressArguments": [],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
-            "Description": "",
-            "FunctionSelector": "0xc5d24601",
-            "FunctionSignature": "",
-            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "PackedArgumentAddresses": "0x",
-            "TargetAddress": "0x0000000000000000000000000000000000000000"
+            "AddressArguments": [
+                "0x000000000000000000000000000000000000767C",
+                "0x000000000000000000000000d3dce71600000000",
+                "0xf3ef535c5Ff8D041c1A41C3BD89b97AE00000000",
+                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+            ],
+            "CanSendValue": true,
+            "DecoderAndSanitizerAddress": "0x9E6279f66E6e7B91DaE93b2E9F08D9108833Ea28",
+            "Description": "Bridge frxUSD to LayerZero endpoint: 30332",
+            "FunctionSelector": "0xc7c7f5b3",
+            "FunctionSignature": "send((uint32,bytes32,uint256,uint256,bytes,bytes,bytes),(uint256,uint256),address)",
+            "LeafDigest": "0xb2ace73962bf8367e43710c37cf00fa9159486260e309e7655593802fc9cb419",
+            "PackedArgumentAddresses": "0x000000000000000000000000000000000000767c000000000000000000000000d3dce71600000000f3ef535c5ff8d041c1a41c3bd89b97ae00000000d3dce716f3ef535c5ff8d041c1a41c3bd89b97ae",
+            "TargetAddress": "0x566a6442A5A6e9895B9dCA97cC7879D632c6e4B0"
         },
         {
             "AddressArguments": [],
@@ -13287,11 +13297,11 @@
     ],
     "MerkleTree": {
         "0": [
-            "0x09350dd90f1196a6ca0d63b680c99c723fa1effd7d6f368a5b9202756be20f61"
+            "0xef04d248777b5c8c56662ba3d96aceff1664a6fbf7d9820b65a10d0faee3e5e9"
         ],
         "1": [
             "0xb81e938bb4b277bcda194445292bb1f1d4318024f71b3ed96f773403f50e1ee4",
-            "0x0573f568ffe160aed4e752ec621251949ab6cc9dadff52356d094b70c9bfb817"
+            "0x3e4bbcb9cc4d7f2d9213888ebc203d807cf2208dfb13903697b831d80eaa7664"
         ],
         "10": [
             "0xce6a89c00ea7fbae99cf2065aaee29a25e5af52970120d3d4674fe0334a850e5",
@@ -13864,10 +13874,10 @@
             "0xce7e1c72ee4bac7c0122b48f5480955f98aeb72a66c99d01f2d8b8e3cab4effe",
             "0x57398222cbd329d57960673b84d6c4ad9267f00d86257398dfb856bd73bef639",
             "0x99494015e48141bcea519bf884b1d3f76f3a15a4268dc6c901fdecbb8fcf5480",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
-            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0x72d426f6d944f928acd35a5006a138b7340c721f0eca55843c459850a3af743c",
+            "0x6e4681dddf70d6843ebc16e5c8132c5f7905ea4a83a7e09f702a3c75c128eb4a",
+            "0x8f54a5d789dffcc9d938a3bf3db4d0c61fa40a84abc823382ab468356e4e049e",
+            "0xb2ace73962bf8367e43710c37cf00fa9159486260e309e7655593802fc9cb419",
             "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
             "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
             "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
@@ -14322,7 +14332,7 @@
         "2": [
             "0x4a7dbe55f961dd78087cdfc8a3fe8b0ada3294d1ff8026f5d33a5f7335ac3202",
             "0x1bfff3967b294e8cc1f2eaa64ab2461b7f57ce8a52bd88b701beef121eb7649a",
-            "0x1a2d73ad671b4b8882685edba54b6d526a6e307e2f401086abbdffddab0b1c14",
+            "0xaabc6fee84efc20fecf68f1ecd4c93ed0d76eabd3d93f59af42b66872ca9f965",
             "0xf99f6d2fb00c53b40c77eed68fd90b5bd2f61651850b4b92fc8902cc2c5841fa"
         ],
         "3": [
@@ -14330,7 +14340,7 @@
             "0x14e3f2cb2041957deb9ac2cfc28dad5a25f59ca713e93402b50748586f6d6970",
             "0xd6426982260fcd718d1382acc8151b20e370b26b92be36e8315b754d2bdfc928",
             "0x6ef21f3f786bc33190329b208d85836a4ff0ef0372f8090779a83218ac80e454",
-            "0x8fd311154486537b26f33cf37f6728712a2f212a284187a8bf3dd2066c322981",
+            "0x328dc877499e3ec463c3f960faee0503bf612f457d7be028f99f75d6397ec01e",
             "0x086614eefb68b0a34d95a225c5b9ca1318e3ce0b820e2751b9fb619a8e640885",
             "0x086614eefb68b0a34d95a225c5b9ca1318e3ce0b820e2751b9fb619a8e640885",
             "0x086614eefb68b0a34d95a225c5b9ca1318e3ce0b820e2751b9fb619a8e640885"
@@ -14344,7 +14354,7 @@
             "0x7b2a13c13a1867f6de39d611b0a1c9e36d53174480b9d92614d31bab193209e8",
             "0x91a6e0f498f607dd9bbba4c858d4425bf7fca15c20dddcfa169a178433a71595",
             "0x2d819b22cebc645b4d8860076942ebf1726318c95824d36e1337a941a5aac0d5",
-            "0x558b0b30b740c0badedaf256f8ef2b40d9e458b766a04b47adc63c3d01e3bc58",
+            "0xe853f07e48c564cac405cafde3d409b471b00ed93f216be079be3631aa2c14be",
             "0xf70e6eeacf0ca2800bee387294f368bb304fe5f55d96f86ff896d1bcbe16ba34",
             "0xf70e6eeacf0ca2800bee387294f368bb304fe5f55d96f86ff896d1bcbe16ba34",
             "0xf70e6eeacf0ca2800bee387294f368bb304fe5f55d96f86ff896d1bcbe16ba34",
@@ -14371,7 +14381,7 @@
             "0x20abbf9ec5622b6ccde65cd0808aea9291a84dfc4a78c7e525162c57085b217d",
             "0x90526afa83e90e26fa2ed082590f6ba6cf205c49cf80e14282ee1f174a06ae30",
             "0x9aed504f0c387afa1599b4df6e11f007209b64d7177cb18be40af6e79c3b6252",
-            "0x43ce5d664494dc4ca4fe6b133987dfe61abeba1daa951c92f97bdc5be8b65fdd",
+            "0x7fa21b14245f97ee0f9687e2759c400222b0482d469fb161c47cd419e0bc871a",
             "0xec36dbe395dc9c97e82d5ef9325fb13a264faf4bc614c184837bb3dfc0c6a31a",
             "0xec36dbe395dc9c97e82d5ef9325fb13a264faf4bc614c184837bb3dfc0c6a31a",
             "0xec36dbe395dc9c97e82d5ef9325fb13a264faf4bc614c184837bb3dfc0c6a31a",
@@ -14423,7 +14433,7 @@
             "0x71f9e7431a55e1e35f6d20671d41bcd1740da601ea3e6bc077ff6cfc02bbaa1a",
             "0x53de25b13511a5d070747aa14239092df91ab6f0cfd0084805943d79665323bf",
             "0x4458eac6a4efce707b3e9c6da2605bffeb3aa4c8caaddd9624a12f1263aef802",
-            "0x0e5ef30be5166e2896714c55030efd34a6990d78a053535340f4bade56213d9c",
+            "0x58dafc419176a749dfc216ff254c7cd4691fae4a83f8f7bb733a4df3e872d9b5",
             "0xc8e2d8c65f68c2edf703a349b0189c66520f43472e76097f69a501107adf656c",
             "0xc8e2d8c65f68c2edf703a349b0189c66520f43472e76097f69a501107adf656c",
             "0xc8e2d8c65f68c2edf703a349b0189c66520f43472e76097f69a501107adf656c",
@@ -14525,7 +14535,7 @@
             "0xf42798a16966364fec4c8ae409e92a3dd674d96782865374b806073ddcc87764",
             "0x9e0700d596a157670064861ab7d9b66e4f538180be4aba5ab7947af7e8612fb1",
             "0xb425ff99603f79c223e8508f63d99e65de47832c4c5bf025f0f4c553be8b7eb9",
-            "0x3a8044adebad714f43648256a54699b9c59e4f952b85c818e0ce4911ccd0866f",
+            "0x37b91dbf636724fc8a6fe9aefbd5af7fd48c8c57d7639cd98d71be57736b47ee",
             "0x41fbd3a0cfdfcee05cf3eb16d95ed1c81f50c3c6268bb806b406ec06ee93e704",
             "0x41fbd3a0cfdfcee05cf3eb16d95ed1c81f50c3c6268bb806b406ec06ee93e704",
             "0x41fbd3a0cfdfcee05cf3eb16d95ed1c81f50c3c6268bb806b406ec06ee93e704",
@@ -14726,8 +14736,8 @@
             "0xedc61e4d8b77a7bd651da4fd57bce63c03948fc32984491629828f15fbb4f366",
             "0xc3d35ea6a8884ef628317de3a631e07407ad853a05cfce2416cfd5f9b41d1c53",
             "0x4d97cc9cd20e46a3aaad93679ef8b6126a59995980a5172f2de46f0ff54ae955",
-            "0x2bd87e838f8e0fe5cfe5a41e0cc9a155ebb73da53488190b55d9d8e2edfcb162",
-            "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe",
+            "0x078bd20b5bd3843833378e4d072b4cadfba1398d159df09bb67c2548db83bcaf",
+            "0x42f80f5b97ac98da83fea282ae373e3dc74ff295b81625811d71b249e69c11c6",
             "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe",
             "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe",
             "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe",
@@ -15127,8 +15137,8 @@
             "0x5ddb6bff23de2d27d1eb51b4c206dc772896095ca1a7d5c2e73f6dbec5013be9",
             "0x06a7e95aeacd7c3daa5d5a8a49ce6680193a6f18646f5caa6744ccadd914f2f1",
             "0xef2dfaa44d93ce6d84bc800b027c54d43f3d1ab6311090659c2a0a4b8b04a40d",
-            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
-            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
+            "0xf03511f425d9be51c6df45febb0ffc839f18d433aa7e2bc972609fd481c56eba",
+            "0xa883579fd1f151084935d1832485186da85b16c1c2559bfd8e716e48125137a8",
             "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
             "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
             "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",

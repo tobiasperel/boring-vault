@@ -1124,6 +1124,7 @@ contract ChainValues {
         values[mainnet]["weETHOFTAdapterMovement"] = 0x6FFcE32713417569237786cbeFBe355090642bF9.toBytes32();
         values[mainnet]["LBTCOFTAdapter"] = 0x6bc15D7930839Ec18A57F6f7dF72aE1B439D077f.toBytes32();
         values[mainnet]["WBTCOFTAdapter"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32();
+        values[mainnet]["frxUSDOFTAdapter"] = 0x566a6442A5A6e9895B9dCA97cC7879D632c6e4B0.toBytes32(); 
 
         // Stargate OFTs
         values[mainnet]["stargateUSDC"] = 0xc026395860Db2d07ee33e05fE50ed7bD583189C7.toBytes32();

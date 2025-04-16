@@ -246,6 +246,11 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         _addGearboxLeafs(leafs, ERC4626(getAddress(sourceChain, "dUSDTV3")), getAddress(sourceChain, "sdUSDTV3"));
         _addGearboxLeafs(leafs, ERC4626(getAddress(sourceChain, "dGHOV3")), getAddress(sourceChain, "sdGHOV3"));
 
+        // ========================== LayerZero ==========================
+        //USDC, frxUSD  
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "USDC"), getAddress(sourceChain, "stargateUSDC"), layerZeroSonicMainnetEndpointId, getBytes32(sourceChain, "boringVault"));  
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "frxUSD"), getAddress(sourceChain, "frxUSDOFTAdapter"), layerZeroSonicMainnetEndpointId, getBytes32(sourceChain, "boringVault"));  
+
         // ========================== Verify & Generate ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
