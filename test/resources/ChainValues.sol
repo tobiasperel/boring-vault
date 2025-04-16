@@ -1300,6 +1300,10 @@ contract ChainValues {
         values[mainnet]["derive_controller"] = 0x52CB41109b637F03B81b3FD6Dce4E3948b2F0923.toBytes32(); 
         values[mainnet]["derive_LBTC_connectorPlugOnDeriveChain"] = 0x2E1245D57a304C7314687E529D610071628117f3.toBytes32(); 
         //values[mainnet]["derive_boringTestVault_wallet"] = .toBytes32(); 
+       
+        // King 
+        values[mainnet]["kingMerkleDistributor"] = 0x6Db24Ee656843E3fE03eb8762a54D86186bA6B64.toBytes32(); 
+        
     }
 
     function _addBaseValues() private {
