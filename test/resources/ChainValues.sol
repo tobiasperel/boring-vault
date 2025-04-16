@@ -277,6 +277,8 @@ contract ChainValues {
         values[mainnet]["rUSD"] = 0x09D4214C03D01F49544C0448DBE3A27f768F2b34.toBytes32(); 
         values[mainnet]["srUSD"] = 0x738d1115B90efa71AE468F1287fc864775e23a31.toBytes32(); 
         values[mainnet]["sUSDC"] = 0xBc65ad17c5C0a2A4D159fa5a503f4992c7B545FE.toBytes32(); 
+        values[mainnet]["frxUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
+        values[mainnet]["sfrxUSD"] = 0xcf62F905562626CfcDD2261162a51fd02Fc9c5b6.toBytes32(); 
 
 
         // Rate providers

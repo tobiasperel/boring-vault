@@ -81,4 +81,15 @@ contract SonicEthMainnetDecoderAndSanitizer is
         // Nothing to sanitize or return
         return addressesFound;
     }
+
+    function withdraw(uint256)
+        external
+        pure
+        override(NativeWrapperDecoderAndSanitizer, GearboxDecoderAndSanitizer)
+        returns (bytes memory addressesFound)
+    {
+        // Nothing to sanitize or return
+        return addressesFound;
+    }
+
 }

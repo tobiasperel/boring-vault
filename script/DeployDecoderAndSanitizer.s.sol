@@ -101,7 +101,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
         creationCode = type(SonicEthMainnetDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Sonic ETH Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
+        deployer.deployContract("Sonic ETH Decoder And Sanitizer V0.7", creationCode, constructorArgs, 0);
 
 
         vm.stopBroadcast();

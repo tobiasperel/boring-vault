@@ -17,7 +17,7 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE;
     address public managerAddress = 0x76fda7A02B616070D3eC5902Fa3C5683AC3cB8B6;
     address public accountantAddress = 0xA76E0F54918E39A63904b51F688513043242a0BE;
-    address public rawDataDecoderAndSanitizer = 0x1fc7364AA98ddD2Cd0b6da61c5361703fA01C327;
+    address public rawDataDecoderAndSanitizer = 0x9E6279f66E6e7B91DaE93b2E9F08D9108833Ea28;
 
     function setUp() external {}
 
@@ -35,7 +35,7 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](512);
+        ManageLeaf[] memory leafs = new ManageLeaf[](1024);
 
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](4);
@@ -219,21 +219,21 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         {
         ERC4626[] memory depositVaults = new ERC4626[](4);      
         depositVaults[0] = ERC4626(getAddress(sourceChain, "evkeUSDC-2")); //Prime
-        depositVaults[1] = ERC4626(getAddress(sourceChain, "evkeUSDT-2"); //Prime
+        depositVaults[1] = ERC4626(getAddress(sourceChain, "evkeUSDT-2")); //Prime
         depositVaults[2] = ERC4626(getAddress(sourceChain, "evkeUSDC-22")); //Yield 
-        depositVaults[4] = ERC4626(getAddress(sourceChain, "evkeUSDT-9"); //Yield
+        depositVaults[3] = ERC4626(getAddress(sourceChain, "evkeUSDT-9")); //Yield
         
         address[] memory subaccounts = new address[](1); 
         subaccounts[0] = getAddress(sourceChain, "boringVault"); 
 
-        _addEulerDepoistLeafs(leafs,  depositVaults, subaccounts); 
+        _addEulerDepositLeafs(leafs,  depositVaults, subaccounts); 
 
         }
 
         // ========================== Merkl ==========================
         //claim rEUL
         {
-        ERC20[] memory tokensToClaim = ERC20[](1); 
+        ERC20[] memory tokensToClaim = new ERC20[](1); 
         tokensToClaim[0] = getERC20(sourceChain, "rEUL"); 
         _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim);  
         }
