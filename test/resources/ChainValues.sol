@@ -48,6 +48,7 @@ contract ChainValues {
     uint32 public constant layerZeroCornEndpointId = 30331;
     uint32 public constant layerZeroSwellEndpointId = 30335;
     uint32 public constant layerZeroSonicMainnetEndpointId = 30332;
+    uint32 public constant layerZeroUnichainEndpointId = 30320;
     uint32 public constant layerZeroSepoliaEndpointId = 40161;
     uint32 public constant layerZeroSonicBlazeEndpointId = 40349;
     uint32 public constant hyperlaneMainnetEndpointId = 1;
@@ -1106,7 +1107,12 @@ contract ChainValues {
         // Bob Standard Bridge
         values[mainnet]["bobStandardBridge"] = 0x3F6cE1b36e5120BBc59D0cFe8A5aC8b6464ac1f7.toBytes32(); 
         values[mainnet]["bobPortal"] = 0x8AdeE124447435fE03e3CD24dF3f4cAE32E65a3E.toBytes32(); 
-        values[mainnet]["bobResolvedDelegate"] = 0xE3d981643b806FB8030CDB677D6E60892E547EdA.toBytes32(); 
+        values[mainnet]["bobResolvedDelegate"] = 0xE3d981643b806FB8030CDB677D6E60892E547EdA.toBytes32();
+
+        // Unichain Standard Bridge.
+        values[mainnet]["unichainStandardBridge"] = 0x81014F44b0a345033bB2b3B21C7a1A308B35fEeA.toBytes32();
+        values[mainnet]["unichainPortal"] = 0x0bd48f6B86a26D3a217d0Fa6FfE2B491B956A7a2.toBytes32();
+        values[mainnet]["unichainResolvedDelegate"] = 0x9A3D64E386C18Cb1d6d5179a9596A4B5736e98A6.toBytes32();
 
         // Layer Zero.
         values[mainnet]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
