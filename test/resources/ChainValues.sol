@@ -26,6 +26,7 @@ contract ChainValues {
     string public constant berachain = "berachain";
     string public constant bob = "bob";
     string public constant derive = "derive";
+    string public constant unichain = "unichain";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
@@ -106,6 +107,7 @@ contract ChainValues {
         _addBerachainValues();
         _addBobValues();
         _addDeriveValues();
+        _addUnichainValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -2208,5 +2210,38 @@ contract ChainValues {
         values[derive]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
         values[derive]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
         values[derive]["uniswapV3NonFungiblePositionManager"] = 0xC36442b4a4522E871399CD717aBDD847Ab11FE88.toBytes32();
+    }
+
+    function _addUnichainValues() private {
+        values[unichain]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[unichain]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[unichain]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[unichain]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        // ERC20s
+        values[unichain]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
+        values[unichain]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
+        values[unichain]["USDC"] = 0x078D782b760474a361dDA0AF3839290b0EF57AD6.toBytes32();
+        values[unichain]["weETH"] = 0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7.toBytes32();
+        values[unichain]["WEETH"] = 0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7.toBytes32();
+        values[unichain]["WSTETH"] = 0xc02fE7317D4eb8753a02c35fe019786854A92001.toBytes32();
+
+        values[unichain]["balancerVault"] = address(1).toBytes32();
+        values[unichain]["vault"] = address(1).toBytes32();
+
+        values[unichain]["ZRO"] = address(1).toBytes32();
+        
+        // Standard Bridge
+        values[unichain]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
+        values[unichain]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
+
+        // Uniswap V4
+        values[unichain]["uniV4PoolManager"] = 0x1F98400000000000000000000000000000000004.toBytes32();
+        values[unichain]["uniV4PositionManager"] = 0x4529A01c7A0410167c5740C487A8DE60232617bf.toBytes32();
+        values[unichain]["uniV4UniversalRouter"] = 0xEf740bf23aCaE26f6492B10de645D6B98dC8Eaf3.toBytes32();
+        values[unichain]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32();
+
+        // LayerZero
+        values[unichain]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();
     }
 }
