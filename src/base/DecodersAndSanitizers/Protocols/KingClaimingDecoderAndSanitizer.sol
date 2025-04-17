@@ -14,5 +14,18 @@ abstract contract KingClaimingDecoderAndSanitizer is BaseDecoderAndSanitizer {
     ) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(account); 
     }
+    
+    function deposit(
+        address[] memory /*_tokens*/,
+        uint256[] memory /*_amounts*/,
+        address _receiver
+    ) external pure virtual returns (bytes memory addressesFound) {
+        //deposit tokens are gated by KING + oracles 
+        addressesFound = abi.encodePacked(addressesFound, _receiver); 
+    }
 
+    function redeem(uint256 /*vaultShares*/) external pure virtual returns (bytes memory addressesFound) {
+        // Nothing to sanitize. 
+        return addressesFound; 
+    }
 }

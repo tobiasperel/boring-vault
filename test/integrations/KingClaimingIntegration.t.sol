@@ -29,23 +29,28 @@ contract KingRewardsClaimingIntegration is BaseTestIntegration {
         deal(getAddress(sourceChain, "USDC"), address(boringVault), 1_000e18); 
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
+            
+        address[] memory depositTokens = new address[](2); 
+        depositTokens[0] = getAddress(sourceChain, "ETHFI");  
+        depositTokens[1] = getAddress(sourceChain, "EIGEN");  
         address claimFor = 0x09CdfF26536BCfd97E14FB06880B21b7bb9e729A; 
-        _addKingRewardsClaimingLeafs(leafs, claimFor);
+
+        _addKingRewardsClaimingLeafs(leafs, depositTokens, claimFor);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
         Tx memory tx_ = _getTxArrays(1); 
 
-        tx_.manageLeafs[0] = leafs[0]; //claim 
+        tx_.manageLeafs[0] = leafs[4]; //claim 
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
     
         //targets
-        tx_.targets[0] = getAddress(sourceChain, "kingMerkleDistributor"); //claim 
+        tx_.targets[0] = getAddress(sourceChain, "kingMerkleDistributor"); //claim
 
         bytes32 root = 0x7c2229cfe3ad53683ed32e59062880d383c431240dfc1d33ee68cc9af646e6db; 
 
@@ -85,4 +90,97 @@ contract KingRewardsClaimingIntegration is BaseTestIntegration {
         _submitManagerCall(manageProofs, tx_); 
          
     }
+
+    function testKingRedeem() external {
+        _setUpMainnet(); 
+        
+        //starting with just the base assets 
+        deal(getAddress(sourceChain, "KING"), address(boringVault), 1e18); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+            
+        address[] memory depositTokens = new address[](2); 
+        depositTokens[0] = getAddress(sourceChain, "ETHFI");  
+        depositTokens[1] = getAddress(sourceChain, "EIGEN");  
+        address claimFor = 0x09CdfF26536BCfd97E14FB06880B21b7bb9e729A; 
+
+        _addKingRewardsClaimingLeafs(leafs, depositTokens, claimFor);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(1); 
+
+        tx_.manageLeafs[0] = leafs[3]; //redeem
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+    
+        //targets
+        tx_.targets[0] = getAddress(sourceChain, "KING"); //claim 
+
+        //bytes[] memory targetData = new bytes[](7);
+        tx_.targetData[0] = abi.encodeWithSignature("redeem(uint256)", 1e18);
+
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer; 
+
+        _submitManagerCall(manageProofs, tx_); 
+         
+    }
+
+    function testKingDeposit() external {
+        _setUpMainnet(); 
+        
+        deal(getAddress(sourceChain, "ETHFI"), address(boringVault), 1e18); 
+        deal(getAddress(sourceChain, "EIGEN"), address(boringVault), 1e18); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+            
+        address[] memory depositTokens = new address[](2); 
+        depositTokens[0] = getAddress(sourceChain, "ETHFI");  
+        depositTokens[1] = getAddress(sourceChain, "EIGEN");  
+        address claimFor = 0x09CdfF26536BCfd97E14FB06880B21b7bb9e729A; 
+
+        _addKingRewardsClaimingLeafs(leafs, depositTokens, claimFor);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(3); 
+
+        tx_.manageLeafs[0] = leafs[0]; //approve ethfi
+        tx_.manageLeafs[1] = leafs[1]; //approve eigen
+        tx_.manageLeafs[2] = leafs[2]; //deposit
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+    
+        //targets
+        tx_.targets[0] = getAddress(sourceChain, "ETHFI"); //approve
+        tx_.targets[1] = getAddress(sourceChain, "EIGEN"); //approve
+        tx_.targets[2] = getAddress(sourceChain, "KING"); //deposit
+
+        //bytes[] memory targetData = new bytes[](7);
+        tx_.targetData[0] = abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "KING"), 1e18);
+        tx_.targetData[1] = abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "KING"), 1e18);
+
+        uint256[] memory amounts = new uint256[](2); 
+        amounts[0] = 1e18; 
+        amounts[1] = 1e18; 
+
+        tx_.targetData[2] = abi.encodeWithSignature("deposit(address[],uint256[],address)", depositTokens, amounts, address(boringVault));
+
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer; 
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer; 
+        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer; 
+        
+        vm.expectRevert(); //onlyDepositors(); //0x0afa41a8
+        _submitManagerCall(manageProofs, tx_); 
+         
+    }
+
 }
