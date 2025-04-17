@@ -5202,20 +5202,40 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     function _addMorphoBlueSupplyLeafs(ManageLeaf[] memory leafs, bytes32 marketId) internal {
         IMB.MarketParams memory marketParams = IMB(getAddress(sourceChain, "morphoBlue")).idToMarketParams(marketId);
         ERC20 loanToken = ERC20(marketParams.loanToken);
-        ERC20 collateralToken = ERC20(marketParams.collateralToken);
+        ERC20 collateralToken; 
+        if (marketParams.collateralToken != address(0)) {
+            collateralToken = ERC20(marketParams.collateralToken);
+        }
         uint256 leftSideLLTV = marketParams.lltv / 1e16;
         uint256 rightSideLLTV = (marketParams.lltv / 1e14) % 100;
-        string memory morphoBlueMarketName = string.concat(
-            "MorphoBlue ",
-            collateralToken.symbol(),
-            "/",
-            loanToken.symbol(),
-            " ",
-            vm.toString(leftSideLLTV),
-            ".",
-            vm.toString(rightSideLLTV),
-            " LLTV market"
-        );
+        
+        string memory morphoBlueMarketName; 
+        if (address(collateralToken) == address(0)) {
+            morphoBlueMarketName = string.concat(
+                "MorphoBlue ",
+                 "IDLE" 
+                "/",
+                loanToken.symbol(),
+                " ",
+                vm.toString(leftSideLLTV),
+                ".",
+                vm.toString(rightSideLLTV),
+                " LLTV market"
+            );
+        
+        } else {
+            morphoBlueMarketName = string.concat(
+                "MorphoBlue ",
+                collateralToken.symbol(),
+                "/",
+                loanToken.symbol(),
+                " ",
+                vm.toString(leftSideLLTV),
+                ".",
+                vm.toString(rightSideLLTV),
+                " LLTV market"
+            );
+        }
         // Add approval leaf if not already added
         if (
             !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.loanToken][getAddress(
@@ -5276,41 +5296,65 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     function _addMorphoBlueCollateralLeafs(ManageLeaf[] memory leafs, bytes32 marketId) internal {
         IMB.MarketParams memory marketParams = IMB(getAddress(sourceChain, "morphoBlue")).idToMarketParams(marketId);
         ERC20 loanToken = ERC20(marketParams.loanToken);
-        ERC20 collateralToken = ERC20(marketParams.collateralToken);
+        ERC20 collateralToken; 
+        if (marketParams.collateralToken != address(0)) {
+            collateralToken = ERC20(marketParams.collateralToken);
+        }
         uint256 leftSideLLTV = marketParams.lltv / 1e16;
         uint256 rightSideLLTV = (marketParams.lltv / 1e14) % 100;
-        string memory morphoBlueMarketName = string.concat(
-            "MorphoBlue ",
-            collateralToken.symbol(),
-            "/",
-            loanToken.symbol(),
-            " ",
-            vm.toString(leftSideLLTV),
-            ".",
-            vm.toString(rightSideLLTV),
-            " LLTV market"
-        );
+        
+        string memory morphoBlueMarketName; 
+        if (address(collateralToken) == address(0)) {
+            morphoBlueMarketName = string.concat(
+                "MorphoBlue ",
+                 "IDLE" 
+                "/",
+                loanToken.symbol(),
+                " ",
+                vm.toString(leftSideLLTV),
+                ".",
+                vm.toString(rightSideLLTV),
+                " LLTV market"
+            );
+        
+        } else {
+            morphoBlueMarketName = string.concat(
+                "MorphoBlue ",
+                collateralToken.symbol(),
+                "/",
+                loanToken.symbol(),
+                " ",
+                vm.toString(leftSideLLTV),
+                ".",
+                vm.toString(rightSideLLTV),
+                " LLTV market"
+            );
+        }
+
         // Approve MorphoBlue to spend collateral.
         if (
             !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.collateralToken][getAddress(
                 sourceChain, "morphoBlue"
             )]
         ) {
-            unchecked {
-                leafIndex++;
+
+            if (address(collateralToken) != address(0)) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    marketParams.collateralToken,
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve MorhoBlue to spend ", collateralToken.symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "morphoBlue");
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.collateralToken][getAddress(
+                    sourceChain, "morphoBlue"
+                )] = true;
             }
-            leafs[leafIndex] = ManageLeaf(
-                marketParams.collateralToken,
-                false,
-                "approve(address,uint256)",
-                new address[](1),
-                string.concat("Approve MorhoBlue to spend ", collateralToken.symbol()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "morphoBlue");
-            ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][marketParams.collateralToken][getAddress(
-                sourceChain, "morphoBlue"
-            )] = true;
         }
         // Approve morpho blue to spend loan token.
         if (
@@ -5335,22 +5379,25 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             )] = true;
         }
         // Supply collateral to MorphoBlue.
-        unchecked {
-            leafIndex++;
+        
+        if (address(collateralToken) != address(0)) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "morphoBlue"),
+                false,
+                "supplyCollateral((address,address,address,address,uint256),uint256,address,bytes)",
+                new address[](5),
+                string.concat("Supply ", collateralToken.symbol(), " to ", morphoBlueMarketName),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = marketParams.loanToken;
+            leafs[leafIndex].argumentAddresses[1] = marketParams.collateralToken;
+            leafs[leafIndex].argumentAddresses[2] = marketParams.oracle;
+            leafs[leafIndex].argumentAddresses[3] = marketParams.irm;
+            leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
         }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "morphoBlue"),
-            false,
-            "supplyCollateral((address,address,address,address,uint256),uint256,address,bytes)",
-            new address[](5),
-            string.concat("Supply ", collateralToken.symbol(), " to ", morphoBlueMarketName),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = marketParams.loanToken;
-        leafs[leafIndex].argumentAddresses[1] = marketParams.collateralToken;
-        leafs[leafIndex].argumentAddresses[2] = marketParams.oracle;
-        leafs[leafIndex].argumentAddresses[3] = marketParams.irm;
-        leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
 
         // Borrow loan token from MorphoBlue.
         unchecked {
@@ -5390,23 +5437,25 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
 
         // Withdraw collateral from MorphoBlue.
-        unchecked {
-            leafIndex++;
+        if (address(collateralToken) != address(0)) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "morphoBlue"),
+                false,
+                "withdrawCollateral((address,address,address,address,uint256),uint256,address,address)",
+                new address[](6),
+                string.concat("Withdraw ", collateralToken.symbol(), " from ", morphoBlueMarketName),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = marketParams.loanToken;
+            leafs[leafIndex].argumentAddresses[1] = marketParams.collateralToken;
+            leafs[leafIndex].argumentAddresses[2] = marketParams.oracle;
+            leafs[leafIndex].argumentAddresses[3] = marketParams.irm;
+            leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault");
         }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "morphoBlue"),
-            false,
-            "withdrawCollateral((address,address,address,address,uint256),uint256,address,address)",
-            new address[](6),
-            string.concat("Withdraw ", collateralToken.symbol(), " from ", morphoBlueMarketName),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = marketParams.loanToken;
-        leafs[leafIndex].argumentAddresses[1] = marketParams.collateralToken;
-        leafs[leafIndex].argumentAddresses[2] = marketParams.oracle;
-        leafs[leafIndex].argumentAddresses[3] = marketParams.irm;
-        leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[5] = getAddress(sourceChain, "boringVault");
     }
 
     function _addMorphoRewardWrapperLeafs(ManageLeaf[] memory leafs) internal {
