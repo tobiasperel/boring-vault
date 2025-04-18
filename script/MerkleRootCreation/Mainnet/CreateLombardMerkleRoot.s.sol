@@ -177,6 +177,13 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             _addTellerLeafs(leafs, getAddress(sourceChain, "sonicLBTCTeller"), sonicBTCTellerAssets, false, true);
         }
 
+        {
+            ERC20[] memory tacLBTCvTellerAssets = new ERC20[](2);
+            tacLBTCvTellerAssets[0] = getERC20(sourceChain, "LBTC");
+            tacLBTCvTellerAssets[1] = getERC20(sourceChain, "cbBTC");
+            _addTellerLeafs(leafs, getAddress(sourceChain, "tacLBTCvTeller"), tacLBTCvTellerAssets, false, true); //no native leaves, yes bulk actions
+        }
+
         // ========================== Pendle ==========================
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_market_12_26_24"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_corn_market_12_26_24"), true);
@@ -275,10 +282,10 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         );
 
         // ========================== LayerZero ==========================
-        _addLayerZeroLeafs(
+        _addLayerZeroLeafsOldDecoder(
             leafs, getERC20(sourceChain, "BTCN"), getAddress(sourceChain, "BTCN"), layerZeroCornEndpointId
         );
-        _addLayerZeroLeafs(
+        _addLayerZeroLeafsOldDecoder(
             leafs, getERC20(sourceChain, "LBTC"), getAddress(sourceChain, "LBTCOFTAdapter"), layerZeroCornEndpointId
         );
 
