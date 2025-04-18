@@ -52,20 +52,24 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Kodiak Islands ==========================
 
-        address[] memory islands = new address[](1);  
-        islands[0] = getAddress(sourceChain, "kodiak_island_WBTC_solvBTC_005%"); 
+        address[] memory islands = new address[](2);  
+        islands[0] = getAddress(sourceChain, "kodiak_island_WBTC_solvBTC_005%");
+        islands[1] = getAddress(sourceChain, "kodiak_island_rUSD_HONEY_005%"); // TODO
 
         _addKodiakIslandLeafs(leafs, islands); 
 
         // ========================== Dolomite Supply ==========================
         
         _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "srUSD"), false);          
-        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "USDC"), false);          
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "USDC"), false);   
+        _addDolomiteDepositLeafs(leafs, getAddress(sourceChain, "eBTC"), false);       
 
         // ========================== Dolomite Borrow ==========================
         
         _addDolomiteBorrowLeafs(leafs, getAddress(sourceChain, "srUSD"));
         _addDolomiteBorrowLeafs(leafs, getAddress(sourceChain, "USDC"));
+        _addDolomiteBorrowLeafs(leafs, getAddress(sourceChain, "HONEY"));
+        _addDolomiteBorrowLeafs(leafs, getAddress(sourceChain, "rUSD"));
 
         // ========================== Ooga Booga ==========================
         address[] memory assets = new address[](6);
@@ -82,17 +86,26 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         kind[4] = SwapKind.BuyAndSell;
         assets[5] = getAddress(sourceChain, "srUSD");
         kind[5] = SwapKind.BuyAndSell;
+        assets[6] = getAddress(sourceChain, "rUSD");
+        kind[6] = SwapKind.BuyAndSell;
+        assets[7] = getAddress(sourceChain, "eBTC");
+        kind[7] = SwapKind.BuyAndSell;
+        assets[8] = getAddress(sourceChain, "LBTC");
+        kind[8] = SwapKind.BuyAndSell;
+        assets[9] = getAddress(sourceChain, "HONEY");
+        kind[9] = SwapKind.BuyAndSell;
 
         _addOogaBoogaSwapLeafs(leafs, assets, kind);
 
         // ========================== Infrared ==========================
         _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_vault_wbtc_solvbtc"));
+        _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_vault_rUSD_honey")); // TODO
 
         // ========================== LayerZero/Stargate ==========================
-        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "WBTC"), getAddress(sourceChain, "WBTC"), layerZeroMainnetEndpointId);   
-        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "solvBTC"), getAddress(sourceChain, "solvBTC_OFT"), layerZeroMainnetEndpointId);   
-        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "srUSD"), getAddress(sourceChain, "stargatesrUSD"), layerZeroMainnetEndpointId);   
-        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "srUSD"), getAddress(sourceChain, "stargateUSDC"), layerZeroMainnetEndpointId);   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "WBTC"), getAddress(sourceChain, "WBTC"), layerZeroMainnetEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "solvBTC"), getAddress(sourceChain, "solvBTC_OFT"), layerZeroMainnetEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "srUSD"), getAddress(sourceChain, "stargatesrUSD"), layerZeroMainnetEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "srUSD"), getAddress(sourceChain, "stargateUSDC"), layerZeroMainnetEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
 
         // ========================== Verify ==========================
         
