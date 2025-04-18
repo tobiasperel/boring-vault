@@ -53,6 +53,7 @@ import {TacETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TacETHDe
 import {TacUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TacUSDDecoderAndSanitizer.sol";
 import {sBTCNDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/sBTCNDecoderAndSanitizer.sol";
 import {CamelotFullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/CamelotFullDecoderAndSanitizer.sol";
+import {EtherFiEigenDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiEigenDecoderAndSanitizer.sol";
 
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
@@ -73,8 +74,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
 
-        vm.createSelectFork("berachain");
-        setSourceChainName("berachain"); 
+        vm.createSelectFork("mainnet");
+        setSourceChainName("mainnet"); 
 
     }
 
@@ -100,9 +101,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(getAddress(sourceChain, "camelotNonFungiblePositionManager"));
         //deployer.deployContract("Camelot Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
-        creationCode = type(BerachainDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
-        deployer.deployContract("Berachain Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
+        creationCode = type(EtherFiEigenDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode();
+        deployer.deployContract("EtherFi Eigen Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
