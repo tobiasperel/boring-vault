@@ -16,6 +16,7 @@ import {OogaBoogaDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Proto
 import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol"; 
 
 
+
 contract BerachainDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
     UniswapV3DecoderAndSanitizer,
