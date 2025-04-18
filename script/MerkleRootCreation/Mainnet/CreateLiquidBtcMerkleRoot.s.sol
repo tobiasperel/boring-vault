@@ -285,11 +285,13 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
             ERC20[] memory tacBTCAssets = new ERC20[](1);
             tacBTCAssets[0] = getERC20(sourceChain, "cbBTC");
             _addTellerLeafs(leafs, getAddress(sourceChain, "TurtleTACBTCTeller"), tacBTCAssets, false, false);
+            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "TurtleTACBTCQueue"), getAddress(sourceChain, "TurtleTACBTC"), tacBTCAssets);
 
             ERC20[] memory tacLBTCvAssets = new ERC20[](2);
             tacLBTCvAssets[0] = getERC20(sourceChain, "LBTC");
             tacLBTCvAssets[1] = getERC20(sourceChain, "cbBTC");
             _addTellerLeafs(leafs, getAddress(sourceChain, "TACLBTCvTeller"), tacLBTCvAssets, false, false);
+            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "TACLBTCvQueue"), getAddress(sourceChain, "TACLBTCv"), tacLBTCvAssets);
 
         }
 
