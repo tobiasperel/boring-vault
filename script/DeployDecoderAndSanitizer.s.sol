@@ -75,6 +75,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
         vm.createSelectFork("berachain");
         setSourceChainName("berachain"); 
+
     }
 
     function run() external {
@@ -102,7 +103,6 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         creationCode = type(BerachainDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
         deployer.deployContract("Berachain Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
-
 
         vm.stopBroadcast();
     }
