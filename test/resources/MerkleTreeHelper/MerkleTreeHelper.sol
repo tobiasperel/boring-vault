@@ -2404,6 +2404,55 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
+    function _addRsWETHUnstakingLeafs(ManageLeaf[] memory leafs) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "RSWETH"),
+            true,
+            "deposit()",
+            new address[](0),
+            "Stake ETH for rswETH",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "RSWETH"),
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            "Approve rswEXIT to spend rswETH",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "rswEXIT");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "rswEXIT"),
+            false,
+            "createWithdrawRequest(uint256)",
+            new address[](0),
+            "Create a withdraw request from rswETH",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "rswEXIT"),
+            false,
+            "finalizeWithdrawal(uint256)",
+            new address[](0),
+            "Finalize a rswETH withdraw request",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+    }
+
     // ========================================= Mantle Staking =========================================
 
     function _addMantleStakingLeafs(ManageLeaf[] memory leafs) internal {
