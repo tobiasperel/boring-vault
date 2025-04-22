@@ -11,5 +11,241 @@ import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.s
 
 contract FullDvStETHDecoderAndSanitizer is DvStETHDecoderAndSanitizer {
 
+}
+
+
+contract BalancerV3IntegrationTest is BaseTestIntegration {
+
+    function _setUpMainnet() internal {
+        super.setUp(); 
+        _setupChain("mainnet", 22067550); 
+            
+        address dvStETHDecoder= address(new FullDvStETHDecoderAndSanitizer()); 
+
+        _overrideDecoder(dvStETHDecoder); 
+    }
+
+    function testDvStETHIntegration() external {
+        _setUpMainnet(); 
+
+        deal(getAddress(sourceChain, "WETH"), address(boringVault), 10e18); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        _addDvStETHLeafs(leafs); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(3);
+
+        tx_.manageLeafs[0] = leafs[0]; //approve
+        tx_.manageLeafs[1] = leafs[2]; //deposit
+        tx_.manageLeafs[2] = leafs[3]; //registerWithdraw
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //address[] memory targets = new address[](7);
+        tx_.targets[0] = getAddress(sourceChain, "WETH");  
+        tx_.targets[1] = getAddress(sourceChain, "dvStETHVault");  
+        tx_.targets[2] = getAddress(sourceChain, "dvStETHVault");  
+
+        //bytes[] memory targetData = new bytes[](7);
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "dvStETHVault"), type(uint256).max
+        );
+    
+        uint256[] memory amounts = new uint256[](2); 
+        amounts[0] = 0; //no wsteth
+        amounts[1] = 1e18; //weth amount
+
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "deposit(address,uint256[],uint256,uint256,uint256)",
+            address(boringVault),
+            amounts,
+            0,
+            block.timestamp + 5,
+            0
+        );
+        
+        uint256 lpAmount = 984338263058981516;  
+
+        amounts[0] = 0; 
+        amounts[1] = 0; 
+        tx_.targetData[2] = abi.encodeWithSignature(
+            "registerWithdrawal(address,uint256,uint256[],uint256,uint256,bool)",
+            address(boringVault),
+            lpAmount,
+            amounts,
+            block.timestamp + 5,
+            block.timestamp + 10,
+            false
+        );
+        
+        //decoders 
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+
+        _submitManagerCall(manageProofs, tx_); 
+    }
+
+    function testDvStETHIntegrationCancel() external {
+        _setUpMainnet(); 
+
+        deal(getAddress(sourceChain, "WETH"), address(boringVault), 10e18); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        _addDvStETHLeafs(leafs); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //_generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(4);
+
+        tx_.manageLeafs[0] = leafs[0]; //approve
+        tx_.manageLeafs[1] = leafs[2]; //deposit
+        tx_.manageLeafs[2] = leafs[3]; //registerWithdraw
+        tx_.manageLeafs[3] = leafs[4]; //registerWithdraw
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //address[] memory targets = new address[](7);
+        tx_.targets[0] = getAddress(sourceChain, "WETH");  
+        tx_.targets[1] = getAddress(sourceChain, "dvStETHVault");  
+        tx_.targets[2] = getAddress(sourceChain, "dvStETHVault");  
+        tx_.targets[3] = getAddress(sourceChain, "dvStETHVault");  
+
+        //bytes[] memory targetData = new bytes[](7);
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "dvStETHVault"), type(uint256).max
+        );
+    
+        uint256[] memory amounts = new uint256[](2); 
+        amounts[0] = 0; //no wsteth
+        amounts[1] = 1e18; //weth amount
+
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "deposit(address,uint256[],uint256,uint256,uint256)",
+            address(boringVault),
+            amounts,
+            0,
+            block.timestamp + 5,
+            0
+        );
+        
+        uint256 lpAmount = 984338263058981516;  
+
+        amounts[0] = 0; 
+        amounts[1] = 0; 
+        tx_.targetData[2] = abi.encodeWithSignature(
+            "registerWithdrawal(address,uint256,uint256[],uint256,uint256,bool)",
+            address(boringVault),
+            lpAmount,
+            amounts,
+            block.timestamp + 5,
+            block.timestamp + 10,
+            false
+        );
+
+        tx_.targetData[3] = abi.encodeWithSignature("cancelWithdrawalRequest()");
+        //decoders 
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+
+        _submitManagerCall(manageProofs, tx_); 
+    }
+
+    function testDvStETHIntegrationEmergencyWithdraw() external {
+        _setUpMainnet(); 
+
+        deal(getAddress(sourceChain, "WETH"), address(boringVault), 10e18); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        _addDvStETHLeafs(leafs); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //_generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(3);
+
+        tx_.manageLeafs[0] = leafs[0]; //approve
+        tx_.manageLeafs[1] = leafs[2]; //deposit
+        tx_.manageLeafs[2] = leafs[3]; //registerWithdraw
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        tx_.targets[0] = getAddress(sourceChain, "WETH");  
+        tx_.targets[1] = getAddress(sourceChain, "dvStETHVault");  
+        tx_.targets[2] = getAddress(sourceChain, "dvStETHVault");  
+
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "dvStETHVault"), type(uint256).max
+        );
+    
+        uint256[] memory amounts = new uint256[](2); 
+        amounts[0] = 0; //no wsteth
+        amounts[1] = 1e18; //weth amount
+
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "deposit(address,uint256[],uint256,uint256,uint256)",
+            address(boringVault),
+            amounts,
+            0,
+            block.timestamp + 5,
+            0
+        );
+        
+        uint256 lpAmount = 984338263058981516;  
+
+        amounts[0] = 0; 
+        amounts[1] = 0; 
+        tx_.targetData[2] = abi.encodeWithSignature(
+            "registerWithdrawal(address,uint256,uint256[],uint256,uint256,bool)",
+            address(boringVault),
+            lpAmount,
+            amounts,
+            block.timestamp + 5,
+            block.timestamp + 10,
+            false
+        );
+
+        //decoders 
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+
+        _submitManagerCall(manageProofs, tx_); 
+
+
+
+        skip(7776001); 
+
+
+
+        tx_ = _getTxArrays(1);
+
+        tx_.manageLeafs[0] = leafs[5]; //emergencyWithdraw
+
+        manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        tx_.targets[0] = getAddress(sourceChain, "dvStETHVault");  
+
+        tx_.targetData[0] = abi.encodeWithSignature("emergencyWithdraw(uint256[],uint256)", amounts, block.timestamp + 5);
+
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+
+        _submitManagerCall(manageProofs, tx_); 
+    }
 
 }
