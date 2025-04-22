@@ -32,7 +32,6 @@ import {TestVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TestV
 import {LiquidBeraEthDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidBeraEthDecoderAndSanitizer.sol"; 
 import {SonicIncentivesHandlerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicIncentivesHandlerDecoderAndSanitizer.sol";
 import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AaveV3FullDecoderAndSanitizer.sol";
-import {LombardBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LombardBtcDecoderAndSanitizer.sol";
 import {EtherFiBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiBtcDecoderAndSanitizer.sol";
 import {SymbioticLRTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SymbioticLRTDecoderAndSanitizer.sol";
 import {SonicLBTCvSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvSonicDecoderAndSanitizer.sol";
@@ -52,6 +51,7 @@ import {RoyUSDCSonicDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Ro
 import {RoySonicUSDCDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoySonicUSDCDecoderAndSanitizer.sol";
 import {TacETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TacETHDecoderAndSanitizer.sol";
 import {TacUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TacUSDDecoderAndSanitizer.sol";
+import {TacLBTCvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/TacLBTCvDecoderAndSanitizer.sol";
 import {sBTCNDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/sBTCNDecoderAndSanitizer.sol";
 import {CamelotFullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/CamelotFullDecoderAndSanitizer.sol";
 
@@ -74,11 +74,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
 
-        vm.createSelectFork("sonicMainnet");
-        setSourceChainName("sonicMainnet"); 
-
-        vm.createSelectFork("corn");
-        setSourceChainName("corn"); 
+        vm.createSelectFork("berachain");
+        setSourceChainName("berachain"); 
 
     }
 
@@ -86,35 +83,24 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
     
-
         //creationCode = type(EtherFiLiquidEthDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
         //deployer.deployContract("EtherFi Liquid ETH Decoder And Sanitizer V0.9", creationCode, constructorArgs, 0);
 
-        //creationCode = type(LBTCvBNBDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
-        //deployer.deployContract("LBTCv BNB Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-
-        // creationCode = type(HybridBtcBobDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode();
-        // bobDeployer.deployContract("Hybrid BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
-        
-        // creationCode = type(RoyUSDCMainnetDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
-        // deployer.deployContract("Royco USDC Mainnet Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-        
-
-        creationCode = type(sBTCNDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Staked BTCN Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
+        //creationCode = type(sBTCNDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        //deployer.deployContract("Staked BTCN Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
 
         //creationCode = type(sBTCNMaizenetDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
         //deployer.deployContract("Staked BTCN Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
-        
-        creationCode = type(CamelotFullDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "camelotNonFungiblePositionManager"));
-        deployer.deployContract("Camelot Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+
+        // creationCode = type(SonicEthMainnetDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        // deployer.deployContract("Sonic Mainnet Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
+
+        creationCode = type(TacLBTCvDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
 
         vm.stopBroadcast();
     }

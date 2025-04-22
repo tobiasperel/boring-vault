@@ -3,12 +3,11 @@
 # This overrides the `auto_detect_solc` value
 solc_version = '0.8.21'
 auto_detect_solc = false 
-evm_version = 'shanghai'
+evm_version = 'cancun'
 optimizer = true
 optimizer_runs = 200
 fs_permissions = [{ access = "read-write", path = "./" }]
 deny_warnings = false
-
 remappings = [
     "@solmate/=lib/solmate/src/",
     "@forge-std/=lib/forge-std/src/",
