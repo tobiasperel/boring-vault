@@ -26,6 +26,7 @@ contract ChainValues {
     string public constant berachain = "berachain";
     string public constant bob = "bob";
     string public constant derive = "derive";
+    string public constant unichain = "unichain";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
@@ -47,6 +48,7 @@ contract ChainValues {
     uint32 public constant layerZeroCornEndpointId = 30331;
     uint32 public constant layerZeroSwellEndpointId = 30335;
     uint32 public constant layerZeroSonicMainnetEndpointId = 30332;
+    uint32 public constant layerZeroUnichainEndpointId = 30320;
     uint32 public constant layerZeroBerachainEndpointId = 30362;
     uint32 public constant layerZeroSepoliaEndpointId = 40161;
     uint32 public constant layerZeroSonicBlazeEndpointId = 40349;
@@ -108,6 +110,7 @@ contract ChainValues {
         _addBerachainValues();
         _addBobValues();
         _addDeriveValues();
+        _addUnichainValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -1110,7 +1113,12 @@ contract ChainValues {
         // Bob Standard Bridge
         values[mainnet]["bobStandardBridge"] = 0x3F6cE1b36e5120BBc59D0cFe8A5aC8b6464ac1f7.toBytes32(); 
         values[mainnet]["bobPortal"] = 0x8AdeE124447435fE03e3CD24dF3f4cAE32E65a3E.toBytes32(); 
-        values[mainnet]["bobResolvedDelegate"] = 0xE3d981643b806FB8030CDB677D6E60892E547EdA.toBytes32(); 
+        values[mainnet]["bobResolvedDelegate"] = 0xE3d981643b806FB8030CDB677D6E60892E547EdA.toBytes32();
+
+        // Unichain Standard Bridge.
+        values[mainnet]["unichainStandardBridge"] = 0x81014F44b0a345033bB2b3B21C7a1A308B35fEeA.toBytes32();
+        values[mainnet]["unichainPortal"] = 0x0bd48f6B86a26D3a217d0Fa6FfE2B491B956A7a2.toBytes32();
+        values[mainnet]["unichainResolvedDelegate"] = 0x9A3D64E386C18Cb1d6d5179a9596A4B5736e98A6.toBytes32();
 
         // Layer Zero.
         values[mainnet]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
@@ -2242,5 +2250,38 @@ contract ChainValues {
         // Derive
         values[derive]["deriveWithdrawWrapper"] = 0xea8E683D8C46ff05B871822a00461995F93df800.toBytes32(); 
         values[derive]["derive_LBTC_controller"] = 0x5eFC527B2640681289E31E1e29f94EA397b6c589.toBytes32(); 
+    }
+
+    function _addUnichainValues() private {
+        values[unichain]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[unichain]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[unichain]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[unichain]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        // ERC20s
+        values[unichain]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
+        values[unichain]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
+        values[unichain]["USDC"] = 0x078D782b760474a361dDA0AF3839290b0EF57AD6.toBytes32();
+        values[unichain]["weETH"] = 0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7.toBytes32();
+        values[unichain]["WEETH"] = 0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7.toBytes32();
+        values[unichain]["WSTETH"] = 0xc02fE7317D4eb8753a02c35fe019786854A92001.toBytes32();
+
+        values[unichain]["balancerVault"] = address(1).toBytes32();
+        values[unichain]["vault"] = address(1).toBytes32();
+
+        values[unichain]["ZRO"] = address(1).toBytes32();
+        
+        // Standard Bridge
+        values[unichain]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
+        values[unichain]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
+
+        // Uniswap V4
+        values[unichain]["uniV4PoolManager"] = 0x1F98400000000000000000000000000000000004.toBytes32();
+        values[unichain]["uniV4PositionManager"] = 0x4529A01c7A0410167c5740C487A8DE60232617bf.toBytes32();
+        values[unichain]["uniV4UniversalRouter"] = 0xEf740bf23aCaE26f6492B10de645D6B98dC8Eaf3.toBytes32();
+        values[unichain]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32();
+
+        // LayerZero
+        values[unichain]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();
     }
 }
