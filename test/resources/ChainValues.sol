@@ -271,6 +271,7 @@ contract ChainValues {
         values[mainnet]["syrupUSDT"] = 0x356B8d89c1e1239Cbbb9dE4815c39A1474d5BA7D.toBytes32();
         values[mainnet]["ELX"] = 0x89A8c847f41C0dfA6c8B88638bACca8a0b777Da7.toBytes32(); 
         values[mainnet]["FRXUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
+        values[mainnet]["sfrxUSD"] = 0xac3E018457B222d93114458476f3E3416Abbe38F.toBytes32(); 
         values[mainnet]["EUSDE"] = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F.toBytes32(); 
         values[mainnet]["SUSDS"] =  0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD.toBytes32(); 
         values[mainnet]["KING"] = 0x8F08B70456eb22f6109F57b8fafE862ED28E6040.toBytes32();
@@ -601,18 +602,18 @@ contract ChainValues {
         values[mainnet]["frxUSD_FRAX_Curve_Pool"] = 0xBBaf8B2837CBbc7146F5bC978D6F84db0BE1CAcc.toBytes32(); 
         
         //frxUSD/SUSDS 
-        values[mainnet]["frxUSD_SUSDS_Curve_Pool"] = 0x81A2612F6dEA269a6Dd1F6DeAb45C5424EE2c4b7.toBytes32(); 
-        values[mainnet]["frxUSD_SUSDS_Curve_Gauge"] = 0x52618C40dDBA3cBbb69F3aAA4CB26Ae649844B17.toBytes32(); 
-        values[mainnet]["frxUSD_SUSDS_Convex_Rewards"] = 0x44be1A72619eDDDccAb744eE9e1E69A0B639F85f.toBytes32(); 
+        values[mainnet]["frxUSD_SUSDS_Curve_Pool"] = 0x81A2612F6dEA269a6Dd1F6DeAb45C5424EE2c4b7.toBytes32();
+        values[mainnet]["frxUSD_SUSDS_Curve_Gauge"] = 0x52618C40dDBA3cBbb69F3aAA4CB26Ae649844B17.toBytes32();
+        values[mainnet]["frxUSD_SUSDS_Convex_Rewards"] = 0x44be1A72619eDDDccAb744eE9e1E69A0B639F85f.toBytes32();
 
         //frxUSD/USDE
-        values[mainnet]["frxUSD_USDE_Curve_Pool"] = 0xdBb1d219d84eaCEFb850ee04caCf2f1830934580.toBytes32(); 
-        values[mainnet]["frxUSD_USDE_Curve_Gauge"] = 0xbD7ddCe4D5a97F102DE674Ef56823b600e843C8A.toBytes32(); 
+        values[mainnet]["frxUSD_USDE_Curve_Pool"] = 0xdBb1d219d84eaCEFb850ee04caCf2f1830934580.toBytes32();
+        values[mainnet]["frxUSD_USDE_Curve_Gauge"] = 0xbD7ddCe4D5a97F102DE674Ef56823b600e843C8A.toBytes32();
         values[mainnet]["frxUSD_USDE_Convex_Rewards"] = 0xb5a97cFB06f9005005a79dAA27EB44106b7ad79A.toBytes32();   
         
         //triBTCFi
-        values[mainnet]["triBTCFi_Curve_Pool"] = 0xabaf76590478F2fE0b396996f55F0b61101e9502.toBytes32(); 
-        values[mainnet]["triBTCFi_Curve_Gauge"] = 0x8D666daED20B502e5Cf692B101028fc0058a5d4E.toBytes32(); 
+        values[mainnet]["triBTCFi_Curve_Pool"] = 0xabaf76590478F2fE0b396996f55F0b61101e9502.toBytes32();
+        values[mainnet]["triBTCFi_Curve_Gauge"] = 0x8D666daED20B502e5Cf692B101028fc0058a5d4E.toBytes32();
 
         values[mainnet]["ezETH_wETH_Curve_Pool"] = 0x85dE3ADd465a219EE25E04d22c39aB027cF5C12E.toBytes32();
         values[mainnet]["weETH_rswETH_Curve_Pool"] = 0x278cfB6f06B1EFc09d34fC7127d6060C61d629Db.toBytes32();
@@ -638,11 +639,11 @@ contract ChainValues {
         values[mainnet]["convexFXPoolRegistry"] = 0xdB95d646012bB87aC2E6CD63eAb2C42323c1F5AF.toBytes32(); 
         values[mainnet]["convexFXBooster"] = 0xAffe966B27ba3E4Ebb8A0eC124C7b7019CC762f8.toBytes32(); 
 
-        values[mainnet]["convexFX_gauge_USDC_fxUSD"] = 0xf1E141C804BA39b4a031fDF46e8c08dBa7a0df60.toBytes32(); 
-        values[mainnet]["convexFX_lp_USDC_fxUSD"] = 0x5018BE882DccE5E3F2f3B0913AE2096B9b3fB61f.toBytes32(); 
+        values[mainnet]["convexFX_gauge_USDC_fxUSD"] = 0xf1E141C804BA39b4a031fDF46e8c08dBa7a0df60.toBytes32();
+        values[mainnet]["convexFX_lp_USDC_fxUSD"] = 0x5018BE882DccE5E3F2f3B0913AE2096B9b3fB61f.toBytes32();
 
-        values[mainnet]["convexFX_gauge_fxUSD_GHO"] = 0xf0A3ECed42Dbd8353569639c0eaa833857aA0A75.toBytes32(); 
-        values[mainnet]["convexFX_lp_fxUSD_GHO"] = 0x74345504Eaea3D9408fC69Ae7EB2d14095643c5b.toBytes32(); 
+        values[mainnet]["convexFX_gauge_fxUSD_GHO"] = 0xf0A3ECed42Dbd8353569639c0eaa833857aA0A75.toBytes32();
+        values[mainnet]["convexFX_lp_fxUSD_GHO"] = 0x74345504Eaea3D9408fC69Ae7EB2d14095643c5b.toBytes32();
 
         values[mainnet]["ethFrxethBaseRewardPool"] = 0xbD5445402B0a287cbC77cb67B2a52e2FC635dce4.toBytes32();
         values[mainnet]["ethStethNgBaseRewardPool"] = 0x6B27D7BC63F1999D14fF9bA900069ee516669ee8.toBytes32();
@@ -1903,6 +1904,7 @@ contract ChainValues {
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_config"] = 0xDa6787a3543a01Bf770DDF3953bE5B9C99c1cBD0.toBytes32(); 
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_scUSD_IncentivesController"] = 0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32(); 
 
+        values[sonicMainnet]["silo_sfrxUSD_scUSD_id48_config"] = 0x6452b9aE8011800457b42C4fBBDf4579afB96228.toBytes32();
 
         // Curve
         values[sonicMainnet]["curve_CRV_claiming"] = 0xf3A431008396df8A8b2DF492C913706BDB0874ef.toBytes32();
