@@ -11841,6 +11841,64 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
     }
 
+
+    // ========================================= KING Claiming =========================================
+    function _addKingRewardsClaimingLeafs(ManageLeaf[] memory leafs, address[] memory depositTokens, address claimFor) internal {
+        for (uint256 i = 0; i < depositTokens.length; i++) { 
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                depositTokens[i],
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve KING to spend ", ERC20(depositTokens[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "KING"); 
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "KING"),
+            false,
+            "deposit(address[],uint256[],address)",
+            new address[](1),
+            string.concat("Deposit tokens for KING"), 
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "KING"),
+            false,
+            "redeem(uint256)",
+            new address[](0),
+            string.concat("Redeem KING"), 
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "kingMerkleDistributor"),
+            false,
+            "claim(address,uint256,bytes32,bytes32[])",
+            new address[](1),
+            string.concat("Claim KING rewards"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = claimFor; //in practice should be boringVault
+
+    }
+
     // ========================================= Derive =========================================
     
     function _addDeriveVaultLeafs(
@@ -12067,6 +12125,40 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
         leafs[leafIndex].argumentAddresses[0] = user;
 
+    }
+
+    function _addBoringChefApproveRewardsLeafs(ManageLeaf[] memory leafs, address boringChef, address[] memory tokens) internal {
+        for (uint256 i = 0; i < tokens.length; i++){
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                tokens[i],
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve BoringChef to spend ", ERC20(tokens[i]).symbol(), " rewards owned by itself"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = boringChef;
+        }
+    }
+
+    function _addBoringChefDistributeRewardsLeaf(ManageLeaf[] memory leafs, address boringChef, address[] memory tokens) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            boringChef,
+            false,
+            "distributeRewards(address[],uint256[],uint48[],uint48[])",
+            new address[](tokens.length),
+            string.concat("Distribute rewards from BoringChef"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        for (uint256 i = 0; i < tokens.length; i++) {
+            leafs[leafIndex].argumentAddresses[i] = tokens[i];
+        }
     }
 
     // ========================================= JSON FUNCTIONS =========================================
