@@ -73,8 +73,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("berachain");
-        setSourceChainName("berachain"); 
+        vm.createSelectFork("mainnet");
+        setSourceChainName("mainnet"); 
     }
 
     function run() external {
@@ -105,9 +105,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
         //deployer.deployContract("Staked BTCN Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
         
-        creationCode = type(UnichainEtherFiLiquidEthDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniV4PositionManager"));
-        deployer.deployContract("LiquidUSD Unichain Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("Ultra USD Decoder And Sanitizer V0.5", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
