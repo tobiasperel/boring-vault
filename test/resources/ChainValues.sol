@@ -1766,6 +1766,7 @@ contract ChainValues {
         values[corn]["WBTCN"] = 0xda5dDd7270381A7C2717aD10D1c0ecB19e3CDFb2.toBytes32();
         values[corn]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
         values[corn]["EBTC"] = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642.toBytes32();
+        values[corn]["USDT0"] = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642.toBytes32();
 
         values[corn]["balancerVault"] = address(1).toBytes32();
 
@@ -1803,6 +1804,17 @@ contract ChainValues {
         //values[corn]["sBTCNTeller"] = .toBytes32(); 
         values[corn]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32(); 
         values[corn]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32(); 
+
+        // Morpho Blue
+        values[corn]["morphoBlue"] =  0xc2B1E031540e3F3271C5F3819F0cC7479a8DdD90.toBytes32(); 
+        values[corn]["WBTCN_IDLE_915"] = 0xe0ce6aa148f70d89eda3c051c53a6e2f02f7ee0d1dd06af582ab4c8878ceed23; 
+        values[corn]["WBTCN_LBTC_915"] = 0x2547ba491a7ff9e8cfcaa3e1c0da739f4fdc1be9fe4a37bfcdf570002153a0de; 
+        values[corn]["USDT0_IDLE_915"] = 0x1c6b87ae1b97071ef444eedcba9f5a92cfe974edbbcaa1946644fc7ab0e283af; 
+        values[corn]["WBTCN_USDT0_915"] = 0x9039bf8b5c3cd6f2d3f937e8a2e59ef6af0109a0d0f3499e7dbf75be0aef75ec; 
+         
+        // Morpho 
+        values[corn]["smokehouseBTCN"] = 0xa7Ba08CFc37e7CC67404d4996FFBB3E977490115.toBytes32(); 
+
     }
 
     function _addSonicMainnetValues() private {

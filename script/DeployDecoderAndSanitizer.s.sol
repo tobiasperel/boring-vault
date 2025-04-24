@@ -77,6 +77,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
         vm.createSelectFork("mainnet");
         setSourceChainName("mainnet"); 
+
     }
 
     function run() external {
@@ -114,7 +115,6 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         creationCode = type(SonicVaultDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
         deployer.deployContract("Sonic Vault Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
-
 
 
         vm.stopBroadcast();
