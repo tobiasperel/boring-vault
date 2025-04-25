@@ -12021,45 +12021,36 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     }
 
     // ========================================= dvStETH  =========================================
-    function _addDvStETHLeafs(ManageLeaf[] memory leafs) internal {
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "WETH"),
-            false,
-            "approve(address,uint256)",
-            new address[](1),
-            string.concat("Approve dvStETH Vault to spend WETH"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "dvStETHVault"); 
-        
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "WSTETH"),
-            false,
-            "approve(address,uint256)",
-            new address[](1),
-            string.concat("Approve dvStETH Vault to spend WSTETH"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "dvStETHVault"); 
+    function _addDvStETHLeafs(ManageLeaf[] memory leafs, address[] memory depositTokens) internal {
 
-        unchecked {
-            leafIndex++;
+        for (uint i = 0; i < depositTokens.length; i++) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                depositTokens[i],
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve dvStETH Vault to spend WETH"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "dvStETHVault"); 
+        
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "dvStETHVault"),
+                false,
+                "deposit(address,uint256[],uint256,uint256,uint256)",
+                new address[](2),
+                string.concat("Deposit into dvStETH "),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = depositTokens[i];  
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
         }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "dvStETHVault"),
-            false,
-            "deposit(address,uint256[],uint256,uint256,uint256)",
-            new address[](1),
-            string.concat("Deposit into dvStETH "),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
 
         unchecked {
             leafIndex++;

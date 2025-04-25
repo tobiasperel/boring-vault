@@ -11,6 +11,7 @@ import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.s
 
 contract FullDvStETHDecoderAndSanitizer is DvStETHDecoderAndSanitizer {
 
+    constructor(address _vault) DvStETHDecoderAndSanitizer(_vault){}
 }
 
 
@@ -20,7 +21,7 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         super.setUp(); 
         _setupChain("mainnet", 22067550); 
             
-        address dvStETHDecoder= address(new FullDvStETHDecoderAndSanitizer()); 
+        address dvStETHDecoder= address(new FullDvStETHDecoderAndSanitizer(getAddress(sourceChain, "dvStETHVault"))); 
 
         _overrideDecoder(dvStETHDecoder); 
     }
@@ -31,19 +32,22 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         deal(getAddress(sourceChain, "WETH"), address(boringVault), 10e18); 
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addDvStETHLeafs(leafs); 
+        address[] memory depositTokens = new address[](2); 
+        depositTokens[0] = getAddress(sourceChain, "WETH"); 
+        depositTokens[1] = getAddress(sourceChain, "WSTETH"); 
+        _addDvStETHLeafs(leafs, depositTokens); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
         Tx memory tx_ = _getTxArrays(3);
 
         tx_.manageLeafs[0] = leafs[0]; //approve
-        tx_.manageLeafs[1] = leafs[2]; //deposit
-        tx_.manageLeafs[2] = leafs[3]; //registerWithdraw
+        tx_.manageLeafs[1] = leafs[1]; //deposit
+        tx_.manageLeafs[2] = leafs[4]; //registerWithdraw
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
 
@@ -98,7 +102,10 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         deal(getAddress(sourceChain, "WETH"), address(boringVault), 10e18); 
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addDvStETHLeafs(leafs); 
+        address[] memory depositTokens = new address[](2); 
+        depositTokens[0] = getAddress(sourceChain, "WETH"); 
+        depositTokens[1] = getAddress(sourceChain, "WSTETH"); 
+        _addDvStETHLeafs(leafs, depositTokens); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -109,9 +116,9 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         Tx memory tx_ = _getTxArrays(4);
 
         tx_.manageLeafs[0] = leafs[0]; //approve
-        tx_.manageLeafs[1] = leafs[2]; //deposit
-        tx_.manageLeafs[2] = leafs[3]; //registerWithdraw
-        tx_.manageLeafs[3] = leafs[4]; //registerWithdraw
+        tx_.manageLeafs[1] = leafs[1]; //deposit
+        tx_.manageLeafs[2] = leafs[4]; //registerWithdraw
+        tx_.manageLeafs[3] = leafs[5]; //registerWithdraw
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
 
@@ -169,7 +176,10 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         deal(getAddress(sourceChain, "WETH"), address(boringVault), 10e18); 
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
-        _addDvStETHLeafs(leafs); 
+        address[] memory depositTokens = new address[](2); 
+        depositTokens[0] = getAddress(sourceChain, "WETH"); 
+        depositTokens[1] = getAddress(sourceChain, "WSTETH"); 
+        _addDvStETHLeafs(leafs, depositTokens); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -180,8 +190,8 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
         Tx memory tx_ = _getTxArrays(3);
 
         tx_.manageLeafs[0] = leafs[0]; //approve
-        tx_.manageLeafs[1] = leafs[2]; //deposit
-        tx_.manageLeafs[2] = leafs[3]; //registerWithdraw
+        tx_.manageLeafs[1] = leafs[1]; //deposit
+        tx_.manageLeafs[2] = leafs[4]; //registerWithdraw
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
 
@@ -235,7 +245,7 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
 
         tx_ = _getTxArrays(1);
 
-        tx_.manageLeafs[0] = leafs[5]; //emergencyWithdraw
+        tx_.manageLeafs[0] = leafs[6]; //emergencyWithdraw
 
         manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
 
@@ -247,5 +257,114 @@ contract BalancerV3IntegrationTest is BaseTestIntegration {
 
         _submitManagerCall(manageProofs, tx_); 
     }
+
+    function testDvStETHIntegrationReverts() external {
+        _setUpMainnet(); 
+
+        deal(getAddress(sourceChain, "WETH"), address(boringVault), 10e18); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        address[] memory depositTokens = new address[](2); 
+        depositTokens[0] = getAddress(sourceChain, "WETH"); 
+        depositTokens[1] = getAddress(sourceChain, "WSTETH"); 
+        _addDvStETHLeafs(leafs, depositTokens); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //_generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(2);
+
+        tx_.manageLeafs[0] = leafs[0]; //approve
+        tx_.manageLeafs[1] = leafs[1]; //deposit
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //address[] memory targets = new address[](7);
+        tx_.targets[0] = getAddress(sourceChain, "WETH");  
+        tx_.targets[1] = getAddress(sourceChain, "dvStETHVault");  
+
+        //bytes[] memory targetData = new bytes[](7);
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "dvStETHVault"), type(uint256).max
+        );
+    
+        uint256[] memory amounts = new uint256[](2); 
+        amounts[0] = 1e18; //no wsteth
+        amounts[1] = 1e18; //weth amount
+
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "deposit(address,uint256[],uint256,uint256,uint256)",
+            address(boringVault),
+            amounts,
+            0,
+            block.timestamp + 5,
+            0
+        );
+        
+        //decoders 
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        
+        vm.expectRevert(abi.encodeWithSelector(DvStETHDecoderAndSanitizer.DvStETHDecoderAndSanitizer__OnlyOneAmount.selector));
+        _submitManagerCall(manageProofs, tx_); 
+    }
+
+    function testDvStETHIntegrationDepositWSETH() external {
+        _setUpMainnet(); 
+
+        deal(getAddress(sourceChain, "WSTETH"), address(boringVault), 10e18); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        address[] memory depositTokens = new address[](2); 
+        depositTokens[0] = getAddress(sourceChain, "WETH"); 
+        depositTokens[1] = getAddress(sourceChain, "WSTETH"); 
+        _addDvStETHLeafs(leafs, depositTokens); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(2);
+
+        tx_.manageLeafs[0] = leafs[2]; //approve
+        tx_.manageLeafs[1] = leafs[3]; //deposit
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //address[] memory targets = new address[](7);
+        tx_.targets[0] = getAddress(sourceChain, "WSTETH");  
+        tx_.targets[1] = getAddress(sourceChain, "dvStETHVault");  
+
+        //bytes[] memory targetData = new bytes[](7);
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "dvStETHVault"), type(uint256).max
+        );
+    
+        uint256[] memory amounts = new uint256[](2); 
+        amounts[0] = 1e18; //wsteth
+        amounts[1] = 0; //no weth amount
+
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "deposit(address,uint256[],uint256,uint256,uint256)",
+            address(boringVault),
+            amounts,
+            0,
+            block.timestamp + 5,
+            0
+        );
+        
+        //decoders 
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        
+        vm.expectRevert(); //this is failing on their end, they are not allowing wsteth deposits atm? ratio is set to 0 in configurator.  
+        _submitManagerCall(manageProofs, tx_); 
+    }
+
 
 }
