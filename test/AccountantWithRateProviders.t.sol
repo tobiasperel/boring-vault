@@ -9,6 +9,7 @@ import {ERC20} from "@solmate/tokens/ERC20.sol";
 import {IRateProvider} from "src/interfaces/IRateProvider.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {GenericRateProvider} from "src/helper/GenericRateProvider.sol";
+import {GenericRateProviderWithDecimalScaling} from "src/helper/GenericRateProviderWithDecimalScaling.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
@@ -612,6 +613,49 @@ contract AccountantWithRateProvidersTest is Test, MerkleTreeHelper {
             )
         );
         accountant.updateDelay(14 days + 1);
+    }
+
+    function testGenericRateProviderWithDecimalScaling() external {
+        // Deploy GenericRateProviderWithDecimalScaling for mETH.
+        bytes4 selector = bytes4(keccak256(abi.encodePacked("mETHToETH(uint256)")));
+        uint256 amount = 1e18;
+        mETHRateProvider = new GenericRateProviderWithDecimalScaling(GenericRateProviderWithDecimalScaling.ConstructorArgs(
+            mantleLspStaking, selector, bytes32(amount), 0, 0, 0, 0, 0, 0, 0, false, 18, 18
+        ));
+
+        uint256 expectedRate = MantleLspStaking(mantleLspStaking).mETHToETH(1e18);
+        uint256 rate = mETHRateProvider.getRate();
+
+        assertEq(rate, expectedRate, "Rate should be expected rate");
+
+        // Setup rate in accountant.
+        accountant.setRateProviderData(METH, false, address(mETHRateProvider));
+
+        uint256 expectedRateInMeth = accountant.getRate().mulDivDown(1e18, rate);
+
+        uint256 rateInMeth = accountant.getRateInQuote(METH);
+
+        assertEq(rateInMeth, expectedRateInMeth, "Rate should be expected rate");
+
+        assertLt(rateInMeth, 1e18, "Rate should be less than 1e18");
+
+        // Adapt old methRateProvider to have lower decimals with decimal scaling.
+        mETHRateProvider = new GenericRateProviderWithDecimalScaling(GenericRateProviderWithDecimalScaling.ConstructorArgs(
+            mantleLspStaking, selector, bytes32(amount), 0, 0, 0, 0, 0, 0, 0, false, 18, 6
+        ));
+
+        expectedRate = MantleLspStaking(mantleLspStaking).mETHToETH(1e18) / 1e12; // 1e6 / 1e18 = 1e12
+        rate = mETHRateProvider.getRate();
+        assertEq(rate, expectedRate, "Rate should be expected rate");
+
+        // Adapt old methRateProvider to have higher decimals with decimal scaling.
+        mETHRateProvider = new GenericRateProviderWithDecimalScaling(GenericRateProviderWithDecimalScaling.ConstructorArgs(
+            mantleLspStaking, selector, bytes32(amount), 0, 0, 0, 0, 0, 0, 0, false, 18, 30
+        ));
+
+        expectedRate = MantleLspStaking(mantleLspStaking).mETHToETH(1e18) * 1e12; // 1e30 / 1e18 = 1e12
+        rate = mETHRateProvider.getRate();
+        assertEq(rate, expectedRate, "Rate should be expected rate");
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
