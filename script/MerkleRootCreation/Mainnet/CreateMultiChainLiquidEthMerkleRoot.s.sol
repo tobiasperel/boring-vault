@@ -642,6 +642,18 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             string.concat("Accept ownership of the ", itbContractName, " contract"),
             itbDecoderAndSanitizer
         );
+
+        // removeExecutor
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "removeExecutor(address)",
+            new address[](0),
+            string.concat("Remove executor from the ", itbContractName, " contract"),
+            itbDecoderAndSanitizer
+        );
+
         for (uint256 i; i < tokensUsed.length; ++i) {
             // Transfer
             leafIndex++;
