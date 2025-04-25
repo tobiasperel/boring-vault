@@ -656,6 +656,33 @@ contract AccountantWithRateProvidersTest is Test, MerkleTreeHelper {
         expectedRate = MantleLspStaking(mantleLspStaking).mETHToETH(1e18) * 1e12; // 1e30 / 1e18 = 1e12
         rate = mETHRateProvider.getRate();
         assertEq(rate, expectedRate, "Rate should be expected rate");
+
+        // Adapt old methRateProvider to have same decimals with decimal scaling.
+        mETHRateProvider = new GenericRateProviderWithDecimalScaling(GenericRateProviderWithDecimalScaling.ConstructorArgs(
+            mantleLspStaking, selector, bytes32(amount), 0, 0, 0, 0, 0, 0, 0, false, 18, 18
+        ));
+        expectedRate = MantleLspStaking(mantleLspStaking).mETHToETH(1e18); // 1e18 / 1e18 = 1e0
+        rate = mETHRateProvider.getRate();
+        assertEq(rate, expectedRate, "Rate should be expected rate");
+
+        // Test Reverts
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                GenericRateProviderWithDecimalScaling.GenericRateProviderWithDecimalScaling__DecimalsCannotBeZero.selector
+            )
+        );
+        mETHRateProvider = new GenericRateProviderWithDecimalScaling(GenericRateProviderWithDecimalScaling.ConstructorArgs(
+            mantleLspStaking, selector, bytes32(amount), 0, 0, 0, 0, 0, 0, 0, false, 18, 0
+        ));
+
+        vm.expectRevert(
+        abi.encodeWithSelector(
+            GenericRateProviderWithDecimalScaling.GenericRateProviderWithDecimalScaling__DecimalsCannotBeZero.selector
+        )
+        );
+        mETHRateProvider = new GenericRateProviderWithDecimalScaling(GenericRateProviderWithDecimalScaling.ConstructorArgs(
+            mantleLspStaking, selector, bytes32(amount), 0, 0, 0, 0, 0, 0, 0, false, 0, 18
+        ));
     }
 
     // ========================================= HELPER FUNCTIONS =========================================

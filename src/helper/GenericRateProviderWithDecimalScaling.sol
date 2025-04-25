@@ -22,7 +22,6 @@ contract GenericRateProviderWithDecimalScaling is GenericRateProvider {
     }
 
     //============================== ERRORS ===============================
-    error GenericRateProviderWithDecimalScaling__PriceCannotBeLtZero();
     error GenericRateProviderWithDecimalScaling__DecimalsCannotBeZero();
 
     //============================== IMMUTABLES ===============================
@@ -54,11 +53,11 @@ contract GenericRateProviderWithDecimalScaling is GenericRateProvider {
     function getRate() public override view returns (uint256) {
         uint256 rate = super.getRate();
         if (inputDecimals > outputDecimals) {
-            rate = rate / 10 ** (inputDecimals - outputDecimals);
+            return rate / 10 ** (inputDecimals - outputDecimals);
         } else if (inputDecimals < outputDecimals) {
-            rate =  rate * 10 ** (outputDecimals - inputDecimals);
+            return rate * 10 ** (outputDecimals - inputDecimals);
+        } else {
+            return rate;
         }
-        if (rate == 0) revert GenericRateProviderWithDecimalScaling__PriceCannotBeLtZero();
-        return rate;
     }
 }
