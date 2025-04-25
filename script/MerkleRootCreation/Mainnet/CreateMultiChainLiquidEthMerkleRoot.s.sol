@@ -27,6 +27,8 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
     address public hyperlaneDecoderAndSanitizer = 0xfC823909C7D2Cb8701FE7d6EE74508C57Df1D6dE;
     address public termFinanceDecoderAndSanitizer = 0xF8e9517e7e98D7134E306aD3747A50AC8dC1dbc9;
 
+    address public itbCorkDecoderAndSanitizer = 0x457Cce6Ec3fEb282952a7e50a1Bc727Ca235Eb0a;
+
     function setUp() external {}
 
     /**
@@ -152,7 +154,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             feeAssets[2] = getERC20(sourceChain, "EETH");
             _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, false);
 
-        // ========================== 1inch ==========================
+            // ========================== 1inch ==========================
             address[] memory assets = new address[](20);
             SwapKind[] memory kind = new SwapKind[](20);
             assets[0] = getAddress(sourceChain, "WETH");
@@ -205,10 +207,10 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "wETH_weETH_05"));
             _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "GEAR_wETH_100"));
 
-        // ========================== Odos ==========================
-            _addOdosSwapLeafs(leafs, assets, kind); 
+            // ========================== Odos ==========================
+            _addOdosSwapLeafs(leafs, assets, kind);
 
-        // ========================== Curve Swapping ==========================
+            // ========================== Curve Swapping ==========================
             _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "weETH_wETH_Pool"));
             _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "weETH_wETH_NG_Pool"));
             _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "tETH_wstETH_curve_pool"));
@@ -245,12 +247,18 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         }
         // ========================== Balancer ==========================
         {
-            _addBalancerLeafs(leafs, getBytes32(sourceChain, "rETH_weETH_id"), getAddress(sourceChain, "rETH_weETH_gauge"));
-            _addBalancerLeafs(leafs, getBytes32(sourceChain, "rETH_wETH_id"), getAddress(sourceChain, "rETH_wETH_gauge"));
+            _addBalancerLeafs(
+                leafs, getBytes32(sourceChain, "rETH_weETH_id"), getAddress(sourceChain, "rETH_weETH_gauge")
+            );
+            _addBalancerLeafs(
+                leafs, getBytes32(sourceChain, "rETH_wETH_id"), getAddress(sourceChain, "rETH_wETH_gauge")
+            );
             _addBalancerLeafs(
                 leafs, getBytes32(sourceChain, "wstETH_wETH_Id"), getAddress(sourceChain, "wstETH_wETH_Gauge")
             );
-            _addBalancerLeafs(leafs, getBytes32(sourceChain, "rsETH_wETH_id"), getAddress(sourceChain, "rsETH_wETH_gauge"));
+            _addBalancerLeafs(
+                leafs, getBytes32(sourceChain, "rsETH_wETH_id"), getAddress(sourceChain, "rsETH_wETH_gauge")
+            );
         }
         // ========================== Aura ==========================
         {
@@ -393,6 +401,30 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             _addLeafsForItbAaveV3(leafs, itbAaveLidoPositionManager, supplyAssets, "ITB Aave V3 WETH");
             _addLeafsForItbAaveV3(leafs, itbAaveLidoPositionManager2, supplyAssets, "ITB Aave V3 WETH 2");
         }
+        // ========================== ITB Cork ==========================
+        {
+            itbDecoderAndSanitizer = itbCorkDecoderAndSanitizer;
+            supplyAssets = new ERC20[](2);
+            supplyAssets[0] = getERC20(sourceChain, "WEETH");
+            supplyAssets[1] = getERC20(sourceChain, "WSTETH");
+            _addLeafsForItbCork(
+                leafs,
+                0x774A82AfAdb5A63d92B980D179D8B0f2E6d577A0,
+                supplyAssets,
+                "ITB Cork WEETH - WSTETH",
+                0xD7CAc118c007E6427ABD693e193E90a6918ce404
+            );
+
+            supplyAssets[0] = getERC20(sourceChain, "WSTETH");
+            supplyAssets[1] = getERC20(sourceChain, "WETH");
+            _addLeafsForItbCork(
+                leafs,
+                0xB5204c5eE9549bA053cd482813B4FA167805DC93,
+                supplyAssets,
+                "ITB Cork WSTETH - WETH",
+                0x479657445b35fc57736C4cA7D0410AE7190CF692
+            );
+        }
         // ========================== Native Bridge Leafs ==========================
         {
             ERC20[] memory bridgeAssets = new ERC20[](5);
@@ -464,7 +496,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             ERC20[] memory unichainRemoteTokens = new ERC20[](1);
             unichainLocalTokens[0] = getERC20(sourceChain, "WETH");
             unichainRemoteTokens[0] = getERC20(unichain, "WETH");
-            
+
             _addStandardBridgeLeafs(
                 leafs,
                 unichain,
@@ -479,24 +511,27 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== LayerZero ==========================
         {
-            _addLayerZeroLeafs(
+            _addLayerZeroLeafsOldDecoder(
                 leafs,
                 getERC20(sourceChain, "WEETH"),
                 getAddress(sourceChain, "EtherFiOFTAdapter"),
                 layerZeroOptimismEndpointId
             );
-            _addLayerZeroLeafs(
-                leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "EtherFiOFTAdapter"), layerZeroBaseEndpointId
+            _addLayerZeroLeafsOldDecoder(
+                leafs,
+                getERC20(sourceChain, "WEETH"),
+                getAddress(sourceChain, "EtherFiOFTAdapter"),
+                layerZeroBaseEndpointId
             );
 
-            _addLayerZeroLeafs(
+            _addLayerZeroLeafsOldDecoder(
                 leafs,
                 getERC20(sourceChain, "WEETH"),
                 getAddress(sourceChain, "EtherFiOFTAdapter"),
                 layerZeroSwellEndpointId
             );
 
-            _addLayerZeroLeafs(
+            _addLayerZeroLeafsOldDecoder(
                 leafs,
                 getERC20(sourceChain, "WEETH"),
                 getAddress(sourceChain, "EtherFiOFTAdapter"),
@@ -766,6 +801,219 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             "fullDisassemble(uint256[])",
             new address[](0),
             string.concat("Full disassemble ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+    }
+
+    function _addLeafsForItbCork(
+        ManageLeaf[] memory leafs,
+        address itbPositionManager,
+        ERC20[] memory tokensUsed,
+        string memory itbContractName,
+        address coverToken
+    ) internal {
+        _addLeafsForITBPositionManager(leafs, itbPositionManager, tokensUsed, itbContractName);
+
+        // //update position config
+        // leafIndex++;
+        // leafs[leafIndex] = ManageLeaf(
+        //     itbPositionManager,
+        //     false,
+        //     "updatePositionConfig(address,bytes32,uint256)",
+        //     new address[](1),
+        //     string.concat("Update position config of ", itbContractName),
+        //     itbCorkDecoderAndSanitizer
+        // );
+        // leafs[leafIndex].argumentAddresses[0] = vault; // TODO find which one
+
+        // Implemented on decoder but not on position manager
+        // //update vault supervisor
+        // leafIndex++;
+        // leafs[leafIndex] = ManageLeaf(
+        //     itbPositionManager,
+        //     false,
+        //     "updateVaultSupervisor(address)",
+        //     new address[](1),
+        //     string.concat("Update vault supervisor of ", itbContractName),
+        //     itbCorkDecoderAndSanitizer
+        // );
+        // leafs[leafIndex].argumentAddresses[0] = vaultSupervisor; // TODO find which one
+
+        // // update 1Inch router
+        // leafIndex++;
+        // leafs[leafIndex] = ManageLeaf(
+        //     itbPositionManager,
+        //     false,
+        //     "update1InchRouter(address)",
+        //     new address[](1),
+        //     string.concat("Update 1Inch router of ", itbContractName),
+        //     itbCorkDecoderAndSanitizer
+        // );
+        // leafs[leafIndex].argumentAddresses[0] = 1InchRouter;
+
+        // deposit Lv (Liquidity Vault)
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "depositLv(uint256,uint256)",
+            new address[](0),
+            string.concat("Deposit Lv (Liquidity Vault) using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // swap Pa (Pegged Asset) to Ra (Redemption Asset)
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "swapPaToRa(bytes,uint256)",
+            new address[](0),
+            string.concat("Swap Pa (Pegged Asset) to Ra (Redemption Asset) using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // swap CtDs (Cover Token and Depeg Swap) to Ra (Redemption Asset)
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "swapCtDsToRa(uint256,uint256)",
+            new address[](0),
+            string.concat("Swap CtDs (Cover Token Depeg Swap) to Ra (Redemption Asset) using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // swap DsPa  (Depeg Swap and Pegged Asset) to Ra (Redemption Asset)
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "swapDsPaToRa(uint256,uint256)",
+            new address[](0),
+            string.concat("Swap DsPa (Depeg Swap and Pegged Asset) to Ra (Redemption Asset) using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // redeem expired Ct (Cover Token)
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "redeemExpiredCt(address,uint256,uint256)",
+            new address[](1),
+            string.concat("Redeem expired Ct (Cover Token) using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+        leafs[leafIndex].argumentAddresses[0] = coverToken; // TODO find which one
+
+        // start withdrawal
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "startWithdrawal(uint256,uint256)",
+            new address[](0),
+            string.concat("Start withdrawal using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // claim withdrawal
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "claimWithdrawal(bytes32)",
+            new address[](0),
+            string.concat("Claim withdrawal using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // complete withdrawal
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "completeWithdrawal(uint256,uint256)",
+            new address[](0),
+            string.concat("Complete withdrawal using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // complete next withdrawal
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "completeNextWithdrawal(uint256)",
+            new address[](0),
+            string.concat("Complete next withdrawal using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // complete next withdrawals
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "completeNextWithdrawals(uint256)",
+            new address[](0),
+            string.concat("Complete next withdrawals using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // override withdrawal indexes
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "overrideWithdrawalIndexes(uint256,uint256)",
+            new address[](0),
+            string.concat("Override withdrawal indexes using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // assemble (different params)
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "assemble(uint256)",
+            new address[](0),
+            string.concat("Assemble using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // disassemble (different params)
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "disassemble(uint256,uint256)",
+            new address[](0),
+            string.concat("Disassemble using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // full disassemble (different params)
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "fullDisassemble(uint256)",
+            new address[](0),
+            string.concat("Full disassemble using ", itbContractName),
+            itbDecoderAndSanitizer
+        );
+
+        // redeem expired Ct (Cover Token) by config
+        leafIndex++;
+        leafs[leafIndex] = ManageLeaf(
+            itbPositionManager,
+            false,
+            "redeemExpiredCtByConfig(uint256,uint256)",
+            new address[](0),
+            string.concat("Redeem expired Ct (Cover Token) by config using ", itbContractName),
             itbDecoderAndSanitizer
         );
     }
