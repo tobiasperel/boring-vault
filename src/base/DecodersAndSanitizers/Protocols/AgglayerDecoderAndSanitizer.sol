@@ -15,14 +15,11 @@ abstract contract AgglayerDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 /*amount*/,
         address token,
         bool /*forceUpdateGlobalExitRoot*/,
-        bytes calldata /*permitData*/
+        bytes calldata permitData
     ) external pure virtual returns (bytes memory addressesFound) {
         if (permitData.length > 0) revert AgglayerDecoderAndSanitizer__PermitDataNonZero(); 
 
-        address destinationNetwork0 = address(bytes20(bytes16(destinationNetwork)));
-        address destinationNetwork1 = address(bytes20(bytes16(destinationNetwork << 128)));
-
-        addressesFound = abi.encodePacked(destinationNetwork0, destinationNetwork1, destinationAddress, token); 
+        addressesFound = abi.encodePacked(address(uint160(destinationNetwork)), destinationAddress, token); 
     }
     
     //tree depth: https://github.com/agglayer/ulxly-contracts/blob/ac153f7ca70d41f113820c5441363038a33baaef/contracts/v2/lib/DepositContractBase.sol#L15
@@ -40,13 +37,8 @@ abstract contract AgglayerDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 /*amount*/,
         bytes calldata /*metadata*/
     ) external pure virtual returns (bytes memory addressesFound) {
-        address originNetwork0 = address(bytes20(bytes16(originNetwork)));
-        address originNetwork1 = address(bytes20(bytes16(originNetwork << 128)));
 
-        address destinationNetwork0 = address(bytes20(bytes16(destinationNetwork)));
-        address destinationNetwork1 = address(bytes20(bytes16(destinationNetwork << 128)));
-
-        addressesFound = abi.encodePacked(originNetwork0, originNetwork1, originTokenAddress, destinationNetwork0, destinationNetwork1, destinationAddress); 
+        addressesFound = abi.encodePacked(address(uint160(originNetwork)), originTokenAddress, address(uint160(destinationNetwork)), destinationAddress); 
     }
 
     function bridgeMessage(
@@ -55,10 +47,7 @@ abstract contract AgglayerDecoderAndSanitizer is BaseDecoderAndSanitizer {
         bool /*forceUpdateGlobalExitRoot*/,
         bytes calldata /*metadata*/
     ) external pure virtual returns (bytes memory addressesFound) {
-        address destinationNetwork0 = address(bytes20(bytes16(destinationNetwork)));
-        address destinationNetwork1 = address(bytes20(bytes16(destinationNetwork << 128)));
-
-        addressesFound = abi.encodePacked(destinationNetwork0, destinationNetwork1, destinationAddress); 
+        addressesFound = abi.encodePacked(address(uint160(destinationNetwork)), destinationAddress); 
     }
 
     function bridgeMessageWETH(
@@ -68,10 +57,7 @@ abstract contract AgglayerDecoderAndSanitizer is BaseDecoderAndSanitizer {
         bool /*forceUpdateGlobalExitRoot*/,
         bytes calldata /*metadata*/
     ) external pure virtual returns (bytes memory addressesFound) {
-        address destinationNetwork0 = address(bytes20(bytes16(destinationNetwork)));
-        address destinationNetwork1 = address(bytes20(bytes16(destinationNetwork << 128)));
-
-        addressesFound = abi.encodePacked(destinationNetwork0, destinationNetwork1, destinationAddress); 
+        addressesFound = abi.encodePacked(address(uint160(destinationNetwork)), destinationAddress);
     }
     
     function claimMessage(
@@ -87,12 +73,6 @@ abstract contract AgglayerDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 /*amount*/,
         bytes calldata /*metadata*/
     ) external pure virtual returns (bytes memory addressesFound) {
-        address originNetwork0 = address(bytes20(bytes16(originNetwork)));
-        address originNetwork1 = address(bytes20(bytes16(originNetwork << 128)));
-
-        address destinationNetwork0 = address(bytes20(bytes16(destinationNetwork)));
-        address destinationNetwork1 = address(bytes20(bytes16(destinationNetwork << 128)));
-
-        addressesFound = abi.encodePacked(originNetwork0, originNetwork1, originTokenAddress, destinationNetwork0, destinationNetwork1, destinationAddress); 
+        addressesFound = abi.encodePacked(address(uint160(originNetwork)), originAddress, address(uint160(destinationNetwork)), destinationAddress); 
     }
 }
