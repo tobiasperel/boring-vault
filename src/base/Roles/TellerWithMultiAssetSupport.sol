@@ -338,9 +338,6 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
         emit DenyPermissionedOperator(operator);
     }
 
-
-
-    
     // ========================================= BeforeTransferHook FUNCTIONS =========================================
 
     /**
@@ -349,10 +346,16 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      *         if this behavior is not desired then a share lock period of >=1 should be used.
      */
     function beforeTransfer(address from, address to, address operator) public view virtual {
-        if (beforeTransferData[from].denyFrom || beforeTransferData[to].denyTo || beforeTransferData[operator].denyOperator || (permissionedTransfers && !beforeTransferData[operator].permissionedOperator)) {
+        if (
+            beforeTransferData[from].denyFrom || beforeTransferData[to].denyTo
+                || beforeTransferData[operator].denyOperator
+                || (permissionedTransfers && !beforeTransferData[operator].permissionedOperator)
+        ) {
             revert TellerWithMultiAssetSupport__TransferDenied(from, to, operator);
         }
-        if (beforeTransferData[from].shareUnlockTime > block.timestamp) revert TellerWithMultiAssetSupport__SharesAreLocked();
+        if (beforeTransferData[from].shareUnlockTime > block.timestamp) {
+            revert TellerWithMultiAssetSupport__SharesAreLocked();
+        }
     }
 
     /**
@@ -362,7 +365,9 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
         if (beforeTransferData[from].denyFrom) {
             revert TellerWithMultiAssetSupport__TransferDenied(from, address(0), address(0));
         }
-        if (beforeTransferData[from].shareUnlockTime > block.timestamp) revert TellerWithMultiAssetSupport__SharesAreLocked();
+        if (beforeTransferData[from].shareUnlockTime > block.timestamp) {
+            revert TellerWithMultiAssetSupport__SharesAreLocked();
+        }
     }
 
     // ========================================= REVERT DEPOSIT FUNCTIONS =========================================
