@@ -30,6 +30,14 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
         uint16 sharePremium;
     }
 
+    struct BeforeTransferData {
+        bool denyFrom;
+        bool denyTo;
+        bool denyOperator;
+        bool permissionedOperator;
+        uint256 shareUnlockTime;
+    }
+
     // ========================================= CONSTANTS =========================================
 
     /**
@@ -74,29 +82,19 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
     bool public isPaused;
 
     /**
+     * @notice If true, only permissioned operators can transfer shares.
+     */
+    bool public permissionedTransfers;
+
+    /**
      * @dev Maps deposit nonce to keccak256(address receiver, address depositAsset, uint256 depositAmount, uint256 shareAmount, uint256 timestamp, uint256 shareLockPeriod).
      */
     mapping(uint256 => bytes32) public publicDepositHistory;
 
     /**
-     * @notice Maps user address to the time their shares will be unlocked.
+     * @notice Maps address to BeforeTransferData struct to check if shares are locked and if the address is on any allow or deny list.
      */
-    mapping(address => uint256) public shareUnlockTime;
-
-    /**
-     * @notice Mapping `from` address to a bool to deny them from transferring shares.
-     */
-    mapping(address => bool) public fromDenyList;
-
-    /**
-     * @notice Mapping `to` address to a bool to deny them from receiving shares.
-     */
-    mapping(address => bool) public toDenyList;
-
-    /**
-     * @notice Mapping `opeartor` address to a bool to deny them from calling `transfer` or `transferFrom`.
-     */
-    mapping(address => bool) public operatorDenyList;
+    mapping(address => BeforeTransferData) public beforeTransferData;
 
     //============================== ERRORS ===============================
 
@@ -139,6 +137,9 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
     event AllowFrom(address indexed user);
     event AllowTo(address indexed user);
     event AllowOperator(address indexed user);
+    event PermissionedTransfersSet(bool permissionedTransfers);
+    event AllowPermissionedOperator(address indexed operator);
+    event DenyPermissionedOperator(address indexed operator);
 
     // =============================== MODIFIERS ===============================
 
@@ -179,6 +180,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
         ONE_SHARE = 10 ** vault.decimals();
         accountant = AccountantWithRateProviders(_accountant);
         nativeWrapper = WETH(payable(_weth));
+        permissionedTransfers = false;
     }
 
     // ========================================= ADMIN FUNCTIONS =========================================
@@ -234,9 +236,9 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      * @dev Callable by OWNER_ROLE, and DENIER_ROLE.
      */
     function denyAll(address user) external requiresAuth {
-        fromDenyList[user] = true;
-        toDenyList[user] = true;
-        operatorDenyList[user] = true;
+        beforeTransferData[user].denyFrom = true;
+        beforeTransferData[user].denyTo = true;
+        beforeTransferData[user].denyOperator = true;
         emit DenyFrom(user);
         emit DenyTo(user);
         emit DenyOperator(user);
@@ -247,9 +249,9 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      * @dev Callable by OWNER_ROLE, and DENIER_ROLE.
      */
     function allowAll(address user) external requiresAuth {
-        fromDenyList[user] = false;
-        toDenyList[user] = false;
-        operatorDenyList[user] = false;
+        beforeTransferData[user].denyFrom = false;
+        beforeTransferData[user].denyTo = false;
+        beforeTransferData[user].denyOperator = false;
         emit AllowFrom(user);
         emit AllowTo(user);
         emit AllowOperator(user);
@@ -260,7 +262,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      * @dev Callable by OWNER_ROLE, and DENIER_ROLE.
      */
     function denyFrom(address user) external requiresAuth {
-        fromDenyList[user] = true;
+        beforeTransferData[user].denyFrom = true;
         emit DenyFrom(user);
     }
 
@@ -269,7 +271,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      * @dev Callable by OWNER_ROLE, and DENIER_ROLE.
      */
     function allowFrom(address user) external requiresAuth {
-        fromDenyList[user] = false;
+        beforeTransferData[user].denyFrom = false;
         emit AllowFrom(user);
     }
 
@@ -278,7 +280,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      * @dev Callable by OWNER_ROLE, and DENIER_ROLE.
      */
     function denyTo(address user) external requiresAuth {
-        toDenyList[user] = true;
+        beforeTransferData[user].denyTo = true;
         emit DenyTo(user);
     }
 
@@ -287,7 +289,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      * @dev Callable by OWNER_ROLE, and DENIER_ROLE.
      */
     function allowTo(address user) external requiresAuth {
-        toDenyList[user] = false;
+        beforeTransferData[user].denyTo = false;
         emit AllowTo(user);
     }
 
@@ -296,7 +298,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      * @dev Callable by OWNER_ROLE, and DENIER_ROLE.
      */
     function denyOperator(address user) external requiresAuth {
-        operatorDenyList[user] = true;
+        beforeTransferData[user].denyOperator = true;
         emit DenyOperator(user);
     }
 
@@ -305,10 +307,40 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      * @dev Callable by OWNER_ROLE, and DENIER_ROLE.
      */
     function allowOperator(address user) external requiresAuth {
-        operatorDenyList[user] = false;
+        beforeTransferData[user].denyOperator = false;
         emit AllowOperator(user);
     }
 
+    /**
+     * @notice Set the permissioned transfers flag.
+     * @dev Callable by OWNER_ROLE.
+     */
+    function setPermissionedTransfers(bool _permissionedTransfers) external requiresAuth {
+        permissionedTransfers = _permissionedTransfers;
+        emit PermissionedTransfersSet(_permissionedTransfers);
+    }
+
+    /**
+     * @notice Give permission to an operator to transfer shares when permissioned transfers flag is true.
+     * @dev Callable by OWNER_ROLE.
+     */
+    function allowPermissionedOperator(address operator) external requiresAuth {
+        beforeTransferData[operator].permissionedOperator = true;
+        emit AllowPermissionedOperator(operator);
+    }
+
+    /**
+     * @notice Revoke permission from an operator to transfer shares when permissioned transfers flag is true.
+     * @dev Callable by OWNER_ROLE, and DENIER_.
+     */
+    function denyPermissionedOperator(address operator) external requiresAuth {
+        beforeTransferData[operator].permissionedOperator = false;
+        emit DenyPermissionedOperator(operator);
+    }
+
+
+
+    
     // ========================================= BeforeTransferHook FUNCTIONS =========================================
 
     /**
@@ -317,20 +349,20 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      *         if this behavior is not desired then a share lock period of >=1 should be used.
      */
     function beforeTransfer(address from, address to, address operator) public view virtual {
-        if (fromDenyList[from] || toDenyList[to] || operatorDenyList[operator]) {
+        if (beforeTransferData[from].denyFrom || beforeTransferData[to].denyTo || beforeTransferData[operator].denyOperator || (permissionedTransfers && !beforeTransferData[operator].permissionedOperator)) {
             revert TellerWithMultiAssetSupport__TransferDenied(from, to, operator);
         }
-        if (shareUnlockTime[from] > block.timestamp) revert TellerWithMultiAssetSupport__SharesAreLocked();
+        if (beforeTransferData[from].shareUnlockTime > block.timestamp) revert TellerWithMultiAssetSupport__SharesAreLocked();
     }
 
     /**
      * @notice Implement legacy beforeTransfer hook to check if shares are locked, or if `from`is on the deny list.
      */
     function beforeTransfer(address from) public view virtual {
-        if (fromDenyList[from]) {
+        if (beforeTransferData[from].denyFrom) {
             revert TellerWithMultiAssetSupport__TransferDenied(from, address(0), address(0));
         }
-        if (shareUnlockTime[from] > block.timestamp) revert TellerWithMultiAssetSupport__SharesAreLocked();
+        if (beforeTransferData[from].shareUnlockTime > block.timestamp) revert TellerWithMultiAssetSupport__SharesAreLocked();
     }
 
     // ========================================= REVERT DEPOSIT FUNCTIONS =========================================
@@ -511,7 +543,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
         uint256 nonce = ++depositNonce;
         // Only set share unlock time and history if share lock period is greater than 0.
         if (currentShareLockPeriod > 0) {
-            shareUnlockTime[user] = block.timestamp + currentShareLockPeriod;
+            beforeTransferData[user].shareUnlockTime = block.timestamp + currentShareLockPeriod;
             publicDepositHistory[nonce] = keccak256(
                 abi.encode(user, depositAsset, depositAmount, shares, block.timestamp, currentShareLockPeriod)
             );
