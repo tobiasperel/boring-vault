@@ -140,7 +140,7 @@ contract ArcticArchitectureLens {
      * @return time The unlock time for the user's shares.
      */
     function userUnlockTime(address account, TellerWithMultiAssetSupport teller) external view returns (uint256 time) {
-        time = teller.shareUnlockTime(account);
+        (,,,,time) = teller.beforeTransferData(account);
     }
 
     /**
