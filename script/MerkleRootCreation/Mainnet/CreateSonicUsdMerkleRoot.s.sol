@@ -184,6 +184,10 @@ contract CreateSonicUsdMerkleRoot is Script, MerkleTreeHelper {
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fUSDT"));            
         _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fGHO"));            
 
+        // ========================== Fluid Rewards ==========================
+
+        _addFluidRewardsClaiming(leafs);
+
         // ========================== Fluid Dex ==========================
          {
             ERC20[] memory supplyTokens = new ERC20[](2);
