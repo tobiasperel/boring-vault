@@ -598,5 +598,53 @@ contract DecoderCustomTypes {
         uint24 secondsToMaturity; // in contract, from withdrawAsset?
         uint24 secondsToDeadline; // in contract, from withdrawAsset? To get the deadline you take the creationTime add seconds to maturity, add the secondsToDeadline
     }
+
+    // ========================================= Beraborrow ==================================
+    
+    struct OpenDenVaultParams {
+        address denManager;
+        address collVault;
+        uint256 _maxFeePercentage;
+        uint256 _debtAmount;
+        uint256 _collAssetToDeposit;
+        address _upperHint;
+        address _lowerHint;
+        uint256 _minSharesMinted;
+        uint256 _collIndex;
+        bytes _preDeposit;
+    }
+
+    struct AdjustDenVaultParams {
+        address denManager;
+        address collVault;
+        uint256 _maxFeePercentage;
+        uint256 _collAssetToDeposit;
+        uint256 _collWithdrawal;
+        uint256 _debtChange;
+        bool _isDebtIncrease;
+        address _upperHint;
+        address _lowerHint;
+        bool unwrap;
+        uint256 _minSharesMinted;
+        uint256 _minAssetsWithdrawn;
+        uint256 _collIndex;
+        bytes _preDeposit;
+    }
+
+     struct RedeemCollateralVaultParams {
+        address denManager;
+        address collVault;
+        uint256 _debtAmount;
+        address _firstRedemptionHint;
+        address _upperPartialRedemptionHint;
+        address _lowerPartialRedemptionHint;
+        uint256 _partialRedemptionHintNICR;
+        uint256 _maxIterations;
+        uint256 _maxFeePercentage;
+        uint256 _minSharesWithdrawn;
+        uint256 minAssetsWithdrawn;
+        uint256 collIndex;
+        bool unwrap;
+    }
 }
 
