@@ -286,6 +286,7 @@ contract ChainValues {
         values[mainnet]["sUSDC"] = 0xBc65ad17c5C0a2A4D159fa5a503f4992c7B545FE.toBytes32(); 
         values[mainnet]["frxUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
         values[mainnet]["sfrxUSD"] = 0xcf62F905562626CfcDD2261162a51fd02Fc9c5b6.toBytes32(); 
+        values[mainnet]["SYRUP"] = 0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66.toBytes32(); 
 
 
         // Rate providers
@@ -756,6 +757,8 @@ contract ChainValues {
         values[mainnet]["MCUSR_USDC_915"] = 0x3889dee51674c6e728f7d05f11a3407c6853e433a0e63f8febbc45887a26a475; 
         values[mainnet]["EBTC_PT06_26_25_LBTC_915"] = 0xdbabefcc4e7f2fce9b6dd3843df46a92b74819453cf2f92092542e43f68b40ea; 
         values[mainnet]["sdeUSD_USDC_915"] = 0x0f9563442d64ab3bd3bcb27058db0b0d4046a4c46f0acd811dacae9551d2b129; 
+        values[mainnet]["sUSDePT_07_30_25_DAI_915"] = 0xb81eaed0df42ff6646c8daf4fe38afab93b13b6a89c9750d08e705223a45e2ef; 
+        values[mainnet]["sUSDePT_07_30_25_USDC_915"] = 0xbc552f0b14dd6f8e60b760a534ac1d8613d3539153b4d9675d697e048f2edc7e; 
 
         // MetaMorpho
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();
@@ -867,7 +870,10 @@ contract ChainValues {
         values[mainnet]["pendle_USDe_karak_01_29_25"] = 0x6C06bBFa3B63eD344ceb3312Df795eDC8d29BDD5.toBytes32();
         values[mainnet]["pendle_USDe_03_26_25"] = 0xB451A36c8B6b2EAc77AD0737BA732818143A0E25.toBytes32();
         values[mainnet]["pendle_eUSDe_market_05_28_25"] = 0x85667e484a32d884010Cf16427D90049CCf46e97.toBytes32();
+        values[mainnet]["pendle_eUSDe_05_28_25_pt"] = 0x50D2C7992b802Eef16c04FeADAB310f31866a545.toBytes32();
         values[mainnet]["pendle_sUSDe_05_28_25"] = 0xB162B764044697cf03617C2EFbcB1f42e31E4766.toBytes32();
+        values[mainnet]["pendle_sUSDe_market_07_30_25"] = 0x4339Ffe2B7592Dc783ed13cCE310531aB366dEac.toBytes32();
+        values[mainnet]["pendle_sUSDe_07_30_25_pt"] = 0x3b3fB9C57858EF816833dC91565EFcd85D96f634.toBytes32();
 
         values[mainnet]["pendle_weETHs_market_08_28_24"] = 0xcAa8ABB72A75C623BECe1f4D5c218F425d47A0D0.toBytes32();
         values[mainnet]["pendle_weETHs_sy_08_28_24"] = 0x9e8f10574ACc2c62C6e5d19500CEd39163Da37A9.toBytes32();
