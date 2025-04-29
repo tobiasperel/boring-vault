@@ -7,6 +7,8 @@ import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/
 import {AaveV3DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/AaveV3DecoderAndSanitizer.sol"; 
 import {SiloDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SiloDecoderAndSanitizer.sol"; 
 import {MerklDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MerklDecoderAndSanitizer.sol"; 
+import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol"; 
+import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol"; 
 
 contract SonicVaultDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
@@ -14,7 +16,9 @@ contract SonicVaultDecoderAndSanitizer is
     OdosDecoderAndSanitizer,
     AaveV3DecoderAndSanitizer,
     SiloDecoderAndSanitizer,
-    MerklDecoderAndSanitizer
+    MerklDecoderAndSanitizer,
+    OFTDecoderAndSanitizer,
+    NativeWrapperDecoderAndSanitizer
 {
     constructor(address _odosRouter) OdosDecoderAndSanitizer(_odosRouter){} 
 }

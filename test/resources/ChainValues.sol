@@ -26,6 +26,7 @@ contract ChainValues {
     string public constant berachain = "berachain";
     string public constant bob = "bob";
     string public constant derive = "derive";
+    string public constant unichain = "unichain";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
@@ -47,6 +48,7 @@ contract ChainValues {
     uint32 public constant layerZeroCornEndpointId = 30331;
     uint32 public constant layerZeroSwellEndpointId = 30335;
     uint32 public constant layerZeroSonicMainnetEndpointId = 30332;
+    uint32 public constant layerZeroUnichainEndpointId = 30320;
     uint32 public constant layerZeroBerachainEndpointId = 30362;
     uint32 public constant layerZeroSepoliaEndpointId = 40161;
     uint32 public constant layerZeroSonicBlazeEndpointId = 40349;
@@ -108,6 +110,7 @@ contract ChainValues {
         _addBerachainValues();
         _addBobValues();
         _addDeriveValues();
+        _addUnichainValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -149,11 +152,14 @@ contract ChainValues {
         values[mainnet]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32(); 
         values[mainnet]["sonicLBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32();
         values[mainnet]["sonicBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32(); 
+        values[mainnet]["tacLBTCvTeller"] = 0xAe499dAa7350b78746681931c47394eB7cC4Cf7F.toBytes32(); 
+        values[mainnet]["tacLBTCvWithdrawQueue"] = 0xa6F5Aa413DdF0Ca1c57102Dbe0Badb2233798007.toBytes32(); 
 
         // TAC BoringVaults
         values[mainnet]["TurtleTACUSD"] = 0x699e04F98dE2Fc395a7dcBf36B48EC837A976490.toBytes32();
         values[mainnet]["TACTeller"] = 0xBbf9E8718D83CF67b568bfFd9d3034BfF02A0103.toBytes32();
         values[mainnet]["TACOnChainQueue"] = 0x699e04F98dE2Fc395a7dcBf36B48EC837A976490.toBytes32();
+        values[mainnet]["tacLBTCv"] = 0xD86fC1CaA0a5B82cC16B16B70DFC59F6f034C348.toBytes32(); 
 
         // DeFi Ecosystem
         values[mainnet]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
@@ -268,6 +274,7 @@ contract ChainValues {
         values[mainnet]["syrupUSDT"] = 0x356B8d89c1e1239Cbbb9dE4815c39A1474d5BA7D.toBytes32();
         values[mainnet]["ELX"] = 0x89A8c847f41C0dfA6c8B88638bACca8a0b777Da7.toBytes32(); 
         values[mainnet]["FRXUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
+        values[mainnet]["sfrxUSD"] = 0xac3E018457B222d93114458476f3E3416Abbe38F.toBytes32(); 
         values[mainnet]["EUSDE"] = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F.toBytes32(); 
         values[mainnet]["SUSDS"] =  0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD.toBytes32(); 
         values[mainnet]["KING"] = 0x8F08B70456eb22f6109F57b8fafE862ED28E6040.toBytes32();
@@ -276,6 +283,10 @@ contract ChainValues {
         values[mainnet]["FLUID"] = 0x6f40d4A6237C257fff2dB00FA0510DeEECd303eb.toBytes32(); 
         values[mainnet]["rUSD"] = 0x09D4214C03D01F49544C0448DBE3A27f768F2b34.toBytes32(); 
         values[mainnet]["srUSD"] = 0x738d1115B90efa71AE468F1287fc864775e23a31.toBytes32(); 
+        values[mainnet]["sUSDC"] = 0xBc65ad17c5C0a2A4D159fa5a503f4992c7B545FE.toBytes32(); 
+        values[mainnet]["frxUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
+        values[mainnet]["sfrxUSD"] = 0xcf62F905562626CfcDD2261162a51fd02Fc9c5b6.toBytes32(); 
+
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -598,18 +609,18 @@ contract ChainValues {
         values[mainnet]["frxUSD_FRAX_Curve_Pool"] = 0xBBaf8B2837CBbc7146F5bC978D6F84db0BE1CAcc.toBytes32(); 
         
         //frxUSD/SUSDS 
-        values[mainnet]["frxUSD_SUSDS_Curve_Pool"] = 0x81A2612F6dEA269a6Dd1F6DeAb45C5424EE2c4b7.toBytes32(); 
-        values[mainnet]["frxUSD_SUSDS_Curve_Gauge"] = 0x52618C40dDBA3cBbb69F3aAA4CB26Ae649844B17.toBytes32(); 
-        values[mainnet]["frxUSD_SUSDS_Convex_Rewards"] = 0x44be1A72619eDDDccAb744eE9e1E69A0B639F85f.toBytes32(); 
+        values[mainnet]["frxUSD_SUSDS_Curve_Pool"] = 0x81A2612F6dEA269a6Dd1F6DeAb45C5424EE2c4b7.toBytes32();
+        values[mainnet]["frxUSD_SUSDS_Curve_Gauge"] = 0x52618C40dDBA3cBbb69F3aAA4CB26Ae649844B17.toBytes32();
+        values[mainnet]["frxUSD_SUSDS_Convex_Rewards"] = 0x44be1A72619eDDDccAb744eE9e1E69A0B639F85f.toBytes32();
 
         //frxUSD/USDE
-        values[mainnet]["frxUSD_USDE_Curve_Pool"] = 0xdBb1d219d84eaCEFb850ee04caCf2f1830934580.toBytes32(); 
-        values[mainnet]["frxUSD_USDE_Curve_Gauge"] = 0xbD7ddCe4D5a97F102DE674Ef56823b600e843C8A.toBytes32(); 
+        values[mainnet]["frxUSD_USDE_Curve_Pool"] = 0xdBb1d219d84eaCEFb850ee04caCf2f1830934580.toBytes32();
+        values[mainnet]["frxUSD_USDE_Curve_Gauge"] = 0xbD7ddCe4D5a97F102DE674Ef56823b600e843C8A.toBytes32();
         values[mainnet]["frxUSD_USDE_Convex_Rewards"] = 0xb5a97cFB06f9005005a79dAA27EB44106b7ad79A.toBytes32();   
         
         //triBTCFi
-        values[mainnet]["triBTCFi_Curve_Pool"] = 0xabaf76590478F2fE0b396996f55F0b61101e9502.toBytes32(); 
-        values[mainnet]["triBTCFi_Curve_Gauge"] = 0x8D666daED20B502e5Cf692B101028fc0058a5d4E.toBytes32(); 
+        values[mainnet]["triBTCFi_Curve_Pool"] = 0xabaf76590478F2fE0b396996f55F0b61101e9502.toBytes32();
+        values[mainnet]["triBTCFi_Curve_Gauge"] = 0x8D666daED20B502e5Cf692B101028fc0058a5d4E.toBytes32();
 
         values[mainnet]["ezETH_wETH_Curve_Pool"] = 0x85dE3ADd465a219EE25E04d22c39aB027cF5C12E.toBytes32();
         values[mainnet]["weETH_rswETH_Curve_Pool"] = 0x278cfB6f06B1EFc09d34fC7127d6060C61d629Db.toBytes32();
@@ -635,11 +646,11 @@ contract ChainValues {
         values[mainnet]["convexFXPoolRegistry"] = 0xdB95d646012bB87aC2E6CD63eAb2C42323c1F5AF.toBytes32(); 
         values[mainnet]["convexFXBooster"] = 0xAffe966B27ba3E4Ebb8A0eC124C7b7019CC762f8.toBytes32(); 
 
-        values[mainnet]["convexFX_gauge_USDC_fxUSD"] = 0xf1E141C804BA39b4a031fDF46e8c08dBa7a0df60.toBytes32(); 
-        values[mainnet]["convexFX_lp_USDC_fxUSD"] = 0x5018BE882DccE5E3F2f3B0913AE2096B9b3fB61f.toBytes32(); 
+        values[mainnet]["convexFX_gauge_USDC_fxUSD"] = 0xf1E141C804BA39b4a031fDF46e8c08dBa7a0df60.toBytes32();
+        values[mainnet]["convexFX_lp_USDC_fxUSD"] = 0x5018BE882DccE5E3F2f3B0913AE2096B9b3fB61f.toBytes32();
 
-        values[mainnet]["convexFX_gauge_fxUSD_GHO"] = 0xf0A3ECed42Dbd8353569639c0eaa833857aA0A75.toBytes32(); 
-        values[mainnet]["convexFX_lp_fxUSD_GHO"] = 0x74345504Eaea3D9408fC69Ae7EB2d14095643c5b.toBytes32(); 
+        values[mainnet]["convexFX_gauge_fxUSD_GHO"] = 0xf0A3ECed42Dbd8353569639c0eaa833857aA0A75.toBytes32();
+        values[mainnet]["convexFX_lp_fxUSD_GHO"] = 0x74345504Eaea3D9408fC69Ae7EB2d14095643c5b.toBytes32();
 
         values[mainnet]["ethFrxethBaseRewardPool"] = 0xbD5445402B0a287cbC77cb67B2a52e2FC635dce4.toBytes32();
         values[mainnet]["ethStethNgBaseRewardPool"] = 0x6B27D7BC63F1999D14fF9bA900069ee516669ee8.toBytes32();
@@ -792,6 +803,8 @@ contract ChainValues {
         values[mainnet]["sdUSDTV3"] = 0x16adAb68bDEcE3089D4f1626Bb5AEDD0d02471aD.toBytes32();
         values[mainnet]["dWBTCV3"] = 0xda00010eDA646913F273E10E7A5d1F659242757d.toBytes32();
         values[mainnet]["sdWBTCV3"] = 0xA8cE662E45E825DAF178DA2c8d5Fae97696A788A.toBytes32();
+        values[mainnet]["dGHOV3"] = 0x4d56c9cBa373AD39dF69Eb18F076b7348000AE09.toBytes32(); 
+        values[mainnet]["sdGHOV3"] = 0xE2037090f896A858E3168B978668F22026AC52e7.toBytes32();  
 
         // Pendle
         values[mainnet]["pendleMarketFactory"] = 0x1A6fCc85557BC4fB7B534ed835a03EF056552D52.toBytes32();
@@ -1003,6 +1016,9 @@ contract ChainValues {
         values[mainnet]["fWSTETH"] = 0x2411802D8BEA09be0aF8fD8D08314a63e706b29C.toBytes32();
         values[mainnet]["fGHO"] = 0x6A29A46E21C730DcA1d8b23d637c101cec605C5B.toBytes32();
 
+        // Fluid Rewards
+        values[mainnet]["fluidMerkleDistributor"] = 0x7060FE0Dd3E31be01EFAc6B28C8D38018fD163B0.toBytes32();
+
         // Fluid Dex
         values[mainnet]["WeETHDexUSDC-USDT"] = 0x01F0D07fdE184614216e76782c6b7dF663F5375e.toBytes32();
         values[mainnet]["wBTC-cbBTCDex-USDT"] = 0xf7FA55D14C71241e3c970E30C509Ff58b5f5D557.toBytes32();
@@ -1110,7 +1126,12 @@ contract ChainValues {
         // Bob Standard Bridge
         values[mainnet]["bobStandardBridge"] = 0x3F6cE1b36e5120BBc59D0cFe8A5aC8b6464ac1f7.toBytes32(); 
         values[mainnet]["bobPortal"] = 0x8AdeE124447435fE03e3CD24dF3f4cAE32E65a3E.toBytes32(); 
-        values[mainnet]["bobResolvedDelegate"] = 0xE3d981643b806FB8030CDB677D6E60892E547EdA.toBytes32(); 
+        values[mainnet]["bobResolvedDelegate"] = 0xE3d981643b806FB8030CDB677D6E60892E547EdA.toBytes32();
+
+        // Unichain Standard Bridge.
+        values[mainnet]["unichainStandardBridge"] = 0x81014F44b0a345033bB2b3B21C7a1A308B35fEeA.toBytes32();
+        values[mainnet]["unichainPortal"] = 0x0bd48f6B86a26D3a217d0Fa6FfE2B491B956A7a2.toBytes32();
+        values[mainnet]["unichainResolvedDelegate"] = 0x9A3D64E386C18Cb1d6d5179a9596A4B5736e98A6.toBytes32();
 
         // Layer Zero.
         values[mainnet]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
@@ -1118,6 +1139,7 @@ contract ChainValues {
         values[mainnet]["weETHOFTAdapterMovement"] = 0x6FFcE32713417569237786cbeFBe355090642bF9.toBytes32();
         values[mainnet]["LBTCOFTAdapter"] = 0x6bc15D7930839Ec18A57F6f7dF72aE1B439D077f.toBytes32();
         values[mainnet]["WBTCOFTAdapter"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32();
+        values[mainnet]["frxUSDOFTAdapter"] = 0x566a6442A5A6e9895B9dCA97cC7879D632c6e4B0.toBytes32(); 
 
         // Stargate OFTs
         values[mainnet]["stargateUSDC"] = 0xc026395860Db2d07ee33e05fE50ed7bD583189C7.toBytes32();
@@ -1174,7 +1196,7 @@ contract ChainValues {
         values[mainnet]["ethereumVaultConnector"] = 0x0C9a3dd6b8F28529d72d7f9cE918D493519EE383.toBytes32();
         values[mainnet]["evkWEETH"] = 0xe846ca062aB869b66aE8DcD811973f628BA82eAf.toBytes32();
         values[mainnet]["eulerPrimeWETH"] = 0xD8b27CF359b7D15710a5BE299AF6e7Bf904984C2.toBytes32();
-        values[mainnet]["evkUSDC"] = 0x797DD80692c3b2dAdabCe8e30C07fDE5307D48a9.toBytes32();
+        values[mainnet]["evkUSDC"] = 0x797DD80692c3b2dAdabCe8e30C07fDE5307D48a9.toBytes32(); //Euler Prime
         values[mainnet]["evkLBTC"] = 0xbC35161043EE2D74816d421EfD6a45fDa73B050A.toBytes32(); //Euler Prime
         values[mainnet]["evkDAI"] = 0x83C266bdf990574a05EE62831a266a3891817B5B.toBytes32();
         values[mainnet]["evkDAIDebt"] = 0x1796526a7705cBBe76dEdd4b13959A48c674A6cD.toBytes32();
@@ -1182,7 +1204,7 @@ contract ChainValues {
         values[mainnet]["evkWETH"] = 0xD8b27CF359b7D15710a5BE299AF6e7Bf904984C2.toBytes32();
         values[mainnet]["evkeWETH-2"] = 0xD8b27CF359b7D15710a5BE299AF6e7Bf904984C2.toBytes32();
 
-        values[mainnet]["evkUSDC"] = 0x797DD80692c3b2dAdabCe8e30C07fDE5307D48a9.toBytes32();
+        //values[mainnet]["evkUSDC"] = 0x797DD80692c3b2dAdabCe8e30C07fDE5307D48a9.toBytes32();
         values[mainnet]["evkeUSDC-2"] = 0x797DD80692c3b2dAdabCe8e30C07fDE5307D48a9.toBytes32();
 
         values[mainnet]["evkeUSDC-22"] = 0xe0a80d35bB6618CBA260120b279d357978c42BCE.toBytes32();
@@ -1300,6 +1322,10 @@ contract ChainValues {
         values[mainnet]["derive_controller"] = 0x52CB41109b637F03B81b3FD6Dce4E3948b2F0923.toBytes32(); 
         values[mainnet]["derive_LBTC_connectorPlugOnDeriveChain"] = 0x2E1245D57a304C7314687E529D610071628117f3.toBytes32(); 
         //values[mainnet]["derive_boringTestVault_wallet"] = .toBytes32(); 
+       
+        // King 
+        values[mainnet]["kingMerkleDistributor"] = 0x6Db24Ee656843E3fE03eb8762a54D86186bA6B64.toBytes32(); 
+        
     }
 
     function _addBaseValues() private {
@@ -1743,6 +1769,7 @@ contract ChainValues {
         values[corn]["WBTCN"] = 0xda5dDd7270381A7C2717aD10D1c0ecB19e3CDFb2.toBytes32();
         values[corn]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
         values[corn]["EBTC"] = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642.toBytes32();
+        values[corn]["USDT0"] = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642.toBytes32();
 
         values[corn]["balancerVault"] = address(1).toBytes32();
 
@@ -1780,6 +1807,17 @@ contract ChainValues {
         //values[corn]["sBTCNTeller"] = .toBytes32(); 
         values[corn]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32(); 
         values[corn]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32(); 
+
+        // Morpho Blue
+        values[corn]["morphoBlue"] =  0xc2B1E031540e3F3271C5F3819F0cC7479a8DdD90.toBytes32(); 
+        values[corn]["WBTCN_IDLE_915"] = 0xe0ce6aa148f70d89eda3c051c53a6e2f02f7ee0d1dd06af582ab4c8878ceed23; 
+        values[corn]["WBTCN_LBTC_915"] = 0x2547ba491a7ff9e8cfcaa3e1c0da739f4fdc1be9fe4a37bfcdf570002153a0de; 
+        values[corn]["USDT0_IDLE_915"] = 0x1c6b87ae1b97071ef444eedcba9f5a92cfe974edbbcaa1946644fc7ab0e283af; 
+        values[corn]["WBTCN_USDT0_915"] = 0x9039bf8b5c3cd6f2d3f937e8a2e59ef6af0109a0d0f3499e7dbf75be0aef75ec; 
+         
+        // Morpho 
+        values[corn]["smokehouseBTCN"] = 0xa7Ba08CFc37e7CC67404d4996FFBB3E977490115.toBytes32(); 
+
     }
 
     function _addSonicMainnetValues() private {
@@ -1811,6 +1849,7 @@ contract ChainValues {
         values[sonicMainnet]["SILO"] = 0x53f753E4B17F4075D6fa2c6909033d224b81e698.toBytes32(); 
         values[sonicMainnet]["BEETSFRAGMENTSS1"] = 0x3419966bC74fa8f951108d15b053bEd233974d3D.toBytes32();
         values[sonicMainnet]["CRV"] = 0x5Af79133999f7908953E94b7A5CF367740Ebee35.toBytes32();
+        values[sonicMainnet]["frxUSD"] = 0x80Eede496655FB9047dd39d9f418d5483ED600df.toBytes32(); //also OFT
 
         values[sonicMainnet]["balancerVault"] = address(1).toBytes32();
         values[sonicMainnet]["vault"] = address(1).toBytes32();
@@ -1891,6 +1930,7 @@ contract ChainValues {
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_config"] = 0xDa6787a3543a01Bf770DDF3953bE5B9C99c1cBD0.toBytes32(); 
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_scUSD_IncentivesController"] = 0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32(); 
 
+        values[sonicMainnet]["silo_sfrxUSD_scUSD_id48_config"] = 0x6452b9aE8011800457b42C4fBBDf4579afB96228.toBytes32();
 
         // Curve
         values[sonicMainnet]["curve_CRV_claiming"] = 0xf3A431008396df8A8b2DF492C913706BDB0874ef.toBytes32();
@@ -2242,5 +2282,38 @@ contract ChainValues {
         // Derive
         values[derive]["deriveWithdrawWrapper"] = 0xea8E683D8C46ff05B871822a00461995F93df800.toBytes32(); 
         values[derive]["derive_LBTC_controller"] = 0x5eFC527B2640681289E31E1e29f94EA397b6c589.toBytes32(); 
+    }
+
+    function _addUnichainValues() private {
+        values[unichain]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[unichain]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[unichain]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[unichain]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        // ERC20s
+        values[unichain]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
+        values[unichain]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
+        values[unichain]["USDC"] = 0x078D782b760474a361dDA0AF3839290b0EF57AD6.toBytes32();
+        values[unichain]["weETH"] = 0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7.toBytes32();
+        values[unichain]["WEETH"] = 0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7.toBytes32();
+        values[unichain]["WSTETH"] = 0xc02fE7317D4eb8753a02c35fe019786854A92001.toBytes32();
+
+        values[unichain]["balancerVault"] = address(1).toBytes32();
+        values[unichain]["vault"] = address(1).toBytes32();
+
+        values[unichain]["ZRO"] = address(1).toBytes32();
+        
+        // Standard Bridge
+        values[unichain]["standardBridge"] = 0x4200000000000000000000000000000000000010.toBytes32();
+        values[unichain]["crossDomainMessenger"] = 0x4200000000000000000000000000000000000007.toBytes32();
+
+        // Uniswap V4
+        values[unichain]["uniV4PoolManager"] = 0x1F98400000000000000000000000000000000004.toBytes32();
+        values[unichain]["uniV4PositionManager"] = 0x4529A01c7A0410167c5740C487A8DE60232617bf.toBytes32();
+        values[unichain]["uniV4UniversalRouter"] = 0xEf740bf23aCaE26f6492B10de645D6B98dC8Eaf3.toBytes32();
+        values[unichain]["permit2"] = 0x000000000022D473030F116dDEE9F6B43aC78BA3.toBytes32();
+
+        // LayerZero
+        values[unichain]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();
     }
 }
