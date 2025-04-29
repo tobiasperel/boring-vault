@@ -12227,6 +12227,77 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[i] = tokens[i];
         }
     }
+    
+    // ========================================= dvStETH  =========================================
+    function _addDvStETHLeafs(ManageLeaf[] memory leafs, address[] memory depositTokens) internal {
+
+        for (uint i = 0; i < depositTokens.length; i++) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                depositTokens[i],
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve dvStETH Vault to spend WETH"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "dvStETHVault"); 
+        
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "dvStETHVault"),
+                false,
+                "deposit(address,uint256[],uint256,uint256,uint256)",
+                new address[](2),
+                string.concat("Deposit into dvStETH "),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = depositTokens[i];  
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dvStETHVault"),
+            false,
+            "registerWithdrawal(address,uint256,uint256[],uint256,uint256,bool)",
+            new address[](1),
+            string.concat("Register withdraw request from dvStETH "),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dvStETHVault"),
+            false,
+            "cancelWithdrawalRequest()",
+            new address[](0),
+            string.concat("Cancel withdraw request"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "dvStETHVault"),
+            false,
+            "emergencyWithdraw(uint256[],uint256)",
+            new address[](0),
+            string.concat("Cancel withdraw request"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        
+    }
 
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
