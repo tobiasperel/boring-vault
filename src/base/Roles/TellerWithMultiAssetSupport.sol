@@ -30,6 +30,13 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
         uint16 sharePremium;
     }
 
+    /**
+     * @param denyFrom bool indicating whether or not the user is on the deny from list.
+     * @param denyTo bool indicating whether or not the user is on the deny to list.
+     * @param denyOperator bool indicating whether or not the user is on the deny operator list.
+     * @param permissionedOperator bool indicating whether or not the user is a permissioned operator, only applies when permissionedTransfers is true.
+     * @param shareUnlockTime uint256 indicating the time at which the shares will be unlocked.
+     */
     struct BeforeTransferData {
         bool denyFrom;
         bool denyTo;
@@ -341,7 +348,8 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
     // ========================================= BeforeTransferHook FUNCTIONS =========================================
 
     /**
-     * @notice Implement beforeTransfer hook to check if shares are locked, or if `from`, `to`, or `operator` are on the deny list.
+     * @notice Implement beforeTransfer hook to check if shares are locked, or if `from`, `to`, or `operator` are denied in beforeTransferData.
+     * @notice If permissionedTransfers is true, then only operators on the allow list can transfer shares.
      * @notice If share lock period is set to zero, then users will be able to mint and transfer in the same tx.
      *         if this behavior is not desired then a share lock period of >=1 should be used.
      */
