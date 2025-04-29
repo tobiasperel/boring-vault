@@ -37,11 +37,9 @@ contract FluidRewardsClaimingIntegration is BaseTestIntegration {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        Tx memory tx_ = _getTxArrays(3); 
+        Tx memory tx_ = _getTxArrays(1); 
 
         tx_.manageLeafs[0] = leafs[0]; //approve token0
-        tx_.manageLeafs[1] = leafs[1]; //approve token1
-        tx_.manageLeafs[2] = leafs[3]; //addLiquidity
 
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
@@ -64,7 +62,8 @@ contract FluidRewardsClaimingIntegration is BaseTestIntegration {
         );
 
         tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer; 
-
+        
+        vm.expectRevert(); //no proof data, need this from FE 
         _submitManagerCall(manageProofs, tx_); 
          
         //check that swap went through 

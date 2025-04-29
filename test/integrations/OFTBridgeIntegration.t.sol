@@ -113,7 +113,7 @@ contract OFTBridgeIntegrationTest is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](2);
         _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "EtherFiOFTAdapter"), layerZeroBaseEndpointId, bytes32(uint256(uint160(address(boringVault))))
+            leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "EtherFiOFTAdapter"), layerZeroBaseEndpointId, getBytes32(sourceChain, "boringVault") 
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -168,7 +168,7 @@ contract OFTBridgeIntegrationTest is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](2);
         _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "EtherFiOFTAdapter"), layerZeroBaseEndpointId, bytes32(uint256(uint160(address(boringVault))))
+            leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "EtherFiOFTAdapter"), layerZeroBaseEndpointId, getBytes32(sourceChain, "boringVault")
         );
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);

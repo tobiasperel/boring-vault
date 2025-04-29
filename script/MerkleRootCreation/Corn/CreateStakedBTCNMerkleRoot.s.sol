@@ -18,7 +18,7 @@ contract CreateStakedBTCNMerkleRoot is Script, MerkleTreeHelper {
     address boringVault = 0x5E272ca4bD94e57Ec5C51D26703621Ccac1A7089;
     address managerAddress = 0x5239158272D1f626aF9ef3353489D3Cb68439D66;
     address accountantAddress = 0x9A22F5dC4Ec86184D4771E620eb75D52E7b9E043;
-    address rawDataDecoderAndSanitizer = 0xbA4Bf0e37Da976f752BF066160DB5dAB94015CC0;
+    address rawDataDecoderAndSanitizer = 0x43916c5e3efD4763D719EBd0690DC78aC5cB10C3;
 
     //one offs
     address camelotDecoderAndSanitizer = 0x3FD48BE8d8fB633696AcB6dBE70166c81e869320;
@@ -36,7 +36,7 @@ contract CreateStakedBTCNMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, corn, "accountantAddress", accountantAddress);
         setAddress(false, corn, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](128);
+        ManageLeaf[] memory leafs = new ManageLeaf[](256);
 
         // ========================== Curve LP ==========================
         
@@ -70,10 +70,10 @@ contract CreateStakedBTCNMerkleRoot is Script, MerkleTreeHelper {
         // ========================== LayerZero ==========================
        
         _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "WBTCN"), getAddress(sourceChain, "WBTCN_OFT"), layerZeroMainnetEndpointId
+            leafs, getERC20(sourceChain, "WBTCN"), getAddress(sourceChain, "WBTCN_OFT"), layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault")
         );
         _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "LBTC"), getAddress(sourceChain, "LBTC_OFT"), layerZeroMainnetEndpointId
+            leafs, getERC20(sourceChain, "LBTC"), getAddress(sourceChain, "LBTC_OFT"), layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault")
         );
 
         // ========================== Native Wrapping ==========================
@@ -136,6 +136,22 @@ contract CreateStakedBTCNMerkleRoot is Script, MerkleTreeHelper {
 
         _addCamelotV3Leafs(leafs, camelotToken0, camelotToken1);  
 
+        
+        setAddress(true, corn, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        
+        // ========================== Morpho ==========================
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "smokehouseBTCN")));  
+
+        // ========================== Morpho Blue ==========================
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WBTCN_IDLE_915")); 
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WBTCN_LBTC_915")); 
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "USDT0_IDLE_915")); 
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WBTCN_USDT0_915")); 
+
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTCN_IDLE_915")); 
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTCN_LBTC_915")); 
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "USDT0_IDLE_915")); 
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTCN_USDT0_915")); 
 
         // ========================== Verify ==========================
         
