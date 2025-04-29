@@ -69,8 +69,8 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Odos ==========================
         
-        address[] memory tokens = new address[](8);   
-        SwapKind[] memory kind = new SwapKind[](8);
+        address[] memory tokens = new address[](9);   
+        SwapKind[] memory kind = new SwapKind[](9);
         tokens[0] = getAddress(sourceChain, "WETH"); 
         kind[0] = SwapKind.BuyAndSell;
         tokens[1] = getAddress(sourceChain, "stS"); 
@@ -87,20 +87,22 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         kind[6] = SwapKind.Sell;
         tokens[7] = getAddress(sourceChain, "SILO");
         kind[7] = SwapKind.Sell;
+        tokens[8] = getAddress(sourceChain, "BEETSFRAGMENTSS1");
+        kind[8] = SwapKind.Sell;
 
         _addOdosSwapLeafs(leafs, tokens, kind); 
 
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "WETH");
-        _addTellerLeafs(leafs, getAddress(sourceChain, "scETHTeller"), tellerAssets, false);
+        _addTellerLeafs(leafs, getAddress(sourceChain, "scETHTeller"), tellerAssets, false, false);
 
         // ========================== Silo ==========================
         address[] memory incentivesControllers = new address[](2); 
         incentivesControllers[0] = address(0);  
         incentivesControllers[0] = address(0);   
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_ETH_config"), incentivesControllers);
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_ETH_wstkscETH_config"), incentivesControllers);
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_ETH_wstkscETH_id26_config"), incentivesControllers);
 
         // ========================== Curve =========================
 
@@ -127,9 +129,10 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));
        
         // ========================== Merkl =========================
-        ERC20[] memory tokensToClaim = new ERC20[](2); 
+        ERC20[] memory tokensToClaim = new ERC20[](3); 
         tokensToClaim[0] = getERC20(sourceChain, "rEUL"); 
         tokensToClaim[1] = getERC20(sourceChain, "wS"); 
+        tokensToClaim[2] = getERC20(sourceChain, "BEETSFRAGMENTSS1"); 
         _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim); 
 
         // ========================== Verify =========================
