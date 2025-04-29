@@ -995,6 +995,7 @@ contract ChainValues {
         // Swell
         values[mainnet]["swellSimpleStaking"] = 0x38D43a6Cb8DA0E855A42fB6b0733A0498531d774.toBytes32();
         values[mainnet]["swEXIT"] = 0x48C11b86807627AF70a34662D4865cF854251663.toBytes32();
+        values[mainnet]["rswEXIT"] = 0x58749C46Ffe97e4d79508a2C781C440f4756f064.toBytes32();
         values[mainnet]["accessControlManager"] = 0x625087d72c762254a72CB22cC2ECa40da6b95EAC.toBytes32();
         values[mainnet]["depositManager"] = 0xb3D9cf8E163bbc840195a97E81F8A34E295B8f39.toBytes32();
 
