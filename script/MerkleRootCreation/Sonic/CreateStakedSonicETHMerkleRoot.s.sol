@@ -95,7 +95,7 @@ contract CreateStakedSonicETHMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "WETH");
-        _addTellerLeafs(leafs, getAddress(sourceChain, "scETHTeller"), tellerAssets, false, false);
+        _addTellerLeafs(leafs, getAddress(sourceChain, "scETHTeller"), tellerAssets, false, true);
 
         // ========================== Silo ==========================
         address[] memory incentivesControllers = new address[](2); 
