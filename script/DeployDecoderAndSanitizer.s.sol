@@ -117,7 +117,6 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         constructorArgs = abi.encode();
         deployer.deployContract("EtherFi Eigen Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
 
-
         vm.stopBroadcast();
     }
 }
