@@ -78,7 +78,6 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
         vm.createSelectFork("mainnet");
         setSourceChainName("mainnet"); 
-
     }
 
     function run() external {
