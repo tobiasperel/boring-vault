@@ -1866,6 +1866,7 @@ contract ChainValues {
         values[sonicMainnet]["BEETSFRAGMENTSS1"] = 0x3419966bC74fa8f951108d15b053bEd233974d3D.toBytes32();
         values[sonicMainnet]["CRV"] = 0x5Af79133999f7908953E94b7A5CF367740Ebee35.toBytes32();
         values[sonicMainnet]["frxUSD"] = 0x80Eede496655FB9047dd39d9f418d5483ED600df.toBytes32(); //also OFT
+        values[sonicMainnet]["UNI"] = 0x2fb960611bdC322A9a4A994252658Cae9fe2eeA1.toBytes32();
 
         values[sonicMainnet]["balancerVault"] = address(1).toBytes32();
         values[sonicMainnet]["vault"] = address(1).toBytes32();

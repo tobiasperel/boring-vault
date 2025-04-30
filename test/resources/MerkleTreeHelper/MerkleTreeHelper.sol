@@ -11902,7 +11902,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "claim(address,uint256,uint8,bytes32,uint256,bytes32[],bytes)",
             new address[](1),
-            string.concat("Claim ELX Airdrop"),
+            string.concat("Claim FLUID rewards"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
