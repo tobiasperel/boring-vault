@@ -8,7 +8,6 @@ import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {ManagerWithMerkleVerification} from "src/base/Roles/ManagerWithMerkleVerification.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 import "forge-std/Script.sol";
-
 /**
  *  source .env && forge script script/MerkleRootCreation/Berachain/CreateLiquidBeraBtcMerkleRoot.s.sol:CreateLiquidBeraBtcMerkleRoot --rpc-url $BERA_CHAIN_RPC_URL
  */
@@ -105,7 +104,7 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         address[] memory feeAssets = new address[](1); 
         feeAssets[0] = getAddress(sourceChain, "ETH"); //pay bridge fee in ETH
 
-        _addCrossChainTellerLeafs(leafs, eBTCTellerLZ, depositAssets, feeAssets);  
+        _addCrossChainTellerLeafs(leafs, eBTCTellerLZ, depositAssets, feeAssets, abi.encode(layerZeroMainnetEndpointId));  
         }
 
         // ========================== Verify ==========================

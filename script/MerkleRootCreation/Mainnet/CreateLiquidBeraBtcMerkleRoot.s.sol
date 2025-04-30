@@ -18,7 +18,7 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80;
     address public managerAddress = 0x603064caAf2e76C414C5f7b6667D118322d311E6;
     address public accountantAddress = 0xF44BD12956a0a87c2C20113DdFe1537A442526B5;
-    address public rawDataDecoderAndSanitizer = 0xf7301C2A56510814B88b024d7066b6B62acC704D;
+    address public rawDataDecoderAndSanitizer = 0x41b7EeccC3FCc97cd17DF890b4A155d5325a9153;
     
 
     function setUp() external {}
@@ -104,7 +104,7 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         address[] memory feeAssets = new address[](1); 
         feeAssets[0] = getAddress(sourceChain, "ETH"); //pay bridge fee in ETH
 
-        _addCrossChainTellerLeafs(leafs, eBTCTellerLZ, depositAssets, feeAssets);  
+        _addCrossChainTellerLeafs(leafs, eBTCTellerLZ, depositAssets, feeAssets, abi.encode(layerZeroBerachainEndpointId));  
         }
     
         // ========================== Verify ==========================
