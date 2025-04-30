@@ -85,7 +85,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Aave V3 ==========================
         setAddress(true, mainnet, "rawDataDecoderAndSanitizer", aaveV3DecoderAndSanitizer);
-        ERC20[] memory supplyAssets = new ERC20[](8);
+        ERC20[] memory supplyAssets = new ERC20[](10);
         supplyAssets[0] = getERC20(sourceChain, "USDC");
         supplyAssets[1] = getERC20(sourceChain, "USDT");
         supplyAssets[2] = getERC20(sourceChain, "DAI");
@@ -94,6 +94,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         supplyAssets[5] = getERC20(sourceChain, "SUSDE");
         supplyAssets[6] = getERC20(sourceChain, "USDS");
         supplyAssets[7] = getERC20(sourceChain, "pendle_sUSDe_05_28_25_pt");
+        supplyAssets[8] = getERC20(sourceChain, "pendle_sUSDe_07_30_25_pt");
+        supplyAssets[9] = getERC20(sourceChain, "pendle_eUSDe_05_28_25_pt");
         ERC20[] memory borrowAssets = new ERC20[](5);
         borrowAssets[0] = getERC20(sourceChain, "USDC");
         borrowAssets[1] = getERC20(sourceChain, "USDT");
@@ -172,6 +174,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_USDC_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_DAI_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "syrupUSDC_USDC_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "sUSDePT_07_30_25_DAI_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "sUSDePT_07_30_25_USDC_915"));
 
         // Borrowing
         // Collateral sUSDePT_03_27 Borrow DAI at 91.5 LLTV
@@ -179,6 +183,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_USDC_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_DAI_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "syrupUSDC_USDC_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT_07_30_25_DAI_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT_07_30_25_USDC_915"));
 
         // ========================== MetaMorpho ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseUSDCRWA")));
@@ -206,6 +212,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_05_28_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_wstUSR_market_03_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eUSDe_market_05_28_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_market_07_30_25"), true);
 
         // ========================== Ethena ==========================
         /**
@@ -305,8 +312,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
          * Swap PYUSD <-> FRAX
          * Swap PYUSD <-> crvUSD
          */
-        address[] memory assets = new address[](27);
-        SwapKind[] memory kind = new SwapKind[](27);
+        address[] memory assets = new address[](29);
+        SwapKind[] memory kind = new SwapKind[](29);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -363,6 +370,10 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         kind[25] = SwapKind.Sell;
         assets[26] = getAddress(sourceChain, "syrupUSDC");
         kind[26] = SwapKind.BuyAndSell;
+        assets[27] = getAddress(sourceChain, "syrupUSDT");
+        kind[27] = SwapKind.BuyAndSell;
+        assets[28] = getAddress(sourceChain, "SYRUP");
+        kind[28] = SwapKind.Sell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "PENDLE_wETH_30"));
