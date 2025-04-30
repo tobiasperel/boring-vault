@@ -95,11 +95,11 @@ abstract contract TellerDecoderAndSanitizer is BaseDecoderAndSanitizer {
             assembly {
                 // Allocate memory
                 let memPtr := mload(0x40)
-                // Copy 32 bytes from calldata starting at bridgeWildCard.offset into memory
                 calldatacopy(memPtr, bridgeWildCard.offset, 32)
-                // Load as 32-byte word and extract the rightmost 20 bytes
-                bridgeWildCard0 := shr(96, mload(memPtr))
+                bridgeWildCard0 := mload(memPtr)
             }
+
+            bridgeWildCard0 = address(uint160(bridgeWildCard0)); 
         }
     
         addressesFound = abi.encodePacked(depositAsset, to, bridgeWildCard0, feeToken); 

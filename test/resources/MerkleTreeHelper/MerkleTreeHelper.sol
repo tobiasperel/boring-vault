@@ -9684,8 +9684,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             assembly {
                 // Skip the 32-byte length prefix of memory arrays
                 let word := mload(add(destChain, 32))
-                destChain0 := shr(96, word)
+                destChain0 := word
             }
+            destChain0 = address(uint160(destChain0)); // cast outside assembly
         }
 
         for (uint256 i = 0; i < depositAssets.length; i++) {
