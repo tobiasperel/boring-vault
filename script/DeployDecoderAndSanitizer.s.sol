@@ -56,6 +56,7 @@ import {sBTCNDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/sBTCNDeco
 import {CamelotFullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/CamelotFullDecoderAndSanitizer.sol";
 import {EtherFiEigenDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiEigenDecoderAndSanitizer.sol";
 import {UnichainEtherFiLiquidEthDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/UnichainEtherFiLiquidEthDecoderAndSanitizer.sol";
+import {FullCorkDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ITB/cork/FullCorkDecoderAndSanitizer.sol";
 
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
