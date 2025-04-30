@@ -19,6 +19,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
     address public rawDataDecoderAndSanitizer = 0x3e33Ccb836281CBD37356dd066b3049b39422228;
     address public managerAddress = 0xcFF411d5C54FE0583A984beE1eF43a4776854B9A;
     address public accountantAddress = 0xc315D6e14DDCDC7407784e2Caf815d131Bc1D3E7;
+    address public drone = 0x3683fc2792F676BBAbc1B5555dE0DfAFee546e9a;
 
     //one offs
     address public symbioticDecoderAndSanitizer = 0xdaEfE2146908BAd73A1C45f75eB2B8E46935c781;
@@ -84,7 +85,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Aave V3 ==========================
         setAddress(true, mainnet, "rawDataDecoderAndSanitizer", aaveV3DecoderAndSanitizer);
-        ERC20[] memory supplyAssets = new ERC20[](7);
+        ERC20[] memory supplyAssets = new ERC20[](10);
         supplyAssets[0] = getERC20(sourceChain, "USDC");
         supplyAssets[1] = getERC20(sourceChain, "USDT");
         supplyAssets[2] = getERC20(sourceChain, "DAI");
@@ -92,6 +93,9 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         supplyAssets[4] = getERC20(sourceChain, "USDE");
         supplyAssets[5] = getERC20(sourceChain, "SUSDE");
         supplyAssets[6] = getERC20(sourceChain, "USDS");
+        supplyAssets[7] = getERC20(sourceChain, "pendle_sUSDe_05_28_25_pt");
+        supplyAssets[8] = getERC20(sourceChain, "pendle_sUSDe_07_30_25_pt");
+        supplyAssets[9] = getERC20(sourceChain, "pendle_eUSDe_05_28_25_pt");
         ERC20[] memory borrowAssets = new ERC20[](5);
         borrowAssets[0] = getERC20(sourceChain, "USDC");
         borrowAssets[1] = getERC20(sourceChain, "USDT");
@@ -170,6 +174,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_USDC_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_DAI_915"));
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "syrupUSDC_USDC_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "sUSDePT_07_30_25_DAI_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "sUSDePT_07_30_25_USDC_915"));
 
         // Borrowing
         // Collateral sUSDePT_03_27 Borrow DAI at 91.5 LLTV
@@ -177,6 +183,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_USDC_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "eUSDePT_05_28_25_DAI_915"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "syrupUSDC_USDC_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT_07_30_25_DAI_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "sUSDePT_07_30_25_USDC_915"));
 
         // ========================== MetaMorpho ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseUSDCRWA")));
@@ -204,6 +212,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_05_28_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_wstUSR_market_03_26_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eUSDe_market_05_28_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_market_07_30_25"), true);
 
         // ========================== Ethena ==========================
         /**
@@ -303,8 +312,8 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
          * Swap PYUSD <-> FRAX
          * Swap PYUSD <-> crvUSD
          */
-        address[] memory assets = new address[](27);
-        SwapKind[] memory kind = new SwapKind[](27);
+        address[] memory assets = new address[](29);
+        SwapKind[] memory kind = new SwapKind[](29);
         assets[0] = getAddress(sourceChain, "USDC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "USDT");
@@ -361,6 +370,10 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         kind[25] = SwapKind.Sell;
         assets[26] = getAddress(sourceChain, "syrupUSDC");
         kind[26] = SwapKind.BuyAndSell;
+        assets[27] = getAddress(sourceChain, "syrupUSDT");
+        kind[27] = SwapKind.BuyAndSell;
+        assets[28] = getAddress(sourceChain, "SYRUP");
+        kind[28] = SwapKind.Sell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
 
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "PENDLE_wETH_30"));
@@ -382,7 +395,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addLeafsFor1InchUniswapV3Swapping(leafs, getAddress(sourceChain, "PYUSD_USDC_01"));
 
         // ========================== Odos ==========================
-        _addOdosSwapLeafs(leafs, assets, kind); 
+        _addOdosSwapLeafs(leafs, assets, kind);
 
         // ========================== Curve Swapping ==========================
         /**
@@ -396,25 +409,30 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "USDC_RLUSD_Curve_Pool"));
 
         // ========================== Curve ==========================
-        _addCurveLeafs(leafs, getAddress(sourceChain, "USDC_RLUSD_Curve_Pool"), 2, getAddress(sourceChain, "USDC_RLUSD_Curve_Gauge")); 
+        _addCurveLeafs(
+            leafs,
+            getAddress(sourceChain, "USDC_RLUSD_Curve_Pool"),
+            2,
+            getAddress(sourceChain, "USDC_RLUSD_Curve_Gauge")
+        );
 
         // ========================== Resolv ==========================
-        _addAllResolvLeafs(leafs); 
+        _addAllResolvLeafs(leafs);
 
         // ========================== Ethena Withdraws ==========================
         _addEthenaSUSDeWithdrawLeafs(leafs);
 
         // ========================== eUSDe Deposits/Withdraws ==========================
-        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "EUSDE")));  
-         
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "EUSDE")));
+
         // ========================== Elixir Withdraws ==========================
         _addElixirSdeUSDWithdrawLeafs(leafs);
 
         // ========================== ELX Claiming ==========================
-        _addELXClaimingLeafs(leafs); 
+        _addELXClaimingLeafs(leafs);
 
         // ========================== Syrup ==========================
-        _addAllSyrupLeafs(leafs); 
+        _addAllSyrupLeafs(leafs);
 
         // ========================== Balancer ==========================
         _addBalancerLeafs(
@@ -758,6 +776,12 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
             target = 0x78Dbb5495044779562A584F133C2eca0B8e349ba;
             _addReclamationLeafs(leafs, target, reclamationDecoder);
         }
+
+        // ========================== Drone Transfers ==========================
+        ERC20[] memory localTokens = new ERC20[](1);
+        localTokens[0] = getERC20("mainnet", "USDT");
+
+        _addLeafsForDroneTransfers(leafs, drone, localTokens);
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 

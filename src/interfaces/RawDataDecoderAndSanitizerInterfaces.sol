@@ -116,3 +116,7 @@ interface IPoolRegistry {
 interface IBoringChef {
     function rewards(uint256 rewardId) external view returns (DecoderCustomTypes.Reward memory);
 }
+
+interface IDvStETHVault {
+    function underlyingTokens() external view returns (address[] memory); 
+}
