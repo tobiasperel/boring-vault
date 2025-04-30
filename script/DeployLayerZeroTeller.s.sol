@@ -7,6 +7,8 @@ import {ContractNames} from "resources/ContractNames.sol";
 import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
 import {LayerZeroTeller} from
     "src/base/Roles/CrossChain/Bridges/LayerZero/LayerZeroTeller.sol";
+import {LayerZeroTellerWithRateLimiting} from
+    "src/base/Roles/CrossChain/Bridges/LayerZero/LayerZeroTellerWithRateLimiting.sol";
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 
@@ -24,8 +26,8 @@ contract DeployLayerZeroTellerScript is Script, ContractNames {
     address internal deployerAddress = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d;
     address internal dev1Address = 0xf8553c8552f906C19286F21711721E206EE4909E;
     address internal weth = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
-    address internal boringVault = 0xD86fC1CaA0a5B82cC16B16B70DFC59F6f034C348;
-    address internal accountant = 0xB4703f17e3212E9959cC560e0592837292b14ECE;
+    address internal boringVault = 0x83599937c2C9bEA0E0E8ac096c6f32e86486b410;
+    address internal accountant = 0x04B8136820598A4e50bEe21b8b6a23fE25Df9Bd8;
     address internal lzEndPoint = 0x1a44076050125825900e736c501f859c50fE728c;
     address internal delegate = dev1Address; // I do not think we need this functionality, but for future use, setDelegate has a requires auth modifier so it can be changed.
 
@@ -40,10 +42,10 @@ contract DeployLayerZeroTellerScript is Script, ContractNames {
         vm.startBroadcast(privateKey);
 
         deployer = Deployer(deployerAddress);
-        creationCode = type(LayerZeroTeller).creationCode;
+        creationCode = type(LayerZeroTellerWithRateLimiting).creationCode;
         constructorArgs = abi.encode(dev1Address, boringVault, accountant, weth, lzEndPoint, delegate, address(0));
         layerZeroTeller = LayerZeroTeller(
-            deployer.deployContract("TAC Bitcoin LayerZero Teller V0.1", creationCode, constructorArgs, 0)
+            deployer.deployContract("liquidBeraETH LayerZero Teller V0.1", creationCode, constructorArgs, 0)
         );
 
         vm.stopBroadcast();

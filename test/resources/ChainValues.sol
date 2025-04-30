@@ -159,7 +159,13 @@ contract ChainValues {
         values[mainnet]["TurtleTACUSD"] = 0x699e04F98dE2Fc395a7dcBf36B48EC837A976490.toBytes32();
         values[mainnet]["TACTeller"] = 0xBbf9E8718D83CF67b568bfFd9d3034BfF02A0103.toBytes32();
         values[mainnet]["TACOnChainQueue"] = 0x699e04F98dE2Fc395a7dcBf36B48EC837A976490.toBytes32();
-        values[mainnet]["tacLBTCv"] = 0xD86fC1CaA0a5B82cC16B16B70DFC59F6f034C348.toBytes32(); 
+
+        values[mainnet]["TurtleTACBTCTeller"] = 0x7C75cbb851D321B2Ec8034D58A9B5075e991E584.toBytes32();
+        values[mainnet]["TurtleTACBTC"] = 0x6Bf340dB729d82af1F6443A0Ea0d79647b1c3DDf.toBytes32();
+        values[mainnet]["TurtleTACBTCQueue"] = 0x9A214cDD8967d7616cfaf7b92A10B2116a0c39A7.toBytes32();
+        values[mainnet]["TACLBTCvTeller"] = 0xAe499dAa7350b78746681931c47394eB7cC4Cf7F.toBytes32();
+        values[mainnet]["TACLBTCv"] = 0xD86fC1CaA0a5B82cC16B16B70DFC59F6f034C348.toBytes32();
+        values[mainnet]["TACLBTCvQueue"] = 0xa6F5Aa413DdF0Ca1c57102Dbe0Badb2233798007.toBytes32();
 
         // DeFi Ecosystem
         values[mainnet]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
@@ -286,6 +292,7 @@ contract ChainValues {
         values[mainnet]["sUSDC"] = 0xBc65ad17c5C0a2A4D159fa5a503f4992c7B545FE.toBytes32(); 
         values[mainnet]["frxUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
         values[mainnet]["sfrxUSD"] = 0xcf62F905562626CfcDD2261162a51fd02Fc9c5b6.toBytes32(); 
+        values[mainnet]["SYRUP"] = 0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66.toBytes32(); 
 
 
         // Rate providers
@@ -756,6 +763,8 @@ contract ChainValues {
         values[mainnet]["MCUSR_USDC_915"] = 0x3889dee51674c6e728f7d05f11a3407c6853e433a0e63f8febbc45887a26a475; 
         values[mainnet]["EBTC_PT06_26_25_LBTC_915"] = 0xdbabefcc4e7f2fce9b6dd3843df46a92b74819453cf2f92092542e43f68b40ea; 
         values[mainnet]["sdeUSD_USDC_915"] = 0x0f9563442d64ab3bd3bcb27058db0b0d4046a4c46f0acd811dacae9551d2b129; 
+        values[mainnet]["sUSDePT_07_30_25_DAI_915"] = 0xb81eaed0df42ff6646c8daf4fe38afab93b13b6a89c9750d08e705223a45e2ef; 
+        values[mainnet]["sUSDePT_07_30_25_USDC_915"] = 0xbc552f0b14dd6f8e60b760a534ac1d8613d3539153b4d9675d697e048f2edc7e; 
 
         // MetaMorpho
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();
@@ -867,7 +876,10 @@ contract ChainValues {
         values[mainnet]["pendle_USDe_karak_01_29_25"] = 0x6C06bBFa3B63eD344ceb3312Df795eDC8d29BDD5.toBytes32();
         values[mainnet]["pendle_USDe_03_26_25"] = 0xB451A36c8B6b2EAc77AD0737BA732818143A0E25.toBytes32();
         values[mainnet]["pendle_eUSDe_market_05_28_25"] = 0x85667e484a32d884010Cf16427D90049CCf46e97.toBytes32();
+        values[mainnet]["pendle_eUSDe_05_28_25_pt"] = 0x50D2C7992b802Eef16c04FeADAB310f31866a545.toBytes32();
         values[mainnet]["pendle_sUSDe_05_28_25"] = 0xB162B764044697cf03617C2EFbcB1f42e31E4766.toBytes32();
+        values[mainnet]["pendle_sUSDe_market_07_30_25"] = 0x4339Ffe2B7592Dc783ed13cCE310531aB366dEac.toBytes32();
+        values[mainnet]["pendle_sUSDe_07_30_25_pt"] = 0x3b3fB9C57858EF816833dC91565EFcd85D96f634.toBytes32();
 
         values[mainnet]["pendle_weETHs_market_08_28_24"] = 0xcAa8ABB72A75C623BECe1f4D5c218F425d47A0D0.toBytes32();
         values[mainnet]["pendle_weETHs_sy_08_28_24"] = 0x9e8f10574ACc2c62C6e5d19500CEd39163Da37A9.toBytes32();
@@ -995,6 +1007,7 @@ contract ChainValues {
         // Swell
         values[mainnet]["swellSimpleStaking"] = 0x38D43a6Cb8DA0E855A42fB6b0733A0498531d774.toBytes32();
         values[mainnet]["swEXIT"] = 0x48C11b86807627AF70a34662D4865cF854251663.toBytes32();
+        values[mainnet]["rswEXIT"] = 0x58749C46Ffe97e4d79508a2C781C440f4756f064.toBytes32();
         values[mainnet]["accessControlManager"] = 0x625087d72c762254a72CB22cC2ECa40da6b95EAC.toBytes32();
         values[mainnet]["depositManager"] = 0xb3D9cf8E163bbc840195a97E81F8A34E295B8f39.toBytes32();
 
@@ -1322,10 +1335,13 @@ contract ChainValues {
         values[mainnet]["derive_controller"] = 0x52CB41109b637F03B81b3FD6Dce4E3948b2F0923.toBytes32(); 
         values[mainnet]["derive_LBTC_connectorPlugOnDeriveChain"] = 0x2E1245D57a304C7314687E529D610071628117f3.toBytes32(); 
         //values[mainnet]["derive_boringTestVault_wallet"] = .toBytes32(); 
+        
+        // Mellow 
+        values[mainnet]["dvStETHVault"] = 0x5E362eb2c0706Bd1d134689eC75176018385430B.toBytes32(); 
        
         // King 
         values[mainnet]["kingMerkleDistributor"] = 0x6Db24Ee656843E3fE03eb8762a54D86186bA6B64.toBytes32(); 
-        
+
     }
 
     function _addBaseValues() private {
@@ -2143,9 +2159,13 @@ contract ChainValues {
         values[berachain]["iBGT"] = 0xac03CABA51e17c86c921E1f6CBFBdC91F8BB2E6b.toBytes32();
         values[berachain]["USDC"] = 0x549943e04f40284185054145c6E4e9568C1D3241.toBytes32(); 
         values[berachain]["srUSD"] = 0x5475611Dffb8ef4d697Ae39df9395513b6E947d7.toBytes32(); 
-        values[berachain]["solvBTC"] = 0x541FD749419CA806a8bc7da8ac23D346f2dF8B77.toBytes32(); 
+        values[berachain]["solvBTC"] = 0x541FD749419CA806a8bc7da8ac23D346f2dF8B77.toBytes32();
+        values[berachain]["HONEY"] = 0xFCBD14DC51f0A4d49d5E53C2E0950e0bC26d0Dce.toBytes32();
+        values[berachain]["ZRO"] = address(1).toBytes32();
+        values[berachain]["rUSD"] = 0x09D4214C03D01F49544C0448DBE3A27f768F2b34.toBytes32();
+        values[berachain]["USDT"] = 0x779Ded0c9e1022225f8E0630b35a9b54bE713736.toBytes32(); // USDT0
 
-
+        // Balancer
         values[berachain]["balancerVault"] = address(1).toBytes32();
         values[berachain]["vault"] = address(1).toBytes32();
 
@@ -2166,14 +2186,13 @@ contract ChainValues {
         values[berachain]["kodiak_island_EBTC_WBTC_005%"] = 0xfC4994e0A4780ba7536d7e79611468B6bde14CaE.toBytes32();
         values[berachain]["kodiak_island_beraETH_WEETH_005%"] = 0x2f8C651E2F576C8c4B6DE3c32210d9b4A4461d5c.toBytes32();
         values[berachain]["kodiak_island_WBTC_solvBTC_005%"] = 0x3879451f4f69F0c2d37CaD45319cFf2E7d29C596.toBytes32();
+        values[berachain]["kodiak_island_rUSD_HONEY_005%"] = 0x7fd165B73775884a38AA8f2B384A53A3Ca7400E6.toBytes32();
 
         // Infrared
         values[berachain]["infrared_vault_wbtc_solvbtc"] = 0x5969494e13E8FA51f8223152A86f14C02860AFD3.toBytes32();
-
-
-        // Infrared
         values[berachain]["infrared_vault_wbtc_ebtc"] = 0x5C5FCb568a98DA28C9D2DF4852b102aa814c3a4c.toBytes32();
         values[berachain]["infrared_vault_weth_weeth"] = 0x16ed36cB22b298085d10b119030408C7BbfFC24E.toBytes32();
+        values[berachain]["infrared_vault_rUSD_honey"] = 0x1C5879B75be9E817B1607AFb6f24F632eE6F8820.toBytes32();
 
         // Dolomite
         values[berachain]["dolomiteMargin"] = 0x003Ca23Fd5F0ca87D01F6eC6CD14A8AE60c2b97D.toBytes32();
@@ -2191,7 +2210,10 @@ contract ChainValues {
         values[berachain]["goldivault_eBTC"] = 0x0c3F856b93d6D7B46C76296f073A1357738d238C.toBytes32();
         
         // Tellers
-        values[berachain]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32(); 
+        values[berachain]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32();
+
+        // Queues
+        values[berachain]["eBTCQueue"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32();
 
         // dTokens
         values[berachain]["dWETH"] = 0xf7b5127B510E568fdC39e6Bb54e2081BFaD489AF.toBytes32();
@@ -2219,6 +2241,9 @@ contract ChainValues {
         // Ooga Booga 
         values[berachain]["OBRouter"] = 0xFd88aD4849BA0F729D6fF4bC27Ff948Ab1Ac3dE7.toBytes32();
         values[berachain]["OBExecutor"] = 0x2242B1c1B429c799D5584dC4B59732fb6B1A6BE6.toBytes32();
+
+        // Honey
+        values[berachain]["honeyFactory"] = 0xA4aFef880F5cE1f63c9fb48F661E27F8B4216401.toBytes32();
 
     }
 
