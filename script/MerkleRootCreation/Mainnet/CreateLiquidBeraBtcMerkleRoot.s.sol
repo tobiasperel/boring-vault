@@ -17,7 +17,7 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
 
     address public boringVault = 0xC673ef7791724f0dcca38adB47Fbb3AEF3DB6C80;
     address public managerAddress = 0x603064caAf2e76C414C5f7b6667D118322d311E6;
-    address public accountant = 0xF44BD12956a0a87c2C20113DdFe1537A442526B5;
+    address public accountantAddress = 0xF44BD12956a0a87c2C20113DdFe1537A442526B5;
     address public rawDataDecoderAndSanitizer = 0xf7301C2A56510814B88b024d7066b6B62acC704D;
     
 
@@ -38,7 +38,7 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](64);
+        ManageLeaf[] memory leafs = new ManageLeaf[](128);
 
         // ========================== 1inch ==========================
         address[] memory assets = new address[](4);
@@ -81,16 +81,16 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Fee Claiming ==========================
         { 
         ERC20[] memory feeAssets = new ERC20[](4); 
-        fee[0] = getERC20(sourceChain, "WBTC");
-        fee[1] = getERC20(sourceChain, "LBTC");
-        fee[2] = getERC20(sourceChain, "cbBTC");
-        fee[3] = getERC20(sourceChain, "eBTC");
-        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountant"), feeAssets, true);  
+        feeAssets[0] = getERC20(sourceChain, "WBTC");
+        feeAssets[1] = getERC20(sourceChain, "LBTC");
+        feeAssets[2] = getERC20(sourceChain, "cbBTC");
+        feeAssets[3] = getERC20(sourceChain, "eBTC");
+        _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true);  
         }
 
         // ========================== LayerZero ==========================
-        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "WBTC"), getAddress(sourceChain, "WBTCOFTAdapter"), layerZeroBerachainEndpointId);   
-        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "LBTC"), getAddress(sourceChain, "LBTCOFTAdapter"), layerZeroBerachainEndpointId);   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "WBTC"), getAddress(sourceChain, "WBTCOFTAdapter"), layerZeroBerachainEndpointId, getBytes32(sourceChain, "boringVault"));   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "LBTC"), getAddress(sourceChain, "LBTCOFTAdapter"), layerZeroBerachainEndpointId, getBytes32(sourceChain, "boringVault"));   
 
         // ========================== Crosschain Teller ==========================
         {
@@ -104,7 +104,7 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         address[] memory feeAssets = new address[](1); 
         feeAssets[0] = getAddress(sourceChain, "ETH"); //pay bridge fee in ETH
 
-        _addCrossChainTellerLeafs(leafs, eBTCTellerLZ, tellerAssets, feeAssets);  
+        _addCrossChainTellerLeafs(leafs, eBTCTellerLZ, depositAssets, feeAssets);  
         }
     
         // ========================== Verify ==========================
