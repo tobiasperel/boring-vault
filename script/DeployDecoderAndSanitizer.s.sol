@@ -56,7 +56,7 @@ import {sBTCNDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/sBTCNDeco
 import {CamelotFullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/CamelotFullDecoderAndSanitizer.sol";
 import {EtherFiEigenDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiEigenDecoderAndSanitizer.sol";
 import {UnichainEtherFiLiquidEthDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/UnichainEtherFiLiquidEthDecoderAndSanitizer.sol";
-
+import {LiquidBeraEthBerachainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidBeraEthBerachainDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -76,8 +76,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
 
-        vm.createSelectFork("mainnet");
-        setSourceChainName("mainnet"); 
+        vm.createSelectFork("berachain");
+        setSourceChainName("berachain"); 
 
     }
 
@@ -113,9 +113,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(getAddress(sourceChain, "camelotNonFungiblePositionManager"));
         //deployer.deployContract("Camelot Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
-        creationCode = type(LiquidBeraEthDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "recipeMarketHub"), getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("LiquidBeraETH Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+        creationCode = type(LiquidBeraEthBerachainDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(address(0));
+        deployer.deployContract("LiquidBeraETH Berachain Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
 
         vm.stopBroadcast();

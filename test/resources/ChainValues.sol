@@ -2201,7 +2201,8 @@ contract ChainValues {
         values[berachain]["goldivault_eBTC"] = 0x0c3F856b93d6D7B46C76296f073A1357738d238C.toBytes32();
         
         // Tellers
-        values[berachain]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32(); 
+        values[berachain]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32();
+        values[berachain]["primeLiquidBeraETHTeller"] = 0xB745B293468df7B06330472fBCee5412FF44750B.toBytes32();
 
         // dTokens
         values[berachain]["dWETH"] = 0xf7b5127B510E568fdC39e6Bb54e2081BFaD489AF.toBytes32();
@@ -2221,6 +2222,7 @@ contract ChainValues {
         // Stargate
         values[berachain]["stargateUSDC"] = 0xAF54BE5B6eEc24d6BFACf1cce4eaF680A8239398.toBytes32();
         values[berachain]["stargatesrUSD"] = 0x5475611Dffb8ef4d697Ae39df9395513b6E947d7.toBytes32();
+        values[berachain]["stargateWETH"] = 0x45f1A95A4D3f3836523F5c83673c797f4d4d263B.toBytes32();
 
 
         // BGT Reward Vaults
@@ -2229,6 +2231,9 @@ contract ChainValues {
         // Ooga Booga 
         values[berachain]["OBRouter"] = 0xFd88aD4849BA0F729D6fF4bC27Ff948Ab1Ac3dE7.toBytes32();
         values[berachain]["OBExecutor"] = 0x2242B1c1B429c799D5584dC4B59732fb6B1A6BE6.toBytes32();
+
+        // Royco
+        values[berachain]["roycoDepositExecutor"] = 0xEC1F64Cd852c65A22bCaA778b2ed76Bc5502645C.toBytes32();
 
     }
 
