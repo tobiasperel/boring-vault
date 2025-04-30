@@ -16,6 +16,7 @@ abstract contract BeraborrowDecoderAndSanitizer is BaseDecoderAndSanitizer {
     }
 
     function adjustDenVault(DecoderCustomTypes.AdjustDenVaultParams memory params) external pure virtual returns (bytes memory addressesFound) {
+        if (params._preDeposit.length > 0) revert BeraborrowDecoderAndSanitizer__PredepositLengthGtZero(); 
         addressesFound = abi.encodePacked(params.denManager, params.collVault); 
     }
 
