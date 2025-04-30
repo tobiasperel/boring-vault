@@ -45,7 +45,8 @@ contract CrossChainTellerIntegration is BaseTestIntegration {
             leafs, 
             getAddress(sourceChain, "eBTCTeller"),
             depositAssets,
-            feeAssets
+            feeAssets,
+            abi.encode(layerZeroBaseEndpointId)
         ); 
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);

@@ -63,8 +63,21 @@ abstract contract TellerDecoderAndSanitizer is BaseDecoderAndSanitizer {
 
 
     // CrossChainTellerWithGenericBridge.sol
-    function bridge(uint96 /*shareAmount*/, address to, bytes calldata /*bridgeWildCard*/, address feeToken, uint256 /*maxFee*/) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(to, feeToken); 
+    function bridge(uint96 /*shareAmount*/, address to, bytes calldata bridgeWildCard, address feeToken, uint256 /*maxFee*/) external pure virtual returns (bytes memory addressesFound) {
+        address bridgeWildCard0;
+    
+        if (bridgeWildCard.length >= 20) {
+            assembly {
+                // Allocate memory
+                let memPtr := mload(0x40)
+                // Copy 32 bytes from calldata starting at bridgeWildCard.offset into memory
+                calldatacopy(memPtr, bridgeWildCard.offset, 32)
+                // Load as 32-byte word and extract the rightmost 20 bytes
+                bridgeWildCard0 := shr(96, mload(memPtr))
+            }
+        }
+
+        addressesFound = abi.encodePacked(to, bridgeWildCard0, feeToken); 
     } 
 
     function depositAndBridge(
@@ -72,10 +85,23 @@ abstract contract TellerDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 /*depositAmount*/,
         uint256 /*minimumMint*/,
         address to,
-        bytes calldata /*bridgeWildCard*/,
+        bytes calldata bridgeWildCard,
         address feeToken,
         uint256 /*maxFee*/
     ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(depositAsset, to, feeToken); 
+        address bridgeWildCard0;
+    
+        if (bridgeWildCard.length >= 20) {
+            assembly {
+                // Allocate memory
+                let memPtr := mload(0x40)
+                // Copy 32 bytes from calldata starting at bridgeWildCard.offset into memory
+                calldatacopy(memPtr, bridgeWildCard.offset, 32)
+                // Load as 32-byte word and extract the rightmost 20 bytes
+                bridgeWildCard0 := shr(96, mload(memPtr))
+            }
+        }
+    
+        addressesFound = abi.encodePacked(depositAsset, to, bridgeWildCard0, feeToken); 
     }
 }

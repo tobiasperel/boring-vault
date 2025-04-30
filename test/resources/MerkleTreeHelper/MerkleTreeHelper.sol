@@ -9624,7 +9624,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
     // ========================================= CrossChain Teller =========================================
     
-    function _addCrossChainTellerLeafs(ManageLeaf[] memory leafs, address teller, address[] memory depositAssets, address[] memory feeAssets) internal {
+    function _addCrossChainTellerLeafs(ManageLeaf[] memory leafs, address teller, address[] memory depositAssets, address[] memory feeAssets, bytes memory destChain) internal {
 
         address boringVault = ITeller(teller).vault(); 
 
@@ -9674,6 +9674,20 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             leafs[leafIndex].argumentAddresses[0] = boringVault; 
         }
 
+
+        // Extract first 16 bytes and convert to address
+        require(destChain.length == 32, "Invalid input length");
+
+        address destChain0;
+
+        if (destChain.length >= 20) {
+            assembly {
+                // Skip the 32-byte length prefix of memory arrays
+                let word := mload(add(destChain, 32))
+                destChain0 := shr(96, word)
+            }
+        }
+
         for (uint256 i = 0; i < depositAssets.length; i++) {
             for (uint256 j = 0; j < feeAssets.length; j++) {
                 
@@ -9685,13 +9699,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         teller,
                         true,
                         "depositAndBridge(address,uint256,uint256,address,bytes,address,uint256)",
-                        new address[](3),
+                        new address[](4),
                         string.concat("Deposit and bridge ", ERC20(depositAssets[i]).symbol(), " with ETH as fee"),
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
                     leafs[leafIndex].argumentAddresses[0] = depositAssets[i]; 
                     leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
-                    leafs[leafIndex].argumentAddresses[2] = feeAssets[j]; 
+                    leafs[leafIndex].argumentAddresses[2] = destChain0; 
+                    leafs[leafIndex].argumentAddresses[3] = feeAssets[j]; 
                 } else {
 
                     unchecked {
@@ -9701,13 +9716,14 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                         teller,
                         false,
                         "depositAndBridge(address,uint256,uint256,address,bytes,address,uint256)",
-                        new address[](3),
+                        new address[](4),
                         string.concat("Deposit and bridge ", ERC20(depositAssets[i]).symbol(), " with ", ERC20(feeAssets[j]).symbol(), " as fee"),
                         getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                     );
                     leafs[leafIndex].argumentAddresses[0] = depositAssets[i]; 
                     leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
-                    leafs[leafIndex].argumentAddresses[2] = feeAssets[j]; 
+                    leafs[leafIndex].argumentAddresses[2] = destChain0; 
+                    leafs[leafIndex].argumentAddresses[3] = feeAssets[j]; 
                 }
             }
         }
@@ -9722,12 +9738,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     teller,
                     true,
                     "bridge(uint96,address,bytes,address,uint256)",
-                    new address[](2),
+                    new address[](3),
                     string.concat("Bridge ", ERC20(ITeller(teller).vault()).symbol(), " with ETH as fee"),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
-                leafs[leafIndex].argumentAddresses[1] = feeAssets[i]; 
+                leafs[leafIndex].argumentAddresses[1] = destChain0; 
+                leafs[leafIndex].argumentAddresses[2] = feeAssets[i]; 
             } else {
 
                 unchecked {
@@ -9737,12 +9754,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                     teller,
                     false,
                     "bridge(uint96,address,bytes,address,uint256)",
-                    new address[](2),
+                    new address[](4),
                     string.concat("Bridge ", ERC20(ITeller(teller).vault()).symbol(), " with ", ERC20(feeAssets[i]).symbol(), " as fee"),
                     getAddress(sourceChain, "rawDataDecoderAndSanitizer")
                 );
                 leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
-                leafs[leafIndex].argumentAddresses[1] = feeAssets[i]; 
+                leafs[leafIndex].argumentAddresses[1] = destChain0; 
+                leafs[leafIndex].argumentAddresses[2] = feeAssets[i]; 
             }
         }
     }
