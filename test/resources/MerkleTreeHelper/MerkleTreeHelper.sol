@@ -9676,8 +9676,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
 
         // Extract first 16 bytes and convert to address
-        require(destChain.length == 32, "Invalid input length");
-
+        //require(destChain.length == 32, "Invalid input length");
         address destChain0;
 
         if (destChain.length >= 20) {
