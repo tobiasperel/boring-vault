@@ -11,18 +11,18 @@
             "Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"
         ],
         "LeafCount": 38,
-u        "ManageRoot": "0xef355492b72fb16c99597552bd318bb77dc6bc054d63cf26efbe20cc5aa8da3f",
-         "ManagerAddress": "0x603064caAf2e76C414C5f7b6667D118322d311E6",
-}        "TreeCapacity": 64
-l    },
-     "leafs": [
-         {
-             "AddressArguments": ["0x1111111254EEB25477B68fb85Ed929f73A960582"],
-             "CanSendValue": false,
-             "DecoderAndSanitizerAddress": "0xf7301C2A56510814B88b024d7066b6B62acC704D",
-             "Description": "Approve 1Inch router to spend WBTC",
-)            "FunctionSelector": "0x095ea7b3",
-l            "FunctionSignature": "approve(address,uint256)",
+        "ManageRoot": "0xef355492b72fb16c99597552bd318bb77dc6bc054d63cf26efbe20cc5aa8da3f",
+        "ManagerAddress": "0x603064caAf2e76C414C5f7b6667D118322d311E6",
+        "TreeCapacity": 64
+    },
+    "leafs": [
+        {
+            "AddressArguments": ["0x1111111254EEB25477B68fb85Ed929f73A960582"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0xf7301C2A56510814B88b024d7066b6B62acC704D",
+            "Description": "Approve 1Inch router to spend WBTC",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
             "LeafDigest": "0x4dfa5905d6d2d7d3a287116b8c96805f5853bbbf583428d12c845d6b6591f5c4",
             "PackedArgumentAddresses": "0x1111111254eeb25477b68fb85ed929f73a960582",
             "TargetAddress": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"

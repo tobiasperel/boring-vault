@@ -51,7 +51,7 @@ contract CrossChainTellerIntegration is BaseTestIntegration {
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
         //generate test json 
-        _generateTestLeafs(leafs, manageTree); 
+        //_generateTestLeafs(leafs, manageTree); 
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
         
@@ -91,6 +91,67 @@ contract CrossChainTellerIntegration is BaseTestIntegration {
         tx_.values[2] = 30819757242215; 
         
         _submitManagerCall(manageProofs, tx_); 
-
     }
+
+    function testCrossChainDepositAndBridgePayETH2() external {
+        _setUpMainnet(); 
+
+        deal(getAddress(sourceChain, "eBTC"), address(boringVault), 1e8); 
+        deal(address(boringVault), 10e18); 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](64);
+        
+        address[] memory depositAssets = new address[](3); 
+        depositAssets[0] = getAddress(sourceChain, "LBTC"); 
+        depositAssets[1] = getAddress(sourceChain, "WBTC"); 
+        depositAssets[2] = getAddress(sourceChain, "cbBTC"); 
+
+        address[] memory feeAssets = new address[](1); 
+        feeAssets[0] = getAddress(sourceChain, "ETH"); 
+
+        _addCrossChainTellerLeafs(
+            leafs, 
+            getAddress(sourceChain, "eBTCTeller"),
+            depositAssets,
+            feeAssets
+        ); 
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //generate test json 
+        _generateTestLeafs(leafs, manageTree); 
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+        
+        Tx memory tx_ = _getTxArrays(2); 
+
+        tx_.manageLeafs[0] = leafs[0]; //approve eBTC
+        tx_.manageLeafs[1] = leafs[7]; //depositAndBridge w/ ETH as fee
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+        
+        //targets
+        tx_.targets[0] = getAddress(sourceChain, "EBTC"); //approve eBTC to be spent by teller
+        tx_.targets[1] = getAddress(sourceChain, "eBTCTeller"); //bridge shares (eBTC)
+       
+
+        tx_.targetData[0] = abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "eBTCTeller"), type(uint256).max); 
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "bridge(uint96,address,bytes,address,uint256)",
+            0.25e8,
+            address(boringVault),
+            abi.encode(layerZeroBaseEndpointId),
+            getAddress(sourceChain, "ETH"),
+            1e18          
+        ); 
+        
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer; 
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer; 
+
+        tx_.values[0] = 0; 
+        tx_.values[1] = 30819757242215; 
+        
+        _submitManagerCall(manageProofs, tx_); 
+    }
+
 }
