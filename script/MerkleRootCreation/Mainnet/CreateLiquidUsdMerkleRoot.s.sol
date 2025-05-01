@@ -810,6 +810,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
     }
 
     function _addLeafsForDrone(ManageLeaf[] memory leafs) internal {
+        setAddress(false, mainnet, "boringVault", drone);
         uint256 droneStartIndex = leafIndex + 1;
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eUSDe_market_05_28_25"), true);
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_05_28_25"), true);
@@ -845,7 +846,14 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Odos ==========================
         _addOdosSwapLeafs(leafs, droneAssets, droneKind);
 
+        // ========================== Balancer ==========================
+        _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "USDC"));
+        _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "USDT"));
+        _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "DAI"));
+        _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "USDS"));
+
         _createDroneLeafs(leafs, drone, droneStartIndex, leafIndex + 1);
+        setAddress(false, mainnet, "boringVault", boringVault);
     }
 
     function _addLeafsForITBPositionManager(
