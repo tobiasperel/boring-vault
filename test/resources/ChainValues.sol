@@ -2159,11 +2159,13 @@ contract ChainValues {
         values[berachain]["iBGT"] = 0xac03CABA51e17c86c921E1f6CBFBdC91F8BB2E6b.toBytes32();
         values[berachain]["USDC"] = 0x549943e04f40284185054145c6E4e9568C1D3241.toBytes32(); 
         values[berachain]["srUSD"] = 0x5475611Dffb8ef4d697Ae39df9395513b6E947d7.toBytes32(); 
+        values[berachain]["NECT"] = 0x1cE0a25D13CE4d52071aE7e02Cf1F6606F4C79d3.toBytes32(); 
         values[berachain]["solvBTC"] = 0x541FD749419CA806a8bc7da8ac23D346f2dF8B77.toBytes32();
         values[berachain]["HONEY"] = 0xFCBD14DC51f0A4d49d5E53C2E0950e0bC26d0Dce.toBytes32();
         values[berachain]["ZRO"] = address(1).toBytes32();
         values[berachain]["rUSD"] = 0x09D4214C03D01F49544C0448DBE3A27f768F2b34.toBytes32();
         values[berachain]["USDT"] = 0x779Ded0c9e1022225f8E0630b35a9b54bE713736.toBytes32(); // USDT0
+
 
         // Balancer
         values[berachain]["balancerVault"] = address(1).toBytes32();
@@ -2234,7 +2236,6 @@ contract ChainValues {
         values[berachain]["stargateUSDC"] = 0xAF54BE5B6eEc24d6BFACf1cce4eaF680A8239398.toBytes32();
         values[berachain]["stargatesrUSD"] = 0x5475611Dffb8ef4d697Ae39df9395513b6E947d7.toBytes32();
 
-
         // BGT Reward Vaults
         values[berachain]["WBERA_HONEY_reward_vault"] = 0xC2BaA8443cDA8EBE51a640905A8E6bc4e1f9872c.toBytes32();
         
@@ -2242,8 +2243,14 @@ contract ChainValues {
         values[berachain]["OBRouter"] = 0xFd88aD4849BA0F729D6fF4bC27Ff948Ab1Ac3dE7.toBytes32();
         values[berachain]["OBExecutor"] = 0x2242B1c1B429c799D5584dC4B59732fb6B1A6BE6.toBytes32();
 
+        // Beraborrow
+        values[berachain]["collVaultRouter"] = 0x5f1619FfAEfdE17F7e54f850fe90AD5EE44dbf47.toBytes32();
+        values[berachain]["bWETH"] = 0x6Ddbc255bFfD2D394F3b31c543283c01D69D4Ba2.toBytes32();
+        values[berachain]["WETHDenManager"] = 0xD80AB5da2507008c8ede90648407BE098F1F1521.toBytes32();
+
         // Honey
         values[berachain]["honeyFactory"] = 0xA4aFef880F5cE1f63c9fb48F661E27F8B4216401.toBytes32();
+
 
     }
 

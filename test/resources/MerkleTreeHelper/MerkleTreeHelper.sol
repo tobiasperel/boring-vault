@@ -10148,6 +10148,104 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
+
+    // ========================================= Beraborrow =========================================
+    function _addBeraborrowLeafs(ManageLeaf[] memory leafs, address[] memory collateralVaultAssets, address[] memory denManagers, bool addNative) internal {
+        
+        //approve NCTR once
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "NECT"),
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve Beraborrow CollVaultRouter to spend NECT"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "collVaultRouter");
+        
+       require(collateralVaultAssets.length == denManagers.length, "beraborrow: length mismatch");  
+
+        for (uint256 i = 0; i < collateralVaultAssets.length; i++) {
+            address asset = address(ERC4626(collateralVaultAssets[i]).asset()); 
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                asset,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve Beraborrow CollVaultRouter to spend ", ERC20(asset).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "collVaultRouter");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "collVaultRouter"),
+                false,
+                "openDenVault((address,address,uint256,uint256,uint256,address,address,uint256,uint256,bytes))",
+                new address[](2),
+                string.concat("Open Den Vault with ", ERC20(collateralVaultAssets[i]).symbol(), " as collateral"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = denManagers[i]; 
+            leafs[leafIndex].argumentAddresses[1] = collateralVaultAssets[i]; 
+
+            if (addNative) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "collVaultRouter"),
+                    true,
+                    "openDenVault((address,address,uint256,uint256,uint256,address,address,uint256,uint256,bytes))",
+                    new address[](2),
+                    string.concat("Open Den Vault with ", ERC20(collateralVaultAssets[i]).symbol(), " as collateral"),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = denManagers[i]; 
+                leafs[leafIndex].argumentAddresses[1] = collateralVaultAssets[i]; 
+            }
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "collVaultRouter"),
+                false,
+                "adjustDenVault((address,address,uint256,uint256,uint256,uint256,bool,address,address,bool,uint256,uint256,uint256,bytes))",
+                new address[](2),
+                string.concat("Adjust Den Vault ", ERC20(collateralVaultAssets[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = denManagers[i]; 
+            leafs[leafIndex].argumentAddresses[1] = collateralVaultAssets[i]; 
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "collVaultRouter"),
+                false,
+                "closeDenVault(address,address,uint256,uint256,bool)",
+                new address[](2),
+                string.concat("Close Den Vault ", ERC20(collateralVaultAssets[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = denManagers[i]; 
+            leafs[leafIndex].argumentAddresses[1] = collateralVaultAssets[i]; 
+            
+        }
+            
+    }  
+
     // ========================================= Dolomite Finance =========================================
 
     function _addDolomiteDepositLeafs(ManageLeaf[] memory leafs, address token, bool addNative) internal {
