@@ -57,6 +57,8 @@ import {CamelotFullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Cam
 import {EtherFiEigenDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiEigenDecoderAndSanitizer.sol";
 import {UnichainEtherFiLiquidEthDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/UnichainEtherFiLiquidEthDecoderAndSanitizer.sol";
 import {LiquidBeraEthBerachainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidBeraEthBerachainDecoderAndSanitizer.sol";
+import {FullCorkDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ITB/cork/FullCorkDecoderAndSanitizer.sol";
+
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -76,9 +78,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
 
-        vm.createSelectFork("berachain");
-        setSourceChainName("berachain"); 
-
+        vm.createSelectFork("mainnet");
+        setSourceChainName("mainnet"); 
     }
 
     function run() external {
@@ -116,7 +117,6 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         creationCode = type(LiquidBeraEthBerachainDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(address(0));
         deployer.deployContract("LiquidBeraETH Berachain Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
-
 
         vm.stopBroadcast();
     }
