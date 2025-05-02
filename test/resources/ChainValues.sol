@@ -1983,7 +1983,7 @@ contract ChainValues {
 
         // Odos
         values[sonicMainnet]["odosRouterV2"] = 0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D.toBytes32();
-        values[sonicMainnet]["odosExecutor"] = 0xECDfcB1dD81d07c3551CbA94023EE443450353E1.toBytes32();
+        values[sonicMainnet]["odosExecutor"] = 0xBDfF6F2290b2C9B373E9D90f1ebF67e9653dA051.toBytes32();
 
         // Aave
         values[sonicMainnet]["v3Pool"] = 0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3.toBytes32();
