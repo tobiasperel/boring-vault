@@ -1157,7 +1157,8 @@ contract ChainValues {
         // Stargate OFTs
         values[mainnet]["stargateUSDC"] = 0xc026395860Db2d07ee33e05fE50ed7bD583189C7.toBytes32();
         values[mainnet]["stargateSolvBTC"] = 0xB12979Ff302Ac903849948037A51792cF7186E8e.toBytes32(); 
-        values[mainnet]["stargatesrUSD"] = 0x316cd39632Cac4F4CdfC21757c4500FE12f64514.toBytes32(); 
+        values[mainnet]["stargatesrUSD"] = 0x316cd39632Cac4F4CdfC21757c4500FE12f64514.toBytes32();
+        values[mainnet]["stargateNative"] = 0x77b2043768d28E9C9aB44E1aBfC95944bcE57931.toBytes32();
 
         // Merkl
         values[mainnet]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
@@ -2213,6 +2214,7 @@ contract ChainValues {
         
         // Tellers
         values[berachain]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32();
+        values[berachain]["primeLiquidBeraETHTeller"] = 0xB745B293468df7B06330472fBCee5412FF44750B.toBytes32();
 
         // Queues
         values[berachain]["eBTCQueue"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32();
@@ -2235,6 +2237,7 @@ contract ChainValues {
         // Stargate
         values[berachain]["stargateUSDC"] = 0xAF54BE5B6eEc24d6BFACf1cce4eaF680A8239398.toBytes32();
         values[berachain]["stargatesrUSD"] = 0x5475611Dffb8ef4d697Ae39df9395513b6E947d7.toBytes32();
+        values[berachain]["stargateWETH"] = 0x45f1A95A4D3f3836523F5c83673c797f4d4d263B.toBytes32();
 
         // BGT Reward Vaults
         values[berachain]["WBERA_HONEY_reward_vault"] = 0xC2BaA8443cDA8EBE51a640905A8E6bc4e1f9872c.toBytes32();
@@ -2242,6 +2245,9 @@ contract ChainValues {
         // Ooga Booga 
         values[berachain]["OBRouter"] = 0xFd88aD4849BA0F729D6fF4bC27Ff948Ab1Ac3dE7.toBytes32();
         values[berachain]["OBExecutor"] = 0x2242B1c1B429c799D5584dC4B59732fb6B1A6BE6.toBytes32();
+
+        // Royco
+        values[berachain]["roycoDepositExecutor"] = 0xEC1F64Cd852c65A22bCaA778b2ed76Bc5502645C.toBytes32();
 
         // Beraborrow
         values[berachain]["collVaultRouter"] = 0x5f1619FfAEfdE17F7e54f850fe90AD5EE44dbf47.toBytes32();

@@ -7265,6 +7265,24 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
     }
 
+    function _addLayerZeroLeafNative(ManageLeaf[] memory leafs, address oftAdapter, uint32 endpoint, bytes32 to) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            oftAdapter,
+            true,
+            "send((uint32,bytes32,uint256,uint256,bytes,bytes,bytes),(uint256,uint256),address)",
+            new address[](4),
+            string.concat("Bridge Native Asset to LayerZero endpoint: ", vm.toString(endpoint)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(uint160(endpoint));
+        leafs[leafIndex].argumentAddresses[1] = address(bytes20(bytes16(to)));
+        leafs[leafIndex].argumentAddresses[2] = address(bytes20(bytes16(to << 128)));
+        leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+    }
+
     // ========================================= Compound V3 =========================================
 
     function _addCompoundV3Leafs(
@@ -8616,6 +8634,23 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[2] = fundingVault;
         for (uint256 i = 0; i < incentivesRequested.length; i++) {
             leafs[leafIndex].argumentAddresses[3 + i] = incentivesRequested[i];
+        }
+    }
+
+    function _addRoycoWithdrawMerkleDepositLeafs(ManageLeaf[] memory leafs, address[] memory weirollWallets) internal {
+        for (uint256 i; i < weirollWallets.length; i++) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "roycoDepositExecutor"),
+                false,
+                "withdrawMerkleDeposit(address,uint256,uint256,bytes32[])",
+                new address[](1),
+                string.concat("Withdraw Weiroll deposit from ", vm.toString(weirollWallets[i])),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = weirollWallets[i];
         }
     }
 
