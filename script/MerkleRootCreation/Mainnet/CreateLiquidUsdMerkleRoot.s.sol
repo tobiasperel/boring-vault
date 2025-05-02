@@ -48,7 +48,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
     function generateMiniLiquidUsdStrategistMerkleRoot() public {
         setSourceChainName(mainnet);
-        setAddress(false, mainnet, "boringVault", boringVault);
+        setAddress(true, mainnet, "boringVault", boringVault);
         setAddress(false, mainnet, "managerAddress", managerAddress);
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
@@ -96,12 +96,13 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         supplyAssets[7] = getERC20(sourceChain, "pendle_sUSDe_05_28_25_pt");
         supplyAssets[8] = getERC20(sourceChain, "pendle_sUSDe_07_30_25_pt");
         supplyAssets[9] = getERC20(sourceChain, "pendle_eUSDe_05_28_25_pt");
-        ERC20[] memory borrowAssets = new ERC20[](5);
+        ERC20[] memory borrowAssets = new ERC20[](6);
         borrowAssets[0] = getERC20(sourceChain, "USDC");
         borrowAssets[1] = getERC20(sourceChain, "USDT");
         borrowAssets[2] = getERC20(sourceChain, "DAI");
         borrowAssets[3] = getERC20(sourceChain, "USDE");
         borrowAssets[4] = getERC20(sourceChain, "GHO");
+        borrowAssets[5] = getERC20(sourceChain, "USDS");
         _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
 
         // ========================== SparkLend ==========================
@@ -438,6 +439,11 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         _addBalancerLeafs(
             leafs, getBytes32(sourceChain, "deUSD_sdeUSD_ECLP_id"), getAddress(sourceChain, "deUSD_sdeUSD_ECLP_Gauge")
         );
+
+        _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "USDC"));
+        _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "USDT"));
+        _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "DAI"));
+        _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "USDS"));
 
         // ========================== Aura ==========================
         _addAuraLeafs(leafs, getAddress(sourceChain, "aura_deUSD_sdeUSD_ECLP"));
@@ -778,10 +784,21 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         }
 
         // ========================== Drone Transfers ==========================
-        ERC20[] memory localTokens = new ERC20[](1);
+        setAddress(true, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        ERC20[] memory localTokens = new ERC20[](8);
         localTokens[0] = getERC20("mainnet", "USDT");
+        localTokens[1] = getERC20("mainnet", "USDC");
+        localTokens[2] = getERC20("mainnet", "USDE");
+        localTokens[3] = getERC20("mainnet", "SUSDE");
+        localTokens[4] = getERC20("mainnet", "EUSDE");
+        localTokens[5] = getERC20("mainnet", "pendle_sUSDe_05_28_25_pt");
+        localTokens[6] = getERC20("mainnet", "pendle_eUSDe_05_28_25_pt");
+        localTokens[7] = getERC20("mainnet", "USDS");
 
         _addLeafsForDroneTransfers(leafs, drone, localTokens);
+
+        // ========================== Drone Setup ===============================
+        _addLeafsForDrone(leafs);
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
@@ -790,6 +807,48 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         string memory filePath = "./leafs/Mainnet/LiquidUsdStrategistLeafs.json";
 
         _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
+    }
+
+    function _addLeafsForDrone(ManageLeaf[] memory leafs) internal {
+        setAddress(true, mainnet, "boringVault", drone);
+        uint256 droneStartIndex = leafIndex + 1;
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eUSDe_market_05_28_25"), true);
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_sUSDe_05_28_25"), true);
+
+        ERC20[] memory supplyAssetsDrone = new ERC20[](2);
+        supplyAssetsDrone[0] = getERC20(sourceChain, "pendle_sUSDe_05_28_25_pt");
+        supplyAssetsDrone[1] = getERC20(sourceChain, "pendle_eUSDe_05_28_25_pt");
+        ERC20[] memory borrowAssetsDrone = new ERC20[](6);
+        borrowAssetsDrone[0] = getERC20(sourceChain, "USDC");
+        borrowAssetsDrone[1] = getERC20(sourceChain, "USDT");
+        borrowAssetsDrone[2] = getERC20(sourceChain, "DAI");
+        borrowAssetsDrone[3] = getERC20(sourceChain, "USDE");
+        borrowAssetsDrone[4] = getERC20(sourceChain, "GHO");
+        borrowAssetsDrone[5] = getERC20(sourceChain, "USDS");
+        _addAaveV3Leafs(leafs, supplyAssetsDrone, borrowAssetsDrone);
+
+        address[] memory droneAssets = new address[](6);
+        SwapKind[] memory droneKind = new SwapKind[](6);
+        droneAssets[0] = getAddress(sourceChain, "USDC");
+        droneKind[0] = SwapKind.BuyAndSell;
+        droneAssets[1] = getAddress(sourceChain, "USDT");
+        droneKind[1] = SwapKind.BuyAndSell;
+        droneAssets[2] = getAddress(sourceChain, "USDE");
+        droneKind[2] = SwapKind.BuyAndSell;
+        droneAssets[3] = getAddress(sourceChain, "USDS");
+        droneKind[3] = SwapKind.BuyAndSell;
+        droneAssets[4] = getAddress(sourceChain, "SUSDE");
+        droneKind[4] = SwapKind.BuyAndSell;
+        droneAssets[5] = getAddress(sourceChain, "EUSDE");
+        droneKind[5] = SwapKind.Sell;
+        _addLeafsFor1InchGeneralSwapping(leafs, droneAssets, droneKind);
+
+        // ========================== Odos ==========================
+        _addOdosSwapLeafs(leafs, droneAssets, droneKind);
+
+
+        _createDroneLeafs(leafs, drone, droneStartIndex, leafIndex + 1);
+        setAddress(true, mainnet, "boringVault", boringVault);
     }
 
     function _addLeafsForITBPositionManager(
