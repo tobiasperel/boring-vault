@@ -808,6 +808,30 @@ contract TellerWithMultiAssetSupportTest is Test, MerkleTreeHelper {
         // They can now transfer.
         vm.prank(user);
         boringVault.transfer(address(this), 1);
+
+        // Test permissioned transfer mode
+        teller.setPermissionedTransfers(true);
+
+        vm.prank(user);
+        vm.expectRevert(
+            abi.encodeWithSelector(TellerWithMultiAssetSupport.TellerWithMultiAssetSupport__TransferDenied.selector, user, address(this), user)
+        );
+        boringVault.transfer(address(this), 1);
+
+        teller.allowPermissionedOperator(user);
+        vm.prank(user);
+        boringVault.transfer(address(this), 1); // now succeeds
+
+        teller.denyPermissionedOperator(user);
+        vm.prank(user);
+        vm.expectRevert(
+            abi.encodeWithSelector(TellerWithMultiAssetSupport.TellerWithMultiAssetSupport__TransferDenied.selector, user, address(this), user)
+        );
+        boringVault.transfer(address(this), 1); // now fails
+
+        teller.setPermissionedTransfers(false);
+        vm.prank(user);
+        boringVault.transfer(address(this), 1); // now succeeds again
     }
 
     // ========================================= HELPER FUNCTIONS =========================================
