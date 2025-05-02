@@ -56,6 +56,7 @@ import {sBTCNDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/sBTCNDeco
 import {CamelotFullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/CamelotFullDecoderAndSanitizer.sol";
 import {EtherFiEigenDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EtherFiEigenDecoderAndSanitizer.sol";
 import {UnichainEtherFiLiquidEthDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/UnichainEtherFiLiquidEthDecoderAndSanitizer.sol";
+import {LiquidBeraDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidBeraDecoderAndSanitizer.sol";
 import {LiquidBeraEthBerachainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidBeraEthBerachainDecoderAndSanitizer.sol";
 import {FullCorkDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ITB/cork/FullCorkDecoderAndSanitizer.sol";
 
@@ -114,9 +115,10 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(getAddress(sourceChain, "camelotNonFungiblePositionManager"));
         //deployer.deployContract("Camelot Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
-        creationCode = type(LiquidBeraEthBerachainDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(address(0));
-        deployer.deployContract("LiquidBeraETH Berachain Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        creationCode = type(LiquidBeraEthDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "recipeMarketHub"), getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("Liquid Bera ETH Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
+
 
         vm.stopBroadcast();
     }
