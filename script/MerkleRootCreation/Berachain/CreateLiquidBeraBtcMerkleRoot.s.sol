@@ -65,7 +65,7 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         address[] memory weirollWallets = new address[](2); 
         weirollWallets[0] = 0x8704852E95AA04799db5A1B03C4205156A74af0F; 
         weirollWallets[1] = 0x7f668bAee90cA161e6a7a9D3E0148a6738C78360; 
-        _addRoycoWithdrawLeafs(leafs, weirollWallets); 
+        _addRoycoWithdrawMerkleDepositLeafs(leafs, weirollWallets); 
         
         // ========================== Tellers ==========================
         // Prime
