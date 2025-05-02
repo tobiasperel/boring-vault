@@ -39,15 +39,6 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](512);
 
-        // ========================== UniswapV3 ==========================
-        address[] memory token0 = new address[](1);
-        token0[0] = getAddress(sourceChain, "scUSD");
-
-        address[] memory token1 = new address[](1);
-        token1[0] = getAddress(sourceChain, "USDC");
-
-        _addUniswapV3Leafs(leafs, token0, token1, false);
-
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](2);
         feeAssets[0] = getERC20(sourceChain, "USDC");
@@ -63,7 +54,6 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         _addUniswapV3Leafs(leafs, token0, token1, false, true); //use swapRouter02
 
-
         // ========================== Beets ==========================
         _addBalancerLeafs(
             leafs, getBytes32(sourceChain, "scUSD_USDC_PoolId"), getAddress(sourceChain, "scUSD_USDC_gauge")
@@ -77,8 +67,8 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Odos ==========================
         
-        address[] memory tokens = new address[](9);   
-        SwapKind[] memory kind = new SwapKind[](9); 
+        address[] memory tokens = new address[](10);   
+        SwapKind[] memory kind = new SwapKind[](10); 
         tokens[0] = getAddress(sourceChain, "USDC"); 
         kind[0] = SwapKind.BuyAndSell; 
         tokens[1] = getAddress(sourceChain, "stS"); 
@@ -97,13 +87,15 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         kind[7] = SwapKind.Sell; 
         tokens[8] = getAddress(sourceChain, "SILO"); 
         kind[8] = SwapKind.Sell; 
+        tokens[9] = getAddress(sourceChain, "UNI"); 
+        kind[9] = SwapKind.Sell; 
 
         _addOdosSwapLeafs(leafs, tokens, kind); 
         
         // ========================== Teller ==========================
         ERC20[] memory tellerAssets = new ERC20[](1);
         tellerAssets[0] = getERC20(sourceChain, "USDC");
-        _addTellerLeafs(leafs, getAddress(sourceChain, "scUSDTeller"), tellerAssets, false);
+        _addTellerLeafs(leafs, getAddress(sourceChain, "scUSDTeller"), tellerAssets, false, true);
 
         // ========================== Silo ==========================
         
@@ -118,12 +110,6 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         incentivesControllers[1] = address(0);
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"), incentivesControllers);
 
-        // ========================== SiloV2 ==========================
-        //_addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_scUSD_config"));
-        //_addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_S_USDC_config"));
-        //_addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id8_config"));
-        //_addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"));
-        //_addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_config"));
 
         // USDC/wstkscUSD id23
         incentivesControllers[0] = getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_USDC_IncentivesController"); 
@@ -138,6 +124,12 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         incentivesControllers[0] = getAddress(sourceChain, "silo_PT-aUSDC_scUSD_id46_scUSD_IncentivesController"); 
         incentivesControllers[1] = address(0);  
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_PT-aUSDC_scUSD_id46_config"), incentivesControllers);
+
+        // sfrxUSD/scUSD id48
+        incentivesControllers[0] = address(0); 
+        incentivesControllers[1] = address(0);  
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_sfrxUSD_scUSD_id48_config"), incentivesControllers);
+
         // ========================== Curve =========================
 
         _addCurveLeafs(
@@ -165,9 +157,10 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));
 
          // ========================== Merkl =========================
-        ERC20[] memory tokensToClaim = new ERC20[](2);
+        ERC20[] memory tokensToClaim = new ERC20[](3);
         tokensToClaim[0] = getERC20(sourceChain, "rEUL");
         tokensToClaim[1] = getERC20(sourceChain, "wS");
+        tokensToClaim[2] = getERC20(sourceChain, "UNI");
         _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim);
 
         // ========================== Verify =========================

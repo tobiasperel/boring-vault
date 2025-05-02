@@ -101,7 +101,7 @@
   },
   "boringQueueConfiguration": {
     "boringQueueDeploymentName": "HyperUSD Boring Queue V0.0",
-    "boringQueueSolverName": "HyperUSD Boring Solver V0.0",
+    "boringQueueSolverName": "HyperUSD Boring Solver V1.0",
     "queueParameters": {
       "allowPublicWithdrawals": true,
       "allowPublicSelfWithdrawals": true,
