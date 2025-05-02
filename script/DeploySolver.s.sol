@@ -21,12 +21,12 @@ contract DeploySolver is Script, ContractNames, Test {
     Deployer deployer = Deployer(0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d);
 
     address owner = 0xf8553c8552f906C19286F21711721E206EE4909E;
-    address auth = 0xAA0E63f512758E29831E7bb1e704FcBb860ab7f5;
-    address queue = 0xB316940529B85234ec7C4F48CD8Bef8d1BAe5F7f;
+    address auth = 0xED8C9A514eB81124e370015878ea1fB3fEF18158;
+    address queue = 0x84D988bA2f2838f6ccF61fDE77fe3EB70dFE284f;
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("corn");
+        vm.createSelectFork("mainnet");
     }
 
 
@@ -38,7 +38,6 @@ contract DeploySolver is Script, ContractNames, Test {
         creationCode = type(BoringSolver).creationCode;
 
         constructorArgs = abi.encode(owner, auth, queue);
-        deployer.deployContract("sBTCn Boring Solver 0.1", creationCode, constructorArgs, 0);
+        deployer.deployContract("HyperUSD Boring Solver 0.1", creationCode, constructorArgs, 0);
     }
-
 }
