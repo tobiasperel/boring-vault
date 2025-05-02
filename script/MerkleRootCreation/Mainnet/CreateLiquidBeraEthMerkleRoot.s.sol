@@ -17,7 +17,7 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
     address public boringVault = 0x83599937c2C9bEA0E0E8ac096c6f32e86486b410;
     address public managerAddress = 0x62b283d4FeFB2a120e1120dba9f83bE6CA41bCD7;
     address public accountantAddress = 0x04B8136820598A4e50bEe21b8b6a23fE25Df9Bd8;
-    address public rawDataDecoderAndSanitizer = 0xf7301C2A56510814B88b024d7066b6B62acC704D;
+    address public rawDataDecoderAndSanitizer = 0xf2842b0a7e26B5A40132DCeC8118a24851e05048;
 
     function setUp() external {}
 
@@ -35,9 +35,9 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](64);
+        ManageLeaf[] memory leafs = new ManageLeaf[](128);
 
-        // ========================== Lido ==========================
+        // ========================== Swaps ==========================
         address[] memory assets = new address[](5);
         SwapKind[] memory kind = new SwapKind[](5);
         assets[0] = getAddress(sourceChain, "WETH");
@@ -52,6 +52,7 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
         kind[4] = SwapKind.BuyAndSell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
+        _addOdosSwapLeafs(leafs, assets, kind);
 
         // ========================== Lido ==========================
         _addLidoLeafs(leafs);
@@ -77,6 +78,22 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
             bytes32 weethMarketHash = 0xff0182973d5f1e9a64392c413caaa75f364f24632a7de0fdd1a31fe30517fdd2;
             _addRoycoWeirollLeafs(leafs, getERC20(sourceChain, "WEETH"), weethMarketHash, roycoFrontEndFeeRecipientTemp);
         }
+
+        // ========================== LayerZero ==========================
+        _addLayerZeroLeafNative(leafs, getAddress(sourceChain, "stargateNative"), layerZeroBerachainEndpointId, getBytes32(sourceChain, "boringVault"));
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "EtherFiOFTAdapter"), layerZeroBerachainEndpointId, getBytes32(sourceChain, "boringVault"));
+
+        // ========================== Fee Claiming ==========================
+        /**
+         * Claim fees in WETH, WEETH, EETH, STETH, WSTETH
+         */
+        ERC20[] memory feeAssets = new ERC20[](5);
+        feeAssets[0] = getERC20(sourceChain, "WETH");
+        feeAssets[1] = getERC20(sourceChain, "WEETH");
+        feeAssets[2] = getERC20(sourceChain, "EETH");
+        feeAssets[3] = getERC20(sourceChain, "STETH");
+        feeAssets[4] = getERC20(sourceChain, "WSTETH");
+        _addLeafsForFeeClaiming(leafs, accountantAddress, feeAssets, false);
 
         //Verify
 

@@ -77,7 +77,7 @@ contract GenericRateProvider is IRateProvider {
      *      and calls will likely fail.
      * @dev If staticArgumentN is not used, it can be left as 0.
      */
-    function getRate() public view returns (uint256) {
+    function getRate() public virtual view returns (uint256) {
         bytes memory callData = abi.encodeWithSelector(
             selector,
             staticArgument0,

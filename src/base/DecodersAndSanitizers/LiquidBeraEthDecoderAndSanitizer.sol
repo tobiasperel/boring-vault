@@ -41,6 +41,7 @@ import {FraxDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/
 import {RoycoWeirollDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/RoycoDecoderAndSanitizer.sol";
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol"; 
 
+
 contract LiquidBeraEthDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
     BalancerV2DecoderAndSanitizer,
