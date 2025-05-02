@@ -67,8 +67,8 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Odos ==========================
         
-        address[] memory tokens = new address[](9);   
-        SwapKind[] memory kind = new SwapKind[](9); 
+        address[] memory tokens = new address[](10);   
+        SwapKind[] memory kind = new SwapKind[](10); 
         tokens[0] = getAddress(sourceChain, "USDC"); 
         kind[0] = SwapKind.BuyAndSell; 
         tokens[1] = getAddress(sourceChain, "stS"); 
@@ -87,6 +87,8 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         kind[7] = SwapKind.Sell; 
         tokens[8] = getAddress(sourceChain, "SILO"); 
         kind[8] = SwapKind.Sell; 
+        tokens[9] = getAddress(sourceChain, "UNI"); 
+        kind[9] = SwapKind.Sell; 
 
         _addOdosSwapLeafs(leafs, tokens, kind); 
         
@@ -155,9 +157,10 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));
 
          // ========================== Merkl =========================
-        ERC20[] memory tokensToClaim = new ERC20[](2);
+        ERC20[] memory tokensToClaim = new ERC20[](3);
         tokensToClaim[0] = getERC20(sourceChain, "rEUL");
         tokensToClaim[1] = getERC20(sourceChain, "wS");
+        tokensToClaim[2] = getERC20(sourceChain, "UNI");
         _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim);
 
         // ========================== Verify =========================
