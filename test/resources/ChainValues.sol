@@ -2209,6 +2209,9 @@ contract ChainValues {
         values[berachain]["infrared_vault_wbtc_ebtc"] = 0x5C5FCb568a98DA28C9D2DF4852b102aa814c3a4c.toBytes32();
         values[berachain]["infrared_vault_weth_weeth"] = 0x16ed36cB22b298085d10b119030408C7BbfFC24E.toBytes32();
         values[berachain]["infrared_vault_rUSD_honey"] = 0x1C5879B75be9E817B1607AFb6f24F632eE6F8820.toBytes32();
+        values[berachain]["infrared_vault_primeLiquidBeraETH"] = .toBytes32();
+        values[berachain]["infrared_vault_primeLiquidBeraBTC"] = .toBytes32();
+        values[berachain]["infrared_vault_iBGT"] = 0x75F3Be06b02E235f6d0E7EF2D462b29739168301.toBytes32();
 
         // Dolomite
         values[berachain]["dolomiteMargin"] = 0x003Ca23Fd5F0ca87D01F6eC6CD14A8AE60c2b97D.toBytes32();
