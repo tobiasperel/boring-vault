@@ -107,6 +107,22 @@ contract CreateLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
         _addCrossChainTellerLeafs(leafs, eBTCTellerLZ, depositAssets, feeAssets, abi.encode(layerZeroMainnetEndpointId));  
         }
 
+        // ========================== Infrared ==========================
+        _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_vault_primeLiquidBeraBTC"));
+        _addInfraredVaultLeafs(leafs, getAddress(sourceChain, "infrared_vault_iBGT"));
+
+        // ========================== BeraBorrow ==========================
+        // TODO
+        // {
+        //     address[] memory collateralAssets = new address[](2);
+
+        //     address[] memory borrowAssets = new address[](2);
+
+        //     address[] memory denManagers = new address[](2);
+
+
+        //     _addBeraborrowLeafs(leafs, collateralAssets, borrowAssets, denManagers, false);
+        // }
         // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
