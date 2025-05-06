@@ -37,7 +37,7 @@ contract CreateLiquidBeraEthMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, berachain, "accountantAddress", accountantAddress);
         setAddress(false, berachain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        ManageLeaf[] memory leafs = new ManageLeaf[](64);
 
         // ========================== Ooga Booga ==========================
         address[] memory assets = new address[](4); 
