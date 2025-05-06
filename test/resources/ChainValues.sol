@@ -2257,7 +2257,7 @@ contract ChainValues {
 
         // Ooga Booga
         values[berachain]["OBRouter"] = 0xFd88aD4849BA0F729D6fF4bC27Ff948Ab1Ac3dE7.toBytes32();
-        values[berachain]["OBExecutor"] = 0x2242B1c1B429c799D5584dC4B59732fb6B1A6BE6.toBytes32();
+        values[berachain]["OBExecutor"] = 0x0e29aD2925079f313817D09Fcadbdf3A91125654.toBytes32();
 
 
         // Royco
