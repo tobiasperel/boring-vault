@@ -127,7 +127,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
 
         _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCAssets, false, true);
         _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "eBTCQueue"), getAddress(sourceChain, "eBTC"), eBTCAssets);
-        _addCrossChainTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCAssetsAddresses, feeAssets);
+        _addCrossChainTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCAssetsAddresses, feeAssets, abi.encode(layerZeroMainnetEndpointId));
 
         // ========================== Verify ==========================
         
