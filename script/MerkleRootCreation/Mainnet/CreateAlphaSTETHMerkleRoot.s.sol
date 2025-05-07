@@ -120,12 +120,14 @@ contract CreateAlphaSTETHMerkleRoot is Script, MerkleTreeHelper {
         }
         // =========================== Odos ==========================
         {
-            address[] memory assets = new address[](2);
-            SwapKind[] memory kind = new SwapKind[](2);
+            address[] memory assets = new address[](3);
+            SwapKind[] memory kind = new SwapKind[](3);
             assets[0] = getAddress(sourceChain, "WETH");
             kind[0] = SwapKind.BuyAndSell;
             assets[1] = getAddress(sourceChain, "WSTETH");
             kind[1] = SwapKind.BuyAndSell;
+            assets[2] = getAddress(sourceChain, "UNI");
+            kind[2] = SwapKind.Sell;
 
             _addOdosSwapLeafs(leafs, assets, kind);
 
