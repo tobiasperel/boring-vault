@@ -11027,6 +11027,24 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         }
     }
 
+    function _addSiloVaultLeafs(ManageLeaf[] memory leafs, address vault) internal {
+        _addERC4626Leafs(leafs, ERC4626(vault));
+        
+        unchecked {
+            leafIndex++;
+        }
+        
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
+            "claimRewards()",
+            new address[](0),
+            string.concat("Claim rewards from ", ERC4626(vault).name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+    }
+
     // ========================================= LBTC Bridge =========================================
     function _addLBTCBridgeLeafs(ManageLeaf[] memory leafs, bytes32 toChain) internal {
         unchecked {
