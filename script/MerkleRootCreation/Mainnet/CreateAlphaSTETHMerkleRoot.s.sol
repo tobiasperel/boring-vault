@@ -98,7 +98,7 @@ contract CreateAlphaSTETHMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Uniswap V3 ==========================
         {
-            // WETH, WEETH, wstETH
+            // WETH, wstETH
             address[] memory token0 = new address[](1);
             token0[0] = getAddress(sourceChain, "WSTETH");
 

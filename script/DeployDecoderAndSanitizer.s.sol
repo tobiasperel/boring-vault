@@ -79,8 +79,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
 
-        vm.createSelectFork("mainnet");
-        setSourceChainName("mainnet"); 
+        vm.createSelectFork("unichain");
+        setSourceChainName("unichain"); 
     }
 
     function run() external {
@@ -116,7 +116,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //deployer.deployContract("Camelot Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
         creationCode = type(AlphaSTETHDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "uniV4PositionManager"), getAddress(sourceChain, "odosRouterV2"), getAddress(sourceChain, "dvStETHVault"));
+        constructorArgs = abi.encode(address(0), getAddress(sourceChain, "uniV4PositionManager"), address(0), address(0));
         deployer.deployContract("Alpha STETH Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
