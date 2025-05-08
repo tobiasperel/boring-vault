@@ -887,7 +887,6 @@ contract ChainValues {
         values[mainnet]["pendle_eUSDe_05_28_25_pt"] = 0x50D2C7992b802Eef16c04FeADAB310f31866a545.toBytes32();
         values[mainnet]["pendle_sUSDe_05_28_25"] = 0xB162B764044697cf03617C2EFbcB1f42e31E4766.toBytes32();
         values[mainnet]["pendle_sUSDe_market_07_30_25"] = 0x4339Ffe2B7592Dc783ed13cCE310531aB366dEac.toBytes32();
-        values[mainnet]["pendle_sUSDe_07_30_25_pt"] = 0x3b3fB9C57858EF816833dC91565EFcd85D96f634.toBytes32();
 
         values[mainnet]["pendle_weETHs_market_08_28_24"] = 0xcAa8ABB72A75C623BECe1f4D5c218F425d47A0D0.toBytes32();
         values[mainnet]["pendle_weETHs_sy_08_28_24"] = 0x9e8f10574ACc2c62C6e5d19500CEd39163Da37A9.toBytes32();
@@ -950,6 +949,9 @@ contract ChainValues {
         values[mainnet]["pendle_sUSDe_03_26_25_sy"] = 0x3Ee118EFC826d30A29645eAf3b2EaaC9E8320185.toBytes32();
         values[mainnet]["pendle_sUSDe_03_26_25_pt"] = 0xE00bd3Df25fb187d6ABBB620b3dfd19839947b81.toBytes32();
         values[mainnet]["pendle_sUSDe_03_26_25_yt"] = 0x96512230bF0Fa4E20Cf02C3e8A7d983132cd2b9F.toBytes32();
+        values[mainnet]["pendle_sUSDe_07_30_25_sy"] = 0xF541AA4d6f29ec2423A0D306dBc677021A02DBC0.toBytes32();
+        values[mainnet]["pendle_sUSDe_07_30_25_pt"] = 0x3b3fB9C57858EF816833dC91565EFcd85D96f634.toBytes32();
+        values[mainnet]["pendle_sUSDe_07_30_25_yt"] = 0xb7E51D15161C49C823f3951D579DEd61cD27272B.toBytes32();
 
         values[mainnet]["pendle_sUSDe_05_28_25"] = 0xB162B764044697cf03617C2EFbcB1f42e31E4766.toBytes32();
         values[mainnet]["pendle_sUSDe_05_28_25_sy"] = 0xE877B2A8a53763C8B0534a15e87da28f3aC1257e.toBytes32();
