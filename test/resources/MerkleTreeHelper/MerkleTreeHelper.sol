@@ -12451,6 +12451,21 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         
     }
 
+    function _addWSwellUnwrappingLeafs(ManageLeaf[] memory leafs) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "WSWELL"),
+            false,
+            "withdrawToByLockTimestamp(address,uint256,bool)",
+            new address[](1),
+            string.concat("Unwrap wSwell for Swell"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+    }
+
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
     bool addLeafIndex = false;
