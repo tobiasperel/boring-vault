@@ -39,6 +39,9 @@ import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocol
 import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidDexDecoderAndSanitizer.sol";
 import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol";
 import {KingClaimingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/KingClaimingDecoderAndSanitizer.sol";
+import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
+//IMPORT OFT DECODER< INHERIT FIX FN COLLISIONS 
+// IN SCRIPTS THERE IS  A DEPLOY SCRIPT
 
 contract EtherFiLiquidUsdDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
@@ -73,7 +76,8 @@ contract EtherFiLiquidUsdDecoderAndSanitizer is
     TellerDecoderAndSanitizer,
     FluidDexDecoderAndSanitizer,
     EulerEVKDecoderAndSanitizer,
-    KingClaimingDecoderAndSanitizer
+    KingClaimingDecoderAndSanitizer,
+    OFTDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager, address _odosRouter)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)

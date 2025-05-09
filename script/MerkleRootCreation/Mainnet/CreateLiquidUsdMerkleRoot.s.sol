@@ -784,6 +784,23 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
             _addReclamationLeafs(leafs, target, reclamationDecoder);
         }
 
+        // ========================== Layer Zero Bridging ==========================
+        _addLayerZeroLeafs(
+            leafs,
+            getERC20(sourceChain, "USDC"),
+            getAddress(sourceChain, "stargateUSDC"),
+            layerZeroFlareEndpointId,
+            getBytes32(sourceChain, "boringVault")
+        );
+        _addLayerZeroLeafs(
+            leafs,
+            getERC20(sourceChain, "USDT"),
+            getAddress(sourceChain, "usdt0OFTAdapter"),
+            layerZeroFlareEndpointId,
+            getBytes32(sourceChain, "boringVault")
+        );
+
+        
         // ========================== Drone Transfers ==========================
         setAddress(true, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
         ERC20[] memory localTokens = new ERC20[](11);
@@ -851,6 +868,23 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Odos ==========================
         _addOdosSwapLeafs(leafs, droneAssets, droneKind);
+
+        // ========================== Layer Zero ==========================
+        bytes32 droneAsBytes32 = bytes32(uint256(uint160(drone)));
+        _addLayerZeroLeafs(
+            leafs,
+            getERC20(sourceChain, "USDC"),
+            getAddress(sourceChain, "stargateUSDC"),
+            layerZeroFlareEndpointId,
+            droneAsBytes32
+        );
+        _addLayerZeroLeafs(
+            leafs,
+            getERC20(sourceChain, "USDT"),
+            getAddress(sourceChain, "usdt0OFTAdapter"),
+            layerZeroFlareEndpointId,
+            droneAsBytes32
+        );
 
 
         _createDroneLeafs(leafs, drone, droneStartIndex, leafIndex + 1);
