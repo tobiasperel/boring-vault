@@ -33,6 +33,7 @@ contract ChainValues {
     string public constant sonicBlaze = "sonicBlaze";
     string public constant berachainTestnet = "berachainTestnet";
     string public constant bartio = "bartio";
+    string public constant flare = "flare";
 
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
@@ -53,6 +54,7 @@ contract ChainValues {
     uint32 public constant layerZeroSepoliaEndpointId = 40161;
     uint32 public constant layerZeroSonicBlazeEndpointId = 40349;
     uint32 public constant layerZeroMovementEndpointId = 30325;
+    uint32 public constant layerZeroFlareEndpointId = 30295;
     uint32 public constant hyperlaneMainnetEndpointId = 1;
     uint32 public constant hyperlaneEclipseEndpointId = 1408864445;
 
@@ -111,6 +113,7 @@ contract ChainValues {
         _addBobValues();
         _addDeriveValues();
         _addUnichainValues();
+        _addFlareValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -1160,6 +1163,7 @@ contract ChainValues {
         values[mainnet]["LBTCOFTAdapter"] = 0x6bc15D7930839Ec18A57F6f7dF72aE1B439D077f.toBytes32();
         values[mainnet]["WBTCOFTAdapter"] = 0x0555E30da8f98308EdB960aa94C0Db47230d2B9c.toBytes32();
         values[mainnet]["frxUSDOFTAdapter"] = 0x566a6442A5A6e9895B9dCA97cC7879D632c6e4B0.toBytes32();
+        values[mainnet]["usdt0OFTAdapter"] = 0x6C96dE32CEa08842dcc4058c14d3aaAD7Fa41dee.toBytes32();
 
         // Stargate OFTs
         values[mainnet]["stargateUSDC"] = 0xc026395860Db2d07ee33e05fE50ed7bD583189C7.toBytes32();
@@ -2372,5 +2376,27 @@ contract ChainValues {
 
         // LayerZero
         values[unichain]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();
+    }
+
+    function _addFlareValues() private {
+        values[flare]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[flare]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[flare]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[flare]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        // ERC20s
+        values[flare]["FLR"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32(); // NATIVE
+        values[flare]["WFLR"] = 0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d.toBytes32(); // WNATIVE
+        values[flare]["USDT0"] = 0xe7cd86e13AC4309349F30B3435a9d337750fC82D.toBytes32(); // USDT0
+        values[flare]["USDC"] = 0xFbDa5F676cB37624f28265A144A48B0d6e87d3b6.toBytes32(); // USDC.e Stargate
+        values[flare]["ZRO"] = address(1).toBytes32(); // USDC0
+
+        // Balancer
+        values[flare]["balancerVault"] = address(1).toBytes32();
+        values[flare]["vault"] = address(1).toBytes32();
+
+        // LayerZero
+        values[flare]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
+
     }
 }

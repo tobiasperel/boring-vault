@@ -16,7 +16,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
     //standard
     address public boringVault = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C;
-    address public rawDataDecoderAndSanitizer = 0x3e33Ccb836281CBD37356dd066b3049b39422228;
+    address public rawDataDecoderAndSanitizer = 0xc6288B06365019dF18B2076Bf9B5e191826fB57F;
     address public managerAddress = 0xcFF411d5C54FE0583A984beE1eF43a4776854B9A;
     address public accountantAddress = 0xc315D6e14DDCDC7407784e2Caf815d131Bc1D3E7;
     address public drone = 0x3683fc2792F676BBAbc1B5555dE0DfAFee546e9a;
@@ -784,6 +784,24 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
             _addReclamationLeafs(leafs, target, reclamationDecoder);
         }
 
+        // ========================== Layer Zero Bridging ==========================
+        setAddress(true, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        _addLayerZeroLeafs(
+            leafs,
+            getERC20(sourceChain, "USDC"),
+            getAddress(sourceChain, "stargateUSDC"),
+            layerZeroFlareEndpointId,
+            getBytes32(sourceChain, "boringVault")
+        );
+        _addLayerZeroLeafs(
+            leafs,
+            getERC20(sourceChain, "USDT"),
+            getAddress(sourceChain, "usdt0OFTAdapter"),
+            layerZeroFlareEndpointId,
+            getBytes32(sourceChain, "boringVault")
+        );
+
+        
         // ========================== Drone Transfers ==========================
         setAddress(true, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
         ERC20[] memory localTokens = new ERC20[](11);
@@ -851,6 +869,23 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== Odos ==========================
         _addOdosSwapLeafs(leafs, droneAssets, droneKind);
+
+        // ========================== Layer Zero ==========================
+        bytes32 droneAsBytes32 = bytes32(uint256(uint160(drone)));
+        _addLayerZeroLeafs(
+            leafs,
+            getERC20(sourceChain, "USDC"),
+            getAddress(sourceChain, "stargateUSDC"),
+            layerZeroFlareEndpointId,
+            droneAsBytes32
+        );
+        _addLayerZeroLeafs(
+            leafs,
+            getERC20(sourceChain, "USDT"),
+            getAddress(sourceChain, "usdt0OFTAdapter"),
+            layerZeroFlareEndpointId,
+            droneAsBytes32
+        );
 
 
         _createDroneLeafs(leafs, drone, droneStartIndex, leafIndex + 1);
