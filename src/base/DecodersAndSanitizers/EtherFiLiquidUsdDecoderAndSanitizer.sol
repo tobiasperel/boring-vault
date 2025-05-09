@@ -40,8 +40,6 @@ import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoc
 import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol";
 import {KingClaimingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/KingClaimingDecoderAndSanitizer.sol";
 import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
-//IMPORT OFT DECODER< INHERIT FIX FN COLLISIONS 
-// IN SCRIPTS THERE IS  A DEPLOY SCRIPT
 
 contract EtherFiLiquidUsdDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,

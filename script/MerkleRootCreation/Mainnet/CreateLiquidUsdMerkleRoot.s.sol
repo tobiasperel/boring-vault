@@ -887,6 +887,15 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
             droneAsBytes32
         );
 
+        // ========================== Ethena Withdraws ==========================
+        _addEthenaSUSDeWithdrawLeafs(leafs);
+
+        // ========================== Ethena ==========================
+        /**
+         * deposit, withdraw
+         */
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "SUSDE")));
+
 
         _createDroneLeafs(leafs, drone, droneStartIndex, leafIndex + 1);
         setAddress(true, mainnet, "boringVault", boringVault);
