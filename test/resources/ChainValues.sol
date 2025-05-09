@@ -1962,6 +1962,9 @@ contract ChainValues {
             0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32();
 
         values[sonicMainnet]["silo_sfrxUSD_scUSD_id48_config"] = 0x6452b9aE8011800457b42C4fBBDf4579afB96228.toBytes32();
+        
+        // Silo Vaults
+        values[sonicMainnet]["silo_USDC_vault"] = 0xF6F87073cF8929C206A77b0694619DC776F89885.toBytes32();
 
         // Curve
         values[sonicMainnet]["curve_CRV_claiming"] = 0xf3A431008396df8A8b2DF492C913706BDB0874ef.toBytes32();
@@ -1983,7 +1986,7 @@ contract ChainValues {
 
         // Odos
         values[sonicMainnet]["odosRouterV2"] = 0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D.toBytes32();
-        values[sonicMainnet]["odosExecutor"] = 0xECDfcB1dD81d07c3551CbA94023EE443450353E1.toBytes32();
+        values[sonicMainnet]["odosExecutor"] = 0xBDfF6F2290b2C9B373E9D90f1ebF67e9653dA051.toBytes32();
 
         // Aave
         values[sonicMainnet]["v3Pool"] = 0x5362dBb1e601abF3a4c14c22ffEdA64042E5eAA3.toBytes32();
@@ -2209,6 +2212,9 @@ contract ChainValues {
         values[berachain]["infrared_vault_wbtc_ebtc"] = 0x5C5FCb568a98DA28C9D2DF4852b102aa814c3a4c.toBytes32();
         values[berachain]["infrared_vault_weth_weeth"] = 0x16ed36cB22b298085d10b119030408C7BbfFC24E.toBytes32();
         values[berachain]["infrared_vault_rUSD_honey"] = 0x1C5879B75be9E817B1607AFb6f24F632eE6F8820.toBytes32();
+        values[berachain]["infrared_vault_primeLiquidBeraETH"] = 0xc9d8Bc7428059219f3D19Da7F17ad468254D4D7e.toBytes32();
+        values[berachain]["infrared_vault_primeLiquidBeraBTC"] = 0x4bA0a69621eA72870F9fcf2D974D39B8609343cC.toBytes32();
+        values[berachain]["infrared_vault_iBGT"] = 0x75F3Be06b02E235f6d0E7EF2D462b29739168301.toBytes32();
 
         // Dolomite
         values[berachain]["dolomiteMargin"] = 0x003Ca23Fd5F0ca87D01F6eC6CD14A8AE60c2b97D.toBytes32();
@@ -2257,7 +2263,7 @@ contract ChainValues {
 
         // Ooga Booga
         values[berachain]["OBRouter"] = 0xFd88aD4849BA0F729D6fF4bC27Ff948Ab1Ac3dE7.toBytes32();
-        values[berachain]["OBExecutor"] = 0x2242B1c1B429c799D5584dC4B59732fb6B1A6BE6.toBytes32();
+        values[berachain]["OBExecutor"] = 0x0e29aD2925079f313817D09Fcadbdf3A91125654.toBytes32();
 
 
         // Royco
