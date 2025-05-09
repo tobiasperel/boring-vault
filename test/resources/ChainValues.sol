@@ -1962,6 +1962,9 @@ contract ChainValues {
             0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32();
 
         values[sonicMainnet]["silo_sfrxUSD_scUSD_id48_config"] = 0x6452b9aE8011800457b42C4fBBDf4579afB96228.toBytes32();
+        
+        // Silo Vaults
+        values[sonicMainnet]["silo_USDC_vault"] = 0xF6F87073cF8929C206A77b0694619DC776F89885.toBytes32();
 
         // Curve
         values[sonicMainnet]["curve_CRV_claiming"] = 0xf3A431008396df8A8b2DF492C913706BDB0874ef.toBytes32();
