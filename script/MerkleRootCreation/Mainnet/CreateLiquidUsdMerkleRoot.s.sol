@@ -16,7 +16,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
 
     //standard
     address public boringVault = 0x08c6F91e2B681FaF5e17227F2a44C307b3C1364C;
-    address public rawDataDecoderAndSanitizer = 0x3e33Ccb836281CBD37356dd066b3049b39422228;
+    address public rawDataDecoderAndSanitizer = 0xc6288B06365019dF18B2076Bf9B5e191826fB57F;
     address public managerAddress = 0xcFF411d5C54FE0583A984beE1eF43a4776854B9A;
     address public accountantAddress = 0xc315D6e14DDCDC7407784e2Caf815d131Bc1D3E7;
     address public drone = 0x3683fc2792F676BBAbc1B5555dE0DfAFee546e9a;
@@ -785,6 +785,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
         }
 
         // ========================== Layer Zero Bridging ==========================
+        setAddress(true, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
         _addLayerZeroLeafs(
             leafs,
             getERC20(sourceChain, "USDC"),
