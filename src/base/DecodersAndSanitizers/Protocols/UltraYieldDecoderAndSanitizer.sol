@@ -9,4 +9,20 @@ abstract contract UltraYieldDecoderAndSanitizer is BaseDecoderAndSanitizer, ERC4
     function requestRedeem(uint256 /*shares*/) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
+
+    function deposit(uint256 /*assets*/) external pure virtual returns (bytes memory addressesFound) {
+        return addressesFound;
+    }
+
+    function mint(uint256 /*shares*/) external pure virtual returns (bytes memory addressesFound) {
+        return addressesFound;
+    }
+
+    function withdraw(uint256 /*assets*/) external pure virtual returns (bytes memory addressesFound) {
+        return addressesFound;
+    }
+
+    function redeem(uint256 /*shares*/) external pure virtual returns (bytes memory addressesFound) {
+        return addressesFound;
+    }
 }
