@@ -110,7 +110,7 @@ contract UltraYieldIntegrationTest is Test, MerkleTreeHelper {
         deal(getAddress(sourceChain, "cmETH"), address(boringVault), 100_000e18);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](16);
-        _addUltraYieldLeafs(leafs);
+        _addUltraYieldLeafs(leafs, getAddress(sourceChain, "UltraYieldCmeth"));
 
         //string memory filePath = "./TestTEST.json";
 
@@ -120,61 +120,39 @@ contract UltraYieldIntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](10);
-        manageLeafs[0] = leafs[0]; //approve syrupRouter (USDC) to spend USDC
-        manageLeafs[1] = leafs[1]; //approve syrupRouter (USDT) to spend USDT
-        manageLeafs[2] = leafs[2]; //USDC -> syrupUSDC
-        manageLeafs[3] = leafs[3]; //USDT -> syrupUSDT
-        manageLeafs[4] = leafs[4]; //approve syrupUSDC to spend syrupUSDC
-        manageLeafs[5] = leafs[5]; //approve syrupUSDT to spend syrupUSDT
-        manageLeafs[6] = leafs[6]; //request redeem syrupUSDC
-        manageLeafs[7] = leafs[7]; //request redeem syrupUSDT
-        manageLeafs[8] = leafs[8]; //cancel redeem syrupUSDC
-        manageLeafs[9] = leafs[9]; //cancel redeem syrupUSDT
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](6); // skip the 4626 leafs
+        manageLeafs[0] = leafs[0]; //approve vault to spend asset
+        manageLeafs[1] = leafs[1]; //deposit using non-4626 function
+        manageLeafs[2] = leafs[2]; //requestWithdraw
+        manageLeafs[3] = leafs[3]; //mint using non-4626 function
+        manageLeafs[4] = leafs[4]; //withdraw using non-4626 function
+        manageLeafs[5] = leafs[5]; //redeem using non-4626 function
 
         (bytes32[][] memory manageProofs) = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](10);
-        targets[0] = getAddress(sourceChain, "USDC"); //approve USDC router
-        targets[1] = getAddress(sourceChain, "USDT"); //approve USDT router
-        targets[2] = getAddress(sourceChain, "syrupRouterUSDC"); //convert USDC to syrupUSDC
-        targets[3] = getAddress(sourceChain, "syrupRouterUSDT"); //convert USDT to syrupUSDT
-        targets[4] = getAddress(sourceChain, "syrupUSDC"); //approve syrupUSDC
-        targets[5] = getAddress(sourceChain, "syrupUSDT"); //approve syrupUSDT
-        targets[6] = getAddress(sourceChain, "syrupUSDC"); //request redeem syrupUSDC
-        targets[7] = getAddress(sourceChain, "syrupUSDT"); //request redeem syrupUSDT
-        targets[8] = getAddress(sourceChain, "syrupUSDC"); //cancel redeem syrupUSDC
-        targets[9] = getAddress(sourceChain, "syrupUSDT"); //cancel redeem syrupUSDT
+        address[] memory targets = new address[](6);
+        targets[0] = getAddress(sourceChain, "asset"); //approve USDC router
+        targets[1] = getAddress(sourceChain, "UltraYieldCmeth");
+        targets[2] = getAddress(sourceChain, "UltraYieldCmeth");
+        targets[3] = getAddress(sourceChain, "UltraYieldCmeth");
+        targets[4] = getAddress(sourceChain, "UltraYieldCmeth");
+        targets[5] = getAddress(sourceChain, "UltraYieldCmeth");
 
-        bytes[] memory targetData = new bytes[](10);
+        bytes[] memory targetData = new bytes[](6);
         targetData[0] =
-            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "syrupRouterUSDC"), type(uint256).max);
+            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "UltraYieldCmeth"), type(uint256).max);
         targetData[1] =
-            abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "syrupRouterUSDT"), type(uint256).max);
+            abi.encodeWithSignature("deposit(uint256)", getAddress(sourceChain, "UltraYieldCmeth"), 500e18);
         targetData[2] =
-            abi.encodeWithSignature("deposit(uint256,bytes32)", 100e6, bytes32("0:vtl"));
+            abi.encodeWithSignature("requestWithdraw(uint256)", 100e18);
         targetData[3] =
-            abi.encodeWithSignature("deposit(uint256,bytes32)", 100e6, bytes32("0:vtl"));
-        targetData[4] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "syrupUSDC"), type(uint256).max
-        );
-        targetData[5] = abi.encodeWithSignature(
-            "approve(address,uint256)", getAddress(sourceChain, "syrupUSDT"), type(uint256).max
-        );
-        targetData[6] =
-            abi.encodeWithSignature("requestRedeem(uint256,address)", 90e6, getAddress(sourceChain, "boringVault"));
-        targetData[7] =
-            abi.encodeWithSignature("requestRedeem(uint256,address)", 90e6, getAddress(sourceChain, "boringVault"));
-        targetData[8] = abi.encodeWithSignature(
-            "removeShares(uint256,address)", 50e6, getAddress(sourceChain, "boringVault")
-        );
-        targetData[9] = abi.encodeWithSignature(
-            "removeShares(uint256,address)", 50e6, getAddress(sourceChain, "boringVault")
-        );
+            abi.encodeWithSignature("mint(uint256)", 100e18);
+        targetData[4] = abi.encodeWithSignature("withdraw(uint256)", 100e18);
+        targetData[5] = abi.encodeWithSignature("redeem(uint256)", 100e18);
 
-        uint256[] memory values = new uint256[](10);
+        uint256[] memory values = new uint256[](6);
 
-        address[] memory decodersAndSanitizers = new address[](10);
+        address[] memory decodersAndSanitizers = new address[](6);
         for (uint256 i = 0; i < decodersAndSanitizers.length; i++) {
             decodersAndSanitizers[i] = rawDataDecoderAndSanitizer;
         }
