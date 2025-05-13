@@ -40,6 +40,7 @@ berachain = "${BERA_CHAIN_RPC_URL}"
 bartio = "${BARTIO_RPC_URL}"
 holesky = "${HOLESKY_RPC_URL}"
 unichain = "${UNICHAIN_RPC_URL}"
+tacTestnet = "${TAC_TESTNET_RPC_URL}"
 flare = "${FLARE_RPC_URL}"
 ink = "${INK_RPC_URL}"
 
