@@ -12540,6 +12540,19 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             vault,
             false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve UltraYield Vault ", ERC20(vault).symbol(), " to spend", ERC20(vault).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = vault;
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            vault,
+            false,
             "requestRedeem(uint256)",
             new address[](0),
             string.concat("Request redeem from UltraYield Vault ", ERC20(vault).symbol()),
