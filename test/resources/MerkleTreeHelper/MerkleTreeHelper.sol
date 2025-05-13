@@ -12535,6 +12535,18 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Request Withdraw Native ETH from STONE"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "stoneVault"),
+            false,
+            "cancelWithdraw(uint256)",
+            new address[](0),
+            string.concat("Cancel ETH withdraw request from STONE"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
     }
 
     // ========================================= JSON FUNCTIONS =========================================

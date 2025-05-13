@@ -109,7 +109,7 @@ contract StakeStoneIntegrationTest is Test, MerkleTreeHelper {
     function testStakeStoneIntegration() external {
         deal(address(boringVault), 1_000e18);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](4);
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
         _addStoneLeafs(leafs);
 
         //string memory filePath = "./TestTEST.json";
@@ -120,29 +120,33 @@ contract StakeStoneIntegrationTest is Test, MerkleTreeHelper {
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        ManageLeaf[] memory manageLeafs = new ManageLeaf[](4);
+        ManageLeaf[] memory manageLeafs = new ManageLeaf[](5);
         manageLeafs[0] = leafs[0]; //deposit ETH -> STONE
         manageLeafs[1] = leafs[1]; //instantWithdraw STONE -> ETH
         manageLeafs[2] = leafs[2]; //approve StoneVault to spend STONE
         manageLeafs[3] = leafs[3]; //requestWithdraw STONE -> ETH
+        manageLeafs[4] = leafs[4]; //cancelWithdraw STONE -> ETH
 
         (bytes32[][] memory manageProofs) = _getProofsUsingTree(manageLeafs, manageTree);
 
-        address[] memory targets = new address[](4);
+        address[] memory targets = new address[](5);
         targets[0] = getAddress(sourceChain, "stoneVault");
         targets[1] = getAddress(sourceChain, "stoneVault");
         targets[2] = getAddress(sourceChain, "STONE");
         targets[3] = getAddress(sourceChain, "stoneVault");
-        bytes[] memory targetData = new bytes[](4);
+        targets[4] = getAddress(sourceChain, "stoneVault");
+
+        bytes[] memory targetData = new bytes[](5);
         targetData[0] = abi.encodeWithSignature("deposit()");
         targetData[1] = abi.encodeWithSignature("instantWithdraw(uint256,uint256)", 0, 1e15);
         targetData[2] = abi.encodeWithSelector(ERC20.approve.selector, getAddress(sourceChain, "stoneVault"), type(uint256).max);
         targetData[3] = abi.encodeWithSignature("requestWithdraw(uint256)", 100e18);
+        targetData[4] = abi.encodeWithSignature("cancelWithdraw(uint256)", 50e18);
 
-        uint256[] memory values = new uint256[](4);
+        uint256[] memory values = new uint256[](5);
         values[0] = 1_000e18;
 
-        address[] memory decodersAndSanitizers = new address[](4);
+        address[] memory decodersAndSanitizers = new address[](5);
         for (uint256 i = 0; i < decodersAndSanitizers.length; i++) {
             decodersAndSanitizers[i] = rawDataDecoderAndSanitizer;
         }

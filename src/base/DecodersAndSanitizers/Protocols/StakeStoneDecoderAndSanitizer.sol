@@ -20,4 +20,9 @@ abstract contract StakeStoneDecoderAndSanitizer is BaseDecoderAndSanitizer {
         // Nothing to sanitize or return
         return addressesFound;
     }
+
+    function cancelWithdraw(uint256 /*_shares*/) external pure virtual returns (bytes memory addressesFound) {
+        // Nothing to sanitize or return
+        return addressesFound;
+    }
 }
