@@ -23,7 +23,7 @@ abstract contract AgglayerDecoderAndSanitizer is BaseDecoderAndSanitizer {
     }
     
     //tree depth: https://github.com/agglayer/ulxly-contracts/blob/ac153f7ca70d41f113820c5441363038a33baaef/contracts/v2/lib/DepositContractBase.sol#L15
-    //TODO figure out if we need to sanitize `metadata` 
+    /// @notice metadata here is token metadata does not need to be sanitized or checked for length, etc
     function claimAsset(
         bytes32[32] calldata /*smtProofLocalExitRoot*/,
         bytes32[32] calldata /*smtProofRollupExitRoot*/,
@@ -37,7 +37,6 @@ abstract contract AgglayerDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 /*amount*/,
         bytes calldata /*metadata*/
     ) external pure virtual returns (bytes memory addressesFound) {
-
         addressesFound = abi.encodePacked(address(uint160(originNetwork)), originTokenAddress, address(uint160(destinationNetwork)), destinationAddress); 
     }
 
@@ -45,9 +44,10 @@ abstract contract AgglayerDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint32 destinationNetwork,
         address destinationAddress,
         bool /*forceUpdateGlobalExitRoot*/,
-        bytes calldata /*metadata*/
+        bytes calldata metadata
     ) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(address(uint160(destinationNetwork)), destinationAddress); 
+        (address token, /*uint256 amount*/) = abi.decode(metadata, (address, uint256)); 
+        addressesFound = abi.encodePacked(address(uint160(destinationNetwork)), destinationAddress, token); 
     }
 
     function bridgeMessageWETH(
@@ -55,8 +55,9 @@ abstract contract AgglayerDecoderAndSanitizer is BaseDecoderAndSanitizer {
         address destinationAddress,
         uint256 /*amountWETH*/,
         bool /*forceUpdateGlobalExitRoot*/,
-        bytes calldata /*metadata*/
+        bytes calldata metadata
     ) external pure virtual returns (bytes memory addressesFound) {
+        (address token, /*uint256 amount*/) = abi.decode(metadata, (address, uint256)); 
         addressesFound = abi.encodePacked(address(uint160(destinationNetwork)), destinationAddress);
     }
     
@@ -71,8 +72,9 @@ abstract contract AgglayerDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint32 destinationNetwork,
         address destinationAddress,
         uint256 /*amount*/,
-        bytes calldata /*metadata*/
+        bytes calldata metadata
     ) external pure virtual returns (bytes memory addressesFound) {
+        (address token, /*uint256 amount*/) = abi.decode(metadata, (address, uint256)); 
         addressesFound = abi.encodePacked(address(uint160(originNetwork)), originAddress, address(uint160(destinationNetwork)), destinationAddress); 
     }
 }
