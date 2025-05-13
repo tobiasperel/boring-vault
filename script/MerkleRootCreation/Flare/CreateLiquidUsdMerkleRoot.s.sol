@@ -82,7 +82,7 @@ contract CreateLiquidUsdMerkleRootScript is Script, MerkleTreeHelper {
     }
 
     function _addLeafsForDrone(ManageLeaf[] memory leafs) internal {
-        setAddress(true, mainnet, "boringVault", drone);
+        setAddress(true, flare, "boringVault", drone);
         uint256 droneStartIndex = leafIndex + 1;
 
         // ========================== SparkDEX ===============================
