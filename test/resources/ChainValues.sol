@@ -27,6 +27,7 @@ contract ChainValues {
     string public constant bob = "bob";
     string public constant derive = "derive";
     string public constant unichain = "unichain";
+    string public constant ink = "ink";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
@@ -34,6 +35,8 @@ contract ChainValues {
     string public constant berachainTestnet = "berachainTestnet";
     string public constant bartio = "bartio";
     string public constant tacTestnet = "tacTestnet";
+    string public constant flare = "flare";
+
 
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
@@ -54,6 +57,7 @@ contract ChainValues {
     uint32 public constant layerZeroSepoliaEndpointId = 40161;
     uint32 public constant layerZeroSonicBlazeEndpointId = 40349;
     uint32 public constant layerZeroMovementEndpointId = 30325;
+    uint32 public constant layerZeroInkEndpointId = 30339;
     uint32 public constant hyperlaneMainnetEndpointId = 1;
     uint32 public constant hyperlaneEclipseEndpointId = 1408864445;
 
@@ -112,6 +116,8 @@ contract ChainValues {
         _addBobValues();
         _addDeriveValues();
         _addUnichainValues();
+        _addFlareValues();
+        _addInkValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -297,7 +303,8 @@ contract ChainValues {
         values[mainnet]["sUSDC"] = 0xBc65ad17c5C0a2A4D159fa5a503f4992c7B545FE.toBytes32(); 
         values[mainnet]["frxUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
         values[mainnet]["sfrxUSD"] = 0xcf62F905562626CfcDD2261162a51fd02Fc9c5b6.toBytes32(); 
-        values[mainnet]["SYRUP"] = 0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66.toBytes32(); 
+        values[mainnet]["SYRUP"] = 0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66.toBytes32();
+        values[mainnet]["KBTC"] = 0x73E0C0d45E048D25Fc26Fa3159b0aA04BfA4Db98.toBytes32();
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -1964,6 +1971,9 @@ contract ChainValues {
             0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32();
 
         values[sonicMainnet]["silo_sfrxUSD_scUSD_id48_config"] = 0x6452b9aE8011800457b42C4fBBDf4579afB96228.toBytes32();
+        
+        // Silo Vaults
+        values[sonicMainnet]["silo_USDC_vault"] = 0xF6F87073cF8929C206A77b0694619DC776F89885.toBytes32();
 
         // Curve
         values[sonicMainnet]["curve_CRV_claiming"] = 0xf3A431008396df8A8b2DF492C913706BDB0874ef.toBytes32();
@@ -2211,6 +2221,9 @@ contract ChainValues {
         values[berachain]["infrared_vault_wbtc_ebtc"] = 0x5C5FCb568a98DA28C9D2DF4852b102aa814c3a4c.toBytes32();
         values[berachain]["infrared_vault_weth_weeth"] = 0x16ed36cB22b298085d10b119030408C7BbfFC24E.toBytes32();
         values[berachain]["infrared_vault_rUSD_honey"] = 0x1C5879B75be9E817B1607AFb6f24F632eE6F8820.toBytes32();
+        values[berachain]["infrared_vault_primeLiquidBeraETH"] = 0xc9d8Bc7428059219f3D19Da7F17ad468254D4D7e.toBytes32();
+        values[berachain]["infrared_vault_primeLiquidBeraBTC"] = 0x4bA0a69621eA72870F9fcf2D974D39B8609343cC.toBytes32();
+        values[berachain]["infrared_vault_iBGT"] = 0x75F3Be06b02E235f6d0E7EF2D462b29739168301.toBytes32();
 
         // Dolomite
         values[berachain]["dolomiteMargin"] = 0x003Ca23Fd5F0ca87D01F6eC6CD14A8AE60c2b97D.toBytes32();
@@ -2259,7 +2272,7 @@ contract ChainValues {
 
         // Ooga Booga
         values[berachain]["OBRouter"] = 0xFd88aD4849BA0F729D6fF4bC27Ff948Ab1Ac3dE7.toBytes32();
-        values[berachain]["OBExecutor"] = 0x2242B1c1B429c799D5584dC4B59732fb6B1A6BE6.toBytes32();
+        values[berachain]["OBExecutor"] = 0x0e29aD2925079f313817D09Fcadbdf3A91125654.toBytes32();
 
 
         // Royco
@@ -2270,6 +2283,19 @@ contract ChainValues {
         values[berachain]["collVaultRouter"] = 0x5f1619FfAEfdE17F7e54f850fe90AD5EE44dbf47.toBytes32();
         values[berachain]["bWETH"] = 0x6Ddbc255bFfD2D394F3b31c543283c01D69D4Ba2.toBytes32();
         values[berachain]["WETHDenManager"] = 0xD80AB5da2507008c8ede90648407BE098F1F1521.toBytes32();
+
+        values[berachain]["bbWBTC"] = 0xAA2cBDe9f11f09ee9774D6d6C98dbB4792d9549a.toBytes32();
+        values[berachain]["bbLBTC"] = 0x458CbA0D42896659fbb69872212Ec7Aa01b8DBEf.toBytes32();
+        values[berachain]["bbeBTC"] = 0xA7dFa250Ea71ee410C3deEAF1599Cc864B958b0D.toBytes32();
+        values[berachain]["bbeBTC-WBTC"] = 0x23D7DdCE723531bE8F2D26d2539d672Bd30f4CE1.toBytes32();
+
+        values[berachain]["WBTCDenManager"] = 0x053EEbc21D5129CDB1abf7EAf09D59b19e75B8ce.toBytes32();
+        values[berachain]["LBTCDenManager"] = 0x2d430a7c2Af78682A78F65580f42B32d47A14030.toBytes32();
+        values[berachain]["eBTCDenManager"] = 0xA1C9fbDF853617Fa27E2c39EE830703A3Fa9D2A3.toBytes32();
+        values[berachain]["eBTC-WBTCDenManager"] = 0xF9dB1b321CF012f9a1189Fdf5b9aE97864a96c8C.toBytes32();
+
+        values[berachain]["sNECT"] = 0x597877Ccf65be938BD214C4c46907669e3E62128.toBytes32();
+        values[berachain]["vaultedsNECT"] = 0x1d22592F66Fc92e0a64eE9300eAeca548cd466c5.toBytes32();
 
         // Honey
         values[berachain]["honeyFactory"] = 0xA4aFef880F5cE1f63c9fb48F661E27F8B4216401.toBytes32();
@@ -2389,5 +2415,51 @@ contract ChainValues {
 
         // Balancer
         values[tacTestnet]["balancerVault"] = address(1).toBytes32();
+    }
+
+    function _addFlareValues() private {
+        values[flare]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[flare]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[flare]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[flare]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        // ERC20s
+        values[flare]["FLR"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32(); // NATIVE
+        values[flare]["WFLR"] = 0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d.toBytes32(); // WNATIVE
+        values[flare]["USDT0"] = 0xe7cd86e13AC4309349F30B3435a9d337750fC82D.toBytes32(); // USDT0
+        values[flare]["USDC"] = 0xFbDa5F676cB37624f28265A144A48B0d6e87d3b6.toBytes32(); // USDC.e Stargate
+        values[flare]["ZRO"] = address(1).toBytes32(); // USDC0
+
+        // Balancer
+        values[flare]["balancerVault"] = address(1).toBytes32();
+        values[flare]["vault"] = address(1).toBytes32();
+
+        // LayerZero
+        values[flare]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
+
+    }
+
+    function _addInkValues() private {
+        values[ink]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[ink]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[ink]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[ink]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+        values[ink]["dev3Address"] = 0xBBc5569B0b32403037F37255f4ff50B8Bb825b2A.toBytes32();
+        values[ink]["dev4Address"] = 0xD3d742a82524b6de30E54315E471264dc4CF2BcC.toBytes32();
+
+        // ERC20s
+        values[ink]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
+        values[ink]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
+        values[ink]["USDT"] = 0x0200C29006150606B650577BBE7B6248F58470c1.toBytes32(); // USDT0
+        values[ink]["USDC"] = 0xF1815bd50389c46847f0Bda824eC8da914045D14.toBytes32(); // Stargate USDC.e
+        values[ink]["KBTC"] = 0x73E0C0d45E048D25Fc26Fa3159b0aA04BfA4Db98.toBytes32(); // Kraken Wrapped BTC
+    
+        // LayerZero
+        values[ink]["LayerZeroEndPoint"] = 0xca29f3A6f966Cb2fc0dE625F8f325c0C46dbE958.toBytes32();
+        values[ink]["ZRO"] = address(1).toBytes32();
+
+        // Balancer
+        values[ink]["balancerVault"] = address(1).toBytes32();
+        values[ink]["vault"] = address(1).toBytes32();
     }
 }
