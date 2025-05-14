@@ -17,6 +17,8 @@ import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/O
 import {HoneyDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/HoneyDecoderAndSanitizer.sol";
 import {NativeWrapperDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol";
+import {BeraborrowDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/BeraborrowDecoderAndSanitizer.sol";
+
 
 contract BerachainDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
@@ -32,7 +34,8 @@ contract BerachainDecoderAndSanitizer is
     WeETHDecoderAndSanitizer,
     OogaBoogaDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
-    HoneyDecoderAndSanitizer
+    HoneyDecoderAndSanitizer,
+    BeraborrowDecoderAndSanitizer
 {
     constructor(address _nonFungiblePositionManager, address _dolomiteMargin)
         UniswapV3DecoderAndSanitizer(_nonFungiblePositionManager)
