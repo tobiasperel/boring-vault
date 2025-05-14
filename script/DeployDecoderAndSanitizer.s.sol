@@ -114,6 +114,10 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //creationCode = type(CamelotFullDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "camelotNonFungiblePositionManager"));
         //deployer.deployContract("Camelot Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+
+        creationCode = type(BerachainDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
+        deployer.deployContract("LiquidBTC Berachain Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
         
         creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
