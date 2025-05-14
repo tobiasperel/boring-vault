@@ -78,9 +78,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-
         vm.createSelectFork("unichain");
         setSourceChainName("unichain"); 
+
     }
 
     function run() external {
@@ -118,7 +118,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         creationCode = type(AlphaSTETHDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(address(0), getAddress(sourceChain, "uniV4PositionManager"), address(0), address(0));
         deployer.deployContract("Alpha STETH Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-
+        
         vm.stopBroadcast();
     }
 }
