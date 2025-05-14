@@ -27,13 +27,17 @@ contract ChainValues {
     string public constant bob = "bob";
     string public constant derive = "derive";
     string public constant unichain = "unichain";
+    string public constant ink = "ink";
     string public constant holesky = "holesky";
     string public constant sepolia = "sepolia";
     string public constant sonicTestnet = "sonicTestnet";
     string public constant sonicBlaze = "sonicBlaze";
     string public constant berachainTestnet = "berachainTestnet";
     string public constant bartio = "bartio";
+    string public constant hyperEVM = "hyperEVM";
+    string public constant tacTestnet = "tacTestnet";
     string public constant flare = "flare";
+
 
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
@@ -55,8 +59,10 @@ contract ChainValues {
     uint32 public constant layerZeroSonicBlazeEndpointId = 40349;
     uint32 public constant layerZeroMovementEndpointId = 30325;
     uint32 public constant layerZeroFlareEndpointId = 30295;
+    uint32 public constant layerZeroInkEndpointId = 30339;
     uint32 public constant hyperlaneMainnetEndpointId = 1;
     uint32 public constant hyperlaneEclipseEndpointId = 1408864445;
+    uint32 public constant HyperEVMEndpointId = 30367;
 
     error ChainValues__ZeroAddress(string chainName, string valueName);
     error ChainValues__ZeroBytes32(string chainName, string valueName);
@@ -113,7 +119,9 @@ contract ChainValues {
         _addBobValues();
         _addDeriveValues();
         _addUnichainValues();
+        _addHyperEVMValues();
         _addFlareValues();
+        _addInkValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -121,6 +129,7 @@ contract ChainValues {
         _addSonicBlazeValues();
         _addBerachainTestnetValues();
         _addBartioValues();
+        _addTACTestnetValues();
     }
 
     function _addMainnetValues() private {
@@ -298,7 +307,8 @@ contract ChainValues {
         values[mainnet]["sUSDC"] = 0xBc65ad17c5C0a2A4D159fa5a503f4992c7B545FE.toBytes32(); 
         values[mainnet]["frxUSD"] = 0xCAcd6fd266aF91b8AeD52aCCc382b4e165586E29.toBytes32(); 
         values[mainnet]["sfrxUSD"] = 0xcf62F905562626CfcDD2261162a51fd02Fc9c5b6.toBytes32(); 
-        values[mainnet]["SYRUP"] = 0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66.toBytes32(); 
+        values[mainnet]["SYRUP"] = 0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66.toBytes32();
+        values[mainnet]["KBTC"] = 0x73E0C0d45E048D25Fc26Fa3159b0aA04BfA4Db98.toBytes32();
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -1968,6 +1978,9 @@ contract ChainValues {
             0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF.toBytes32();
 
         values[sonicMainnet]["silo_sfrxUSD_scUSD_id48_config"] = 0x6452b9aE8011800457b42C4fBBDf4579afB96228.toBytes32();
+        
+        // Silo Vaults
+        values[sonicMainnet]["silo_USDC_vault"] = 0xF6F87073cF8929C206A77b0694619DC776F89885.toBytes32();
 
         // Curve
         values[sonicMainnet]["curve_CRV_claiming"] = 0xf3A431008396df8A8b2DF492C913706BDB0874ef.toBytes32();
@@ -2278,6 +2291,19 @@ contract ChainValues {
         values[berachain]["bWETH"] = 0x6Ddbc255bFfD2D394F3b31c543283c01D69D4Ba2.toBytes32();
         values[berachain]["WETHDenManager"] = 0xD80AB5da2507008c8ede90648407BE098F1F1521.toBytes32();
 
+        values[berachain]["bbWBTC"] = 0xAA2cBDe9f11f09ee9774D6d6C98dbB4792d9549a.toBytes32();
+        values[berachain]["bbLBTC"] = 0x458CbA0D42896659fbb69872212Ec7Aa01b8DBEf.toBytes32();
+        values[berachain]["bbeBTC"] = 0xA7dFa250Ea71ee410C3deEAF1599Cc864B958b0D.toBytes32();
+        values[berachain]["bbeBTC-WBTC"] = 0x23D7DdCE723531bE8F2D26d2539d672Bd30f4CE1.toBytes32();
+
+        values[berachain]["WBTCDenManager"] = 0x053EEbc21D5129CDB1abf7EAf09D59b19e75B8ce.toBytes32();
+        values[berachain]["LBTCDenManager"] = 0x2d430a7c2Af78682A78F65580f42B32d47A14030.toBytes32();
+        values[berachain]["eBTCDenManager"] = 0xA1C9fbDF853617Fa27E2c39EE830703A3Fa9D2A3.toBytes32();
+        values[berachain]["eBTC-WBTCDenManager"] = 0xF9dB1b321CF012f9a1189Fdf5b9aE97864a96c8C.toBytes32();
+
+        values[berachain]["sNECT"] = 0x597877Ccf65be938BD214C4c46907669e3E62128.toBytes32();
+        values[berachain]["vaultedsNECT"] = 0x1d22592F66Fc92e0a64eE9300eAeca548cd466c5.toBytes32();
+
         // Honey
         values[berachain]["honeyFactory"] = 0xA4aFef880F5cE1f63c9fb48F661E27F8B4216401.toBytes32();
 
@@ -2378,6 +2404,33 @@ contract ChainValues {
         values[unichain]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();
     }
 
+    function _addHyperEVMValues() internal {
+        values[hyperEVM]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[hyperEVM]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+        values[hyperEVM]["LayerZeroEndPoint"] = 0x3A73033C0b1407574C76BdBAc67f126f6b4a9AA9.toBytes32();
+    }
+
+
+    function _addTACTestnetValues() private {
+        values[tacTestnet]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[tacTestnet]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[tacTestnet]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[tacTestnet]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+
+        values[tacTestnet]["dev4Address"] = 0xD3d742a82524b6de30E54315E471264dc4CF2BcC.toBytes32();
+
+        // ERC20s
+        values[tacTestnet]["WTAC"] = 0x07840B012d84095397Fd251Ea619cee6F866bC39.toBytes32();
+        values[tacTestnet]["USDT"] = 0x7336A5a3251b9259DDf8B9D02a96dA0153e0799d.toBytes32(); // hopefully this is a good one to test with
+        values[tacTestnet]["ZRO"] = address(1).toBytes32();
+
+        // LayerZero
+        values[tacTestnet]["LayerZeroEndPoint"] = address(1).toBytes32();
+
+        // Balancer
+        values[tacTestnet]["balancerVault"] = address(1).toBytes32();
+    }
+
     function _addFlareValues() private {
         values[flare]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
         values[flare]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
@@ -2398,5 +2451,30 @@ contract ChainValues {
         // LayerZero
         values[flare]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
 
+    }
+
+
+    function _addInkValues() private {
+        values[ink]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[ink]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[ink]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
+        values[ink]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+        values[ink]["dev3Address"] = 0xBBc5569B0b32403037F37255f4ff50B8Bb825b2A.toBytes32();
+        values[ink]["dev4Address"] = 0xD3d742a82524b6de30E54315E471264dc4CF2BcC.toBytes32();
+
+        // ERC20s
+        values[ink]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
+        values[ink]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
+        values[ink]["USDT"] = 0x0200C29006150606B650577BBE7B6248F58470c1.toBytes32(); // USDT0
+        values[ink]["USDC"] = 0xF1815bd50389c46847f0Bda824eC8da914045D14.toBytes32(); // Stargate USDC.e
+        values[ink]["KBTC"] = 0x73E0C0d45E048D25Fc26Fa3159b0aA04BfA4Db98.toBytes32(); // Kraken Wrapped BTC
+    
+        // LayerZero
+        values[ink]["LayerZeroEndPoint"] = 0xca29f3A6f966Cb2fc0dE625F8f325c0C46dbE958.toBytes32();
+        values[ink]["ZRO"] = address(1).toBytes32();
+
+        // Balancer
+        values[ink]["balancerVault"] = address(1).toBytes32();
+        values[ink]["vault"] = address(1).toBytes32();
     }
 }
