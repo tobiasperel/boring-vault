@@ -11,7 +11,7 @@ import "forge-std/Script.sol";
 /**
  *  source .env && forge script script/MerkleRootCreation/Sonic/CreateStakedSonicBTCMerkleRoot.s.sol --rpc-url $SONIC_MAINNET_RPC_URL
  */
-contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
+contract CreateStakedSonicBTCMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xD0851030C94433C261B405fEcbf1DEC5E15948d0;
