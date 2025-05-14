@@ -1862,6 +1862,9 @@ contract ChainValues {
         values[sonicMainnet]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
         values[sonicMainnet]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
         values[sonicMainnet]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        
+        //Withdraw Queues
+        values[sonicMainnet]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32();
 
         // ERC20
         values[sonicMainnet]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32(); //$S token
@@ -1968,6 +1971,7 @@ contract ChainValues {
 
         values[sonicMainnet]["silo_S_scUSD_id15_config"] = 0xFe514E71F0933F63B374056557AED3dBB381C646.toBytes32();
         values[sonicMainnet]["silo_LBTC_scBTC_id32_config"] = 0xe67cce118e9CcEaE51996E4d290f9B77D960E3d7.toBytes32();
+        values[sonicMainnet]["silo_LBTC_WBTC_id31_config"] = 0x91D87099fA714a201297856D29380195adB62962.toBytes32();
 
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_config"] = 0xDa6787a3543a01Bf770DDF3953bE5B9C99c1cBD0.toBytes32();
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_scUSD_IncentivesController"] =
