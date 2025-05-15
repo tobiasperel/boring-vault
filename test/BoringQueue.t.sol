@@ -66,7 +66,7 @@ contract BoringQueueTest is Test, MerkleTreeHelper {
         boringQueue = new BoringOnChainQueue(
             address(this), address(liquidEth_roles_authority), payable(liquidEth), address(liquidEth_accountant)
         );
-        boringSolver = new BoringSolver(address(this), address(liquidEth_roles_authority), address(boringQueue));
+        boringSolver = new BoringSolver(address(this), address(liquidEth_roles_authority), address(boringQueue), true);
 
         // Grant BoringSolver SOLVER_ROLES for on both vaults.
         vm.startPrank(weETHs_roles_authority.owner());
