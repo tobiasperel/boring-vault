@@ -34,7 +34,9 @@ contract BoringSolver is IBoringSolver, Auth, Multicall {
      */
     bool public immutable excessToSolverNonSelfSolve;
 
-    constructor(address _owner, address _auth, address _queue, bool _excessToSolverNonSelfSolve) Auth(_owner, Authority(_auth)) {
+    constructor(address _owner, address _auth, address _queue, bool _excessToSolverNonSelfSolve)
+        Auth(_owner, Authority(_auth))
+    {
         queue = BoringOnChainQueue(_queue);
         excessToSolverNonSelfSolve = _excessToSolverNonSelfSolve;
     }
@@ -63,7 +65,8 @@ contract BoringSolver is IBoringSolver, Auth, Multicall {
         address teller,
         bool coverDeficit
     ) external requiresAuth {
-        bytes memory solveData = abi.encode(SolveType.BORING_REDEEM, msg.sender, teller, excessToSolverNonSelfSolve, coverDeficit);
+        bytes memory solveData =
+            abi.encode(SolveType.BORING_REDEEM, msg.sender, teller, excessToSolverNonSelfSolve, coverDeficit);
 
         queue.solveOnChainWithdraws(requests, solveData, address(this));
     }
@@ -80,7 +83,13 @@ contract BoringSolver is IBoringSolver, Auth, Multicall {
         bool coverDeficit
     ) external requiresAuth {
         bytes memory solveData = abi.encode(
-            SolveType.BORING_REDEEM_MINT, msg.sender, fromTeller, toTeller, intermediateAsset, excessToSolverNonSelfSolve, coverDeficit
+            SolveType.BORING_REDEEM_MINT,
+            msg.sender,
+            fromTeller,
+            toTeller,
+            intermediateAsset,
+            excessToSolverNonSelfSolve,
+            coverDeficit
         );
 
         queue.solveOnChainWithdraws(requests, solveData, address(this));
