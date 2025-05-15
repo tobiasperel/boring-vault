@@ -142,17 +142,19 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Euler =========================
 
-        ERC4626[] memory depositVaults = new ERC4626[](4);
+        ERC4626[] memory depositVaults = new ERC4626[](6);
         depositVaults[0] = ERC4626(getAddress(sourceChain, "euler_scUSD_MEV"));
         depositVaults[1] = ERC4626(getAddress(sourceChain, "euler_USDC_MEV"));
         depositVaults[2] = ERC4626(getAddress(sourceChain, "euler_USDC_RE7"));
         depositVaults[3] = ERC4626(getAddress(sourceChain, "euler_scUSD_RE7"));
+        depositVaults[4] = ERC4626(getAddress(sourceChain, "silo_Mithras_vault"));
+        depositVaults[5] = ERC4626(getAddress(sourceChain, "silo_RE7_vault"));
 
         address[] memory subaccounts = new address[](1);
         subaccounts[0] = address(boringVault);
 
         _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
-
+        
         // ========================== Native =========================
         _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));
 
