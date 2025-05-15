@@ -5,15 +5,25 @@ import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndS
 
 abstract contract rFLRDecoderAndSanitizer is BaseDecoderAndSanitizer {
     //============================== rFLR ===============================
-    function claimRewards(uint256[] calldata /*_projectIds*/, uint256 /*_month*/) external pure virtual returns (bytes memory addressesFound) {
+    function claimRewards(uint256[] calldata, /*_projectIds*/ uint256 /*_month*/ )
+        external
+        pure
+        virtual
+        returns (bytes memory addressesFound)
+    {
         return addressesFound;
     }
 
-    function withdraw(uint128 /*_amount*/, bool /*_wrap*/) external pure virtual returns (bytes memory addressesFound) {
+    function withdraw(uint128, /*_amount*/ bool /*_wrap*/ )
+        external
+        pure
+        virtual
+        returns (bytes memory addressesFound)
+    {
         return addressesFound;
     }
 
-    function withdrawAll(bool /*_wrap*/) external pure virtual returns (bytes memory addressesFound) {
+    function withdrawAll(bool /*_wrap*/ ) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
 }
