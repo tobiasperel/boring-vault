@@ -15,7 +15,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
-    address public rawDataDecoderAndSanitizer = 0x2b38cF84736E4C7C47Eaa3a2d443881F807337e0;
+    address public rawDataDecoderAndSanitizer = 0x95C7D09e431D37B90ACEE59340a8aD2b7542b3F1;
     address public managerAddress = 0x227975088C28DBBb4b421c6d96781a53578f19a8;
     address public accountantAddress = 0x0d05D94a5F1E76C18fbeB7A13d17C8a314088198;
     address public pancakeSwapDataDecoderAndSanitizer = 0xfdC73Fc6B60e4959b71969165876213918A443Cd;
@@ -511,31 +511,51 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== LayerZero ==========================
         {
-            _addLayerZeroLeafsOldDecoder(
+            _addLayerZeroLeafs(
                 leafs,
                 getERC20(sourceChain, "WEETH"),
                 getAddress(sourceChain, "EtherFiOFTAdapter"),
-                layerZeroOptimismEndpointId
-            );
-            _addLayerZeroLeafsOldDecoder(
-                leafs,
-                getERC20(sourceChain, "WEETH"),
-                getAddress(sourceChain, "EtherFiOFTAdapter"),
-                layerZeroBaseEndpointId
+                layerZeroOptimismEndpointId,
+                getBytes32(sourceChain, "boringVault")
             );
 
-            _addLayerZeroLeafsOldDecoder(
+            _addLayerZeroLeafs(
                 leafs,
                 getERC20(sourceChain, "WEETH"),
                 getAddress(sourceChain, "EtherFiOFTAdapter"),
-                layerZeroSwellEndpointId
+                layerZeroBaseEndpointId,
+                getBytes32(sourceChain, "boringVault")
             );
 
-            _addLayerZeroLeafsOldDecoder(
+            _addLayerZeroLeafs(
                 leafs,
                 getERC20(sourceChain, "WEETH"),
                 getAddress(sourceChain, "EtherFiOFTAdapter"),
-                layerZeroUnichainEndpointId
+                layerZeroSwellEndpointId,
+                getBytes32(sourceChain, "boringVault")
+            );
+
+            _addLayerZeroLeafs(
+                leafs,
+                getERC20(sourceChain, "WEETH"),
+                getAddress(sourceChain, "EtherFiOFTAdapter"),
+                layerZeroUnichainEndpointId,
+                getBytes32(sourceChain, "boringVault")
+            );
+
+            _addLayerZeroLeafs(
+                leafs,
+                getERC20(sourceChain, "WEETH"),
+                getAddress(sourceChain, "EtherFiOFTAdapter"),
+                layerZeroScrollEndpointId,
+                getBytes32(sourceChain, "boringVault")
+            );
+
+            _addLayerZeroLeafNative(
+                leafs,
+                getAddress(sourceChain, "stargateNative"),
+                layerZeroScrollEndpointId,
+                getBytes32(sourceChain, "boringVault")
             );
         }
 
