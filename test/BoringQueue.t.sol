@@ -403,7 +403,7 @@ contract BoringQueueTest is Test, MerkleTreeHelper {
         // No need to skip since maturity is 0.
         uint256 solverBalanceBefore = WETH.balanceOf(address(this));
         // Solve users request using p2p solve.
-        boringSolver.boringRedeemMintSolve(requests, liquidEth_teller, weETHs_teller, address(WETH), true);
+        boringSolver.boringRedeemMintSolve(requests, liquidEth_teller, weETHs_teller, address(WETH), false);
         uint256 solverDelta = WETH.balanceOf(address(this)) - solverBalanceBefore;
         assertGt(solverDelta, 0, "Solver should have received some wETH.");
         assertEq(
@@ -428,9 +428,9 @@ contract BoringQueueTest is Test, MerkleTreeHelper {
         vm.stopPrank();
 
         // No need to skip since maturity is 0.
-        uint256 vaultBalanceBefore = WETH.balanceOf(address(this));
+        uint256 vaultBalanceBefore = WETH.balanceOf(address(liquidEth));
         // Solve users request using p2p solve.
-        boringSolver.boringRedeemMintSolve(requests, liquidEth_teller, weETHs_teller, address(WETH), true);
+        boringSolver.boringRedeemMintSolve(requests, liquidEth_teller, weETHs_teller, address(WETH), false);
         uint256 vaultDelta = WETH.balanceOf(address(this)) - vaultBalanceBefore;
         console.log("Vault delta: ", vaultDelta);
         uint256 amountBulkWithdrawn = 1035460132107172293000; // from test trace
