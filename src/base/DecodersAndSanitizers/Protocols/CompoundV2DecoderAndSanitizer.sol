@@ -5,23 +5,23 @@ import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecode
 
 abstract contract CompoundV2DecoderAndSanitizer is BaseDecoderAndSanitizer {
     // ============================== Ctoken ===============================
-    function mint(uint256 /*mintAmount*/) external pure virtual returns (bytes memory addressesFound) {
+    function mint(uint256 /*mintAmount*/ ) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
 
-    function redeem(uint256 /*redeemTokens*/) external pure virtual returns (bytes memory addressesFound) {
+    function redeem(uint256 /*redeemTokens*/ ) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
 
-    function redeemUnderlying(uint256 /*redeemAmount*/) external pure virtual returns (bytes memory addressesFound) {
+    function redeemUnderlying(uint256 /*redeemAmount*/ ) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
 
-    function borrow(uint256 /*borrowAmount*/) external pure virtual returns (bytes memory addressesFound) {
+    function borrow(uint256 /*borrowAmount*/ ) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
 
-    function repayBorrow(uint256 /*repayAmount*/) external pure virtual returns (bytes memory addressesFound) {
+    function repayBorrow(uint256 /*repayAmount*/ ) external pure virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
 
@@ -52,7 +52,12 @@ abstract contract CompoundV2DecoderAndSanitizer is BaseDecoderAndSanitizer {
     }
 
     // ============================== Kinetic-style Unitroller ==============================
-    function claimReward(uint8 /*rewardType*/, address holder) external pure virtual returns (bytes memory addressesFound) {
+    function claimReward(uint8, /*rewardType*/ address holder)
+        external
+        pure
+        virtual
+        returns (bytes memory addressesFound)
+    {
         addressesFound = abi.encodePacked(holder);
     }
 }

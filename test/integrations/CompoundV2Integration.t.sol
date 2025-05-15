@@ -146,8 +146,7 @@ contract CompoundV2IntegrationTest is Test, MerkleTreeHelper {
         address[] memory markets = new address[](1);
         markets[0] = getAddress(sourceChain, "kUSDT0");
         bytes[] memory targetData = new bytes[](9);
-        targetData[0] =
-            abi.encodeWithSignature("enterMarkets(address[])", markets);
+        targetData[0] = abi.encodeWithSignature("enterMarkets(address[])", markets);
         targetData[1] =
             abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "kUSDT0"), type(uint256).max);
         targetData[2] = abi.encodeWithSignature("mint(uint256)", 1e6);
@@ -159,7 +158,7 @@ contract CompoundV2IntegrationTest is Test, MerkleTreeHelper {
         targetData[8] = abi.encodeWithSignature("exitMarket(address)", getAddress(sourceChain, "kUSDT0"));
 
         uint256[] memory values = new uint256[](9);
-        
+
         address[] memory decodersAndSanitizers = new address[](9);
 
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -215,8 +214,7 @@ contract CompoundV2IntegrationTest is Test, MerkleTreeHelper {
         address[] memory markets = new address[](1);
         markets[0] = getAddress(sourceChain, "isoFLR");
         bytes[] memory targetData = new bytes[](4);
-        targetData[0] =
-            abi.encodeWithSignature("enterMarkets(address[])", markets);
+        targetData[0] = abi.encodeWithSignature("enterMarkets(address[])", markets);
         targetData[1] = abi.encodeWithSignature("mint()");
         targetData[2] = abi.encodeWithSignature("borrow(uint256)", 4e17);
         targetData[3] = abi.encodeWithSignature("repayBorrow()");
@@ -224,7 +222,7 @@ contract CompoundV2IntegrationTest is Test, MerkleTreeHelper {
         uint256[] memory values = new uint256[](4);
         values[1] = 1e18;
         values[3] = 4e17;
-        
+
         address[] memory decodersAndSanitizers = new address[](4);
 
         decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
@@ -234,7 +232,6 @@ contract CompoundV2IntegrationTest is Test, MerkleTreeHelper {
 
         manager.manageVaultWithMerkleVerification(manageProofs, decodersAndSanitizers, targets, targetData, values);
     }
-
 
     // ========================================= HELPER FUNCTIONS =========================================
 
