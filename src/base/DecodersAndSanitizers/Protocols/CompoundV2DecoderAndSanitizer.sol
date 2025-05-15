@@ -33,4 +33,26 @@ abstract contract CompoundV2DecoderAndSanitizer is BaseDecoderAndSanitizer {
     function repayBorrow() external payable virtual returns (bytes memory addressesFound) {
         return addressesFound;
     }
+
+    // ============================== General Unitroller ==============================
+
+    function enterMarkets(address[] memory cTokens) external pure virtual returns (bytes memory addressesFound) {
+        for (uint256 i = 0; i < cTokens.length; i++) {
+            addressesFound = abi.encodePacked(addressesFound, cTokens[i]);
+        }
+    }
+
+    function exitMarket(address cToken) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(cToken);
+    }
+
+    // ============================== Original Compound Unitroller ==============================
+    function claimComp(address holder) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(holder);
+    }
+
+    // ============================== Kinetic-style Unitroller ==============================
+    function claimReward(uint8 /*rewardType*/, address holder) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(holder);
+    }
 }
