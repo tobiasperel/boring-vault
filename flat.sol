@@ -694,6 +694,22 @@ contract BaseDecoderAndSanitizer {
     }
 }
 
+// src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol
+
+abstract contract NativeWrapperDecoderAndSanitizer is BaseDecoderAndSanitizer {
+    //============================== ETHERFI ===============================
+
+    function deposit() external pure virtual returns (bytes memory addressesFound) {
+        // Nothing to sanitize or return
+        return addressesFound;
+    }
+
+    function withdraw(uint256) external pure virtual returns (bytes memory addressesFound) {
+        // Nothing to sanitize or return
+        return addressesFound;
+    }
+}
+
 // src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol
 
 abstract contract OFTDecoderAndSanitizer is BaseDecoderAndSanitizer {
@@ -774,10 +790,14 @@ abstract contract ScrollBridgeDecoderAndSanitizer is BaseDecoderAndSanitizer {
     }
 }
 
-// src/base/DecodersAndSanitizers/FullScrollBridgeDecoderAndSanitizer.sol
+// src/base/DecodersAndSanitizers/ScrollVaultsDecoderAndSanitizer.sol
 
-contract FullScrollBridgeDecoderAndSanitizer is
+ 
+ 
+
+contract ScrollVaultsDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
-    ScrollBridgeDecoderAndSanitizer
+    ScrollBridgeDecoderAndSanitizer,
+    NativeWrapperDecoderAndSanitizer
 {}
