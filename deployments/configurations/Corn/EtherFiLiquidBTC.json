@@ -1,9 +1,10 @@
 {
   "deploymentParameters": {
-    "logLevel": 4,
+    "logLevel": 4, 
     "privateKeyEnvName": "BORING_DEVELOPER",
     "chainName": "corn",
-    "desiredNumberOfDeploymentTxs": 5,
+    "evmVersion": "cancun",
+    "desiredNumberOfDeploymentTxs": 15,
     "txBundlerAddressOrName": {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
@@ -27,7 +28,7 @@
       "address": "0x0000000000000000000000000000000000000000",
       "name": "txBundlerAddress"
     },
-    "deploymentFileName": "addresses/Corn/EtherFiLiquidBTC.json"
+    "deploymentFileName": "addresses/Corn/LiquidBTC.json"
   },
   "rolesAuthorityConfiguration": {
     "rolesAuthorityDeploymentName": "EtherFi Liquid BTC Roles Authority V0.0"
@@ -67,10 +68,10 @@
       },
       "accountantDeploymentParameters": {
         "allowedExchangeRateChangeLower": 9900,
-        "allowedExchangeRateChangeUpper": 10000,
+        "allowedExchangeRateChangeUpper": 10100,
         "baseAddressOrName": {
           "address": "0x0000000000000000000000000000000000000000",
-          "name": "WBTC"
+          "name": "WBTCN"
         },
         "minimumUpateDelayInSeconds": 21600,
         "performanceFee": 0,
@@ -83,12 +84,13 @@
     "tellerDeploymentName": "EtherFi Liquid BTC Teller V0.0",
     "tellerParameters": {
       "allowPublicDeposits": true,
-      "shareLockPeriod": 60,
+      "shareLockPeriod": 86400,
       "kind": {
-        "teller": true,
+        "teller": false,
         "tellerWithRemediation": false,
         "tellerWithCcip": false,
-        "tellerWithLayerZero": false
+        "tellerWithLayerZero": false,
+        "tellerWithLayerZeroRateLimiting": true
       },
       "ccip": {
         "routerAddressOrName": {
@@ -150,8 +152,8 @@
     "safeGasToForwardNative": 21000
   },
   "pauserConfiguration": {
-    "shouldDeploy": false,
-    "pauserDeploymentName": "pauser",
+    "shouldDeploy": true,
+    "pauserDeploymentName": "EtherFi Liquid BTC Pauser V0.0",
     "makeGenericPauser": ["0x0000000000000000000000000000000000000000"],
     "makeGenericUnpauser": ["0x0000000000000000000000000000000000000000"],
     "makePauseAll": ["0x0000000000000000000000000000000000000000"],
@@ -164,35 +166,19 @@
     ]
   },
   "timelockConfiguration": {
-    "shouldDeploy": false,
-    "timelockDeploymentName": "timelock",
+    "shouldDeploy": true,
+    "timelockDeploymentName": "EtherFi Liquid BTC Timelock V0.0",
     "timelockParameters": {
+      "executors": ["0x0000000000000000000000000000000000000000"],
       "minDelay": 86400,
-      "proposers": ["0x0000000000000000000000000000000000000000"],
-      "executors": ["0x0000000000000000000000000000000000000000"]
+      "proposers": ["0x0000000000000000000000000000000000000000"]
     }
   },
   "accountantAssets": [
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
-      },
-      "isPeggedToBase": true,
-      "rateProvider": "0x0000000000000000000000000000000000000000"
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
         "name": "LBTC"
-      },
-      "isPeggedToBase": true,
-      "rateProvider": "0x0000000000000000000000000000000000000000"
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "fBTC"
       },
       "isPeggedToBase": true,
       "rateProvider": "0x0000000000000000000000000000000000000000"
@@ -202,16 +188,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "WBTC"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 0
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
+        "name": "WBTCN"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -221,15 +198,6 @@
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
         "name": "LBTC"
-      },
-      "allowDeposits": true,
-      "allowWithdraws": true,
-      "sharePremium": 0
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "fBTC"
       },
       "allowDeposits": true,
       "allowWithdraws": true,
@@ -240,18 +208,7 @@
     {
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
-        "name": "WBTC"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 259200,
-      "minimumShares": 0,
-      "secondsToMaturity": 172800
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "cbBTC"
+        "name": "WBTCN"
       },
       "maxDiscount": 10,
       "minDiscount": 1,
@@ -263,17 +220,6 @@
       "addressOrName": {
         "address": "0x0000000000000000000000000000000000000000",
         "name": "LBTC"
-      },
-      "maxDiscount": 10,
-      "minDiscount": 1,
-      "minimumSecondsToDeadline": 259200,
-      "minimumShares": 0,
-      "secondsToMaturity": 172800
-    },
-    {
-      "addressOrName": {
-        "address": "0x0000000000000000000000000000000000000000",
-        "name": "fBTC"
       },
       "maxDiscount": 10,
       "minDiscount": 1,
