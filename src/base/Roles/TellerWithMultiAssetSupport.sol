@@ -95,7 +95,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
 
     /**
      * @notice The global deposit cap of the vault. 
-     * @dev If the cap is reached, no new deposits are accepts. No partial fills. 
+     * @dev If the cap is reached, no new deposits are accepted. No partial fills. 
      */
     uint96 public depositCap = type(uint96).max; 
 
