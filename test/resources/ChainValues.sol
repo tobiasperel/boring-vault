@@ -2476,6 +2476,11 @@ contract ChainValues {
         values[flare]["USDT0_OFT"] = 0x567287d2A9829215a37e3B88843d32f9221E7588.toBytes32();
         values[flare]["USDC_OFT_stargate"] = 0x77C71633C34C3784ede189d74223122422492a0f.toBytes32(); 
 
+        // Kintetic
+        values[flare]["kineticUnitroller"] = 0x8041680Fb73E1Fe5F851e76233DCDfA0f2D2D7c8.toBytes32();
+        values[flare]["kUSDT0"] = 0x76809aBd690B77488Ffb5277e0a8300a7e77B779.toBytes32();
+        values[flare]["isoFLR"] = 0xd7291D5001693d15b6e4d56d73B5d2cD7eCfE5c6.toBytes32(); // isolated FLR for native asset testing
+        values[flare]["isoUnitroller"] = 0xDcce91d46Ecb209645A26B5885500127819BeAdd.toBytes32(); // isolated unitroller for native asset testing
     }
 
 
