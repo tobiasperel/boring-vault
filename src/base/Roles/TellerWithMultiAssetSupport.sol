@@ -543,12 +543,13 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
         address to,
         Asset memory asset
     ) internal returns (uint256 shares) {
+        uint96 cap = depositCap;
         if (depositAmount == 0) revert TellerWithMultiAssetSupport__ZeroAssets();
         shares = depositAmount.mulDivDown(ONE_SHARE, accountant.getRateInQuoteSafe(depositAsset));
         shares = asset.sharePremium > 0 ? shares.mulDivDown(1e4 - asset.sharePremium, 1e4) : shares;
         if (shares < minimumMint) revert TellerWithMultiAssetSupport__MinimumMintNotMet();
-        if (depositCap != type(uint96).max) {
-            if (shares + vault.totalSupply() > depositCap) revert TellerWithMultiAssetSupport__DepositExceedsCap(); 
+        if (cap != type(uint96).max) {
+            if (shares + vault.totalSupply() > cap) revert TellerWithMultiAssetSupport__DepositExceedsCap(); 
         }
         vault.enter(from, depositAsset, depositAmount, to, shares);
     }
