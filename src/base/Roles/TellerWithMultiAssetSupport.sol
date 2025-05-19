@@ -353,6 +353,10 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
         emit DenyPermissionedOperator(operator);
     }
 
+    /**
+     * @notice Set the deposit cap of the vault. 
+     * @dev Callable by OWNER_ROLE
+     */
     function setDepositCap(uint96 cap) external requiresAuth {
         depositCap = cap; 
         emit DepositCapSet(cap); 
