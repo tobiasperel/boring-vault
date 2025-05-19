@@ -6,7 +6,7 @@ import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndS
 abstract contract wSwellUnwrappingDecoderAndSanitizer is BaseDecoderAndSanitizer {
     //============================== ETHERFI ===============================
 
-    function withdrawToByLockTimestamp(address account, uint256 /*lockTimetamp*/, bool /*allowRemainderLoss*/) external pure virtual returns (bytes memory addressesFound) {
+    function withdrawToByLockTimestamp(address account, uint256 /*lockTimestamp*/, bool /*allowRemainderLoss*/) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(account); 
     }
 
