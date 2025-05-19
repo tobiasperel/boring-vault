@@ -11,6 +11,7 @@ import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoc
 import {MerklDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MerklDecoderAndSanitizer.sol";
 import {AmbientDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/AmbientDecoderAndSanitizer.sol";
 import {VelodromeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/VelodromeDecoderAndSanitizer.sol";
+import {wSwellUnwrappingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/wSwellUnwrappingDecoderAndSanitizer.sol";
 
 contract SwellEtherFiLiquidEthDecoderAndSanitizer is
     BaseDecoderAndSanitizer,
@@ -20,7 +21,8 @@ contract SwellEtherFiLiquidEthDecoderAndSanitizer is
     EulerEVKDecoderAndSanitizer,
     MerklDecoderAndSanitizer,
     AmbientDecoderAndSanitizer,
-    VelodromeDecoderAndSanitizer
+    VelodromeDecoderAndSanitizer,
+    wSwellUnwrappingDecoderAndSanitizer
 {
 
     constructor(address _velodromeNonFungiblePositionManager) VelodromeDecoderAndSanitizer(_velodromeNonFungiblePositionManager){}

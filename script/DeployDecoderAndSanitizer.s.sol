@@ -60,7 +60,7 @@ import {LiquidBeraDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Liqu
 import {LiquidBeraEthBerachainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidBeraEthBerachainDecoderAndSanitizer.sol";
 import {FullCorkDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ITB/cork/FullCorkDecoderAndSanitizer.sol";
 import {LiquidUSDFlareDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidUSDFlareDecoderAndSanitizer.sol"; 
-
+import {AlphaSTETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AlphaSTETHDecoderAndSanitizer.sol";
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -79,9 +79,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
+        vm.createSelectFork("unichain");
+        setSourceChainName("unichain"); 
 
-        vm.createSelectFork("flare");
-        setSourceChainName("flare"); 
     }
 
     function run() external {
@@ -120,7 +120,10 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
         //deployer.deployContract("PrimeLiquidBeraBTC Berachain Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
 
-
+        creationCode = type(AlphaSTETHDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(address(0), getAddress(sourceChain, "uniV4PositionManager"), address(0), address(0));
+        deployer.deployContract("Alpha STETH Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+        
         vm.stopBroadcast();
     }
 }
