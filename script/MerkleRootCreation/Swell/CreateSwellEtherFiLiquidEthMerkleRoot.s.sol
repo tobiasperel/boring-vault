@@ -19,7 +19,7 @@ contract CreateSwellEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
     address public managerAddress = 0xDEa7AF4a96A762c9d43A7eE02acecD20A3C6D8B6;
     address public accountantAddress = 0x0d05D94a5F1E76C18fbeB7A13d17C8a314088198;
-    address public rawDataDecoderAndSanitizer = 0xA81BA0b3A4743207a4801882b7a050d959f26f35; 
+    address public rawDataDecoderAndSanitizer = 0xBFcCaEf3F198cabBdfd96d4EB0526A7FBFdFFDbA; 
 
     function setUp() external {}
 
@@ -44,7 +44,7 @@ contract CreateSwellEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== LayerZero ==========================
         _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "WEETH"), layerZeroMainnetEndpointId
+            leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "WEETH"), layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault")
         );
 
         // ========================== Standard Bridge ==========================
@@ -98,6 +98,13 @@ contract CreateSwellEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Ambient ==========================
         _addAmbientLPLeafs(leafs, getAddress(sourceChain, "WEETH"), getAddress(sourceChain, "ETH")); 
         _addAmbientSwapLeafs(leafs, getAddress(sourceChain, "WEETH"), getAddress(sourceChain, "ETH")); //can remove if they don't want/need swapping between the two
+    
+        // Swaps
+        _addAmbientSwapLeafs(leafs, getAddress(sourceChain, "ETH"), getAddress(sourceChain, "SWELL")); 
+        _addAmbientSwapLeafs(leafs, getAddress(sourceChain, "SWELL"), getAddress(sourceChain, "ETH")); 
+
+        // ========================== wSwell Unwrapping ==========================
+        _addWSwellUnwrappingLeafs(leafs); 
 
         // ========================== Verify & Generate ==========================
 

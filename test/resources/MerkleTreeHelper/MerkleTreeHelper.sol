@@ -2052,7 +2052,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             true,
             "deposit()",
             new address[](0),
-            "Wrap ETH for wETH",
+            string.concat("Wrap Native to ", ERC20(wrappedToken).symbol()),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
 
@@ -2064,7 +2064,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "withdraw(uint256)",
             new address[](0),
-            "Unwrap wETH for ETH",
+            string.concat("Unwrap ", ERC20(wrappedToken).symbol(), " to Native"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
     }
@@ -12482,6 +12482,20 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "WSWELL"),
+            false,
+            "withdrawToByLockTimestamps(address,uint256[],bool)",
+            new address[](1),
+            string.concat("Unwrap wSwell for Swell with multiple lock timestamps"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+
     }
 
     // ========================================= JSON FUNCTIONS =========================================
