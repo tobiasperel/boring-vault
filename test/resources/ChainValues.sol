@@ -2323,6 +2323,11 @@ contract ChainValues {
         values[berachain]["sNECT"] = 0x597877Ccf65be938BD214C4c46907669e3E62128.toBytes32();
         values[berachain]["vaultedsNECT"] = 0x1d22592F66Fc92e0a64eE9300eAeca548cd466c5.toBytes32();
 
+        values[berachain]["bbWBTCManagedVault"] = 0xEC5F6Cf02731B1a76CdF11E83bC8Ca9922ef9439.toBytes32();
+        values[berachain]["bbLBTCManagedVault"] = 0x68c761eeb006d91D0e6eFcB8Bc490a22d8D95010.toBytes32();
+        values[berachain]["bbeBTCManagedVault"] = 0x5929Fa7F900C2Ec72C45DF985508CE1ac3B54c71.toBytes32();
+        values[berachain]["bbeBTC-WBTCManagedVault"] = 0x0642e5Ea445b5e572E95c381ef67eF3160572f43.toBytes32();
+
         // Honey
         values[berachain]["honeyFactory"] = 0xA4aFef880F5cE1f63c9fb48F661E27F8B4216401.toBytes32();
 
