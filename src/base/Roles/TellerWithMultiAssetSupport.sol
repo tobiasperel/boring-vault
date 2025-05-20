@@ -97,7 +97,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      * @notice The global deposit cap of the vault. 
      * @dev If the cap is reached, no new deposits are accepted. No partial fills. 
      */
-    uint96 public depositCap = type(uint96).max; 
+    uint112 public depositCap = type(uint112).max; 
 
     /**
      * @dev Maps deposit nonce to keccak256(address receiver, address depositAsset, uint256 depositAmount, uint256 shareAmount, uint256 timestamp, uint256 shareLockPeriod).
@@ -154,7 +154,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
     event PermissionedTransfersSet(bool permissionedTransfers);
     event AllowPermissionedOperator(address indexed operator);
     event DenyPermissionedOperator(address indexed operator);
-    event DepositCapSet(uint96 cap); 
+    event DepositCapSet(uint112 cap); 
 
     // =============================== MODIFIERS ===============================
 
@@ -357,7 +357,7 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
      * @notice Set the deposit cap of the vault. 
      * @dev Callable by OWNER_ROLE
      */
-    function setDepositCap(uint96 cap) external requiresAuth {
+    function setDepositCap(uint112 cap) external requiresAuth {
         depositCap = cap; 
         emit DepositCapSet(cap); 
     }
@@ -543,12 +543,12 @@ contract TellerWithMultiAssetSupport is Auth, BeforeTransferHook, ReentrancyGuar
         address to,
         Asset memory asset
     ) internal returns (uint256 shares) {
-        uint96 cap = depositCap;
+        uint112 cap = depositCap;
         if (depositAmount == 0) revert TellerWithMultiAssetSupport__ZeroAssets();
         shares = depositAmount.mulDivDown(ONE_SHARE, accountant.getRateInQuoteSafe(depositAsset));
         shares = asset.sharePremium > 0 ? shares.mulDivDown(1e4 - asset.sharePremium, 1e4) : shares;
         if (shares < minimumMint) revert TellerWithMultiAssetSupport__MinimumMintNotMet();
-        if (cap != type(uint96).max) {
+        if (cap != type(uint112).max) {
             if (shares + vault.totalSupply() > cap) revert TellerWithMultiAssetSupport__DepositExceedsCap(); 
         }
         vault.enter(from, depositAsset, depositAmount, to, shares);
