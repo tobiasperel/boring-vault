@@ -56,11 +56,22 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
             sonicBTCTellerAssets[0] = getERC20(sourceChain, "LBTC"); 
             sonicBTCTellerAssets[1] = getERC20(sourceChain, "EBTC");
             sonicBTCTellerAssets[2] = getERC20(sourceChain, "WBTC");
+
+            address[] memory sonicBTCTellerAssetsAddresses = new address[](3);
+            sonicBTCTellerAssetsAddresses[0] = getAddress(sourceChain, "LBTC");
+            sonicBTCTellerAssetsAddresses[1] = getAddress(sourceChain, "EBTC");
+            sonicBTCTellerAssetsAddresses[2] = getAddress(sourceChain, "WBTC");
+
+            address[] memory _feeAssets = new address[](1); 
+            _feeAssets[0] = getAddress(sourceChain, "ETH");
+
             address sonicBTCTeller = 0xAce7DEFe3b94554f0704d8d00F69F273A0cFf079;
             address scBTC = 0xBb30e76d9Bb2CC9631F7fC5Eb8e87B5Aff32bFbd; 
             address scBTCWithdrawQueue = 0x488000E6a0CfC32DCB3f37115e759aF50F55b48B; 
             _addTellerLeafs(leafs, sonicBTCTeller, sonicBTCTellerAssets, false, false);
             _addWithdrawQueueLeafs(leafs, scBTCWithdrawQueue, scBTC, sonicBTCTellerAssets); 
+            _addCrossChainTellerLeafs(leafs, sonicBTCTeller, sonicBTCTellerAssetsAddresses, _feeAssets, abi.encode(layerZeroMainnetEndpointId));
+
 
             ERC20[] memory stkscBTCTellerAssets = new ERC20[](1); 
             stkscBTCTellerAssets[0] = getERC20(sourceChain, "scBTC"); 
@@ -79,9 +90,6 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
         );
         _addLayerZeroLeafs(
             leafs, getERC20(sourceChain, "WBTC"), getAddress(sourceChain, "WBTC"), layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault")
-        );
-        _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "scBTC"), getAddress(sourceChain, "scBTC"), layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault")
         );
 
         // ========================== Balancer/Beets ==========================
