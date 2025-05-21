@@ -10429,7 +10429,70 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             
         }
             
-    }  
+    }
+
+    // Note: add 4626 leafs separately if you need access to the regular deposit function that 0s out the params,
+    // mint,redeem,withdraw all will not work at all
+    function _addBeraborrowManagedVaultLeafs(ManageLeaf[] memory leafs, address[] memory managedVaults) internal {
+        for (uint256 i = 0; i < managedVaults.length; i++) {
+            ERC4626 managedVault = ERC4626(managedVaults[i]);
+            address asset = address(managedVault.asset());
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                asset,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                string.concat("Approve ", ERC20(asset).symbol(), " for ", ERC20(managedVaults[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = managedVaults[i];
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                managedVaults[i],
+                false,
+                "deposit(uint256,address,(address,address,uint256,uint256))",
+                new address[](1),
+                string.concat("Deposit into ", ERC20(managedVaults[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                managedVaults[i],
+                false,
+                "redeemIntent(uint256,address,address)",
+                new address[](2),
+                string.concat("Redeem Intent for ", ERC20(managedVaults[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                managedVaults[i],
+                false,
+                "cancelWithdrawalIntent(uint256,uint256,address)",
+                new address[](1),
+                string.concat("Cancel Withdrawal Intent for ", ERC20(managedVaults[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        }
+    }
+
 
     // ========================================= Dolomite Finance =========================================
 
