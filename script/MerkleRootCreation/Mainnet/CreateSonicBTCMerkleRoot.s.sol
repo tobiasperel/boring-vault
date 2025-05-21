@@ -17,7 +17,7 @@ contract CreateSonicBTCMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xBb30e76d9Bb2CC9631F7fC5Eb8e87B5Aff32bFbd;
     address public managerAddress = 0x5dA93667DCc58b71726aFC595f116A6F166F9aeD;
     address public accountantAddress = 0xC1a2C650D2DcC8EAb3D8942477De71be52318Acb;
-    address public rawDataDecoderAndSanitizer = 0xA0ecF0FcEA6F8b063a7d81291F7aC5359efa095b;
+    address public rawDataDecoderAndSanitizer = 0xf7d5D3ba755583C8b174ADE63E8687471Ad8b20a;
 
     function setUp() external {}
 
@@ -35,7 +35,7 @@ contract CreateSonicBTCMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](64);
+        ManageLeaf[] memory leafs = new ManageLeaf[](128);
 
         // ========================== UniswapV3 ==========================
         // WBTC, LBTC, EBTC
