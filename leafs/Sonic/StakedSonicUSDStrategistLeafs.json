@@ -10,16 +10,14 @@
             "Bytes4(TARGET_FUNCTION_SELECTOR)",
             "Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"
         ],
-        "LeafCount": 394,
-        "ManageRoot": "0x5559c68a9d60f3019033f48f0907bbb094e6a8d73ab3df8c2d6b3b6aa5240187",
+        "LeafCount": 388,
+        "ManageRoot": "0x46ec18569dc5b70031bd56d5618fe9cf1cf28c543e792e2dfe7ee199d8e55b50",
         "ManagerAddress": "0x5F7f5205A3E7c63c3bd287EecBe7879687D4c698",
         "TreeCapacity": 512
     },
     "leafs": [
         {
-            "AddressArguments": [
-                "0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034"
-            ],
+            "AddressArguments": ["0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Accountant to spend USDC.e",
@@ -30,9 +28,7 @@
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
-            "AddressArguments": [
-                "0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034"
-            ],
+            "AddressArguments": ["0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Accountant to spend scUSD",
@@ -43,9 +39,7 @@
             "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
         },
         {
-            "AddressArguments": [
-                "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
-            ],
+            "AddressArguments": ["0x29219dd400f2Bf60E5a23d13Be72B486D4038894"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim fees in USDC.e",
@@ -56,9 +50,7 @@
             "TargetAddress": "0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034"
         },
         {
-            "AddressArguments": [
-                "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
-            ],
+            "AddressArguments": ["0x29219dd400f2Bf60E5a23d13Be72B486D4038894"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim yield in USDC.e",
@@ -69,9 +61,7 @@
             "TargetAddress": "0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034"
         },
         {
-            "AddressArguments": [
-                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
-            ],
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim fees in scUSD",
@@ -82,9 +72,7 @@
             "TargetAddress": "0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034"
         },
         {
-            "AddressArguments": [
-                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
-            ],
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim yield in scUSD",
@@ -95,9 +83,7 @@
             "TargetAddress": "0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034"
         },
         {
-            "AddressArguments": [
-                "0xaa52bB8110fE38D0d2d2AF0B85C3A3eE622CA455"
-            ],
+            "AddressArguments": ["0xaa52bB8110fE38D0d2d2AF0B85C3A3eE622CA455"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve UniswapV3 Router to spend USDC.e",
@@ -108,9 +94,7 @@
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
-            "AddressArguments": [
-                "0xaa52bB8110fE38D0d2d2AF0B85C3A3eE622CA455"
-            ],
+            "AddressArguments": ["0xaa52bB8110fE38D0d2d2AF0B85C3A3eE622CA455"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve UniswapV3 Router to spend scUSD",
@@ -121,9 +105,7 @@
             "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
         },
         {
-            "AddressArguments": [
-                "0x743E03cceB4af2efA3CC76838f6E8B50B63F184c"
-            ],
+            "AddressArguments": ["0x743E03cceB4af2efA3CC76838f6E8B50B63F184c"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve UniswapV3 NonFungible Position Manager to spend USDC.e",
@@ -134,9 +116,7 @@
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
-            "AddressArguments": [
-                "0x743E03cceB4af2efA3CC76838f6E8B50B63F184c"
-            ],
+            "AddressArguments": ["0x743E03cceB4af2efA3CC76838f6E8B50B63F184c"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve UniswapV3 NonFungible Position Manager to spend scUSD",
@@ -208,9 +188,7 @@
             "TargetAddress": "0xaa52bB8110fE38D0d2d2AF0B85C3A3eE622CA455"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Remove liquidity from UniswapV3 position",
@@ -246,9 +224,7 @@
             "TargetAddress": "0x743E03cceB4af2efA3CC76838f6E8B50B63F184c"
         },
         {
-            "AddressArguments": [
-                "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
-            ],
+            "AddressArguments": ["0xBA12222222228d8Ba445958a75a0704d566BF2C8"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Balancer Vault to spend USDC.e",
@@ -259,9 +235,7 @@
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
-            "AddressArguments": [
-                "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
-            ],
+            "AddressArguments": ["0xBA12222222228d8Ba445958a75a0704d566BF2C8"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Balancer Vault to spend scUSD",
@@ -272,9 +246,7 @@
             "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
         },
         {
-            "AddressArguments": [
-                "0x33B29bcf17e866A35941e07CbAd54f1807B337f5"
-            ],
+            "AddressArguments": ["0x33B29bcf17e866A35941e07CbAd54f1807B337f5"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Balancer gauge to spend bpt-rsb",
@@ -321,9 +293,7 @@
             "TargetAddress": "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit bpt-rsb into Balancer gauge",
@@ -345,9 +315,7 @@
             "TargetAddress": "0x33B29bcf17e866A35941e07CbAd54f1807B337f5"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim rewards from Balancer gauge",
@@ -358,9 +326,7 @@
             "TargetAddress": "0x33B29bcf17e866A35941e07CbAd54f1807B337f5"
         },
         {
-            "AddressArguments": [
-                "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
-            ],
+            "AddressArguments": ["0xBA12222222228d8Ba445958a75a0704d566BF2C8"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Balancer Vault to spend stS",
@@ -405,9 +371,7 @@
             "TargetAddress": "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
         },
         {
-            "AddressArguments": [
-                "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
-            ],
+            "AddressArguments": ["0xBA12222222228d8Ba445958a75a0704d566BF2C8"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Balancer Vault to spend wS",
@@ -452,9 +416,7 @@
             "TargetAddress": "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
         },
         {
-            "AddressArguments": [
-                "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
-            ],
+            "AddressArguments": ["0xBA12222222228d8Ba445958a75a0704d566BF2C8"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Balancer Vault to spend BEETS",
@@ -499,9 +461,7 @@
             "TargetAddress": "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
         },
         {
-            "AddressArguments": [
-                "0x7870ddFd5ACA4E977B2287e9A212bcbe8FC4135a"
-            ],
+            "AddressArguments": ["0x7870ddFd5ACA4E977B2287e9A212bcbe8FC4135a"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve wmooSiloV2SonicUSDC.e (wS Market) to spend USDC.e",
@@ -512,9 +472,7 @@
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit USDC.e for wmooSiloV2SonicUSDC.e (wS Market)",
@@ -539,9 +497,7 @@
             "TargetAddress": "0x7870ddFd5ACA4E977B2287e9A212bcbe8FC4135a"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint wmooSiloV2SonicUSDC.e (wS Market) using USDC.e",
@@ -566,9 +522,7 @@
             "TargetAddress": "0x7870ddFd5ACA4E977B2287e9A212bcbe8FC4135a"
         },
         {
-            "AddressArguments": [
-                "0x000000000022D473030F116dDEE9F6B43aC78BA3"
-            ],
+            "AddressArguments": ["0x000000000022D473030F116dDEE9F6B43aC78BA3"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Permit2 to spend wmooSiloV2SonicUSDC.e (wS Market)",
@@ -607,9 +561,7 @@
             "TargetAddress": "0x000000000022D473030F116dDEE9F6B43aC78BA3"
         },
         {
-            "AddressArguments": [
-                "0x000000000022D473030F116dDEE9F6B43aC78BA3"
-            ],
+            "AddressArguments": ["0x000000000022D473030F116dDEE9F6B43aC78BA3"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Permit2 to spend scUSD",
@@ -648,9 +600,7 @@
             "TargetAddress": "0x000000000022D473030F116dDEE9F6B43aC78BA3"
         },
         {
-            "AddressArguments": [
-                "0x6077b9801B5627a65A5eeE70697C793751D1a71c"
-            ],
+            "AddressArguments": ["0x6077b9801B5627a65A5eeE70697C793751D1a71c"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Router to spend bpt: bpt-scusd-beefyusdc",
@@ -661,9 +611,7 @@
             "TargetAddress": "0x43026d483f42fB35efe03c20B251142D022783f2"
         },
         {
-            "AddressArguments": [
-                "0x43026d483f42fB35efe03c20B251142D022783f2"
-            ],
+            "AddressArguments": ["0x43026d483f42fB35efe03c20B251142D022783f2"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Add liquidty proportional to Boosted Stable Rings on BalancerV3",
@@ -674,9 +622,7 @@
             "TargetAddress": "0x6077b9801B5627a65A5eeE70697C793751D1a71c"
         },
         {
-            "AddressArguments": [
-                "0x43026d483f42fB35efe03c20B251142D022783f2"
-            ],
+            "AddressArguments": ["0x43026d483f42fB35efe03c20B251142D022783f2"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Add liquidty unbalanced to Boosted Stable Rings on BalancerV3",
@@ -687,9 +633,7 @@
             "TargetAddress": "0x6077b9801B5627a65A5eeE70697C793751D1a71c"
         },
         {
-            "AddressArguments": [
-                "0x43026d483f42fB35efe03c20B251142D022783f2"
-            ],
+            "AddressArguments": ["0x43026d483f42fB35efe03c20B251142D022783f2"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Add liquidty unbalanced to Boosted Stable Rings on BalancerV3",
@@ -700,9 +644,7 @@
             "TargetAddress": "0x6077b9801B5627a65A5eeE70697C793751D1a71c"
         },
         {
-            "AddressArguments": [
-                "0x43026d483f42fB35efe03c20B251142D022783f2"
-            ],
+            "AddressArguments": ["0x43026d483f42fB35efe03c20B251142D022783f2"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Add liquidty custom to Boosted Stable Rings on BalancerV3",
@@ -713,9 +655,7 @@
             "TargetAddress": "0x6077b9801B5627a65A5eeE70697C793751D1a71c"
         },
         {
-            "AddressArguments": [
-                "0x43026d483f42fB35efe03c20B251142D022783f2"
-            ],
+            "AddressArguments": ["0x43026d483f42fB35efe03c20B251142D022783f2"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Remove liquidity proportional to Boosted Stable Rings on BalancerV3",
@@ -726,9 +666,7 @@
             "TargetAddress": "0x6077b9801B5627a65A5eeE70697C793751D1a71c"
         },
         {
-            "AddressArguments": [
-                "0x43026d483f42fB35efe03c20B251142D022783f2"
-            ],
+            "AddressArguments": ["0x43026d483f42fB35efe03c20B251142D022783f2"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Remove liquidty single token exact in from Boosted Stable Rings",
@@ -739,9 +677,7 @@
             "TargetAddress": "0x6077b9801B5627a65A5eeE70697C793751D1a71c"
         },
         {
-            "AddressArguments": [
-                "0x43026d483f42fB35efe03c20B251142D022783f2"
-            ],
+            "AddressArguments": ["0x43026d483f42fB35efe03c20B251142D022783f2"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Remove Liquidity single token exact out from Boosted Stable Rings",
@@ -752,9 +688,7 @@
             "TargetAddress": "0x6077b9801B5627a65A5eeE70697C793751D1a71c"
         },
         {
-            "AddressArguments": [
-                "0x43026d483f42fB35efe03c20B251142D022783f2"
-            ],
+            "AddressArguments": ["0x43026d483f42fB35efe03c20B251142D022783f2"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Remove Liquidity custom from Boosted Stable Rings",
@@ -765,9 +699,7 @@
             "TargetAddress": "0x6077b9801B5627a65A5eeE70697C793751D1a71c"
         },
         {
-            "AddressArguments": [
-                "0x43026d483f42fB35efe03c20B251142D022783f2"
-            ],
+            "AddressArguments": ["0x43026d483f42fB35efe03c20B251142D022783f2"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Remove Liquidity in recovery mode from Boosted Stable Rings",
@@ -778,9 +710,7 @@
             "TargetAddress": "0x6077b9801B5627a65A5eeE70697C793751D1a71c"
         },
         {
-            "AddressArguments": [
-                "0x5D9e8B588F1D9e28ea1963681180d8b5938D26BA"
-            ],
+            "AddressArguments": ["0x5D9e8B588F1D9e28ea1963681180d8b5938D26BA"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Curve gauge to spend Boosted Stable Rings",
@@ -791,9 +721,7 @@
             "TargetAddress": "0x43026d483f42fB35efe03c20B251142D022783f2"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Boosted Stable Rings into Curve gauge",
@@ -815,9 +743,7 @@
             "TargetAddress": "0x5D9e8B588F1D9e28ea1963681180d8b5938D26BA"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim rewards from Curve gauge",
@@ -828,9 +754,7 @@
             "TargetAddress": "0x5D9e8B588F1D9e28ea1963681180d8b5938D26BA"
         },
         {
-            "AddressArguments": [
-                "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
-            ],
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Odos Router V2 to spend USDC.e",
@@ -1161,9 +1085,7 @@
             "TargetAddress": "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
         },
         {
-            "AddressArguments": [
-                "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
-            ],
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Odos Router V2 to spend stS",
@@ -1206,9 +1128,7 @@
             "TargetAddress": "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
         },
         {
-            "AddressArguments": [
-                "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
-            ],
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Odos Router V2 to spend wS",
@@ -1251,9 +1171,7 @@
             "TargetAddress": "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
         },
         {
-            "AddressArguments": [
-                "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
-            ],
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Odos Router V2 to spend scUSD",
@@ -1456,9 +1374,7 @@
             "TargetAddress": "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
         },
         {
-            "AddressArguments": [
-                "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
-            ],
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Odos Router V2 to spend BEETS",
@@ -1469,9 +1385,7 @@
             "TargetAddress": "0x2D0E0814E62D80056181F5cd932274405966e4f0"
         },
         {
-            "AddressArguments": [
-                "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
-            ],
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Odos Router V2 to spend BeetsFragmentsS1",
@@ -1482,9 +1396,7 @@
             "TargetAddress": "0x3419966bC74fa8f951108d15b053bEd233974d3D"
         },
         {
-            "AddressArguments": [
-                "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
-            ],
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Odos Router V2 to spend CRV",
@@ -1495,9 +1407,7 @@
             "TargetAddress": "0x5Af79133999f7908953E94b7A5CF367740Ebee35"
         },
         {
-            "AddressArguments": [
-                "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
-            ],
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Odos Router V2 to spend WETH",
@@ -1508,9 +1418,7 @@
             "TargetAddress": "0x50c42dEAcD8Fc9773493ED674b675bE577f2634b"
         },
         {
-            "AddressArguments": [
-                "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
-            ],
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Odos Router V2 to spend Silo",
@@ -1521,9 +1429,7 @@
             "TargetAddress": "0x53f753E4B17F4075D6fa2c6909033d224b81e698"
         },
         {
-            "AddressArguments": [
-                "0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"
-            ],
+            "AddressArguments": ["0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Odos Router V2 to spend UNI",
@@ -1534,9 +1440,7 @@
             "TargetAddress": "0x2fb960611bdC322A9a4A994252658Cae9fe2eeA1"
         },
         {
-            "AddressArguments": [
-                "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
-            ],
+            "AddressArguments": ["0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Sonic USD, to spend USDC.e",
@@ -1575,9 +1479,7 @@
             "TargetAddress": "0x358CFACf00d0B4634849821BB3d1965b472c776a"
         },
         {
-            "AddressArguments": [
-                "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
-            ],
+            "AddressArguments": ["0x29219dd400f2Bf60E5a23d13Be72B486D4038894"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit USDC.e into Sonic USD",
@@ -1588,9 +1490,7 @@
             "TargetAddress": "0x358CFACf00d0B4634849821BB3d1965b472c776a"
         },
         {
-            "AddressArguments": [
-                "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
-            ],
+            "AddressArguments": ["0xE223C8e92AA91e966CA31d5C6590fF7167E25801"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bwS-8 to spend wS",
@@ -1601,9 +1501,7 @@
             "TargetAddress": "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit wS for bwS-8",
@@ -1628,9 +1526,7 @@
             "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bwS-8 using wS",
@@ -1655,9 +1551,7 @@
             "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Wrapped Sonic with type into Silo",
@@ -1668,9 +1562,7 @@
             "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Wrapped Sonic with type into Silo",
@@ -1751,9 +1643,7 @@
             "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Wrapped Sonic to Silo",
@@ -1764,9 +1654,7 @@
             "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Wrapped Sonic to Silo",
@@ -1777,9 +1665,7 @@
             "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Wrapped Sonic Silo",
@@ -1812,9 +1698,7 @@
             "TargetAddress": "0xE223C8e92AA91e966CA31d5C6590fF7167E25801"
         },
         {
-            "AddressArguments": [
-                "0x4E216C15697C1392fE59e1014B009505E05810Df"
-            ],
+            "AddressArguments": ["0x4E216C15697C1392fE59e1014B009505E05810Df"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bUSDC.e-8 to spend USDC.e",
@@ -1825,9 +1709,7 @@
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit USDC.e for bUSDC.e-8",
@@ -1852,9 +1734,7 @@
             "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bUSDC.e-8 using USDC.e",
@@ -1879,9 +1759,7 @@
             "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Bridged USDC (Sonic Labs) with type into Silo",
@@ -1892,9 +1770,7 @@
             "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Bridged USDC (Sonic Labs) with type into Silo",
@@ -1975,9 +1851,7 @@
             "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Bridged USDC (Sonic Labs) to Silo",
@@ -1988,9 +1862,7 @@
             "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Bridged USDC (Sonic Labs) to Silo",
@@ -2001,9 +1873,7 @@
             "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Bridged USDC (Sonic Labs) Silo",
@@ -2036,9 +1906,7 @@
             "TargetAddress": "0x4E216C15697C1392fE59e1014B009505E05810Df"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim All Rewards from Silo Incentives Controller",
@@ -2049,9 +1917,7 @@
             "TargetAddress": "0x0dd368Cd6D8869F2b21BA3Cb4fd7bA107a2e3752"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim Rewards from market from Silo Incentives Controller",
@@ -2062,9 +1928,7 @@
             "TargetAddress": "0x0dd368Cd6D8869F2b21BA3Cb4fd7bA107a2e3752"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim All Rewards from Silo Incentives Controller",
@@ -2075,9 +1939,7 @@
             "TargetAddress": "0x89a10bFb6b57AD89b2270d80175914C517E547D9"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim Rewards from market from Silo Incentives Controller",
@@ -2088,9 +1950,7 @@
             "TargetAddress": "0x89a10bFb6b57AD89b2270d80175914C517E547D9"
         },
         {
-            "AddressArguments": [
-                "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
-            ],
+            "AddressArguments": ["0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bwS-20 to spend wS",
@@ -2101,9 +1961,7 @@
             "TargetAddress": "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit wS for bwS-20",
@@ -2128,9 +1986,7 @@
             "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bwS-20 using wS",
@@ -2155,9 +2011,7 @@
             "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Wrapped Sonic with type into Silo",
@@ -2168,9 +2022,7 @@
             "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Wrapped Sonic with type into Silo",
@@ -2251,9 +2103,7 @@
             "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Wrapped Sonic to Silo",
@@ -2264,9 +2114,7 @@
             "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Wrapped Sonic to Silo",
@@ -2277,9 +2125,7 @@
             "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Wrapped Sonic Silo",
@@ -2312,9 +2158,7 @@
             "TargetAddress": "0xf55902DE87Bd80c6a35614b48d7f8B612a083C12"
         },
         {
-            "AddressArguments": [
-                "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
-            ],
+            "AddressArguments": ["0x322e1d5384aa4ED66AeCa770B95686271de61dc3"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bUSDC.e-20 to spend USDC.e",
@@ -2325,9 +2169,7 @@
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit USDC.e for bUSDC.e-20",
@@ -2352,9 +2194,7 @@
             "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bUSDC.e-20 using USDC.e",
@@ -2379,9 +2219,7 @@
             "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Bridged USDC (Sonic Labs) with type into Silo",
@@ -2392,9 +2230,7 @@
             "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Bridged USDC (Sonic Labs) with type into Silo",
@@ -2475,9 +2311,7 @@
             "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Bridged USDC (Sonic Labs) to Silo",
@@ -2488,9 +2322,7 @@
             "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Bridged USDC (Sonic Labs) to Silo",
@@ -2501,9 +2333,7 @@
             "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Bridged USDC (Sonic Labs) Silo",
@@ -2536,9 +2366,7 @@
             "TargetAddress": "0x322e1d5384aa4ED66AeCa770B95686271de61dc3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim All Rewards from Silo Incentives Controller",
@@ -2549,9 +2377,7 @@
             "TargetAddress": "0x2D3d269334485d2D876df7363e1A50b13220a7D8"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim Rewards from market from Silo Incentives Controller",
@@ -2562,9 +2388,7 @@
             "TargetAddress": "0x2D3d269334485d2D876df7363e1A50b13220a7D8"
         },
         {
-            "AddressArguments": [
-                "0x4E09FF794D255a123b00efa30162667A8054a845"
-            ],
+            "AddressArguments": ["0x4E09FF794D255a123b00efa30162667A8054a845"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bwstkscUSD-23 to spend wstkscUSD",
@@ -2575,9 +2399,7 @@
             "TargetAddress": "0x9fb76f7ce5FCeAA2C42887ff441D46095E494206"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit wstkscUSD for bwstkscUSD-23",
@@ -2602,9 +2424,7 @@
             "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bwstkscUSD-23 using wstkscUSD",
@@ -2629,9 +2449,7 @@
             "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Wrapped stkscUSD with type into Silo",
@@ -2642,9 +2460,7 @@
             "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Wrapped stkscUSD with type into Silo",
@@ -2725,9 +2541,7 @@
             "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Wrapped stkscUSD to Silo",
@@ -2738,9 +2552,7 @@
             "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Wrapped stkscUSD to Silo",
@@ -2751,9 +2563,7 @@
             "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Wrapped stkscUSD Silo",
@@ -2786,9 +2596,7 @@
             "TargetAddress": "0x4E09FF794D255a123b00efa30162667A8054a845"
         },
         {
-            "AddressArguments": [
-                "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
-            ],
+            "AddressArguments": ["0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bUSDC.e-23 to spend USDC.e",
@@ -2799,9 +2607,7 @@
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit USDC.e for bUSDC.e-23",
@@ -2826,9 +2632,7 @@
             "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bUSDC.e-23 using USDC.e",
@@ -2853,9 +2657,7 @@
             "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Bridged USDC (Sonic Labs) with type into Silo",
@@ -2866,9 +2668,7 @@
             "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Bridged USDC (Sonic Labs) with type into Silo",
@@ -2949,9 +2749,7 @@
             "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Bridged USDC (Sonic Labs) to Silo",
@@ -2962,9 +2760,7 @@
             "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Bridged USDC (Sonic Labs) to Silo",
@@ -2975,9 +2771,7 @@
             "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Bridged USDC (Sonic Labs) Silo",
@@ -3010,9 +2804,7 @@
             "TargetAddress": "0x5954ce6671d97D24B782920ddCdBB4b1E63aB2De"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim All Rewards from Silo Incentives Controller",
@@ -3023,9 +2815,7 @@
             "TargetAddress": "0xD4599CC9Bb91E84e55620A4E550DF0868aC45175"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim Rewards from market from Silo Incentives Controller",
@@ -3036,9 +2826,7 @@
             "TargetAddress": "0xD4599CC9Bb91E84e55620A4E550DF0868aC45175"
         },
         {
-            "AddressArguments": [
-                "0x34BB967d21bfED31F2A2Eb4478A520c254b16d2e"
-            ],
+            "AddressArguments": ["0x34BB967d21bfED31F2A2Eb4478A520c254b16d2e"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bwS-15 to spend wS",
@@ -3049,9 +2837,7 @@
             "TargetAddress": "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit wS for bwS-15",
@@ -3076,9 +2862,7 @@
             "TargetAddress": "0x34BB967d21bfED31F2A2Eb4478A520c254b16d2e"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bwS-15 using wS",
@@ -3103,9 +2887,7 @@
             "TargetAddress": "0x34BB967d21bfED31F2A2Eb4478A520c254b16d2e"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Wrapped Sonic with type into Silo",
@@ -3116,9 +2898,7 @@
             "TargetAddress": "0x34BB967d21bfED31F2A2Eb4478A520c254b16d2e"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Wrapped Sonic with type into Silo",
@@ -3199,9 +2979,7 @@
             "TargetAddress": "0x34BB967d21bfED31F2A2Eb4478A520c254b16d2e"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Wrapped Sonic to Silo",
@@ -3212,9 +2990,7 @@
             "TargetAddress": "0x34BB967d21bfED31F2A2Eb4478A520c254b16d2e"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Wrapped Sonic to Silo",
@@ -3225,9 +3001,7 @@
             "TargetAddress": "0x34BB967d21bfED31F2A2Eb4478A520c254b16d2e"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Wrapped Sonic Silo",
@@ -3260,9 +3034,7 @@
             "TargetAddress": "0x34BB967d21bfED31F2A2Eb4478A520c254b16d2e"
         },
         {
-            "AddressArguments": [
-                "0x2f5Dc399B1E31f9808D1EF1256917ABD2447c74f"
-            ],
+            "AddressArguments": ["0x2f5Dc399B1E31f9808D1EF1256917ABD2447c74f"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bscUSD-15 to spend scUSD",
@@ -3273,9 +3045,7 @@
             "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit scUSD for bscUSD-15",
@@ -3300,9 +3070,7 @@
             "TargetAddress": "0x2f5Dc399B1E31f9808D1EF1256917ABD2447c74f"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bscUSD-15 using scUSD",
@@ -3327,9 +3095,7 @@
             "TargetAddress": "0x2f5Dc399B1E31f9808D1EF1256917ABD2447c74f"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Sonic USD with type into Silo",
@@ -3340,9 +3106,7 @@
             "TargetAddress": "0x2f5Dc399B1E31f9808D1EF1256917ABD2447c74f"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Sonic USD with type into Silo",
@@ -3423,9 +3187,7 @@
             "TargetAddress": "0x2f5Dc399B1E31f9808D1EF1256917ABD2447c74f"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Sonic USD to Silo",
@@ -3436,9 +3198,7 @@
             "TargetAddress": "0x2f5Dc399B1E31f9808D1EF1256917ABD2447c74f"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Sonic USD to Silo",
@@ -3449,9 +3209,7 @@
             "TargetAddress": "0x2f5Dc399B1E31f9808D1EF1256917ABD2447c74f"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Sonic USD Silo",
@@ -3484,9 +3242,7 @@
             "TargetAddress": "0x2f5Dc399B1E31f9808D1EF1256917ABD2447c74f"
         },
         {
-            "AddressArguments": [
-                "0x558d6D6D53270ae8ba622daF123983D9F3c21792"
-            ],
+            "AddressArguments": ["0x558d6D6D53270ae8ba622daF123983D9F3c21792"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bPT-aSonUSDC-14AUG2025-46 to spend PT-aSonUSDC-14AUG2025",
@@ -3497,9 +3253,7 @@
             "TargetAddress": "0x930441Aa7Ab17654dF5663781CA0C02CC17e6643"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit PT-aSonUSDC-14AUG2025 for bPT-aSonUSDC-14AUG2025-46",
@@ -3524,9 +3278,7 @@
             "TargetAddress": "0x558d6D6D53270ae8ba622daF123983D9F3c21792"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bPT-aSonUSDC-14AUG2025-46 using PT-aSonUSDC-14AUG2025",
@@ -3551,9 +3303,7 @@
             "TargetAddress": "0x558d6D6D53270ae8ba622daF123983D9F3c21792"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit PT Aave Sonic USDC 14AUG2025 with type into Silo",
@@ -3564,9 +3314,7 @@
             "TargetAddress": "0x558d6D6D53270ae8ba622daF123983D9F3c21792"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint PT Aave Sonic USDC 14AUG2025 with type into Silo",
@@ -3647,9 +3395,7 @@
             "TargetAddress": "0x558d6D6D53270ae8ba622daF123983D9F3c21792"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay PT Aave Sonic USDC 14AUG2025 to Silo",
@@ -3660,9 +3406,7 @@
             "TargetAddress": "0x558d6D6D53270ae8ba622daF123983D9F3c21792"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of PT Aave Sonic USDC 14AUG2025 to Silo",
@@ -3673,9 +3417,7 @@
             "TargetAddress": "0x558d6D6D53270ae8ba622daF123983D9F3c21792"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in PT Aave Sonic USDC 14AUG2025 Silo",
@@ -3708,9 +3450,7 @@
             "TargetAddress": "0x558d6D6D53270ae8ba622daF123983D9F3c21792"
         },
         {
-            "AddressArguments": [
-                "0xe6605932e4a686534D19005BB9dB0FBA1F101272"
-            ],
+            "AddressArguments": ["0xe6605932e4a686534D19005BB9dB0FBA1F101272"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bscUSD-46 to spend scUSD",
@@ -3721,9 +3461,7 @@
             "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit scUSD for bscUSD-46",
@@ -3748,9 +3486,7 @@
             "TargetAddress": "0xe6605932e4a686534D19005BB9dB0FBA1F101272"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bscUSD-46 using scUSD",
@@ -3775,9 +3511,7 @@
             "TargetAddress": "0xe6605932e4a686534D19005BB9dB0FBA1F101272"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Sonic USD with type into Silo",
@@ -3788,9 +3522,7 @@
             "TargetAddress": "0xe6605932e4a686534D19005BB9dB0FBA1F101272"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Sonic USD with type into Silo",
@@ -3871,9 +3603,7 @@
             "TargetAddress": "0xe6605932e4a686534D19005BB9dB0FBA1F101272"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Sonic USD to Silo",
@@ -3884,9 +3614,7 @@
             "TargetAddress": "0xe6605932e4a686534D19005BB9dB0FBA1F101272"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Sonic USD to Silo",
@@ -3897,9 +3625,7 @@
             "TargetAddress": "0xe6605932e4a686534D19005BB9dB0FBA1F101272"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Sonic USD Silo",
@@ -3932,9 +3658,7 @@
             "TargetAddress": "0xe6605932e4a686534D19005BB9dB0FBA1F101272"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim All Rewards from Silo Incentives Controller",
@@ -3945,9 +3669,7 @@
             "TargetAddress": "0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim Rewards from market from Silo Incentives Controller",
@@ -3958,9 +3680,7 @@
             "TargetAddress": "0xeA3602cD66D09b2B0D887758Dc57c67aBCd9BeEF"
         },
         {
-            "AddressArguments": [
-                "0x0df2B7c7E2023a3EEfcD24486C47aBaC9dF80AC3"
-            ],
+            "AddressArguments": ["0x0df2B7c7E2023a3EEfcD24486C47aBaC9dF80AC3"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bsfrxUSD-48 to spend sfrxUSD",
@@ -3971,9 +3691,7 @@
             "TargetAddress": "0x5Bff88cA1442c2496f7E475E9e7786383Bc070c0"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit sfrxUSD for bsfrxUSD-48",
@@ -3998,9 +3716,7 @@
             "TargetAddress": "0x0df2B7c7E2023a3EEfcD24486C47aBaC9dF80AC3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bsfrxUSD-48 using sfrxUSD",
@@ -4025,9 +3741,7 @@
             "TargetAddress": "0x0df2B7c7E2023a3EEfcD24486C47aBaC9dF80AC3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Staked Frax USD with type into Silo",
@@ -4038,9 +3752,7 @@
             "TargetAddress": "0x0df2B7c7E2023a3EEfcD24486C47aBaC9dF80AC3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Staked Frax USD with type into Silo",
@@ -4121,9 +3833,7 @@
             "TargetAddress": "0x0df2B7c7E2023a3EEfcD24486C47aBaC9dF80AC3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Staked Frax USD to Silo",
@@ -4134,9 +3844,7 @@
             "TargetAddress": "0x0df2B7c7E2023a3EEfcD24486C47aBaC9dF80AC3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Staked Frax USD to Silo",
@@ -4147,9 +3855,7 @@
             "TargetAddress": "0x0df2B7c7E2023a3EEfcD24486C47aBaC9dF80AC3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Staked Frax USD Silo",
@@ -4182,9 +3888,7 @@
             "TargetAddress": "0x0df2B7c7E2023a3EEfcD24486C47aBaC9dF80AC3"
         },
         {
-            "AddressArguments": [
-                "0x5863A7B7e087e6576DE1B6ACb38C6C72caC20Ac4"
-            ],
+            "AddressArguments": ["0x5863A7B7e087e6576DE1B6ACb38C6C72caC20Ac4"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve bscUSD-48 to spend scUSD",
@@ -4195,9 +3899,7 @@
             "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit scUSD for bscUSD-48",
@@ -4222,9 +3924,7 @@
             "TargetAddress": "0x5863A7B7e087e6576DE1B6ACb38C6C72caC20Ac4"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint bscUSD-48 using scUSD",
@@ -4249,9 +3949,7 @@
             "TargetAddress": "0x5863A7B7e087e6576DE1B6ACb38C6C72caC20Ac4"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Sonic USD with type into Silo",
@@ -4262,9 +3960,7 @@
             "TargetAddress": "0x5863A7B7e087e6576DE1B6ACb38C6C72caC20Ac4"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint Sonic USD with type into Silo",
@@ -4345,9 +4041,7 @@
             "TargetAddress": "0x5863A7B7e087e6576DE1B6ACb38C6C72caC20Ac4"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay Sonic USD to Silo",
@@ -4358,9 +4052,7 @@
             "TargetAddress": "0x5863A7B7e087e6576DE1B6ACb38C6C72caC20Ac4"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Repay shares of Sonic USD to Silo",
@@ -4371,9 +4063,7 @@
             "TargetAddress": "0x5863A7B7e087e6576DE1B6ACb38C6C72caC20Ac4"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Transition Collateral in Sonic USD Silo",
@@ -4406,9 +4096,151 @@
             "TargetAddress": "0x5863A7B7e087e6576DE1B6ACb38C6C72caC20Ac4"
         },
         {
+            "AddressArguments": ["0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Approve scUSD to spend scUSD",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0x51f90f45b5168cb12ab03e2e1a2012ee29623412314b9aff97a8d76b73e52d31",
+            "PackedArgumentAddresses": "0x391b3f70e254d582588b27e97e48d1cfcdf0be7e",
+            "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+        },
+        {
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Deposit scUSD for scUSD",
+            "FunctionSelector": "0x6e553f65",
+            "FunctionSignature": "deposit(uint256,address)",
+            "LeafDigest": "0xefdfa8974ef966f580b64fc0f7a66ddd2ddd05dd7031b6342996fcc399c163a8",
+            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba",
+            "TargetAddress": "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
+        },
+        {
             "AddressArguments": [
-                "0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"
+                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
+                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
             ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Withdraw scUSD from scUSD",
+            "FunctionSelector": "0xb460af94",
+            "FunctionSignature": "withdraw(uint256,address,address)",
+            "LeafDigest": "0x998ff33f8bae8f7dd8d47c09aa00f236eda0d1ce73a95b7c1b2bf1405204d92c",
+            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
+            "TargetAddress": "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
+        },
+        {
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Mint scUSD using scUSD",
+            "FunctionSelector": "0x94bf804d",
+            "FunctionSignature": "mint(uint256,address)",
+            "LeafDigest": "0xb97c93ae1a9f3559a084f0a5a250afb4eaf20970b65e2d0f844747b62d89fbac",
+            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba",
+            "TargetAddress": "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
+        },
+        {
+            "AddressArguments": [
+                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
+                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Redeem scUSD for scUSD",
+            "FunctionSelector": "0xba087652",
+            "FunctionSignature": "redeem(uint256,address,address)",
+            "LeafDigest": "0xb0c0599d636e09d4b1568c6cb7c62eb5b67524c3eee48fef6e7bc5953f7354ce",
+            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
+            "TargetAddress": "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Claim rewards from Mithras",
+            "FunctionSelector": "0x372500ab",
+            "FunctionSignature": "claimRewards()",
+            "LeafDigest": "0x293d5a808b8ba6c37357a1a59a7e4fce10c98a41beb054d2df8b98f8eeeaa1a9",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
+        },
+        {
+            "AddressArguments": ["0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Approve Re7scUSD to spend scUSD",
+            "FunctionSelector": "0x095ea7b3",
+            "FunctionSignature": "approve(address,uint256)",
+            "LeafDigest": "0xa381c82986df775cbcfd5a39c30fb5c380a422195e227999fce05a2d45161555",
+            "PackedArgumentAddresses": "0x592d1e187729c76efacc6dffb9355bd7bf47b2a7",
+            "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
+        },
+        {
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Deposit scUSD for Re7scUSD",
+            "FunctionSelector": "0x6e553f65",
+            "FunctionSignature": "deposit(uint256,address)",
+            "LeafDigest": "0x354d9e6aecbbd1e051704fc1e562ce10db845081a26f256dc630d914df1ab0a5",
+            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba",
+            "TargetAddress": "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
+        },
+        {
+            "AddressArguments": [
+                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
+                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Withdraw scUSD from Re7scUSD",
+            "FunctionSelector": "0xb460af94",
+            "FunctionSignature": "withdraw(uint256,address,address)",
+            "LeafDigest": "0x67385f4287d445e30eedb62315d9dd0de3c46c3cc5cfc27176509ae82b179dd1",
+            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
+            "TargetAddress": "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
+        },
+        {
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Mint Re7scUSD using scUSD",
+            "FunctionSelector": "0x94bf804d",
+            "FunctionSignature": "mint(uint256,address)",
+            "LeafDigest": "0x36740944e46b143217f496e439d7ff324c00f20736143f9979b3eb3f87a21f48",
+            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba",
+            "TargetAddress": "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
+        },
+        {
+            "AddressArguments": [
+                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
+                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
+            ],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Redeem Re7scUSD for scUSD",
+            "FunctionSelector": "0xba087652",
+            "FunctionSignature": "redeem(uint256,address,address)",
+            "LeafDigest": "0x2342f6e0b053a3f928831bbf9633a84770bc53f104d28626bde00dc4951816f3",
+            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
+            "TargetAddress": "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0",
+            "Description": "Claim rewards from Re7 scUSD",
+            "FunctionSelector": "0x372500ab",
+            "FunctionSignature": "claimRewards()",
+            "LeafDigest": "0xd9b3552dce40a90437c31ca3a991172b53004a5dd18d104cd0b11bef24e75855",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
+        },
+        {
+            "AddressArguments": ["0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Curve pool to spend scUSD",
@@ -4419,9 +4251,7 @@
             "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
         },
         {
-            "AddressArguments": [
-                "0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"
-            ],
+            "AddressArguments": ["0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Curve pool to spend USDC.e",
@@ -4454,9 +4284,7 @@
             "TargetAddress": "0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"
         },
         {
-            "AddressArguments": [
-                "0x12F89168C995e54Ec2ce9ee461D663a6dC72793A"
-            ],
+            "AddressArguments": ["0x12F89168C995e54Ec2ce9ee461D663a6dC72793A"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Curve gauge to spend Rings scUSD/USDC",
@@ -4467,9 +4295,7 @@
             "TargetAddress": "0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit Rings scUSD/USDC into Curve gauge",
@@ -4491,9 +4317,7 @@
             "TargetAddress": "0x12F89168C995e54Ec2ce9ee461D663a6dC72793A"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Claim rewards from Curve gauge",
@@ -4504,9 +4328,7 @@
             "TargetAddress": "0x12F89168C995e54Ec2ce9ee461D663a6dC72793A"
         },
         {
-            "AddressArguments": [
-                "0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"
-            ],
+            "AddressArguments": ["0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Curve scUSD/USDC.e pool to spend scUSD",
@@ -4517,9 +4339,7 @@
             "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
         },
         {
-            "AddressArguments": [
-                "0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"
-            ],
+            "AddressArguments": ["0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve Curve scUSD/USDC.e pool to spend USDC.e",
@@ -4541,9 +4361,7 @@
             "TargetAddress": "0x2Fd7CCDa50ED88fe17E15f3d5D8d51da4CCB43F3"
         },
         {
-            "AddressArguments": [
-                "0xB38D431e932fEa77d1dF0AE0dFE4400c97e597B8"
-            ],
+            "AddressArguments": ["0xB38D431e932fEa77d1dF0AE0dFE4400c97e597B8"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve escUSD-2 to spend scUSD",
@@ -4554,9 +4372,7 @@
             "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit scUSD for escUSD-2 for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
@@ -4581,9 +4397,7 @@
             "TargetAddress": "0xB38D431e932fEa77d1dF0AE0dFE4400c97e597B8"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint escUSD-2 using scUSD for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
@@ -4670,9 +4484,7 @@
             "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
         },
         {
-            "AddressArguments": [
-                "0x196F3C7443E940911EE2Bb88e019Fd71400349D9"
-            ],
+            "AddressArguments": ["0x196F3C7443E940911EE2Bb88e019Fd71400349D9"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve eUSDC.e-3 to spend USDC.e",
@@ -4683,9 +4495,7 @@
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit USDC.e for eUSDC.e-3 for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
@@ -4710,9 +4520,7 @@
             "TargetAddress": "0x196F3C7443E940911EE2Bb88e019Fd71400349D9"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint eUSDC.e-3 using USDC.e for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
@@ -4799,9 +4607,7 @@
             "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
         },
         {
-            "AddressArguments": [
-                "0x3D9e5462A940684073EED7e4a13d19AE0Dcd13bc"
-            ],
+            "AddressArguments": ["0x3D9e5462A940684073EED7e4a13d19AE0Dcd13bc"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve eUSDC.e-2 to spend USDC.e",
@@ -4812,9 +4618,7 @@
             "TargetAddress": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit USDC.e for eUSDC.e-2 for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
@@ -4839,9 +4643,7 @@
             "TargetAddress": "0x3D9e5462A940684073EED7e4a13d19AE0Dcd13bc"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint eUSDC.e-2 using USDC.e for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
@@ -4928,9 +4730,7 @@
             "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
         },
         {
-            "AddressArguments": [
-                "0xeEb1DC1Ca7ffC5b54aD1cc4c1088Db4E5657Cb6c"
-            ],
+            "AddressArguments": ["0xeEb1DC1Ca7ffC5b54aD1cc4c1088Db4E5657Cb6c"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Approve escUSD-1 to spend scUSD",
@@ -4941,9 +4741,7 @@
             "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Deposit scUSD for escUSD-1 for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
@@ -4968,9 +4766,7 @@
             "TargetAddress": "0xeEb1DC1Ca7ffC5b54aD1cc4c1088Db4E5657Cb6c"
         },
         {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
+            "AddressArguments": ["0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"],
             "CanSendValue": false,
             "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
             "Description": "Mint escUSD-1 using scUSD for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
@@ -5054,264 +4850,6 @@
             "FunctionSignature": "call(address,address,uint256,bytes)",
             "LeafDigest": "0xfceee28460ed96b4b47473755995d9aef9df238c2264f33e9792d26dff73f0bf",
             "PackedArgumentAddresses": "0xeeb1dc1ca7ffc5b54ad1cc4c1088db4e5657cb6c4d85ba8c3918359c78ed09581e5bc7578ba932ba00000000000000000000000000000000ba0876524d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
-        },
-        {
-            "AddressArguments": [
-                "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Approve scUSD to spend scUSD",
-            "FunctionSelector": "0x095ea7b3",
-            "FunctionSignature": "approve(address,uint256)",
-            "LeafDigest": "0xf5b3107bc30e345ef94bbd3f1fe8f4644a12efeaced2d6c3140f6b7087929d69",
-            "PackedArgumentAddresses": "0x391b3f70e254d582588b27e97e48d1cfcdf0be7e",
-            "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Deposit scUSD for scUSD for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0x6e553f65",
-            "FunctionSignature": "deposit(uint256,address)",
-            "LeafDigest": "0x580441a98518f1bf71305ec066b494cad44bd41bc6157c598b990f1099b4d826",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Withdraw scUSD from scUSD for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0xb460af94",
-            "FunctionSignature": "withdraw(uint256,address,address)",
-            "LeafDigest": "0x3d9bddf149b6394a5794c1790c413653c4a1b1b9c817c5e02e6201fb21d64075",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Mint scUSD using scUSD for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0x94bf804d",
-            "FunctionSignature": "mint(uint256,address)",
-            "LeafDigest": "0x1a3f087daff0a95828bf685acf52f9dbe6d2d14e0ef3416c0b84529c795c49bd",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Redeem scUSD for scUSD for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0xba087652",
-            "FunctionSignature": "redeem(uint256,address,address)",
-            "LeafDigest": "0xe394de66baf3f9892698f1ff1c1dcd05943ebb84c6f0cef6ff9d0ed00c73f06b",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Enable Collateral of Sonic USD on Euler for account #0 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0xd44fee5a",
-            "FunctionSignature": "enableCollateral(address,address)",
-            "LeafDigest": "0xc37493ceba04fdd18d1089153a80d11b679cb9cd8a9d29aeac85801795681523",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba391b3f70e254d582588b27e97e48d1cfcdf0be7e",
-            "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Disable Collateral of Sonic USD on Euler for account #0 : 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0xe920e8e0",
-            "FunctionSignature": "disableCollateral(address,address)",
-            "LeafDigest": "0x2e26471dd60d9fb1f6d98bf0f1d8021501d2286a6be3bd9a296f2206d523343a",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba391b3f70e254d582588b27e97e48d1cfcdf0be7e",
-            "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
-        },
-        {
-            "AddressArguments": [
-                "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x00000000000000000000000000000000b460aF94",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Call Withdraw on Mithras via EVC on behalf of 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0x1f8b5215",
-            "FunctionSignature": "call(address,address,uint256,bytes)",
-            "LeafDigest": "0x446b05bcc2f0eb870d5bc6ac224c0670d19b2d183078e47b4560392323c8425d",
-            "PackedArgumentAddresses": "0x391b3f70e254d582588b27e97e48d1cfcdf0be7e4d85ba8c3918359c78ed09581e5bc7578ba932ba00000000000000000000000000000000b460af944d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
-        },
-        {
-            "AddressArguments": [
-                "0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x00000000000000000000000000000000ba087652",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Call Redeem on Mithras via EVC on behalf of 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0x1f8b5215",
-            "FunctionSignature": "call(address,address,uint256,bytes)",
-            "LeafDigest": "0x9c71bbc36077ab8cbed098c07d73e74c2dc62855bd960f2b82b96be51b2fc962",
-            "PackedArgumentAddresses": "0x391b3f70e254d582588b27e97e48d1cfcdf0be7e4d85ba8c3918359c78ed09581e5bc7578ba932ba00000000000000000000000000000000ba0876524d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
-        },
-        {
-            "AddressArguments": [
-                "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Approve Re7scUSD to spend scUSD",
-            "FunctionSelector": "0x095ea7b3",
-            "FunctionSignature": "approve(address,uint256)",
-            "LeafDigest": "0x55482e862a53b70a6da6ee902061fa65b81e417f887a3a38879fada3cc6ae742",
-            "PackedArgumentAddresses": "0x592d1e187729c76efacc6dffb9355bd7bf47b2a7",
-            "TargetAddress": "0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Deposit scUSD for Re7scUSD for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0x6e553f65",
-            "FunctionSignature": "deposit(uint256,address)",
-            "LeafDigest": "0x9fbf71b702b51dba3d27fcbc5e7acc6869d4bfd8c51d86d80279a90d7d915eee",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Withdraw scUSD from Re7scUSD for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0xb460af94",
-            "FunctionSignature": "withdraw(uint256,address,address)",
-            "LeafDigest": "0x8e42c547399579931de7509e010e5a17e9b4b8bd1f079ca06b70124d5fc96c93",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Mint Re7scUSD using scUSD for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0x94bf804d",
-            "FunctionSignature": "mint(uint256,address)",
-            "LeafDigest": "0x9758f0645034132e4018eda4339f1886507e58fc869d4671fd6e7e8e6465bf49",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Redeem Re7scUSD for scUSD for 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0xba087652",
-            "FunctionSignature": "redeem(uint256,address,address)",
-            "LeafDigest": "0x991a789df53f8c97603f0852a5da7dbc312d59b63d6de57814175d77a505b3be",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Enable Collateral of Sonic USD on Euler for account #0 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0xd44fee5a",
-            "FunctionSignature": "enableCollateral(address,address)",
-            "LeafDigest": "0xce54d912779fb34f3d6c03ccfa7177779bf1c0933e776d314004fcf30b05aa9c",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba592d1e187729c76efacc6dffb9355bd7bf47b2a7",
-            "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
-        },
-        {
-            "AddressArguments": [
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Disable Collateral of Sonic USD on Euler for account #0 : 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0xe920e8e0",
-            "FunctionSignature": "disableCollateral(address,address)",
-            "LeafDigest": "0x07ce8343df1cd0fe44e3e5ff45b4bc28dfa1264997d32a82c463ca5585727f45",
-            "PackedArgumentAddresses": "0x4d85ba8c3918359c78ed09581e5bc7578ba932ba592d1e187729c76efacc6dffb9355bd7bf47b2a7",
-            "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
-        },
-        {
-            "AddressArguments": [
-                "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x00000000000000000000000000000000b460aF94",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Call Withdraw on Re7 scUSD via EVC on behalf of 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0x1f8b5215",
-            "FunctionSignature": "call(address,address,uint256,bytes)",
-            "LeafDigest": "0x02a52a0ac4ff84c450c4854c08e05802807a6b2bf2964a5ed3621d31a41cdfda",
-            "PackedArgumentAddresses": "0x592d1e187729c76efacc6dffb9355bd7bf47b2a74d85ba8c3918359c78ed09581e5bc7578ba932ba00000000000000000000000000000000b460af944d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
-            "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
-        },
-        {
-            "AddressArguments": [
-                "0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x00000000000000000000000000000000ba087652",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-                "0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba"
-            ],
-            "CanSendValue": false,
-            "DecoderAndSanitizerAddress": "0xE96762FD748EfdCF4156c64aBc39227529FaF021",
-            "Description": "Call Redeem on Re7 scUSD via EVC on behalf of 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba",
-            "FunctionSelector": "0x1f8b5215",
-            "FunctionSignature": "call(address,address,uint256,bytes)",
-            "LeafDigest": "0x6951e45fde8de4295b2c7fba8f9cf9de46d2fae7da61d816e44e487267839bed",
-            "PackedArgumentAddresses": "0x592d1e187729c76efacc6dffb9355bd7bf47b2a74d85ba8c3918359c78ed09581e5bc7578ba932ba00000000000000000000000000000000ba0876524d85ba8c3918359c78ed09581e5bc7578ba932ba4d85ba8c3918359c78ed09581e5bc7578ba932ba",
             "TargetAddress": "0x4860C903f6Ad709c3eDA46D3D502943f184D4315"
         },
         {
@@ -6689,21 +6227,87 @@
             "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
             "PackedArgumentAddresses": "0x",
             "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
+        },
+        {
+            "AddressArguments": [],
+            "CanSendValue": false,
+            "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+            "Description": "",
+            "FunctionSelector": "0xc5d24601",
+            "FunctionSignature": "",
+            "LeafDigest": "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "PackedArgumentAddresses": "0x",
+            "TargetAddress": "0x0000000000000000000000000000000000000000"
         }
     ],
     "MerkleTree": {
         "0": [
-            "0x5559c68a9d60f3019033f48f0907bbb094e6a8d73ab3df8c2d6b3b6aa5240187"
+            "0x46ec18569dc5b70031bd56d5618fe9cf1cf28c543e792e2dfe7ee199d8e55b50"
         ],
         "1": [
             "0xd28cd26ffcf76042470e4fde773fc88510e16a818ef5f86a5aec00378a625029",
-            "0x45d244d3d8e165f11eca32b9cc130b7ba912e19e7e22ef7bb89ddd005d8e020e"
+            "0x38285e3bcfc85f3ff4f8da4094a35cf40724b969b0cdf726eaa07169bb901e7a"
         ],
         "2": [
             "0x6bcdb9641787782a7987063c9889d7257ed25b241d51376c9e0cef96b767b62b",
             "0xd9f0e0d65102e7962bbc74a13990f17f765ee2f3cdc35f314733dcfbf2110d82",
-            "0x93d8d9247e8bdb3e42bcd3d81b913a54f7bf694834dfcf6146f6e43014d11128",
-            "0xd910809d83a2a32cb664e299a7919b0df7b7e8a4cf6dd8abdb9813b34c2d5df2"
+            "0xb82356e5631cdc1912f0547f31f4d13c940499c1844df8c0bbb7d00ad48e142b",
+            "0x0cb764f82a906d1276028ca0b2571b5a7a0e8d18e604f36d7b1b9a241194ceb2"
         ],
         "3": [
             "0x024bc19036f9ae955220c0c10077c6b2c54b3a5b01106eda682ba3f391f95ac5",
@@ -6711,8 +6315,8 @@
             "0x70974ccd617fc52f85cf629c384c178809d14fe27f62a498bf6c2c1e46f4e712",
             "0x99b168b81f26961238f862624f94f66d4f5636e96b2734a8763cb5449059ed94",
             "0xd0dc78c0059e7c20cbb933dbf38df14e3236d2d578107056dc7faba26f1e680b",
-            "0xe0cc3124504d5d3193f969fd9e960e395f938fa9623521bcf888abab6de6394b",
-            "0xbddd62fbad8ea36d3ff232169a063a2751249fcf4008feb19c3b0575561eacd7",
+            "0x8db1c16e49058ac7c5c0ddfa7c4419ea2255e2d77471221714db1e2aa5a80c41",
+            "0x550480f614634dd8cba7aabda266086e991ec47120a109a94e86a44d2468806b",
             "0xf70e6eeacf0ca2800bee387294f368bb304fe5f55d96f86ff896d1bcbe16ba34"
         ],
         "4": [
@@ -6726,9 +6330,9 @@
             "0xc20870c63b21971747817db15e99b7593311b50fb8fff91338215e6b7634d052",
             "0xf3b9cbafbc9d8281525533b078bbfaec6497994f233ec86a5df7d9b4edffcd39",
             "0xd0775162fd5441e6b952d0c20b18ab4024a6bc9eb11448681b74d96a9b738ff9",
-            "0xd9edfe7c3372fdaaedee5ec6e9418cc84f2f5bf518037554008c0dda120da98d",
-            "0x1c5f92bffe4af9c993ac1fda840b6b60cb7962daa886d76b7a55484e8ace3972",
-            "0x9aa10cea067cd463d692985c4caea782e8ea5926e43dd344036f3fbbc73cbeef",
+            "0x704fcf1024d1c68ad8153e8ac5146f538990e971a7a65c8790704e7778de172e",
+            "0x917e09a29b540738f40cbd61b3bda49ffd3297af61959cfcdc0b77982d63e77e",
+            "0x88d37d8b8de7967afbd887a8c22c90c304658327fb86483bbdad14efddf9739f",
             "0xec36dbe395dc9c97e82d5ef9325fb13a264faf4bc614c184837bb3dfc0c6a31a",
             "0xec36dbe395dc9c97e82d5ef9325fb13a264faf4bc614c184837bb3dfc0c6a31a",
             "0xec36dbe395dc9c97e82d5ef9325fb13a264faf4bc614c184837bb3dfc0c6a31a"
@@ -6754,11 +6358,11 @@
             "0xbaa3b8f397042959496d2abc8705b1dbfe472ad799d1ddbac14ef51d81db17d1",
             "0x9c496eab214f92b20c88903f67c3b1c55ea9ddefc52f8aad21db7657e3a8fd1c",
             "0x3a3bda3d27327d04ed6032d53d83e9f40935ea557a1fae0673a1d3cdd80af5a4",
-            "0xea024a34aa895e560b114de735e1a170f8bf4a23336958abef46b0f4291bb945",
-            "0x74d5638d8a029093275f1f3430d61b574270b2b297fb1e25351fea2cc35ee1fc",
-            "0x3860b7c762d6153f37fcda5a022284d0d33a941eb023fb190e361b827b98f3c9",
-            "0x614c8969475c3ce318d9c7a6e0a81cf98448b1e693d5d50e336def5daa2c760e",
-            "0x67450dd56008215a0cb7b4b592e69114a81a35c8dc2cecf398af4761fdbd822e",
+            "0xef642c48f1974f62d60f07ff15519dd9b9f0e8eda4e130e212f28af954c6b3bc",
+            "0xea97ded005bdedab5f123eae2bf11e459da2dc641ddc058c420e8f5cd225789c",
+            "0x9974329eb351269e04595da61537a1887ba4fd11953c7c419dd6a7ce8bdd4417",
+            "0x2b2495f27a8cc31ecd5063caac021ecb05057bc622c78a3e5529d125d7c4790d",
+            "0x03fad99f5f8055cdbe114ea002d50fbc4ff1d170471f927778f5c487b4b5bcf7",
             "0xc8e2d8c65f68c2edf703a349b0189c66520f43472e76097f69a501107adf656c",
             "0xc8e2d8c65f68c2edf703a349b0189c66520f43472e76097f69a501107adf656c",
             "0xc8e2d8c65f68c2edf703a349b0189c66520f43472e76097f69a501107adf656c",
@@ -6808,16 +6412,16 @@
             "0xe72bbd4e47da4cd8f14fc72f68768977bc261ccf8141cb5a05feb77c89f791e1",
             "0x8211f64de73160aba39baa0c074429ca5ef005ea65ce3d08925b46bae596e790",
             "0x42537c32c3bda01194d151710eecc08604e2f48b204bf35872515c8d466ac9c7",
-            "0xfc9e6b4f974ae37f6d2dd9ad5f2ba3f117b0ed049ea1eb92b08bf794a866fa9a",
-            "0xccda8c7a1726e55c3dd25400e14719f22d81de228fdc36ba226207c07500a46d",
-            "0x4a8288642a502e7f8646820c11717020d895f49975b820e0fb1b2f461b007502",
-            "0xb956c7b8da5f0faf026824ea00d244fbd49c019f6736b876dc3309e15ee508bc",
-            "0x112618303218b880ce7fc223b444e722b4280241fc6c582bbccf62924f0e3971",
-            "0xb2ee48437ce7da324891c12b4c05132f3e40320e5275ce70fa4e6a116585c98c",
-            "0x693e42647f582033c748080f3aafebec5a37bbd3aa3c9bcffaae3ac88c95018e",
-            "0xc545cfa146c9be421bdce64500bbaa6c2f2459e589568de18840d1a66e01024c",
-            "0xecaa0922ac00ad33877b0880adca2c7f4a3644cb192d338f2b46b9cb7fe39132",
-            "0x0c8df4b0c286db85ae4ed2fde0542bd58fa19cd3de42cc258804c814c22b773a",
+            "0xaff65446697df8d5daad9e0cb05566b7c07d59dd8717c75d5e68d028710ef5da",
+            "0xa5f7b8e52e2411ee13d21d1318e956dda54c38a9b05b594c8e8c3966907f622b",
+            "0x6f3fcba6d2369e21832d3765899cc678b18f36aeff585573457ce147d8b36214",
+            "0xa24174716943df0f0f3ade343b46e37e31659d83c3caed6e74990243539b1b80",
+            "0x08a2d52953bf50ce4caa0eb80c51afb4956e8c2b8b8528ea160bcd403f07ab7e",
+            "0xfbf01f3a61b0b33b11fa3a2b3d5404d39a4809a2646a69eea736c1ec908c5d03",
+            "0xea3c010b0c9e4dac5fcf73e5bb0bc76839a859ee7008738ddb39eea0c5775f09",
+            "0x627b67092d01a09e7ac85f64aef54e32bed3ab66ac5b95d6f32bab53efd59012",
+            "0x48a1cb462b8184a1896dc2f647fe546b10617b2496cc565056c76d1568c9aa60",
+            "0x41fbd3a0cfdfcee05cf3eb16d95ed1c81f50c3c6268bb806b406ec06ee93e704",
             "0x41fbd3a0cfdfcee05cf3eb16d95ed1c81f50c3c6268bb806b406ec06ee93e704",
             "0x41fbd3a0cfdfcee05cf3eb16d95ed1c81f50c3c6268bb806b406ec06ee93e704",
             "0x41fbd3a0cfdfcee05cf3eb16d95ed1c81f50c3c6268bb806b406ec06ee93e704",
@@ -6914,7 +6518,10 @@
             "0x0ce4011a751d046663ae0df60ad3792f4fe5ec112eeb1475c7c811353e11b193",
             "0x1dad105da2855cf44154e024e44ccbfd4f9f1f446ae7549b56239c2b7f07398a",
             "0xb27fb10b176f9cb32be81ed03cccf466108da4079b0e5d14cffea646d85f3c9d",
-            "0x161fc1184aff6c5801f3cb8effc0a6a608b47c686ee57916cadc2a38874ba57e",
+            "0xe5de4493fa1080e33d6e94b281139f035a589b9030b08c41a9976c8a13950698",
+            "0x9bcbd033f55c78506d20045c2bb12b300f3b0087dbc1b14ff358f09fc64b5658",
+            "0xc64592e70768d7bf92d92ba55f419b88476d049c64b8ce5814857587f60714ff",
+            "0x928e01c52907dd581aac964e2c64cc673b20773a68e3a19c07a4546896df67c0",
             "0xde43660c48bcb0f0c426ea945b5deb5286b28a348fc08c5ef235d3db1df63685",
             "0x7b2df0abd740751215f84c1b473cbe29aec86aeee9a91e1ab51aedef324e7897",
             "0xeecea98b088bc48498cf6e7f324f578b428af141c7917fe48d14acffd65cc0ae",
@@ -6926,13 +6533,10 @@
             "0xeb792f51831bae9b1b27a7ba4449219767f4711479b5714ea05b416e4b7f9c2d",
             "0xb6dc4113d44c23df94f30ca4c86daa1d92a0fc185f5875c7d824643b1e0c2407",
             "0x85d7b3d3397acb5420d747f878965025e5c895e6a6bec9dac0de3eb1896d4cf4",
-            "0xa45437ac6d63a0fa0e3eefe9d6a760047e4e5122215d5cbf2f9214f8649ff7f7",
-            "0x6d545013185ca5f648765246e12fc2723e8915e604626bef8c6135d1365d7b3c",
-            "0x03ce486148bd80bf739bb82852c6832b31221a055db1c3cf3e47c0305e599488",
-            "0xf1e347c8b1042b03b3db1a61ada5d23c33fd6718760ef22b22265f0a9e89d56e",
-            "0x333b82f4f6bc45887eaa7f0df6b424e4d5d6a41d80728f6ff7b9119b45577f22",
-            "0xb537ead0c3944214c4871b75730d28c13f9be49113c0260d0a831eb05e95e84e",
-            "0x4827e1f0042638c419ae250c14136a47e90189c4e7a92ba5b3df43c5b4fabbe6",
+            "0xddbd1ed7b19c8ef0c9867a9eda76bf3476e7e57cb8558c96a13fce68a6eba8a0",
+            "0x95216bf029afb9b8e19d3f5e5a4e77c3209ed4026659ca32e0f32998b360e6f5",
+            "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe",
+            "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe",
             "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe",
             "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe",
             "0x849eda7a295b642e5ddaf49a30eec4470cf507efa83b4104c0752d069c7638fe",
@@ -7125,7 +6729,13 @@
             "0x428d21842f1213bd8575ebfb34955705db2908a48e5f14a528c679dc27935756",
             "0xdc1c7ead0a1720664320bb8837dc6d365ac654f94b0910ed553343c218ba1404",
             "0x03e63af0a278ab974e7ee1180132597e0ef9bc64c07498566080847a528fd5b5",
-            "0x2cd019144f5e144caaa14ec02cee0c337d37c07afb3be8f96e285738ad004fbc",
+            "0xa2b03d24dc1fb0c6b74943c8f9f8bc7ae3963275bc62ca3b5ed96476778dbf38",
+            "0x67f4441286b27c065edd212c4109d1057122948907d2d206d830b2f383aca015",
+            "0xfe147107a0000face19c673c79557d99ef832366b58d8efe191459d3605fd403",
+            "0x3db2c362bb27dbf5a549edc36b7b0529052dfe8a4a71b42470eeb084529e0134",
+            "0x9399f83f7ef0757556c327d1effc40a948578aaefe203fe1803796c9f65a28fa",
+            "0x6991fe13fae880530301283600e8de2427c85402421dab76879d14a4101e2d1b",
+            "0xa4b103718001ffcb9e19192997672dfe29425c1bc5fd2c07b65d716b78f51efa",
             "0x0b3327796826385dc95f6368d77350db91dcbf4c3e5a26df311a2b8a5e4ea6c7",
             "0x209ebe6442200889989b486ac4b51326cf797eddad3350835179fa0f1624b26d",
             "0x9bc4e4fa77212623d2f93f46dc510d18dce6d33dce8c6bc420da92c73af9f6a4",
@@ -7149,18 +6759,12 @@
             "0x93c5a8ebbc4afec205417008bc5b96ecb71fccab4f991b98b35d15b86560338c",
             "0xfcd7e0c03a58fcc670bc53ef19822bd24e583b5038688ae42aef09380881ba8d",
             "0x184d265f0b92c09a87c78093a1d800ceb0a27accbd3c24284f5c61825c8050b5",
-            "0xeeac98242b28c290d27d93da7bcd4606bb216c3992612d6b2a5741bb0a839197",
-            "0xa0f59266298c0f2b3109bd6b03339d3dcde3751267fd6d92b5012a9b91f886db",
-            "0xf0939d5bae3f63286940955fe3c7ef97fbbb77d08e7875fcbdc35673af9f7c26",
-            "0x0cb5e1d932f1906956686e7ef4248857da0ffb0ab9b93964cd30e2e5eb24d7a6",
-            "0xb881cf2fe9341049acfd739e6f6b5ec82bc743ad222fb3f862e1663496d55f69",
-            "0x4a77036e1a08d6701aa28f17a796872487ffdcf3b78870c2d5b4b2130d53a5d0",
-            "0x065ece54c103c8a365e0e5363b19540bb30f6b30dedf04a35d78dbcf24a65ea4",
-            "0xfd5728aa5fa9f10dc1ad4e3cf601cc1726807900671831887f73454e2a716a4f",
-            "0xd4abf5945b2e19260a400b697b3b5b47e1ff68800b1bd3eb499245f3bc71ded0",
             "0xf705128ba127fb6090c08a0c00fe1794f935e5f892c7623a8dbba21ab5facdd3",
             "0x6b23d2b0793cf540a5e86e0064135e7aa251cdc8fb2922a639773933123e34a8",
             "0xb82e1c70a3efa92ecb3a67e7f9f14584acf1b0a432db59a7299a8d52b5a4d887",
+            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
+            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
+            "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
             "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
             "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
             "0xc5a36f3b7b955966d5ed3135dcc612f978306d73bce3697e230afae57fbaeeba",
@@ -7545,6 +7149,18 @@
             "0x207509d59ea5bb5ebb61ef1b7a98f1edd49517d9d0149ff6eabd6f755385203f",
             "0xb44ea43d847197564d86bd93de3014bacdf7b8acfa9f8d9a37f6577ceb8a8daa",
             "0xd115c82bc2973d22ee4c0eea5a43577afcca5d3ee4d47651b9e8e68e3c6c9476",
+            "0x51f90f45b5168cb12ab03e2e1a2012ee29623412314b9aff97a8d76b73e52d31",
+            "0xefdfa8974ef966f580b64fc0f7a66ddd2ddd05dd7031b6342996fcc399c163a8",
+            "0x998ff33f8bae8f7dd8d47c09aa00f236eda0d1ce73a95b7c1b2bf1405204d92c",
+            "0xb97c93ae1a9f3559a084f0a5a250afb4eaf20970b65e2d0f844747b62d89fbac",
+            "0xb0c0599d636e09d4b1568c6cb7c62eb5b67524c3eee48fef6e7bc5953f7354ce",
+            "0x293d5a808b8ba6c37357a1a59a7e4fce10c98a41beb054d2df8b98f8eeeaa1a9",
+            "0xa381c82986df775cbcfd5a39c30fb5c380a422195e227999fce05a2d45161555",
+            "0x354d9e6aecbbd1e051704fc1e562ce10db845081a26f256dc630d914df1ab0a5",
+            "0x67385f4287d445e30eedb62315d9dd0de3c46c3cc5cfc27176509ae82b179dd1",
+            "0x36740944e46b143217f496e439d7ff324c00f20736143f9979b3eb3f87a21f48",
+            "0x2342f6e0b053a3f928831bbf9633a84770bc53f104d28626bde00dc4951816f3",
+            "0xd9b3552dce40a90437c31ca3a991172b53004a5dd18d104cd0b11bef24e75855",
             "0x355c77aac4d44263cdc83b77d7a8aa3f66df128df370347f67d7493dea1c1e53",
             "0x7db4cc0c6f04562a23b9033c02304ef5a2eb4328d85fd8acc929a6733cbe0550",
             "0x3fc8430ef7828696223469d32e8908390decf701475f758e0bcd09013d318df8",
@@ -7592,30 +7208,18 @@
             "0x131659f9d302e46ce54d840af2df9525941533b6fc970cdb711731614663dfd9",
             "0xc307b57893f9b2ef4c302c9d3192be1ba2c4ca657d04d88aaa8f955c987a75fc",
             "0xfceee28460ed96b4b47473755995d9aef9df238c2264f33e9792d26dff73f0bf",
-            "0xf5b3107bc30e345ef94bbd3f1fe8f4644a12efeaced2d6c3140f6b7087929d69",
-            "0x580441a98518f1bf71305ec066b494cad44bd41bc6157c598b990f1099b4d826",
-            "0x3d9bddf149b6394a5794c1790c413653c4a1b1b9c817c5e02e6201fb21d64075",
-            "0x1a3f087daff0a95828bf685acf52f9dbe6d2d14e0ef3416c0b84529c795c49bd",
-            "0xe394de66baf3f9892698f1ff1c1dcd05943ebb84c6f0cef6ff9d0ed00c73f06b",
-            "0xc37493ceba04fdd18d1089153a80d11b679cb9cd8a9d29aeac85801795681523",
-            "0x2e26471dd60d9fb1f6d98bf0f1d8021501d2286a6be3bd9a296f2206d523343a",
-            "0x446b05bcc2f0eb870d5bc6ac224c0670d19b2d183078e47b4560392323c8425d",
-            "0x9c71bbc36077ab8cbed098c07d73e74c2dc62855bd960f2b82b96be51b2fc962",
-            "0x55482e862a53b70a6da6ee902061fa65b81e417f887a3a38879fada3cc6ae742",
-            "0x9fbf71b702b51dba3d27fcbc5e7acc6869d4bfd8c51d86d80279a90d7d915eee",
-            "0x8e42c547399579931de7509e010e5a17e9b4b8bd1f079ca06b70124d5fc96c93",
-            "0x9758f0645034132e4018eda4339f1886507e58fc869d4671fd6e7e8e6465bf49",
-            "0x991a789df53f8c97603f0852a5da7dbc312d59b63d6de57814175d77a505b3be",
-            "0xce54d912779fb34f3d6c03ccfa7177779bf1c0933e776d314004fcf30b05aa9c",
-            "0x07ce8343df1cd0fe44e3e5ff45b4bc28dfa1264997d32a82c463ca5585727f45",
-            "0x02a52a0ac4ff84c450c4854c08e05802807a6b2bf2964a5ed3621d31a41cdfda",
-            "0x6951e45fde8de4295b2c7fba8f9cf9de46d2fae7da61d816e44e487267839bed",
             "0xec051df144eb9cb3fe755785dc61ea9e14afc466ba7e0c8bbfa9d7989a5f550b",
             "0x0d211b4281310aba7d2303b182658d543016daeda8b7bd9b99c654973eafd1c7",
             "0xb2779c7ac4e19f85babcf17590325f79172e0fbb64050d7361d594bf4dac5afc",
             "0x0fdb97f64ed3ff32cfe855b9faf918e1bf53ceab64dca28f8b76a04f19657403",
             "0x042188cc25b9566f94d9d812c3d6326af5c340da408c2c00db1765e7d4e10393",
             "0x152c76fe107d2a2900bdb56880e5022b76aab6e40366c5aef4e541499ca6113b",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
+            "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
             "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
             "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
             "0xa7a0fd846665d92e66be6155c6221b3acd7145ca7c4e4b67a594e4c516969400",
