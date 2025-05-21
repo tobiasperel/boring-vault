@@ -15,10 +15,10 @@ import "forge-std/Script.sol";
 contract CreateLiquidBTCMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
-    address boringVault = 0x5E272ca4bD94e57Ec5C51D26703621Ccac1A7089;
-    address managerAddress = 0x5239158272D1f626aF9ef3353489D3Cb68439D66;
-    address accountantAddress = 0x9A22F5dC4Ec86184D4771E620eb75D52E7b9E043;
-    address rawDataDecoderAndSanitizer = 0x5F2f11Ad8656439D5c14d9B351f8b09cDac2A02d;
+    address boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
+    address managerAddress = 0xaFa8c08bedB2eC1bbEb64A7fFa44c604e7cca68d;
+    address accountantAddress = 0xEa23aC6D7D11f6b181d6B98174D334478ADAe6b0;
+    address rawDataDecoderAndSanitizer = 0xba137e5ae4214bd65451de3ac5ff11145f47ee89;
 
     //one offs
     // address camelotDecoderAndSanitizer = 0x3FD48BE8d8fB633696AcB6dBE70166c81e869320;
@@ -38,35 +38,6 @@ contract CreateLiquidBTCMerkleRoot is Script, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](256);
 
-        // ========================== Curve LP ==========================
-        
-        _addCurveLeafs(
-            leafs,
-            getAddress(sourceChain, "curve_pool_LBTC_WBTCN"),
-            2,
-            getAddress(sourceChain, "curve_gauge_LBTC_WBTCN")
-        );
-        
-        _addCurveLeafs(
-            leafs,
-            getAddress(sourceChain, "curve_pool_LBTC_WBTCN_2"),
-            2,
-            getAddress(sourceChain, "curve_gauge_LBTC_WBTCN_2")
-        );
-
-        _addCurveLeafs(
-            leafs,
-            getAddress(sourceChain, "curve_pool_LBTC_WBTCN_EBTC"),
-            3,
-            getAddress(sourceChain, "curve_gauge_LBTC_WBTCN_EBTC")
-        );
-    
-        // ========================== Curve Swaps  ==========================
-        
-        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "curve_pool_LBTC_WBTCN")); 
-        _addLeafsForCurveSwapping(leafs, getAddress(sourceChain, "curve_pool_LBTC_WBTCN_2")); 
-        _addLeafsForCurveSwapping3Pool(leafs, getAddress(sourceChain, "curve_pool_LBTC_WBTCN_EBTC")); 
-
         // ========================== LayerZero ==========================
        
         _addLayerZeroLeafs(
@@ -79,20 +50,6 @@ contract CreateLiquidBTCMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Native Wrapping ==========================
         
         _addNativeLeafs(leafs, getAddress(sourceChain, "WBTCN"));
-
-        // ========================== Zerolend ==========================
-        
-        ERC20[] memory supplyAssets = new ERC20[](3); 
-        supplyAssets[0] = getERC20(sourceChain, "EBTC"); 
-        supplyAssets[1] = getERC20(sourceChain, "LBTC"); 
-        supplyAssets[2] = getERC20(sourceChain, "WBTCN"); 
-
-        ERC20[] memory borrowAssets = new ERC20[](3); 
-        borrowAssets[0] = getERC20(sourceChain, "EBTC"); 
-        borrowAssets[1] = getERC20(sourceChain, "LBTC"); 
-        borrowAssets[2] = getERC20(sourceChain, "WBTCN"); 
-
-        _addZerolendLeafs(leafs, supplyAssets, borrowAssets); 
 
         // ========================== UniswapV3 ==========================
         
@@ -109,35 +66,21 @@ contract CreateLiquidBTCMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Tellers ==========================
         {
-        //deposit into EBTC
         ERC20[] memory tellerAssets = new ERC20[](3); 
-        tellerAssets[0] = getERC20(sourceChain, "WBTCN");  
+        tellerAssets[0] = getERC20(sourceChain, "WBTC");  
         tellerAssets[1] = getERC20(sourceChain, "LBTC");  
-        tellerAssets[2] = getERC20(sourceChain, "EBTC");  
+        tellerAssets[2] = getERC20(sourceChain, "EBTC");
+        address liquidBTCTeller = 0x9E88C603307fdC33aA5F26E38b6f6aeF3eE92d48;  
 
-        _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), tellerAssets, false, false); //no native deposit, no bulk deposit/withdraw
+        _addTellerLeafs(leafs, liquidBTCTeller, tellerAssets, false, false); //no native deposit, no bulk deposit/withdraw
         
         
         // ========================== Withdraw Queues ==========================
-          
-        _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "eBTCOnChainQueueFast"), getAddress(sourceChain, "EBTC"), tellerAssets); 
+        address withdrawQueue = 0x77A2fd42F8769d8063F2E75061FC200014E41Edf;
+        _addWithdrawQueueLeafs(leafs, withdrawQueue, getAddress(sourceChain, "boringVault"), tellerAssets); 
 
         }
 
-        // ========================== CamelotV3 ==========================
-         
-        // setAddress(true, corn, "rawDataDecoderAndSanitizer", camelotDecoderAndSanitizer);
-
-        // address[] memory camelotToken0 = new address[](1); 
-        // camelotToken0[0] = getAddress(sourceChain, "WBTCN");  
-
-        // address[] memory camelotToken1 = new address[](1); 
-        // camelotToken1[0] = getAddress(sourceChain, "LBTC"); 
-
-        // _addCamelotV3Leafs(leafs, camelotToken0, camelotToken1);  
-
-        
-        // setAddress(true, corn, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
         
         // ========================== Morpho ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "smokehouseBTCN")));  
@@ -148,9 +91,6 @@ contract CreateLiquidBTCMerkleRoot is Script, MerkleTreeHelper {
 
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTCN"));
 
-        // ========================== MorphoRewards ==========================
-        _addMorphoRewardWrapperLeafs(leafs);
-        _addMorphoRewardMerkleClaimerLeafs(leafs, 0x330eefa8a787552DC5cAd3C3cA644844B1E61Ddb);
 
         // ========================== Verify ==========================
         

@@ -177,13 +177,33 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Odos ==========================
         _addOdosSwapLeafs(leafs, assets, kind);  
 
+        // ========================== Euler ==========================
+        // {
+        // ERC4626[] memory depositVaults = new ERC4626[](2);
+        // depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerWETH"));
+        // depositVaults[1] = ERC4626(getAddress(sourceChain, "eulerWEETH"));
+
+        // address[] memory subaccounts = new address[](1);
+        // subaccounts[0] = address(boringVault);
+
+        // ERC4626[] memory borrowVaults = new ERC4626[](1); 
+        // borrowVaults[0] = ERC4626(getAddress(sourceChain, "eulerWETH")); 
+
+        // _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+        // _addEulerBorrowLeafs(leafs, borrowVaults, subaccounts);  
+        // }
+
+         _addBTCNLeafs(leafs, getERC20(sourceChain, "cbBTC"), getERC20(sourceChain, "BTCN"), getAddress(sourceChain, "cornSwapFacilitycbBTC"));
+        _addBTCNLeafs(leafs, getERC20(sourceChain, "WBTC"), getERC20(sourceChain, "BTCN"), getAddress(sourceChain, "cornSwapFacilityWBTC"));
+
         // ========================== Aave ==========================
-        ERC20[] memory supplyAssets = new ERC20[](5);
+        ERC20[] memory supplyAssets = new ERC20[](6);
         supplyAssets[0] = getERC20(sourceChain, "WBTC");
         supplyAssets[1] = getERC20(sourceChain, "LBTC");
         supplyAssets[2] = getERC20(sourceChain, "cbBTC");
         supplyAssets[3] = getERC20(sourceChain, "USDC");
         supplyAssets[4] = getERC20(sourceChain, "USDT");
+        supplyAssets[5] = getERC20(sourceChain, "EBTC");
 
         ERC20[] memory borrowAssets = new ERC20[](4);
         borrowAssets[0] = getERC20(sourceChain, "USDC");
@@ -273,7 +293,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
             eBTCTellerAssets2[2] = getAddress(sourceChain, "cbBTC");
             address[] memory feeAssets = new address[](1);
             feeAssets[0] = getAddress(sourceChain, "ETH"); 
-            _addCrossChainTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCTellerAssets2, feeAssets);
+            _addCrossChainTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCTellerAssets2, feeAssets, getAddress(sourceChain, "boringVault"));
 
             ERC20[] memory liquidBeraBTCTellerAssets = new ERC20[](4);
             liquidBeraBTCTellerAssets[0] = getERC20(sourceChain, "WBTC");
@@ -415,7 +435,11 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addLayerZeroLeafs(leafs, getERC20(sourceChain, "solvBTC"), getAddress(sourceChain, "stargateSolvBTC"), layerZeroBerachainEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
         _addLayerZeroLeafs(leafs, getERC20(sourceChain, "srUSD"), getAddress(sourceChain, "stargatesrUSD"), layerZeroBerachainEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
         _addLayerZeroLeafs(leafs, getERC20(sourceChain, "USDC"), getAddress(sourceChain, "stargateUSDC"), layerZeroBerachainEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
-
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "LBTC"), getAddress(sourceChain, "LBTCOFTAdapter"), layerZeroCornEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "WBTCN"), getAddress(sourceChain, "WBTCN"), layerZeroCornEndpointId, bytes32(uint256(uint160(address(boringVault))))); 
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "WBTC"), getAddress(sourceChain, "WBTCOFTAdapter"), layerZeroCornEndpointId, bytes32(uint256(uint160(address(boringVault))))); 
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "cbBTC"), getAddress(sourceChain, "CBBTCOFTAdapter"), layerZeroCornEndpointId, bytes32(uint256(uint160(address(boringVault))))); 
+//lefs, asset, oft adapter, endpoint
         // ========================== Elixir ==========================
         /**
          * deposit, withdraw
