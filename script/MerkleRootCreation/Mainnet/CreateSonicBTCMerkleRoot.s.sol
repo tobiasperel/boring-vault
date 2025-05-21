@@ -79,13 +79,15 @@ contract CreateSonicBTCMerkleRoot is Script, MerkleTreeHelper {
             leafs,
             getERC20(sourceChain, "LBTC"),
             getAddress(sourceChain, "LBTCOFTAdapter"),
-            layerZeroSonicMainnetEndpointId
+            layerZeroSonicMainnetEndpointId,
+            getBytes32(sourceChain, "boringVault")
         );
         _addLayerZeroLeafs(
             leafs,
             getERC20(sourceChain, "WBTC"),
             getAddress(sourceChain, "WBTCOFTAdapter"),
-            layerZeroSonicMainnetEndpointId
+            layerZeroSonicMainnetEndpointId,
+            getBytes32(sourceChain, "boringVault")
         );
 
         // ========================== Tellers ==========================
@@ -94,7 +96,14 @@ contract CreateSonicBTCMerkleRoot is Script, MerkleTreeHelper {
             eBTCTellerAssets[0] = getERC20(sourceChain, "WBTC");
             eBTCTellerAssets[1] = getERC20(sourceChain, "LBTC");
             eBTCTellerAssets[2] = getERC20(sourceChain, "cbBTC");
-            _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCTellerAssets, false);
+            _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCTellerAssets, false, false);
+
+            // Add withdrawal leafs eBTC for LBTC
+            ERC20[] memory _eBTCWithdrawalAssets = new ERC20[](3);
+            _eBTCWithdrawalAssets[0] = getERC20(sourceChain, "LBTC");
+            _eBTCWithdrawalAssets[1] = getERC20(sourceChain, "WBTC");
+            _eBTCWithdrawalAssets[2] = getERC20(sourceChain, "cbBTC");
+            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "eBTCOnChainQueueFast"), getAddress(sourceChain, "eBTC"), _eBTCWithdrawalAssets);
         }
 
         // ========================== Verify & Generate ==========================
