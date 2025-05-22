@@ -78,8 +78,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("corn");
-        setSourceChainName("corn"); 
+        vm.createSelectFork("mainnet");
+        setSourceChainName("mainnet"); 
 
     }
 
@@ -121,7 +121,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
         creationCode = type(EtherFiLiquidBtcDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+        deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
         
         vm.stopBroadcast();
     }
