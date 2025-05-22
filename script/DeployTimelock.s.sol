@@ -48,7 +48,7 @@ contract DeployTimelockScript is Script, ContractNames, MainnetAddresses {
         TimelockController(payable(deployer.deployContract("alphaSTETH Timelock V0.1", creationCode, constructorArgs, 0)));
 
 
-        //timelock.grantRole(timelock.CANCELLER_ROLE(), canceller);
+        timelock.grantRole(timelock.CANCELLER_ROLE(), canceller);
         timelock.revokeRole(timelock.CANCELLER_ROLE(), proposer);
         timelock.renounceRole(timelock.DEFAULT_ADMIN_ROLE(), tempAdmin);
 
