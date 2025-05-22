@@ -30,4 +30,18 @@ abstract contract BeraborrowDecoderAndSanitizer is BaseDecoderAndSanitizer {
         addressesFound = abi.encodePacked(denManager, collVault);  
     }
 
+    // ========================================= Managed Vault Functions ==================================
+    function deposit(uint256 /*assets*/, address receiver, DecoderCustomTypes.AddCollParams memory /*params*/) external pure virtual returns (bytes memory addressesFound) {   
+        // upper hint and lower hint are addresses, but will not be sanitized
+        addressesFound = abi.encodePacked(receiver);
+    }
+
+    function redeemIntent(uint256 /*shares*/, address receiver, address owner) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(receiver, owner);
+    }
+
+    function cancelWithdrawalIntent(uint256 /*epoch*/, uint256 /*sharesToCancel*/, address receiver) external pure virtual returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(receiver);
+    }
+
 }
