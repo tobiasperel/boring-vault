@@ -5801,6 +5801,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     function _addGearboxLeafs(ManageLeaf[] memory leafs, ERC4626 dieselVault, address dieselStaking) internal {
         _addERC4626Leafs(leafs, dieselVault);
         string memory dieselVaultSymbol = dieselVault.symbol();
+
+        if (dieselStaking == address(0)) return; 
         unchecked {
             leafIndex++;
         }
