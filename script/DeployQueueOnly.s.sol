@@ -5,25 +5,25 @@ import {Deployer} from "src/helper/Deployer.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {ContractNames} from "resources/ContractNames.sol";
 import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
-import {BoringSolver} from "src/base/Roles/BoringQueue/BoringSolver.sol";
+import {BoringOnChainQueue} from "src/base/Roles/BoringQueue/BoringOnChainQueue.sol";
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 import "forge-std/Test.sol";
 
 /**
- *  source .env && forge script script/DeploySolver.s.sol:DeploySolver --broadcast --verify
+ *  source .env && forge script script/DeployQueueOnly.s.sol:DeployQueueOnly --broadcast --verify
  *
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
-contract DeploySolver is Script, ContractNames, Test {
+contract DeployQueueOnly is Script, ContractNames, Test {
     uint256 public privateKey;
     
     Deployer deployer = Deployer(0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d);
 
-    address owner = 0xf8553c8552f906C19286F21711721E206EE4909E;
-    address auth = 0xED8C9A514eB81124e370015878ea1fB3fEF18158;
-    address queue = 0x84D988bA2f2838f6ccF61fDE77fe3EB70dFE284f;
-    bool excessToSolverNonSelfSolve = true;
+    address owner = ;
+    address auth = ;
+    address boringVault = ;
+    address accountant = ;
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
@@ -36,9 +36,9 @@ contract DeploySolver is Script, ContractNames, Test {
         bytes memory creationCode;
         vm.startBroadcast(privateKey);
 
-        creationCode = type(BoringSolver).creationCode;
+        creationCode = type(BoringOnChainQueue).creationCode;
 
-        constructorArgs = abi.encode(owner, auth, queue, excessToSolverNonSelfSolve);
+        constructorArgs = abi.encode(owner, auth, boringVault, accountant);
         deployer.deployContract("HyperUSD Boring Solver 0.1", creationCode, constructorArgs, 0);
     }
 }
