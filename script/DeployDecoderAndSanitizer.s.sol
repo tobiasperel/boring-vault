@@ -24,6 +24,8 @@ import {UniBTCDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/UniBTCDe
 import {EdgeCapitalDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/EdgeCapitalDecoderAndSanitizer.sol";
 import {EtherFiLiquidBtcDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/EtherFiLiquidBtcDecoderAndSanitizer.sol";
+import {LiquidBtcDecoderAndSanitizer} from
+    "src/base/DecodersAndSanitizers/LiquidBtcDecoderAndSanitizer.sol";
 import {SonicEthMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicEthMainnetDecoderAndSanitizer.sol";
 import {AaveV3FullDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AaveV3FullDecoderAndSanitizer.sol"; 
 import {LombardBtcDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LombardBtcDecoderAndSanitizer.sol"; 
@@ -67,7 +69,7 @@ import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 
 /**
- *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify --with-gas-price 30000000000
+ *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify --verifier-url 'https://api.routescan.io/v2/network/mainnet/evm/21000000/etherscan' --with-gas-price 50000
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
 
@@ -78,8 +80,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("mainnet");
-        setSourceChainName("mainnet"); 
+        vm.createSelectFork("corn");
+        setSourceChainName("corn"); 
 
     }
 
@@ -118,10 +120,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // creationCode = type(AlphaSTETHDecoderAndSanitizer).creationCode;
         // constructorArgs = abi.encode(address(0), getAddress(sourceChain, "uniV4PositionManager"), address(0), address(0));
         // deployer.deployContract("Alpha STETH Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-
-        creationCode = type(EtherFiLiquidBtcDecoderAndSanitizer).creationCode;
+        creationCode = type(LiquidBtcDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        deployer.deployContract("EtherFi Liquid BTC Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
+        deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
         
         vm.stopBroadcast();
     }

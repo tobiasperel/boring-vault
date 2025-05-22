@@ -1867,8 +1867,6 @@ contract ChainValues {
         values[corn]["WBTCN_LBTC_915"] = 0x2547ba491a7ff9e8cfcaa3e1c0da739f4fdc1be9fe4a37bfcdf570002153a0de;
         values[corn]["USDT0_IDLE_915"] = 0x1c6b87ae1b97071ef444eedcba9f5a92cfe974edbbcaa1946644fc7ab0e283af;
         values[corn]["WBTCN_USDT0_915"] = 0x9039bf8b5c3cd6f2d3f937e8a2e59ef6af0109a0d0f3499e7dbf75be0aef75ec;
-
-        // Morpho
         values[corn]["smokehouseBTCN"] = 0xa7Ba08CFc37e7CC67404d4996FFBB3E977490115.toBytes32();
     }
 

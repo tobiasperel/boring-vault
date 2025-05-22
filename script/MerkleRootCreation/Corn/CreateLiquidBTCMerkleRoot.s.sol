@@ -18,10 +18,7 @@ contract CreateLiquidBTCMerkleRoot is Script, MerkleTreeHelper {
     address boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
     address managerAddress = 0xaFa8c08bedB2eC1bbEb64A7fFa44c604e7cca68d;
     address accountantAddress = 0xEa23aC6D7D11f6b181d6B98174D334478ADAe6b0;
-    address rawDataDecoderAndSanitizer = 0xba137e5ae4214bd65451de3ac5ff11145f47ee89;
-
-    //one offs
-    // address camelotDecoderAndSanitizer = 0x3FD48BE8d8fB633696AcB6dBE70166c81e869320;
+    address rawDataDecoderAndSanitizer = 0x1c0243F818c2af828938d703476D53448E93dD9D;
     
 
     function run() external {
@@ -53,21 +50,19 @@ contract CreateLiquidBTCMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== UniswapV3 ==========================
         
-        address[] memory token0 = new address[](2);   
+        address[] memory token0 = new address[](1);   
         token0[0] = getAddress(sourceChain, "WBTCN");  
-        token0[1] = getAddress(sourceChain, "WBTCN");  
 
-        address[] memory token1 = new address[](2);   
+        address[] memory token1 = new address[](1);   
         token1[0] = getAddress(sourceChain, "LBTC");  
-        token1[1] = getAddress(sourceChain, "EBTC");  
 
-        _addUniswapV3Leafs(leafs, token0, token1, false, true); //add all leafs, use swapRouter02 params   
+        _addUniswapV3Leafs(leafs, token0, token1, false); 
 
 
         // ========================== Tellers ==========================
         {
         ERC20[] memory tellerAssets = new ERC20[](3); 
-        tellerAssets[0] = getERC20(sourceChain, "WBTC");  
+        tellerAssets[0] = getERC20(sourceChain, "WBTCN");  
         tellerAssets[1] = getERC20(sourceChain, "LBTC");  
         tellerAssets[2] = getERC20(sourceChain, "EBTC");
         address liquidBTCTeller = 0x9E88C603307fdC33aA5F26E38b6f6aeF3eE92d48;  
@@ -86,17 +81,16 @@ contract CreateLiquidBTCMerkleRoot is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "smokehouseBTCN")));  
 
          // ========================== MorphoBlue ==========================
-        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WBTCN"));
        
 
-        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTCN"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WBTCN_USDT0_915"));
 
 
         // ========================== Verify ==========================
         
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
-        string memory filePath = "./leafs/Corn/sBTCNStrategistLeafs.json";
+        string memory filePath = "./leafs/Corn/LiquidBTCStrategistLeafs.json";
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 

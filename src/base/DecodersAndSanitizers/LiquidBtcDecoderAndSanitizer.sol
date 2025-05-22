@@ -14,8 +14,13 @@ import {PendleRouterDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/Protocols/PendleRouterDecoderAndSanitizer.sol";
 import {AaveV3DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/AaveV3DecoderAndSanitizer.sol";
 import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol";
+import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
+import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
+import {MorphoBlueDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MorphoBlueDecoderAndSanitizer.sol";
 
-contract EtherFiLiquidBtcDecoderAndSanitizer is
+
+
+contract LiquidBtcDecoderAndSanitizer is
     UniswapV3DecoderAndSanitizer,
     ERC4626DecoderAndSanitizer,
     ConvexDecoderAndSanitizer,
@@ -24,7 +29,10 @@ contract EtherFiLiquidBtcDecoderAndSanitizer is
     OneInchDecoderAndSanitizer,
     PendleRouterDecoderAndSanitizer,
     AaveV3DecoderAndSanitizer,
-    EulerEVKDecoderAndSanitizer
+    EulerEVKDecoderAndSanitizer,
+    OFTDecoderAndSanitizer,
+    TellerDecoderAndSanitizer,
+    MorphoBlueDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager)
         UniswapV3DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
