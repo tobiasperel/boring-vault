@@ -61,6 +61,8 @@ import {LiquidBeraEthBerachainDecoderAndSanitizer} from "src/base/DecodersAndSan
 import {FullCorkDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ITB/cork/FullCorkDecoderAndSanitizer.sol";
 import {LiquidUSDFlareDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidUSDFlareDecoderAndSanitizer.sol"; 
 import {AlphaSTETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AlphaSTETHDecoderAndSanitizer.sol";
+import {FullScrollBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/FullScrollBridgeDecoderAndSanitizer.sol"; 
+import {ScrollVaultsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/ScrollVaultsDecoderAndSanitizer.sol"; 
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -79,21 +81,18 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("unichain");
-        setSourceChainName("unichain"); 
 
-        vm.createSelectFork("sonicMainnet");
-        setSourceChainName("sonicMainnet"); 
-
+        vm.createSelectFork("scroll");
+        setSourceChainName("scroll"); 
     }
 
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
         
-        //creationCode = type(EtherFiLiquidEthDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
-        //deployer.deployContract("EtherFi Liquid ETH Decoder And Sanitizer V0.9", creationCode, constructorArgs, 0);
+        creationCode = type(ScrollVaultsDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode();
+        deployer.deployContract("Scroll Vaults Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
         //creationCode = type(LBTCvBNBDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
