@@ -18,7 +18,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
     address public managerAddress = 0xaFa8c08bedB2eC1bbEb64A7fFa44c604e7cca68d;
     address public accountantAddress = 0xEa23aC6D7D11f6b181d6B98174D334478ADAe6b0;
-    address public rawDataDecoderAndSanitizer = 0x18c5DF5DEF3d9e5c5A0d7d00901ad99d0875CfFe;
+    address public rawDataDecoderAndSanitizer = 0xC0D08701123Dc96962F3CF76891686071958bFaf;
 
     function setUp() external {}
 
@@ -267,12 +267,33 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
             eBTCTellerAssets[2] = getERC20(sourceChain, "cbBTC");
             _addTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCTellerAssets, false, true);
 
+            address[] memory eBTCTellerAssets2 = new address[](3);
+            eBTCTellerAssets2[0] = getAddress(sourceChain, "WBTC");
+            eBTCTellerAssets2[1] = getAddress(sourceChain, "LBTC");
+            eBTCTellerAssets2[2] = getAddress(sourceChain, "cbBTC");
+            address[] memory feeAssets = new address[](1);
+            feeAssets[0] = getAddress(sourceChain, "ETH"); 
+            _addCrossChainTellerLeafs(leafs, getAddress(sourceChain, "eBTCTeller"), eBTCTellerAssets2, feeAssets, abi.encode(layerZeroBerachainEndpointId));
+        
+            address newLiquidBeraBTCTeller = 0xe238e253b67f42ee3aF194BaF7Aba5E2eaddA1B8;  
             ERC20[] memory liquidBeraBTCTellerAssets = new ERC20[](4);
             liquidBeraBTCTellerAssets[0] = getERC20(sourceChain, "WBTC");
             liquidBeraBTCTellerAssets[1] = getERC20(sourceChain, "LBTC");
             liquidBeraBTCTellerAssets[2] = getERC20(sourceChain, "cbBTC");
             liquidBeraBTCTellerAssets[3] = getERC20(sourceChain, "eBTC");
-            _addTellerLeafs(leafs, getAddress(sourceChain, "liquidBeraBTCTeller"), liquidBeraBTCTellerAssets, false, true);
+            _addTellerLeafs(leafs, newLiquidBeraBTCTeller, liquidBeraBTCTellerAssets, false, true);
+
+            ERC20[] memory tacBTCAssets = new ERC20[](1);
+            tacBTCAssets[0] = getERC20(sourceChain, "cbBTC");
+            _addTellerLeafs(leafs, getAddress(sourceChain, "TurtleTACBTCTeller"), tacBTCAssets, false, false);
+            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "TurtleTACBTCQueue"), getAddress(sourceChain, "TurtleTACBTC"), tacBTCAssets);
+
+            ERC20[] memory tacLBTCvAssets = new ERC20[](2);
+            tacLBTCvAssets[0] = getERC20(sourceChain, "LBTC");
+            tacLBTCvAssets[1] = getERC20(sourceChain, "cbBTC");
+            _addTellerLeafs(leafs, getAddress(sourceChain, "TACLBTCvTeller"), tacLBTCvAssets, false, false);
+            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "TACLBTCvQueue"), getAddress(sourceChain, "TACLBTCv"), tacLBTCvAssets);
+
         }
 
         // ========================== Resolv ==========================
@@ -391,10 +412,10 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "SUSDS")));
 
         // ========================== LayerZero/Stargate ==========================
-        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "WBTC"), getAddress(sourceChain, "WBTCOFTAdapter"), layerZeroBerachainEndpointId);   
-        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "solvBTC"), getAddress(sourceChain, "stargateSolvBTC"), layerZeroBerachainEndpointId);   
-        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "srUSD"), getAddress(sourceChain, "stargatesrUSD"), layerZeroBerachainEndpointId);   
-        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "USDC"), getAddress(sourceChain, "stargateUSDC"), layerZeroBerachainEndpointId);   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "WBTC"), getAddress(sourceChain, "WBTCOFTAdapter"), layerZeroBerachainEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "solvBTC"), getAddress(sourceChain, "stargateSolvBTC"), layerZeroBerachainEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "srUSD"), getAddress(sourceChain, "stargatesrUSD"), layerZeroBerachainEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "USDC"), getAddress(sourceChain, "stargateUSDC"), layerZeroBerachainEndpointId, bytes32(uint256(uint160(address(boringVault)))));   
 
         // ========================== Elixir ==========================
         /**

@@ -63,11 +63,11 @@ contract CreateTacLBTCvMerkleRoot is Script, MerkleTreeHelper {
         _addOdosSwapLeafs(leafs, assets, kind);
 
         // ========================== BoringVaults ==========================
-        ERC20[] memory tellerAssets = new ERC20[](2);
-        tellerAssets[0] = getERC20(sourceChain, "LBTC");
-        tellerAssets[1] = getERC20(sourceChain, "cbBTC");
-        address LBTCvTeller = 0x4E8f5128F473C6948127f9Cbca474a6700F99bab;
-        _addTellerLeafs(leafs, LBTCvTeller, tellerAssets, false, true);
+        //ERC20[] memory tellerAssets = new ERC20[](2);
+        //tellerAssets[0] = getERC20(sourceChain, "LBTC");
+        //tellerAssets[1] = getERC20(sourceChain, "cbBTC");
+        //address LBTCvTeller = 0x4E8f5128F473C6948127f9Cbca474a6700F99bab;
+        //_addTellerLeafs(leafs, LBTCvTeller, tellerAssets, false, true);
 
         // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);

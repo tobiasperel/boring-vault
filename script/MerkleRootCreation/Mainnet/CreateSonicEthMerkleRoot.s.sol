@@ -17,7 +17,7 @@ contract CreateSonicEthMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x3bcE5CB273F0F148010BbEa2470e7b5df84C7812;
     address public managerAddress = 0x6830046d872604E92f9F95F225fF63f2300bc1e9;
     address public accountantAddress = 0x3a592F9Ea2463379c4154d03461A73c484993668;
-    address public rawDataDecoderAndSanitizer = 0x1fc7364AA98ddD2Cd0b6da61c5361703fA01C327;
+    address public rawDataDecoderAndSanitizer = 0x9E6279f66E6e7B91DaE93b2E9F08D9108833Ea28;
 
     function setUp() external {}
 
@@ -35,7 +35,7 @@ contract CreateSonicEthMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](128);
+        ManageLeaf[] memory leafs = new ManageLeaf[](256);
 
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](3);
@@ -114,6 +114,10 @@ contract CreateSonicEthMerkleRoot is Script, MerkleTreeHelper {
         bridgeAssets[0] = getERC20(sourceChain, "WETH");
         _addSonicGatewayLeafsEth(leafs, bridgeAssets);
 
+        // ========================== Gearbox ==========================
+        _addGearboxLeafs(leafs, ERC4626(getAddress(sourceChain, "dWETHV3")), getAddress(sourceChain, "sdWETHV3")); 
+        _addGearboxLeafs(leafs, ERC4626(getAddress(sourceChain, "dWSTETHV3")), address(0)); //no staking address for wstETH
+        
         // ========================== Verify & Generate ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 

@@ -37,7 +37,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
 
     LocalVars public vars = LocalVars({
         boringVault: 0xbc0f3B23930fff9f4894914bD745ABAbA9588265,
-        rawDataDecoderAndSanitizer: 0xcc547695869e20F69832Bd9A4De9AF65274C2e77,
+        rawDataDecoderAndSanitizer: 0x8e02114E4D3B788577Cc25229BfC380cac479f26,
         managerAddress: 0x4f81c27e750A453d6206C2d10548d6566F60886C,
         accountantAddress: 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe,
         drone: 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De,
@@ -46,13 +46,13 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         aaveBorrowAssets: new ERC20[](6),
         sparkLendSupplyAssets: new ERC20[](7),
         sparkLendBorrowAssets: new ERC20[](5),
-        oneInchAssets: new address[](30),
-        oneInchKind: new SwapKind[](30),
+        oneInchAssets: new address[](32),
+        oneInchKind: new SwapKind[](32),
         tellerAssets: new ERC20[](4),
         depositVaults: new ERC4626[](1),
         subaccounts: new address[](1),
         borrowVaults: new ERC4626[](1),
-        localTokens: new ERC20[](42)
+        localTokens: new ERC20[](44)
     });
 
     // address public boringVault = 0xbc0f3B23930fff9f4894914bD745ABAbA9588265;
@@ -227,6 +227,10 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         vars.oneInchKind[28] = SwapKind.BuyAndSell;
         vars.oneInchAssets[29] = getAddress(sourceChain, "EUL");
         vars.oneInchKind[29] = SwapKind.Sell;
+        vars.oneInchAssets[30] = getAddress(sourceChain, "AURA");
+        vars.oneInchKind[30] = SwapKind.Sell;
+        vars.oneInchAssets[31] = getAddress(sourceChain, "BAL");
+        vars.oneInchKind[31] = SwapKind.Sell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, vars.oneInchAssets, vars.oneInchKind);
 
@@ -358,7 +362,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         }
 
         // ========================== King ==========================
-        // Decoder needs to be made
+        _addKingRewardsClaimingLeafs(leafs, new address[](0), vars.boringVault);
 
         // ========================== Drone Transfers ==========================
         //ERC20[] memory localTokens = new ERC20[](42);
@@ -404,6 +408,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         vars.localTokens[39] = getERC20("mainnet", "pendle_syrupUSDC_04_23_25_yt");
         vars.localTokens[40] = getERC20("mainnet", "EUL");
         vars.localTokens[41] = getERC20("mainnet", "rEUL");
+        vars.localTokens[42] = getERC20("mainnet", "AURA");
+        vars.localTokens[43] = getERC20("mainnet", "BAL");
 
         _addLeafsForDroneTransfers(leafs, vars.drone, vars.localTokens);
 
@@ -580,10 +586,10 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         }
 
         // ========================== King ==========================
-        // Decoder needs to be made
+        _addKingRewardsClaimingLeafs(leafs, new address[](0), vars.drone);
 
         // ========================== Drone Transfers ==========================
-        vars.localTokens = new ERC20[](42);
+        vars.localTokens = new ERC20[](44);
         vars.localTokens[0] = getERC20("mainnet", "USDC");
         vars.localTokens[1] = getERC20("mainnet", "USDT");
         vars.localTokens[2] = getERC20("mainnet", "DAI");
@@ -626,6 +632,8 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
         vars.localTokens[39] = getERC20("mainnet", "pendle_syrupUSDC_04_23_25_yt");
         vars.localTokens[40] = getERC20("mainnet", "EUL");
         vars.localTokens[41] = getERC20("mainnet", "rEUL");
+        vars.localTokens[42] = getERC20("mainnet", "AURA");
+        vars.localTokens[43] = getERC20("mainnet", "BAL");
 
         _addLeafsForDroneTransfers(leafs, vars.drone, vars.localTokens);
 
