@@ -59,6 +59,7 @@ import {UnichainEtherFiLiquidEthDecoderAndSanitizer} from "src/base/DecodersAndS
 import {LiquidBeraDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidBeraDecoderAndSanitizer.sol";
 import {LiquidBeraEthBerachainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidBeraEthBerachainDecoderAndSanitizer.sol";
 import {FullCorkDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ITB/cork/FullCorkDecoderAndSanitizer.sol";
+import {LiquidUSDFlareDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/LiquidUSDFlareDecoderAndSanitizer.sol"; 
 import {AlphaSTETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AlphaSTETHDecoderAndSanitizer.sol";
 import {FullScrollBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/FullScrollBridgeDecoderAndSanitizer.sol"; 
 import {ScrollVaultsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/ScrollVaultsDecoderAndSanitizer.sol"; 
@@ -80,6 +81,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
+
         vm.createSelectFork("scroll");
         setSourceChainName("scroll"); 
     }
@@ -108,14 +110,22 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
         // deployer.deployContract("Staked BTCN Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
 
-        //creationCode = type(sBTCNMaizenetDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        //deployer.deployContract("Staked BTCN Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
+        creationCode = type(LiquidUSDFlareDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
+        deployer.deployContract("Liquid USD Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
         
         //creationCode = type(CamelotFullDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "camelotNonFungiblePositionManager"));
         //deployer.deployContract("Camelot Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
         
+        //creationCode = type(BerachainDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
+        //deployer.deployContract("PrimeLiquidBeraBTC Berachain Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
+
+        creationCode = type(SonicVaultDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("Sonic Vault Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
+
         vm.stopBroadcast();
     }
 }

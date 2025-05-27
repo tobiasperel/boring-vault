@@ -646,5 +646,12 @@ contract DecoderCustomTypes {
         uint256 collIndex;
         bool unwrap;
     }
+
+    struct AddCollParams {
+        address upperHint;
+        address lowerHint;
+        uint256 minSharesOut;
+        uint256 minCollVaultShares;
+    }
 }
 

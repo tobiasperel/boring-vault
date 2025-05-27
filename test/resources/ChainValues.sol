@@ -838,6 +838,8 @@ contract ChainValues {
         values[mainnet]["sdWBTCV3"] = 0xA8cE662E45E825DAF178DA2c8d5Fae97696A788A.toBytes32();
         values[mainnet]["dGHOV3"] = 0x4d56c9cBa373AD39dF69Eb18F076b7348000AE09.toBytes32();
         values[mainnet]["sdGHOV3"] = 0xE2037090f896A858E3168B978668F22026AC52e7.toBytes32();
+        values[mainnet]["dWSTETHV3"] = 0xFF94993fA7EA27Efc943645F95Adb36C1b81244b.toBytes32();
+        values[mainnet]["sdWSTETHV3"] = 0x8C719A40c705B988c50e76a3cBB18551ab8296CC.toBytes32();
 
         // Pendle
         values[mainnet]["pendleMarketFactory"] = 0x1A6fCc85557BC4fB7B534ed835a03EF056552D52.toBytes32();
@@ -1371,6 +1373,9 @@ contract ChainValues {
 
         // King
         values[mainnet]["kingMerkleDistributor"] = 0x6Db24Ee656843E3fE03eb8762a54D86186bA6B64.toBytes32();
+
+        // STONE
+        values[mainnet]["stoneVault"] = 0xA62F9C5af106FeEE069F38dE51098D9d81B90572.toBytes32();
     }
 
     function _addBaseValues() private {
@@ -1879,6 +1884,9 @@ contract ChainValues {
         values[sonicMainnet]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
         values[sonicMainnet]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
         values[sonicMainnet]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        
+        //Withdraw Queues
+        values[sonicMainnet]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32();
 
         // ERC20
         values[sonicMainnet]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32(); //$S token
@@ -1985,6 +1993,7 @@ contract ChainValues {
 
         values[sonicMainnet]["silo_S_scUSD_id15_config"] = 0xFe514E71F0933F63B374056557AED3dBB381C646.toBytes32();
         values[sonicMainnet]["silo_LBTC_scBTC_id32_config"] = 0xe67cce118e9CcEaE51996E4d290f9B77D960E3d7.toBytes32();
+        values[sonicMainnet]["silo_LBTC_WBTC_id31_config"] = 0x91D87099fA714a201297856D29380195adB62962.toBytes32();
 
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_config"] = 0xDa6787a3543a01Bf770DDF3953bE5B9C99c1cBD0.toBytes32();
         values[sonicMainnet]["silo_PT-aUSDC_scUSD_id46_scUSD_IncentivesController"] =
@@ -1994,6 +2003,8 @@ contract ChainValues {
         
         // Silo Vaults
         values[sonicMainnet]["silo_USDC_vault"] = 0xF6F87073cF8929C206A77b0694619DC776F89885.toBytes32();
+        values[sonicMainnet]["silo_Mithras_vault"] = 0x391b3F70E254d582588B27e97E48D1CFcdf0BE7e.toBytes32();
+        values[sonicMainnet]["silo_RE7_vault"] = 0x592D1e187729C76EfacC6dfFB9355bd7BF47B2a7.toBytes32();
 
         // Curve
         values[sonicMainnet]["curve_CRV_claiming"] = 0xf3A431008396df8A8b2DF492C913706BDB0874ef.toBytes32();
@@ -2054,6 +2065,9 @@ contract ChainValues {
         values[sepolia]["USDC"] = 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590.toBytes32();
         values[sepolia]["ZRO"] = address(1).toBytes32();
         values[sepolia]["CrispyCoin"] = 0x0c959E3AA0A74E972d1A8F759c198e660CcCebcB.toBytes32();
+        values[sepolia]["WETH9"] = 0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14.toBytes32();
+
+        values[sepolia]["UltraYieldWETH"] = 0x22C24D6C6CF64B799ce936f86aBfA8984F3F804d.toBytes32();
 
         values[sepolia]["balancerVault"] = address(1).toBytes32();
 
@@ -2141,6 +2155,7 @@ contract ChainValues {
         values[swell]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
         values[swell]["WEETH"] = 0xA6cB988942610f6731e664379D15fFcfBf282b44.toBytes32(); //also OFT
         values[swell]["WSWELL"] = 0xda1F8EA667dc5600F5f654DF44b47F1639a83DD1.toBytes32();
+        values[swell]["SWELL"] = 0x2826D136F5630adA89C1678b64A61620Aab77Aea.toBytes32();
         values[swell]["USDE"] = 0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34.toBytes32(); //also OFT
 
         // Standard Bridge
@@ -2292,7 +2307,7 @@ contract ChainValues {
 
         // Ooga Booga
         values[berachain]["OBRouter"] = 0xFd88aD4849BA0F729D6fF4bC27Ff948Ab1Ac3dE7.toBytes32();
-        values[berachain]["OBExecutor"] = 0x0e29aD2925079f313817D09Fcadbdf3A91125654.toBytes32();
+        values[berachain]["OBExecutor"] = 	0x415744995e9D35A00189C216c37546E9139F5C2c.toBytes32();
 
 
         // Royco
@@ -2316,6 +2331,11 @@ contract ChainValues {
 
         values[berachain]["sNECT"] = 0x597877Ccf65be938BD214C4c46907669e3E62128.toBytes32();
         values[berachain]["vaultedsNECT"] = 0x1d22592F66Fc92e0a64eE9300eAeca548cd466c5.toBytes32();
+
+        values[berachain]["bbWBTCManagedVault"] = 0xEC5F6Cf02731B1a76CdF11E83bC8Ca9922ef9439.toBytes32();
+        values[berachain]["bbLBTCManagedVault"] = 0x68c761eeb006d91D0e6eFcB8Bc490a22d8D95010.toBytes32();
+        values[berachain]["bbeBTCManagedVault"] = 0x5929Fa7F900C2Ec72C45DF985508CE1ac3B54c71.toBytes32();
+        values[berachain]["bbeBTC-WBTCManagedVault"] = 0x0642e5Ea445b5e572E95c381ef67eF3160572f43.toBytes32();
 
         // Honey
         values[berachain]["honeyFactory"] = 0xA4aFef880F5cE1f63c9fb48F661E27F8B4216401.toBytes32();
@@ -2456,6 +2476,12 @@ contract ChainValues {
         values[flare]["USDT0"] = 0xe7cd86e13AC4309349F30B3435a9d337750fC82D.toBytes32(); // USDT0
         values[flare]["USDC"] = 0xFbDa5F676cB37624f28265A144A48B0d6e87d3b6.toBytes32(); // USDC.e Stargate
         values[flare]["ZRO"] = address(1).toBytes32(); // USDC0
+        values[flare]["rFLR"] = 0x26d460c3Cf931Fb2014FA436a49e3Af08619810e.toBytes32();
+        values[flare]["RFLR"] = 0x26d460c3Cf931Fb2014FA436a49e3Af08619810e.toBytes32();
+
+        // UniswapV3/SparkDex
+        values[flare]["uniswapV3NonFungiblePositionManager"] = 0xEE5FF5Bc5F852764b5584d92A4d592A53DC527da.toBytes32();
+        values[flare]["uniV3Router"] = 0x8a1E35F5c98C4E85B36B7B253222eE17773b2781.toBytes32();
 
         // Balancer
         values[flare]["balancerVault"] = address(1).toBytes32();
@@ -2463,7 +2489,14 @@ contract ChainValues {
 
         // LayerZero
         values[flare]["LayerZeroEndPoint"] = 0x1a44076050125825900e736c501f859c50fE728c.toBytes32();
+        values[flare]["USDT0_OFT"] = 0x567287d2A9829215a37e3B88843d32f9221E7588.toBytes32();
+        values[flare]["USDC_OFT_stargate"] = 0x77C71633C34C3784ede189d74223122422492a0f.toBytes32(); 
 
+        // Kintetic
+        values[flare]["kineticUnitroller"] = 0x8041680Fb73E1Fe5F851e76233DCDfA0f2D2D7c8.toBytes32();
+        values[flare]["kUSDT0"] = 0x76809aBd690B77488Ffb5277e0a8300a7e77B779.toBytes32();
+        values[flare]["isoFLR"] = 0xd7291D5001693d15b6e4d56d73B5d2cD7eCfE5c6.toBytes32(); // isolated FLR for native asset testing
+        values[flare]["isoUnitroller"] = 0xDcce91d46Ecb209645A26B5885500127819BeAdd.toBytes32(); // isolated unitroller for native asset testing
     }
 
 

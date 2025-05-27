@@ -9,15 +9,15 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Sonic/CreateSonicLBTCvMerkleRoot.s.sol --rpc-url $SONIC_MAINNET_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Sonic/CreateStakedSonicBTCMerkleRoot.s.sol --rpc-url $SONIC_MAINNET_RPC_URL
  */
-contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
+contract CreateStakedSonicBTCMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
-    address public boringVault = 0x309f25d839A2fe225E80210e110C99150Db98AAF;
+    address public boringVault = 0xD0851030C94433C261B405fEcbf1DEC5E15948d0;
+    address public managerAddress = 0x2531e80FD417F60048BDa5b92B7d0713cAa0c087;
+    address public accountantAddress = 0x2b9ad21652e5cCaf52BCcE5375aa32176240D39D;
     address public rawDataDecoderAndSanitizer = 0x3D1b0dF501Ca22A09304c8195bEf9ad266Ad2485;
-    address public managerAddress = 0x9D828035dd3C95452D4124870C110E7866ea6bb7;
-    address public accountantAddress = 0x0639e239E417Ab9D1f0f926Fd738a012153930A7;
 
     function setUp() external {}
 
@@ -25,10 +25,10 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
      * @notice Uncomment which script you want to run.
      */
     function run() external {
-        generateSonicLBTCvStrategistMerkleRoot();
+        generateAdminStrategistMerkleRoot();
     }
 
-    function generateSonicLBTCvStrategistMerkleRoot() public {
+    function generateAdminStrategistMerkleRoot() public {
         setSourceChainName(sonicMainnet);
         setAddress(false, sonicMainnet, "boringVault", boringVault);
         setAddress(false, sonicMainnet, "managerAddress", managerAddress);
@@ -40,7 +40,7 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](2);
         feeAssets[0] = getERC20(sourceChain, "LBTC");
-        feeAssets[1] = getERC20(sourceChain, "EBTC");
+        feeAssets[1] = getERC20(sourceChain, "WBTC");
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, true);
 
         // ========================== BoringVaults ==========================
@@ -49,44 +49,24 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
             eBTCTellerAssets[0] = getERC20(sourceChain, "LBTC");
             eBTCTellerAssets[1] = getERC20(sourceChain, "WBTC");
             address eBTCTeller = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268;
-            _addTellerLeafs(leafs, eBTCTeller, eBTCTellerAssets, false, true);
+            _addTellerLeafs(leafs, eBTCTeller, eBTCTellerAssets, false, false);
+            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "eBTCOnChainQueueFast"), getAddress(sourceChain, "EBTC"), eBTCTellerAssets);   
 
-            ERC20[] memory sonicBTCTellerAssets = new ERC20[](3); 
+            //scBTC 
+            ERC20[] memory sonicBTCTellerAssets = new ERC20[](2); 
             sonicBTCTellerAssets[0] = getERC20(sourceChain, "LBTC"); 
-            sonicBTCTellerAssets[1] = getERC20(sourceChain, "EBTC");
-            sonicBTCTellerAssets[2] = getERC20(sourceChain, "WBTC");
+            sonicBTCTellerAssets[1] = getERC20(sourceChain, "WBTC");
             address sonicBTCTeller = 0xAce7DEFe3b94554f0704d8d00F69F273A0cFf079;
-            address scBTC = 0xBb30e76d9Bb2CC9631F7fC5Eb8e87B5Aff32bFbd; 
-            address scBTCWithdrawQueue = 0x488000E6a0CfC32DCB3f37115e759aF50F55b48B; 
-            _addTellerLeafs(leafs, sonicBTCTeller, sonicBTCTellerAssets, false, false);
-            _addWithdrawQueueLeafs(leafs, scBTCWithdrawQueue, scBTC, sonicBTCTellerAssets); 
-
-            ERC20[] memory stkscBTCTellerAssets = new ERC20[](1); 
-            stkscBTCTellerAssets[0] = ERC20(scBTC); 
-            address stkscBTCTeller = 0x825254012306bB410b550631895fe58DdCE1f4a9;
-            address stkscBTC = 0xD0851030C94433C261B405fEcbf1DEC5E15948d0; 
-            address stkscBTCWithdrawQueue = 0x6dF97Ed8B28d9528cd34335c0a151F10E48b6eF3; 
-            _addTellerLeafs(leafs, stkscBTCTeller, stkscBTCTellerAssets, false, false);
-            _addWithdrawQueueLeafs(leafs, stkscBTCWithdrawQueue, stkscBTC, stkscBTCTellerAssets); 
-                  
+            _addTellerLeafs(leafs, sonicBTCTeller, sonicBTCTellerAssets, false, true);
         }
-
-        // ========================== LayerZero ==========================
-        address LBTCOFTAdapter = 0x630e12D53D4E041b8C5451aD035Ea841E08391d7;
-        _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "LBTC"), LBTCOFTAdapter, layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault")
-        );
-        _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "WBTC"), getAddress(sourceChain, "WBTC"), layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault")
-        );
 
         // ========================== Balancer/Beets ==========================
         _addBalancerLeafs(leafs, getBytes32(sourceChain, "scBTC_LBTC_PoolId"), getAddress(sourceChain, "scBTC_LBTC_gauge"));
 
-        // ========================== Silo ==========================
-        address[] memory incentivesControllers = new address[](2); 
+        // ========================== Silo =========================
+        address[] memory incentivesControllers = new address[](2); //no incentives 
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_LBTC_scBTC_id32_config"), incentivesControllers); 
-
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_LBTC_WBTC_id31_config"), incentivesControllers); 
 
         // ========================== Verify ==========================
        
@@ -94,7 +74,7 @@ contract CreateSonicLBTCvMerkleRootScript is Script, MerkleTreeHelper {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        string memory filePath = "./leafs/Sonic/SonicLBTCvStrategistLeafs.json";
+        string memory filePath = "./leafs/Sonic/StakedSonicBTCStrategistLeafs.json";
 
         _generateLeafs(filePath, leafs, manageTree[manageTree.length - 1][0], manageTree);
     }

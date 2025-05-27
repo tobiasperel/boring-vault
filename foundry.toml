@@ -58,6 +58,8 @@ mainnet = { key = "${ETHERSCAN_KEY}", chain = 1, url = "https://api.etherscan.io
 scroll = { key = "${SCROLLSCAN_KEY}", chain = 534352, url = "https://api.etherscan.io/v2/api?chainid=534352"  }
 #sonicMainnet = { key = "${SONICSCAN_KEY}", chain = 146, url = "https://api.sonicscan.org/api" }
 #swell = { key = "${SWELLSCAN_KEY}", chain = 1923, url = "https://explorer.swellnetwork.io:443/api/" }
+#sonicMainnet = { key = "${SONICSCAN_KEY}", chain = 146, url = "https://api.sonicscan.org/api" }
+swell = { key = "${SWELLSCAN_KEY}", chain = 1923, url = "https://explorer.swellnetwork.io:443/api/" }
 #berachainTestnet = { key = "${BERASCAN_TESTNET_KEY}", chain = 80000, url = "https://api.routescan.io/v2/network/testnet/evm/80000/etherscan" }
 #sepolia = { key = "${ETHERSCAN_KEY}" }
 #berachain = { key = "${BERASCAN_KEY}", chain = 80094, url = "https://api.berascan.com/api" }
@@ -65,6 +67,7 @@ scroll = { key = "${SCROLLSCAN_KEY}", chain = 534352, url = "https://api.ethersc
 #unichain = { key = "${UNISCAN_KEY}", chain = 130, url = "https://api.uniscan.xyz/api" }
 #unichain = { key = "${UNISCAN_KEY}", chain = 130, url = "https://api.uniscan.xyz/api" }
 #hyperEVM = { key = "${HYPER_EVM_KEY}", chain = 999, url = "https://hyperscan.gas.zip/" }
+flare = {key = "${FLARESCAN_KEY}", chain = 14, url = "https://api.routescan.io/v2/network/mainnet/evm/14/etherscan" }
 
 
 [fmt]
