@@ -5837,6 +5837,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Withdraw ", dieselVaultSymbol, " from s", dieselVaultSymbol),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+
         unchecked {
             leafIndex++;
         }
@@ -12545,6 +12546,102 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[1] = connectorPlugOnDeriveChain;  
         leafs[leafIndex].argumentAddresses[2] = address(0);  
         leafs[leafIndex].argumentAddresses[3] = address(0);  
+    }
+
+    // ========================================= Agglayer Bridge =========================================
+    // using `bridge` as a param here because we can swap out the bridge to work with any agglayer compatible network
+    function _addAgglayerTokenLeafs(ManageLeaf[] memory leafs, address bridge, address token, uint32 fromChain, uint32 toChain) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            token,
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve zkEVM Comtatible Bridge to spend", ERC20(token).symbol()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = bridge; 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            bridge,
+            false,
+            "bridgeAsset(uint32,address,uint256,address,bool,bytes)",
+            new address[](3),
+            string.concat("Bridge ", ERC20(token).symbol(), " using zkEVM Compatible Bridge"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(uint160(toChain)); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+        leafs[leafIndex].argumentAddresses[2] = token; 
+
+        if (token == getAddress(sourceChain, "ETH")) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                bridge,
+                true,
+                "bridgeAsset(uint32,address,uint256,address,bool,bytes)",
+                new address[](3),
+                string.concat("Bridge ETH using zkEVM Compatible Bridge"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = address(uint160(toChain)); 
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
+            leafs[leafIndex].argumentAddresses[2] = address(0); //zkEVM bridge expects native eth to be address(0)
+        }
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            bridge,
+            false,
+            "claimAsset(bytes32[32],bytes32[32],uint256,bytes32,bytes32,uint32,address,uint32,address,uint256,bytes)",
+            new address[](4),
+            string.concat("Claim  ", ERC20(token).symbol(), " from zkEVM Compatible Bridge"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(uint160(0)); 
+        leafs[leafIndex].argumentAddresses[1] = token; 
+        leafs[leafIndex].argumentAddresses[2] = address(uint160(0)); 
+        leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain,  "boringVault"); 
+    
+        //bridge message
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            bridge,
+            false,
+            "bridgeMessage(uint32,address,bool,bytes)",
+            new address[](3),
+            string.concat("Bridge message from zkEVM Compatible Bridge"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(uint160(toChain));  
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain,  "boringVault"); 
+        leafs[leafIndex].argumentAddresses[2] = token; 
+        
+        //claim message
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            bridge,
+            false,
+            "claimMessage(bytes32[32],bytes32[32],uint256,bytes32,bytes32,uint32,address,uint32,address,uint256,bytes)",
+            new address[](4),
+            string.concat("Claim message from zkEVM Compatible Bridge"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain,  "boringVault"); 
+
     }
 
     // ========================================= BoringChef =========================================
