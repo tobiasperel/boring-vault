@@ -28,7 +28,7 @@ contract LBTCvBaseDecoderAndSanitizer is
     MerklDecoderAndSanitizer,
     ERC4626DecoderAndSanitizer,
     OdosDecoderAndSanitizer,
-    LBTCBridgeDecoderAndSanitizer,
+    LBTCBridgeDecoderAndSanitizer
 {
     constructor(address _uniswapV3NonFungiblePositionManager, address _odosRouter)
         UniswapV3SwapRouter02DecoderAndSanitizer(_uniswapV3NonFungiblePositionManager)
