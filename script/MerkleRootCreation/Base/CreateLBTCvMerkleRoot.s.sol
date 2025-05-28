@@ -54,8 +54,8 @@ contract CreateLBTCvMerkleRootScript is Script, MerkleTreeHelper {
         _addUniswapV3Leafs(leafs, token0, token1, false, true);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](7);
-        SwapKind[] memory kind = new SwapKind[](7);
+        address[] memory assets = new address[](7); 
+        SwapKind[] memory kind = new SwapKind[](7); 
         assets[0] = getAddress(sourceChain, "cbBTC");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "LBTC");
@@ -110,6 +110,10 @@ contract CreateLBTCvMerkleRootScript is Script, MerkleTreeHelper {
         // ========================== Lombard ========================
         // setAddress(true, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
         // _addLombardBTCLeafs(leafs, getERC20(sourceChain, "cbBTC"), getERC20(sourceChain, "LBTC"));
+        
+        // ========================== Verify & Generate ==========================
+
+        _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         string memory filePath = "./leafs/Base/LBTCvStrategistLeafs.json";
 
