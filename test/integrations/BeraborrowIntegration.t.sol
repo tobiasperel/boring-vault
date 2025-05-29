@@ -231,4 +231,79 @@ contract BeraborrowIntegrationTest is BaseTestIntegration {
         _submitManagerCall(manageProofs, tx_); 
 
     }
+
+    function testBeraborrowManagedVaultIntegration() external {
+        _setUpBerachainLater();  
+        
+        deal(getAddress(sourceChain, "WBTC"), address(boringVault), 10e8);
+        
+        ManageLeaf[] memory leafs = new ManageLeaf[](4);
+
+        address[] memory managedVaults = new address[](1);
+        managedVaults[0] = getAddress(sourceChain, "bbWBTCManagedVault");
+        _addBeraborrowManagedVaultLeafs(leafs, managedVaults);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+
+        Tx memory tx_ = _getTxArrays(3); //approve collat, approve nectar, open, close
+
+        tx_.manageLeafs[0] = leafs[0];  //approve
+        tx_.manageLeafs[1] = leafs[1];  //deposit
+        tx_.manageLeafs[2] = leafs[2];  //redeemIntent
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+
+        tx_.targets[0] = getAddress(sourceChain, "WBTC"); //approve 
+        tx_.targets[1] = getAddress(sourceChain, "bbWBTCManagedVault"); //deposit 
+        tx_.targets[2] = getAddress(sourceChain, "bbWBTCManagedVault"); //redeemIntent
+
+
+        DecoderCustomTypes.AddCollParams memory addCollParams = DecoderCustomTypes.AddCollParams(
+            address(0),
+            address(0),
+            0,
+            0
+        );
+
+
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "bbWBTCManagedVault"), type(uint256).max
+        );
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "deposit(uint256,address,(address,address,uint256,uint256))", 10e8, address(boringVault), addCollParams
+        );
+        tx_.targetData[2] = abi.encodeWithSignature(
+            "redeemIntent(uint256,address,address)", 10e8, address(boringVault), address(boringVault)
+        );
+
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+
+        _submitManagerCall(manageProofs, tx_); 
+        
+        skip(2 days); 
+
+        tx_ = _getTxArrays(1); //approve collat, approve nectar, open, close
+
+        tx_.manageLeafs[0] = leafs[0];  //redeemFromEpoch
+
+        manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        tx_.targets[0] = getAddress(sourceChain, "bbWBTCManagedVault"); //deposit 
+
+        DecoderCustomTypes.
+
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "", getAddress(sourceChain, "bbWBTCManagedVault"), type(uint256).max
+        );
+
+    }
+
 }
