@@ -980,6 +980,12 @@ contract ChainValues {
         values[mainnet]["pendle_syrupUSDC_04_23_25_pt"] = 0x2beEb2c4809954e5b514a3205afbDC097eb810B4.toBytes32();
         values[mainnet]["pendle_syrupUSDC_04_23_25_yt"] = 0x01eCe02951395b7AdBa57cA3281C4d6a565d347e.toBytes32();
 
+        values[mainnet]["pendle_eUSDe_market_08_14_25"] = 0xe93b4a93e80bd3065b290394264af5d82422ee70.toBytes32();
+        values[mainnet]["pendle_eUSDe_08_14_25_pt"] = 0x14Bdc3A3AE09f5518b923b69489CBcAfB238e617.toBytes32();
+        values[mainnet]["pendle_USDe_market_07_31_25"] = 0x9Df192D13D61609D1852461c4850595e1F56E714.toBytes32();
+        values[mainnet]["pendle_USDe_07_31_25_pt"] = 0x917459337CaAC939D41d7493B3999f571D20D667.toBytes32();
+
+
         // Aave V3 Core
         values[mainnet]["v3Pool"] = 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2.toBytes32();
         values[mainnet]["v3RewardsController"] = 0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb.toBytes32();
@@ -1277,6 +1283,7 @@ contract ChainValues {
         values[mainnet]["evkewstUSR-1"] = 0x9f12d29c7CC72bb3d237E2D042A6D890421f9899.toBytes32();
         values[mainnet]["evkecbBTC-4"] = 0x29A9E5A004002Ff9E960bb8BB536E076F53cbDF1.toBytes32();
         values[mainnet]["evkeeBTC-1"] = 0xC605471aE09e0b7daA9e8813707d0DDbf9429Ad2.toBytes32();
+        values[mainnet]["evkeRLUSD-1"] = 0xe1Ce9AF672f8854845E5474400B6ddC7AE458a10.toBytes32();
 
         //values[mainnet]["USR"] = 0x66a1E37c9b0eAddca17d3662D6c05F4DECf3e110.toBytes32();
         //values[mainnet]["wstUSR"] = 0x1202F5C7b4B9E47a1A484E8B270be34dbbC75055.toBytes32();
