@@ -63,6 +63,9 @@ import {LiquidUSDFlareDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/
 import {AlphaSTETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/AlphaSTETHDecoderAndSanitizer.sol";
 import {RoycoUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDDecoderAndSanitizer.sol";
 import {RoycoUSDPlumeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDPlumeDecoderAndSanitizer.sol";
+import {FullScrollBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/FullScrollBridgeDecoderAndSanitizer.sol"; 
+import {ScrollVaultsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/ScrollVaultsDecoderAndSanitizer.sol"; 
+
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
 import "forge-std/Script.sol";
@@ -89,9 +92,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
         
-        //creationCode = type(EtherFiLiquidEthDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
-        //deployer.deployContract("EtherFi Liquid ETH Decoder And Sanitizer V0.9", creationCode, constructorArgs, 0);
+        creationCode = type(ScrollVaultsDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode();
+        deployer.deployContract("Scroll Vaults Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
         //creationCode = type(LBTCvBNBDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
@@ -108,7 +111,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // creationCode = type(sBTCNDecoderAndSanitizer).creationCode;
         // constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
         // deployer.deployContract("Staked BTCN Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
-
+        
         // creationCode = type(LiquidUSDFlareDecoderAndSanitizer).creationCode;
         // constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
         // deployer.deployContract("Liquid USD Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
@@ -124,13 +127,18 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // creationCode = type(AlphaSTETHDecoderAndSanitizer).creationCode;
         // constructorArgs = abi.encode(address(0), getAddress(sourceChain, "uniV4PositionManager"), address(0), address(0));
         // deployer.deployContract("Alpha STETH Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-        creationCode = type(RoycoUSDDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "recipeMarketHub"));
-        deployer.deployContract("Royco USD Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+        //creationCode = type(RoycoUSDDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "recipeMarketHub"));
+        //deployer.deployContract("Royco USD Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
 
         //creationCode = type(RoycoUSDPlumeDecoderAndSanitizer).creationCode;
         // constructorArgs = abi.encode(getAddress(sourceChain, "recipeMarketHub"));
         // deployer.deployContract("Royco USD Plume Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+
+        creationCode = type(BerachainDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
+        deployer.deployContract("Berachain Decoder And Sanitizer V0.7", creationCode, constructorArgs, 0);
+
         
         vm.stopBroadcast();
     }
