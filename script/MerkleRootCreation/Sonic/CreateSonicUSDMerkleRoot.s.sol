@@ -6,6 +6,7 @@ import {Strings} from "lib/openzeppelin-contracts/contracts/utils/Strings.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {ManagerWithMerkleVerification} from "src/base/Roles/ManagerWithMerkleVerification.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
+import {SonicVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicVaultDecoderAndSanitizer.sol";
 import "forge-std/Script.sol";
 
 /**
@@ -17,9 +18,7 @@ contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE;
     address public managerAddress = 0x76fda7A02B616070D3eC5902Fa3C5683AC3cB8B6;
     address public accountantAddress = 0xA76E0F54918E39A63904b51F688513043242a0BE;
-    address public rawDataDecoderAndSanitizer = 0xfdD1309DeDB4336c9fABef3150b24cB64732dEDF;
-
-    function setUp() external {}
+    address public rawDataDecoderAndSanitizer = 0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0; 
 
     /**
      * @notice Uncomment which script you want to run.
@@ -29,8 +28,7 @@ contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         generateAdminStrategistMerkleRoot();
     }
 
-    function generateAdminStrategistMerkleRoot() public {
-        setSourceChainName(sonicMainnet);
+    function generateAdminStrategistMerkleRoot() public { setSourceChainName(sonicMainnet);
         setAddress(false, sonicMainnet, "boringVault", boringVault);
         setAddress(false, sonicMainnet, "managerAddress", managerAddress);
         setAddress(false, sonicMainnet, "accountantAddress", accountantAddress);
@@ -60,22 +58,40 @@ contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         ERC20[] memory borrowAssets = new ERC20[](0);
         _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
 
-         // ========================== SiloV2 ==========================
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id8_config"));
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"));
-        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_config"));
+        // ========================== SiloV2 ==========================
+        { 
+        address[] memory incentivesControllers = new address[](2); 
+
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id8_USDC_IncentivesController"); 
+        incentivesControllers[1] = getAddress(sourceChain, "silo_wS_USDC_id8_wS_IncentivesController"); 
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id8_config"), incentivesControllers);
+
+        incentivesControllers[0] = getAddress(sourceChain, "silo_wS_USDC_id20_USDC_IncentivesController"); 
+        incentivesControllers[1] = address(0);  
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_wS_USDC_id20_config"), incentivesControllers);
+
+        incentivesControllers[0] = getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_USDC_IncentivesController"); 
+        incentivesControllers[1] = address(0);  
+        _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_USDC_wstkscUSD_id23_config"), incentivesControllers);
+
+        }
+
+        // ========================== Silo Vault ==========================
+        _addSiloVaultLeafs(leafs, getAddress(sourceChain, "silo_USDC_vault"));
 
          // ========================== Odos ==========================
-         address[] memory tokens = new address[](4);
-         SwapKind[] memory kind = new SwapKind[](4);
+         address[] memory tokens = new address[](5);
+         SwapKind[] memory kind = new SwapKind[](5);
          tokens[0] = getAddress(sourceChain, "USDC");
          kind[0] = SwapKind.BuyAndSell; 
          tokens[1] = getAddress(sourceChain, "USDT");
          kind[1] = SwapKind.BuyAndSell; 
          tokens[2] = getAddress(sourceChain, "wS");
-         kind[2] = SwapKind.Sell; 
+         kind[2] = SwapKind.BuyAndSell; 
          tokens[3] = getAddress(sourceChain, "awS");
          kind[3] = SwapKind.Sell; 
+         tokens[4] = getAddress(sourceChain, "SILO");
+         kind[4] = SwapKind.Sell; 
 
          _addOdosSwapLeafs(leafs, tokens, kind);
 
@@ -84,6 +100,13 @@ contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         tokensToClaim[0] = getERC20(sourceChain, "wS"); 
         tokensToClaim[1] = getERC20(sourceChain, "awS"); 
         _addMerklLeafs(leafs, getAddress(sourceChain, "merklDistributor"), getAddress(sourceChain, "dev1Address"), tokensToClaim);    
+
+        // ========================== LayerZero ==========================
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "frxUSD"), getAddress(sourceChain, "frxUSD"), layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault")); 
+        _addLayerZeroLeafs(leafs, getERC20(sourceChain, "USDC"), getAddress(sourceChain, "stargateUSDC"), layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault")); 
+
+        // ========================== Native Wrapping ==========================
+        _addNativeLeafs(leafs, getAddress(sourceChain, "wS")); //to pay for bridge fees
 
          // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);

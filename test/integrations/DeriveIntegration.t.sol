@@ -268,4 +268,65 @@ contract DeriveIntegrationTest is BaseTestIntegration {
         drvBalance = getERC20(sourceChain, "DRV").balanceOf(address(boringVault)); 
         assertEq(drvBalance, 18e18); 
     }
+
+    function testDeriveBridgeBackToEth() public {
+        _setUpDerive(); 
+
+        deal(getAddress(sourceChain, "LBTC"), address(boringVault), 0.5e8); 
+        deal(address(boringVault), 0.5e18); 
+
+        //address connectorPlugOnDeriveChain = 0x2E1245D57a304C7314687E529D610071628117f3;
+        //address controllerOnMainnet = 0x52CB41109b637F03B81b3FD6Dce4E3948b2F0923; 
+
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+        _addDeriveBridgeLeafs(
+            leafs,
+            getAddress(sourceChain, "LBTC"),
+            getAddress(sourceChain, "derive_LBTC_controller"),
+            0x52CB41109b637F03B81b3FD6Dce4E3948b2F0923
+        ); 
+        
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        _generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+        Tx memory tx_ = _getTxArrays(2); 
+        
+        //manage leafs
+        tx_.manageLeafs[0] = leafs[2]; //approve
+        tx_.manageLeafs[1] = leafs[3]; //bridge
+
+        //generate proofs
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        //targets
+        tx_.targets[0] = getAddress(sourceChain, "LBTC"); //approve 
+        tx_.targets[1] = getAddress(sourceChain, "derive_LBTC_controller"); //bridge
+
+        //targetDatas
+        bytes memory extra = abi.encode(address(0), address(0)); 
+        tx_.targetData[0] = abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "derive_LBTC_controller"), type(uint256).max);
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "bridge(address,uint256,uint256,address,bytes,bytes)",  
+            address(boringVault),
+            234, 
+            2000000,
+            0x52CB41109b637F03B81b3FD6Dce4E3948b2F0923, 
+            extra, 
+            ""
+        );
+        
+        //decoders
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+
+        tx_.values[0] = 0; 
+        tx_.values[1] = 0.1e18; 
+        
+        //submit the call 
+        _submitManagerCall(manageProofs, tx_); 
+
+    }
 }
