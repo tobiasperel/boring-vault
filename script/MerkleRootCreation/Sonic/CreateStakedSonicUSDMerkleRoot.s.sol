@@ -19,6 +19,9 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     address public managerAddress = 0x5F7f5205A3E7c63c3bd287EecBe7879687D4c698;
     address public accountantAddress = 0x13cCc810DfaA6B71957F2b87060aFE17e6EB8034;
     address public rawDataDecoderAndSanitizer = 0xE96762FD748EfdCF4156c64aBc39227529FaF021;
+    
+    //one offs
+    address public siloVaultDecoder = 0x62eab851AC6aF5C0B3e017F70db71A40Dfa1B1f0; 
 
     function setUp() external {}
 
@@ -130,8 +133,15 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         incentivesControllers[1] = address(0);  
         _addSiloV2Leafs(leafs, getAddress(sourceChain, "silo_sfrxUSD_scUSD_id48_config"), incentivesControllers);
 
-        // ========================== Curve =========================
+        // ========================== Silo Vaults =========================
+        
+        setAddress(true, sonicMainnet, "rawDataDecoderAndSanitizer", siloVaultDecoder);
+        _addSiloVaultLeafs(leafs, getAddress(sourceChain, "silo_Mithras_vault"));
+        _addSiloVaultLeafs(leafs, getAddress(sourceChain, "silo_RE7_vault"));
 
+        // ========================== Curve =========================
+        //
+        setAddress(true, sonicMainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
         _addCurveLeafs(
             leafs,
             getAddress(sourceChain, "curve_USDC_scUSD_pool"),
@@ -152,7 +162,7 @@ contract CreateStakedSonicUSDMerkleRoot is Script, MerkleTreeHelper {
         subaccounts[0] = address(boringVault);
 
         _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
-
+        
         // ========================== Native =========================
         _addNativeLeafs(leafs, getAddress(sourceChain, "wS"));
 
