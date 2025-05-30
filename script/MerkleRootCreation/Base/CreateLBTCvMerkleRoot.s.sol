@@ -19,7 +19,7 @@ contract CreateLBTCvMerkleRootScript is Script, MerkleTreeHelper {
     address public managerAddress = 0xcf38e37872748E3b66741A42560672A6cef75e9B;
     address public accountantAddress = 0x28634D0c5edC67CF2450E74deA49B90a4FF93dCE;
     address public rawDataDecoderAndSanitizer = 0x967678F9E5E5a439ee4938738a6aa7b0c873CCeb;
-    address public aerodromeDecoderAndSanitizer = 0xD657c2A871C467871b59d5992CD3bAb1634dd457;
+    address public aerodromeDecoderAndSanitizer = 0xbBC56C19282BB3C115fE3B909edeA3dF5Cc296d5;
 
     function setUp() external {}
 
