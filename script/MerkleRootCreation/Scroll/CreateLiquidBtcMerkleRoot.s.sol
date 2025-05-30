@@ -55,6 +55,15 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
         address eBTCWithdrawQueue = 0x686696A3e59eE16e8A8533d84B62cfA504827135; 
         _addWithdrawQueueLeafs(leafs, eBTCWithdrawQueue, getAddress(sourceChain, "EBTC"), tellerAssets); 
 
+        // ========================== CrossChain Tellers ==========================
+        address[] memory depositAssets = new address[](1); 
+        depositAssets[0] = getAddress(sourceChain, "WBTC"); 
+
+        address[] memory feeAssets = new address[](1); 
+        feeAssets[0] = getAddress(sourceChain, "ETH"); 
+
+        _addCrossChainTellerLeafs(leafs, getAddress(sourceChain, "EBTCTeller"), depositAssets, feeAssets, abi.encode(layerZeroMainnetEndpointId)); 
+
         // ========================== Verify ==========================
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
