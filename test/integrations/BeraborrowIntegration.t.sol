@@ -12,6 +12,12 @@ contract FullBeraborrowDecoderAndSanitizer is BeraborrowDecoderAndSanitizer {}
 
 contract BeraborrowIntegrationTest is BaseTestIntegration {
 
+    struct ExecuteWithdrawalParams {
+        uint256 epoch;
+        address upperHint;
+        address lowerHint;
+    }
+
     function _setUpBerachain() internal {
         super.setUp(); 
         _setupChain("berachain", 4312769); 
@@ -23,7 +29,7 @@ contract BeraborrowIntegrationTest is BaseTestIntegration {
 
     function _setUpBerachainLater() internal {
         super.setUp(); 
-        _setupChain("berachain", 5239795); 
+        _setupChain("berachain", 5393637); 
             
         address beraborrowDecoder = address(new FullBeraborrowDecoderAndSanitizer()); 
 
@@ -52,7 +58,7 @@ contract BeraborrowIntegrationTest is BaseTestIntegration {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -181,7 +187,7 @@ contract BeraborrowIntegrationTest is BaseTestIntegration {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -232,12 +238,12 @@ contract BeraborrowIntegrationTest is BaseTestIntegration {
 
     }
 
-    function testBeraborrowManagedVaultIntegration() external {
+    function testBeraborrowManagedVaultIntegrationWithdrawFromEpoch() external {
         _setUpBerachainLater();  
         
         deal(getAddress(sourceChain, "WBTC"), address(boringVault), 10e8);
         
-        ManageLeaf[] memory leafs = new ManageLeaf[](4);
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
 
         address[] memory managedVaults = new address[](1);
         managedVaults[0] = getAddress(sourceChain, "bbWBTCManagedVault");
@@ -245,7 +251,7 @@ contract BeraborrowIntegrationTest is BaseTestIntegration {
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -290,20 +296,51 @@ contract BeraborrowIntegrationTest is BaseTestIntegration {
         
         skip(2 days); 
 
+        //IBeraBorrow.ExecuteWithdrawalParams memory p = IBeraBorrow.ExecuteWithdrawalParams(
+        //    1942223,
+        //    address(0),
+        //    address(0)
+        //); 
+
+        //vm.prank(0xCE7d3fd53C0510325B3CEbB96298522e6c538753); 
+        //IBeraBorrow(getAddress(sourceChain, "bbWBTCManagedVault")).executeWithdrawalEpoch(p); 
+
         tx_ = _getTxArrays(1); //approve collat, approve nectar, open, close
 
-        tx_.manageLeafs[0] = leafs[0];  //redeemFromEpoch
+        tx_.manageLeafs[0] = leafs[4];  //redeemFromEpoch
 
         manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
 
         tx_.targets[0] = getAddress(sourceChain, "bbWBTCManagedVault"); //deposit 
 
-        DecoderCustomTypes.
+        DecoderCustomTypes.ExternalRebalanceParams memory params = DecoderCustomTypes.ExternalRebalanceParams(
+            getAddress(sourceChain, "collVaultUnwrapper"),  
+            "",
+            0
+        ); 
 
         tx_.targetData[0] = abi.encodeWithSignature(
-            "", getAddress(sourceChain, "bbWBTCManagedVault"), type(uint256).max
+            "withdrawFromEpoch(uint256,address,(address,bytes,uint256))",
+            10e8,
+            address(boringVault), 
+            params   
         );
 
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        
+        vm.expectRevert(); //custom error 0x746fe1ff (NotReported()) due to vault needing to be removed by admins 
+        _submitManagerCall(manageProofs, tx_); 
+        
+    }
+}
+
+interface IBeraBorrow{
+    
+    struct ExecuteWithdrawalParams {
+        uint256 epoch;
+        address upperHint;
+        address lowerHint;
     }
 
+    function executeWithdrawalEpoch(ExecuteWithdrawalParams calldata params) external; 
 }

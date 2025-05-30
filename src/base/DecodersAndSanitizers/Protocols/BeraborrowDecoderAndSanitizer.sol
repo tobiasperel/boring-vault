@@ -49,7 +49,7 @@ abstract contract BeraborrowDecoderAndSanitizer is BaseDecoderAndSanitizer {
         uint256 /*epoch*/,
         address receiver,
         DecoderCustomTypes.ExternalRebalanceParams calldata unwrapParams
-    ) external nonReentrant {
+    ) external pure virtual returns (bytes memory addressesFound) {
         if (unwrapParams.payload.length > 0) revert BeraborrowDecoderAndSanitizer__PayloadLengthGtZero(); 
         addressesFound = abi.encodePacked(receiver, unwrapParams.swapper);  
     }
