@@ -19,7 +19,7 @@ contract CreateRoycoUSDPlumeMerkleRoot is Script, MerkleTreeHelper {
     address public managerAddress = 0xe942A366Ccb629939921b35e1382D2c9634146cE;
     address public accountantAddress = 0xfFfBF5B884AdF7297B94e62535D1b031387041Bd;
     address public tellerAddress = 0x4Fc294112fD0b7226ecA095FEE9909E30882Cb11; 
-    address public rawDataDecoderAndSanitizer = 0x716050EDC96fBB8b61d27dd830Ea9055558F7e44; // Update with actual address //TODO deploy new decoder + verify
+    address public rawDataDecoderAndSanitizer = 0x3820D474cc9b1Aed0A0D78C86b644c5C709E98Ce;
     
     function setUp() external {
         vm.createSelectFork("plume");
@@ -169,6 +169,14 @@ contract CreateRoycoUSDPlumeMerkleRoot is Script, MerkleTreeHelper {
         _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "opNALPHA"), getERC20(sourceChain, "nBASIS"));
         _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "opNALPHA"), getERC20(sourceChain, "pUSD"));
         _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "opNALPHA"), getERC20(sourceChain, "USDC"));
+
+        // nNSTO Offer
+        _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "nINSTO"), getERC20(sourceChain, "nALPHA"));
+        _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "nINSTO"), getERC20(sourceChain, "nCREDIT"));
+        _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "nINSTO"), getERC20(sourceChain, "nBASIS"));
+        _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "nINSTO"), getERC20(sourceChain, "pUSD"));
+        _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "nINSTO"), getERC20(sourceChain, "opNALPHA"));
+        _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "nINSTO"), getERC20(sourceChain, "USDC"));
 
 
         // ========================== Verify ==========================
