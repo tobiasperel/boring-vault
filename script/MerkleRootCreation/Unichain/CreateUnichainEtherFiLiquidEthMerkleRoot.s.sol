@@ -20,6 +20,7 @@ contract CreateUnichainEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
     address public managerAddress = 0xDEa7AF4a96A762c9d43A7eE02acecD20A3C6D8B6;
     address public accountantAddress = 0x0d05D94a5F1E76C18fbeB7A13d17C8a314088198;
     address public rawDataDecoderAndSanitizer = 0x94108Db361BD42C8461015b2749a27011D6940BA; 
+    address public morphoMarketId = 0xdacbdd711936b4f4bd789f0f7111e36e925d730ebd41178e36e705efd78a4aa1;
 
     function setUp() external {}
 
@@ -36,6 +37,7 @@ contract CreateUnichainEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, unichain, "managerAddress", managerAddress);
         setAddress(false, unichain, "accountantAddress", accountantAddress);
         setAddress(false, unichain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        setAddress(false, unichain, "morphoMarketId", morphoMarketId);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](64);
 
@@ -44,7 +46,7 @@ contract CreateUnichainEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== LayerZero ==========================
         _addLayerZeroLeafs(
-            leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "WEETH"), layerZeroMainnetEndpointId
+            leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "WEETH"), layerZeroMainnetEndpointId, getAddress(sourceChain, "boringVault")
         );
 
         // ========================== Standard Bridge ==========================
@@ -88,6 +90,14 @@ contract CreateUnichainEtherFiLiquidEthMerkleRoot is Script, MerkleTreeHelper {
             token1,
             hooks
         );
+
+        //TODO: Need to finish deployment, then run merkle script. Then push the PR and create the txn, post in Admin channel
+
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "morphoMarketId"));
+
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "morphoMarketId"));
+
+        _addERC4626Leafs(leafs, 0x830898200f0e8be8dc1c9a836f4ab29ecedf76eb);
 
         // ========================== Verify & Generate ==========================
 
