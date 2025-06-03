@@ -23,7 +23,6 @@ contract RoycoUSDPlumeDecoderAndSanitizer is
     AtomicQueueDecoderAndSanitizer
 {
     constructor(address _recipeMarketHub)
-        BaseDecoderAndSanitizer()
         RoycoWeirollDecoderAndSanitizer(_recipeMarketHub)
         BoringChefDecoderAndSanitizer()
         TellerDecoderAndSanitizer()
