@@ -1757,12 +1757,14 @@ contract ChainValues {
         values[scroll]["balancerVault"] = address(1).toBytes32();
 
         // ERC20
+        values[scroll]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
         values[scroll]["DAI"] = 0xcA77eB3fEFe3725Dc33bccB54eDEFc3D9f764f97.toBytes32();
         values[scroll]["WETH"] = 0x5300000000000000000000000000000000000004.toBytes32();
         values[scroll]["WEETH"] = 0x01f0a31698C4d065659b9bdC21B3610292a1c506.toBytes32(); //also OFT
         values[scroll]["WBTC"] = 0x3C1BCa5a656e69edCD0D4E36BEbb3FcDAcA60Cf1.toBytes32();
         values[scroll]["USDC"] = 0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4.toBytes32();  
         values[scroll]["USDT"] = 0xf55BEC9cafDbE8730f096Aa55dad6D22d44099Df.toBytes32();  
+        values[scroll]["EBTC"] = 0x657e8C867D8B37dCC18fA4Caead9C45EB088C642.toBytes32();  
         values[scroll]["ZRO"] = address(1).toBytes32();
 
         // Layer Zero
@@ -1773,6 +1775,9 @@ contract ChainValues {
         values[scroll]["scrollGatewayRouter"] = 0x4C0926FF5252A435FD19e10ED15e5a249Ba19d79.toBytes32(); // withdrawERC20
         values[scroll]["scrollMessenger"] = 0x781e90f1c8Fc4611c9b7497C3B47F99Ef6969CbC.toBytes32(); // sendMessage
         values[scroll]["scrollCustomERC20Gateway"] = 0xaC78dff3A87b5b534e366A93E785a0ce8fA6Cc62.toBytes32(); // sendMessage
+
+        // Tellers
+        values[scroll]["EBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32(); 
     }
 
     function _addFraxtalValues() private {
