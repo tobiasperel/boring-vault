@@ -42,22 +42,4 @@ contract ReserveDecoderAndSanitizer {
         // Nothing to sanitize or return
         return addressesFound;
     }
-
-    function deposit(uint256) external pure returns (bytes memory addressesFound) {
-        // Nothing to sanitize or return
-        return addressesFound;
-    }
-
-    function depositTo(address _dst, uint256) external pure returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_dst);
-    }
-
-    function withdraw(uint256) external pure returns (bytes memory addressesFound) {
-        // Nothing to sanitize or return
-        return addressesFound;
-    }
-
-    function withdrawTo(address _dst, uint256) external pure returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(_dst);
-    }
 }
