@@ -83,8 +83,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("plume");
-        setSourceChainName("plume"); 
+        vm.createSelectFork("berachain");
+        setSourceChainName("berachain"); 
 
     }
 
@@ -92,9 +92,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
         
-        creationCode = type(ScrollVaultsDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode();
-        deployer.deployContract("Scroll Vaults Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+       
 
         //creationCode = type(LBTCvBNBDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
@@ -137,7 +135,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
         creationCode = type(BerachainDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
-        deployer.deployContract("Berachain Decoder And Sanitizer V0.7", creationCode, constructorArgs, 0);
+        deployer.deployContract("Berachain Decoder And Sanitizer V0.8", creationCode, constructorArgs, 0);
 
         
         vm.stopBroadcast();
