@@ -2,6 +2,14 @@
 pragma solidity ^0.8.0;
 
 contract ITBBasePositionDecoderAndSanitizer {
+    function approve(address spender, uint256) external pure returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(spender);
+    }
+
+    function transfer(address _to, uint256) external pure returns (bytes memory addressesFound) {
+        addressesFound = abi.encodePacked(_to);
+    }
+
     function removeExecutor(address /*_executor*/ ) external pure returns (bytes memory addressesFound) {
         return addressesFound;
     }
