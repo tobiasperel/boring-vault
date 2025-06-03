@@ -65,6 +65,7 @@ import {RoycoUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoU
 import {RoycoUSDPlumeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDPlumeDecoderAndSanitizer.sol";
 import {FullScrollBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/FullScrollBridgeDecoderAndSanitizer.sol"; 
 import {ScrollVaultsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/ScrollVaultsDecoderAndSanitizer.sol"; 
+import {SonicLBTCvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvDecoderAndSanitizer.sol"; 
 
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
@@ -92,9 +93,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
         
-        creationCode = type(ScrollVaultsDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode();
-        deployer.deployContract("Scroll Vaults Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        //creationCode = type(ScrollVaultsDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode();
+        //deployer.deployContract("Scroll Vaults Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
 
         //creationCode = type(LBTCvBNBDecoderAndSanitizer).creationCode;
         //constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
@@ -134,6 +135,14 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         //creationCode = type(RoycoUSDPlumeDecoderAndSanitizer).creationCode;
         // constructorArgs = abi.encode(getAddress(sourceChain, "recipeMarketHub"));
         // deployer.deployContract("Royco USD Plume Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+
+        //creationCode = type(BerachainDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
+        //deployer.deployContract("Berachain Decoder And Sanitizer V0.7", creationCode, constructorArgs, 0);
+        
+        creationCode = type(SonicLBTCvDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
+        deployer.deployContract("Sonic LBTCv Decoder and Sanitizer V0.1", creationCode, constructorArgs, 0);
 
         creationCode = type(BerachainDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
