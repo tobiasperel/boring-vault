@@ -1,9 +1,7 @@
 /* SPDX-License-Identifier: UNLICENSED */
 pragma solidity ^0.8.0;
 
-import "../common/ITBContractDecoderAndSanitizer.sol";
-
-contract CorkDecoderAndSanitizer is ITBContractDecoderAndSanitizer {
+contract CorkDecoderAndSanitizer {
     type Id is bytes32;
 
     function updatePositionConfig(address _vault, Id, uint256) external pure returns (bytes memory addressesFound) {
