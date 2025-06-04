@@ -160,7 +160,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // deployer.deployContract("LTBCv Base Decoder And Sanitizer", creationCode, constructorArgs, 0);
 
         creationCode = type(UnichainEtherFiLiquidEthDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode();
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniV4PositionManager"));
         deployer.deployContract("Unichain EtherFi Liquid Eth Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
         
         vm.stopBroadcast();
