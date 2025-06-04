@@ -12736,6 +12736,55 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         //leafs[leafIndex].argumentAddresses[2] = token; 
     }
 
+    // ========================================= CCTP Bridge =========================================
+    // using `bridge` as a param here because we can swap out the bridge to work with any agglayer compatible network
+    function _addCCTPBridgeLeafs(ManageLeaf[] memory leafs, uint32 toChain) internal {
+        //approve USDC
+        //bridge USDC depositForBurn
+        //receiveMessage 
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "USDC"),
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve USDC to be spent by USDC TokenMessengerV2"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "usdcTokenMessengerV2"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "usdcTokenMessengerV2"),
+            false,
+            "depositForBurn(uint256,uint32,bytes32,address,bytes32,uint256,uint32)",
+            new address[](4),
+            string.concat("Bridge USDC to ", vm.toString(toChain)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(uint160(toChain)); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");  
+        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "USDC");  
+        leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");  
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "usdcMessageTransmitterV2"),
+            false,
+            "receiveMessage(bytes,bytes)",
+            new address[](0),
+            string.concat("Receive USDC from ", vm.toString(toChain)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+    }
+
     // ========================================= BoringChef =========================================
     function _addBoringChefClaimLeaf(ManageLeaf[] memory leafs, address boringChef) internal {
         unchecked {
