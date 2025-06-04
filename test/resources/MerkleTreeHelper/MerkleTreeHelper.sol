@@ -9763,7 +9763,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 );
                 leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
                 leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-            }
 
                 // BulkWithdraw asset.
                 unchecked {
@@ -9779,6 +9778,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 );
                 leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
                 leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+            }
 
             unchecked {
                 leafIndex++;
@@ -12060,7 +12060,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Approve USDC to be spent by Level Minter"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "levelMinter");
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "levelShares");
 
         unchecked {
             leafIndex++;
@@ -12073,7 +12073,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Approve USDT to be spent by Level Minter"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "levelMinter");
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "levelShares");
 
         unchecked {
             leafIndex++;
@@ -12095,14 +12095,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "levelMinter"),
             false,
-            "mintDefault((uint8,address,address,address,uint256,uint256))",
-            new address[](3),
+            "mint((address,address,uint256,uint256))",
+            new address[](2),
             string.concat("Mint lvlUSD with USDC"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "USDC");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "USDC");
 
         unchecked {
             leafIndex++;
@@ -12110,14 +12109,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "levelMinter"),
             false,
-            "mintDefault((uint8,address,address,address,uint256,uint256))",
-            new address[](3),
+            "mint((address,address,uint256,uint256))",
+            new address[](2),
             string.concat("Mint lvlUSD with USDT"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "USDT");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "USDT");
 
         unchecked {
             leafIndex++;
@@ -12125,39 +12123,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "levelMinter"),
             false,
-            "initiateRedeem((uint8,address,address,address,uint256,uint256))",
-            new address[](3),
-            string.concat("Initiate Redeem for USDC from lvlUSD"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "USDC");
-
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "levelMinter"),
-            false,
-            "initiateRedeem((uint8,address,address,address,uint256,uint256))",
-            new address[](3),
-            string.concat("Initiate Redeem for USDT from lvlUSD"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "USDT");
-
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "levelMinter"),
-            false,
-            "completeRedeem(address)",
+            "initiateRedeem(address,uint256,uint256)",
             new address[](1),
-            string.concat("Complete Redeem for USDC"),
+            string.concat("Initiate Redeem for USDC from lvlUSD"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDC");
@@ -12168,12 +12136,40 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "levelMinter"),
             false,
-            "completeRedeem(address)",
+            "initiateRedeem(address,uint256,uint256)",
             new address[](1),
+            string.concat("Initiate Redeem for USDT from lvlUSD"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDT");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "levelMinter"),
+            false,
+            "completeRedeem(address,address)",
+            new address[](2),
+            string.concat("Complete Redeem for USDC"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDC");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "levelMinter"),
+            false,
+            "completeRedeem(address,address)",
+            new address[](2),
             string.concat("Complete Redeem for USDT"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDT");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
         unchecked {
             leafIndex++;
