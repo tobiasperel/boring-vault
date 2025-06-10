@@ -89,9 +89,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-
-        vm.createSelectFork("berachain");
-        setSourceChainName("berachain"); 
+        
+        vm.createSelectFork("unichain");
+        setSourceChainName("unichain"); 
     }
 
     function run() external {
