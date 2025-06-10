@@ -71,25 +71,19 @@ contract CreateHyperUsdMerkleRootScript is Script, MerkleTreeHelper {
         // USR uses Resolv protocol for minting and burning (redeeming)
         _addAllResolvLeafs(leafs);
 
-        // ========================== Native ==========================
-        /**
-         * wrap, unwrap
-         */
-        _addNativeLeafs(leafs);
 
-        // ========================== Teller ==========================
-        ERC20[] memory tellerAssets = new ERC20[](4);
-        tellerAssets[0] = getERC20(sourceChain, "USDC");
-        tellerAssets[1] = getERC20(sourceChain, "USDT");
-        tellerAssets[2] = getERC20(sourceChain, "USR");
-        tellerAssets[3] = getERC20(sourceChain, "WSTUSR");
+        // // ========================== Teller ==========================
+        // ERC20[] memory tellerAssets = new ERC20[](4);
+        // tellerAssets[0] = getERC20(sourceChain, "USDC");
+        // tellerAssets[1] = getERC20(sourceChain, "USDT");
+        // tellerAssets[2] = getERC20(sourceChain, "USR");
+        // tellerAssets[3] = getERC20(sourceChain, "WSTUSR");
         
-        // Find the teller address from the deployment
-        address hyperUsdTeller = 0xbC08eF3368615Be8495EB394a0b7d8d5FC6d1A55; // TellerWithLayerZero from HyperUSD deployment
-        _addTellerLeafs(leafs, hyperUsdTeller, tellerAssets, false, false);
+        // // Find the teller address from the deployment
+        // address hyperUsdTeller = 0xbC08eF3368615Be8495EB394a0b7d8d5FC6d1A55; // TellerWithLayerZero from HyperUSD deployment
+        // _addTellerLeafs(leafs, hyperUsdTeller, tellerAssets, false, false);
 
-        // Comment out verification for now since decoder hasn't been deployed yet
-        // _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
+        _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
