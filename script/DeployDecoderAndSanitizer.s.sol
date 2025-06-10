@@ -13,7 +13,8 @@ import {AerodromeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Aerod
 import {EtherFiLiquidEthDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/EtherFiLiquidEthDecoderAndSanitizer.sol";
 import {OnlyKarakDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/OnlyKarakDecoderAndSanitizer.sol";
-import {Deployer} from "src/helper/Deployer.sol"; import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
+import {Deployer} from "src/helper/Deployer.sol"; 
+import {MainnetAddresses} from "test/resources/MainnetAddresses.sol";
 import {ContractNames} from "resources/ContractNames.sol";
 import {PointFarmingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PointFarmingDecoderAndSanitizer.sol";
 import {OnlyHyperlaneDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/OnlyHyperlaneDecoderAndSanitizer.sol";
@@ -65,7 +66,12 @@ import {RoycoUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoU
 import {RoycoUSDPlumeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDPlumeDecoderAndSanitizer.sol";
 import {FullScrollBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/FullScrollBridgeDecoderAndSanitizer.sol"; 
 import {ScrollVaultsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/ScrollVaultsDecoderAndSanitizer.sol"; 
+import {FullRewardTokenUnwrappingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/FullRewardTokenUnwrappingDecoderAndSanitizer.sol"; 
+import {SonicLBTCvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvDecoderAndSanitizer.sol"; 
+import {GoldenGooseUnichainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/GoldenGooseUnichainDecoderAndSanitizer.sol";
 
+import {RoycoUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDDecoderAndSanitizer.sol";
+import {RoycoUSDPlumeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDPlumeDecoderAndSanitizer.sol";
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 
 import "forge-std/Script.sol";
@@ -83,61 +89,19 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
+
         vm.createSelectFork("berachain");
         setSourceChainName("berachain"); 
-
     }
 
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
         
-       
+        creationCode = type(GoldenGooseUnichainDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniV4PositionManager"));
+        deployer.deployContract("Golden Goose Unichain Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
 
-        //creationCode = type(LBTCvBNBDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
-        //deployer.deployContract("LBTCv BNB Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-
-        // creationCode = type(HybridBtcBobDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode();
-        // bobDeployer.deployContract("Hybrid BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
-        
-        // creationCode = type(RoyUSDCMainnetDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
-        // deployer.deployContract("Royco USDC Mainnet Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-
-        // creationCode = type(sBTCNDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
-        // deployer.deployContract("Staked BTCN Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
-        
-        // creationCode = type(LiquidUSDFlareDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
-        // deployer.deployContract("Liquid USD Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
-        
-        //creationCode = type(CamelotFullDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "camelotNonFungiblePositionManager"));
-        //deployer.deployContract("Camelot Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
-        
-        //creationCode = type(BerachainDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
-        //deployer.deployContract("PrimeLiquidBeraBTC Berachain Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
-
-        // creationCode = type(AlphaSTETHDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode(address(0), getAddress(sourceChain, "uniV4PositionManager"), address(0), address(0));
-        // deployer.deployContract("Alpha STETH Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-        //creationCode = type(RoycoUSDDecoderAndSanitizer).creationCode;
-        //constructorArgs = abi.encode(getAddress(sourceChain, "recipeMarketHub"));
-        //deployer.deployContract("Royco USD Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-
-        //creationCode = type(RoycoUSDPlumeDecoderAndSanitizer).creationCode;
-        // constructorArgs = abi.encode(getAddress(sourceChain, "recipeMarketHub"));
-        // deployer.deployContract("Royco USD Plume Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-
-        creationCode = type(BerachainDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "dolomiteMargin"));
-        deployer.deployContract("Berachain Decoder And Sanitizer V0.8", creationCode, constructorArgs, 0);
-
-        
         vm.stopBroadcast();
     }
 }
