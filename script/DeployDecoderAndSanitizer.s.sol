@@ -161,8 +161,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         // deployer.deployContract("LTBCv Base Decoder And Sanitizer", creationCode, constructorArgs, 0);
         
         creationCode = type(HyperUsdDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode();
-        deployer.deployContract("HyperUSD Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+        constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("HyperUSD Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
         
         vm.stopBroadcast();
     }

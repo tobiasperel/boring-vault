@@ -15,7 +15,7 @@ contract CreateHyperUsdMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0x340116F605Ca4264B8bC75aAE1b3C8E42AE3a3AB;
-    address public rawDataDecoderAndSanitizer = 0x6a2352fcE90CD91DFc66eFc048ea42cc7d3729b1;
+    address public rawDataDecoderAndSanitizer = 0x31A215839af04fd8D9b86825E1F876566bec268a;
     address public managerAddress = 0x0Cb93E77ae97458b56F39F9A8735b57A210A65bc;
     address public accountantAddress = 0x9212cA0805D9fEAB6E02a9642f5df33bc970eC13;
 
@@ -66,6 +66,10 @@ contract CreateHyperUsdMerkleRootScript is Script, MerkleTreeHelper {
         oneInchKind[3] = SwapKind.BuyAndSell;
 
         _addLeafsFor1InchGeneralSwapping(leafs, oneInchAssets, oneInchKind);
+
+        // ========================== Odos ============================
+        _addOdosSwapLeafs(leafs, oneInchAssets, oneInchKind);
+
 
         // ========================== Resolv USR Protocol ==========================
         // USR uses Resolv protocol for minting and burning (redeeming)

@@ -7,13 +7,18 @@ import {ResolvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocol
 import {OneInchDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OneInchDecoderAndSanitizer.sol";
 import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol";
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
+import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol";
 
 contract HyperUsdDecoderAndSanitizer is 
     ResolvDecoderAndSanitizer, 
     OneInchDecoderAndSanitizer,
     NativeWrapperDecoderAndSanitizer,
-    TellerDecoderAndSanitizer 
+    TellerDecoderAndSanitizer,
+    OdosDecoderAndSanitizer
 {
+    constructor(address _odosRouter) OdosDecoderAndSanitizer(_odosRouter) {
+        
+    }
     // Override withdraw to resolve conflict between NativeWrapper and Resolv
     function withdraw(uint256) 
         external 
