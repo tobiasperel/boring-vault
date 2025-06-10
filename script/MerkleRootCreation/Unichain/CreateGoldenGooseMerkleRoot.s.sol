@@ -88,6 +88,7 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "morphowstETHmarket"));
 
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "morphoSmokehouseWSTETH")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "morphoSteakhouseETH")));
 
         // ========================== Verify & Generate ==========================
 
