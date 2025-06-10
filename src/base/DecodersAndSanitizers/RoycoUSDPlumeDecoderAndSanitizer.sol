@@ -7,6 +7,7 @@ import {BoringChefDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Prot
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 import {AtomicQueueDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/AtomicQueueDecoderAndSanitizer.sol";
 
+
 /**
  * @title RoycoUSDPlumeDecoderAndSanitizer
  * @notice Decoder and sanitizer for RoycoUSDPlume vault functionality including:
@@ -29,3 +30,4 @@ contract RoycoUSDPlumeDecoderAndSanitizer is
         AtomicQueueDecoderAndSanitizer(0.9e4, 1.1e4)
     {}
 }
+

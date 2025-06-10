@@ -178,7 +178,6 @@ contract CreateRoycoUSDPlumeMerkleRoot is Script, MerkleTreeHelper {
         _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "nINSTO"), getERC20(sourceChain, "opNALPHA"));
         _addAtomicQueueLeafs(leafs, 0x228C44Bb4885C6633F4b6C83f14622f37D5112E5, getERC20(sourceChain, "nINSTO"), getERC20(sourceChain, "USDC"));
 
-
         // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 

@@ -5562,6 +5562,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
 
+
     function _addMorphoRewardMerkleClaimerLeafs(ManageLeaf[] memory leafs, address universalRewardsDistributor)
         internal
     {
@@ -9816,22 +9817,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 );
                 leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
                 leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-            }
 
-            // BulkWithdraw asset.
-            unchecked {
-                leafIndex++;
+                // BulkWithdraw asset.
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    teller,
+                    false,
+                    "bulkWithdraw(address,uint256,uint256,address)",
+                    new address[](2),
+                    string.concat("Bulk withdraw ", assets[i].symbol(), " from ", boringVault.name()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
+                leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
             }
-            leafs[leafIndex] = ManageLeaf(
-                teller,
-                false,
-                "bulkWithdraw(address,uint256,uint256,address)",
-                new address[](2),
-                string.concat("Bulk withdraw ", assets[i].symbol(), " from ", boringVault.name()),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = address(assets[i]);
-            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
             unchecked {
                 leafIndex++;
@@ -10557,6 +10558,20 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                managedVaults[i],
+                false,
+                "withdrawFromEpoch(uint256,address,(address,bytes,uint256))",
+                new address[](2),
+                string.concat("Withdraw From Epoch ", ERC20(managedVaults[i]).symbol()),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "collVaultUnwrapper");
         }
     }
 
@@ -12127,7 +12142,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Approve USDC to be spent by Level Minter"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "levelMinter");
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "levelShares");
 
         unchecked {
             leafIndex++;
@@ -12140,7 +12155,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             string.concat("Approve USDT to be spent by Level Minter"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "levelMinter");
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "levelShares");
 
         unchecked {
             leafIndex++;
@@ -12162,14 +12177,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "levelMinter"),
             false,
-            "mintDefault((uint8,address,address,address,uint256,uint256))",
-            new address[](3),
+            "mint((address,address,uint256,uint256))",
+            new address[](2),
             string.concat("Mint lvlUSD with USDC"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "USDC");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "USDC");
 
         unchecked {
             leafIndex++;
@@ -12177,14 +12191,13 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "levelMinter"),
             false,
-            "mintDefault((uint8,address,address,address,uint256,uint256))",
-            new address[](3),
+            "mint((address,address,uint256,uint256))",
+            new address[](2),
             string.concat("Mint lvlUSD with USDT"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "USDT");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "USDT");
 
         unchecked {
             leafIndex++;
@@ -12192,39 +12205,9 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "levelMinter"),
             false,
-            "initiateRedeem((uint8,address,address,address,uint256,uint256))",
-            new address[](3),
-            string.concat("Initiate Redeem for USDC from lvlUSD"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "USDC");
-
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "levelMinter"),
-            false,
-            "initiateRedeem((uint8,address,address,address,uint256,uint256))",
-            new address[](3),
-            string.concat("Initiate Redeem for USDT from lvlUSD"),
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-        );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "USDT");
-
-        unchecked {
-            leafIndex++;
-        }
-        leafs[leafIndex] = ManageLeaf(
-            getAddress(sourceChain, "levelMinter"),
-            false,
-            "completeRedeem(address)",
+            "initiateRedeem(address,uint256,uint256)",
             new address[](1),
-            string.concat("Complete Redeem for USDC"),
+            string.concat("Initiate Redeem for USDC from lvlUSD"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDC");
@@ -12235,12 +12218,40 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex] = ManageLeaf(
             getAddress(sourceChain, "levelMinter"),
             false,
-            "completeRedeem(address)",
+            "initiateRedeem(address,uint256,uint256)",
             new address[](1),
+            string.concat("Initiate Redeem for USDT from lvlUSD"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDT");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "levelMinter"),
+            false,
+            "completeRedeem(address,address)",
+            new address[](2),
+            string.concat("Complete Redeem for USDC"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDC");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "levelMinter"),
+            false,
+            "completeRedeem(address,address)",
+            new address[](2),
             string.concat("Complete Redeem for USDT"),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "USDT");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
 
         unchecked {
             leafIndex++;
@@ -12665,7 +12676,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 string.concat("Bridge ETH using zkEVM Compatible Bridge"),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-
             leafs[leafIndex].argumentAddresses[0] = address(uint160(toChain)); 
             leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault"); 
             leafs[leafIndex].argumentAddresses[2] = address(uint160(fromChain)); //zkEVM bridge expects native eth to be address(0)
@@ -12720,7 +12730,55 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         //leafs[leafIndex].argumentAddresses[0] = address(uint160(toChain));  
         //leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain,  "boringVault"); 
         //leafs[leafIndex].argumentAddresses[2] = token; 
+    }
 
+    // ========================================= CCTP Bridge =========================================
+    // using `bridge` as a param here because we can swap out the bridge to work with any agglayer compatible network
+    function _addCCTPBridgeLeafs(ManageLeaf[] memory leafs, uint32 toChain) internal {
+        //approve USDC
+        //bridge USDC depositForBurn
+        //receiveMessage 
+        
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "USDC"),
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve USDC to be spent by USDC TokenMessengerV2"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "usdcTokenMessengerV2"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "usdcTokenMessengerV2"),
+            false,
+            "depositForBurn(uint256,uint32,bytes32,address,bytes32,uint256,uint32)",
+            new address[](4),
+            string.concat("Bridge USDC to ", vm.toString(toChain)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = address(uint160(toChain)); 
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");  
+        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "USDC");  
+        leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");  
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "usdcMessageTransmitterV2"),
+            false,
+            "receiveMessage(bytes,bytes)",
+            new address[](0),
+            string.concat("Receive USDC from ", vm.toString(toChain)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
     }
 
     // ========================================= BoringChef =========================================
@@ -12886,6 +12944,34 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+    }
+
+    function _addrEULWrappingLeafs(ManageLeaf[] memory leafs) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "rEUL"),
+            false,
+            "withdrawToByLockTimestamp(address,uint256,bool)",
+            new address[](1),
+            string.concat("Unwrap rEUL for EUL"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "rEUL"),
+            false,
+            "withdrawToByLockTimestamps(address,uint256[],bool)",
+            new address[](1),
+            string.concat("Unwrap rEUL for EUL with multiple lock timestamps"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); 
     }
 
     // ========================================= StakeStone =========================================

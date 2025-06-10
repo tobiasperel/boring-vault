@@ -28,5 +28,5 @@ contract RoycoUSDDecoderAndSanitizer is
     OFTDecoderAndSanitizer
 {
     constructor(address _recipeMarketHub) RoycoWeirollDecoderAndSanitizer(_recipeMarketHub) {}
-
 }
+
