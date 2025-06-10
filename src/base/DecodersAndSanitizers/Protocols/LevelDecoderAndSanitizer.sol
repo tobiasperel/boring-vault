@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import {BaseDecoderAndSanitizer, DecoderCustomTypes} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
+import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ERC4626DecoderAndSanitizer.sol";
-import {EthenaWithdrawDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EthenaWithdrawDecoderAndSanitizer.sol";
+import {EthenaWithdrawDecoderAndSanitizer} from
+    "src/base/DecodersAndSanitizers/Protocols/EthenaWithdrawDecoderAndSanitizer.sol";
+import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 
-abstract contract LevelDecoderAndSanitizer is BaseDecoderAndSanitizer, ERC4626DecoderAndSanitizer, EthenaWithdrawDecoderAndSanitizer {
-
-    //============================== LevelMinting ===============================
-    
+contract LevelDecoderAndSanitizer is
+    BaseDecoderAndSanitizer,
+    ERC4626DecoderAndSanitizer,
+    EthenaWithdrawDecoderAndSanitizer
+{
+    //============================== LevelMinting ==============================
     /// @dev main entry point for minting (removed in V2)
     function mintDefault(DecoderCustomTypes.LevelOrderV2 memory order) external pure virtual returns (bytes memory addressesFound) {
         addressesFound = abi.encodePacked(order.beneficiary, order.collateral_asset); 
@@ -35,17 +39,16 @@ abstract contract LevelDecoderAndSanitizer is BaseDecoderAndSanitizer, ERC4626De
 
     //============================== slvlUSD ===============================
     /// @dev compliant with ERC4626 only if `cooldownDuration` is 0, otherwise `cooldownAssets()` or `cooldownShares()` must be used in conjunction with `unstake()`
-    
+
     //function cooldownAssets(uint256 /*assets*/) external pure virtual returns (bytes memory addressesFound) {
-    //    return addressesFound; 
+    //    return addressesFound;
     //}
 
     //function cooldownShares(uint256 /*shares*/) external pure virtual returns (bytes memory addressesFound) {
-    //    return addressesFound; 
-    //} 
+    //    return addressesFound;
+    //}
 
     //function unstake(address receiver) external pure virtual returns (bytes memory addressesFound) {
-    //    addressesFound = abi.encodePacked(receiver); 
+    //    addressesFound = abi.encodePacked(receiver);
     //}
 }
-  
