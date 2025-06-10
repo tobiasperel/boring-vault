@@ -89,9 +89,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        
-        vm.createSelectFork("unichain");
-        setSourceChainName("unichain"); 
+
+        vm.createSelectFork("berachain");
+        setSourceChainName("berachain"); 
     }
 
     function run() external {
@@ -101,7 +101,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         creationCode = type(GoldenGooseUnichainDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniV4PositionManager"));
         deployer.deployContract("Golden Goose Unichain Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
-         
+
         vm.stopBroadcast();
     }
 }
