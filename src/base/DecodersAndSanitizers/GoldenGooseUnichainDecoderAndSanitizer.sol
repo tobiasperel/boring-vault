@@ -8,6 +8,8 @@ import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/P
 import {LidoStandardBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/LidoStandardBridgeDecoderAndSanitizer.sol";
 import {MorphoBlueDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MorphoBlueDecoderAndSanitizer.sol";
 import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ERC4626DecoderAndSanitizer.sol";
+import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol";
+
 
 contract GoldenGooseUnichainDecoderAndSanitizer is 
     BaseDecoderAndSanitizer,
@@ -16,7 +18,8 @@ contract GoldenGooseUnichainDecoderAndSanitizer is
     NativeWrapperDecoderAndSanitizer,
     LidoStandardBridgeDecoderAndSanitizer,
     MorphoBlueDecoderAndSanitizer,
-    ERC4626DecoderAndSanitizer
+    ERC4626DecoderAndSanitizer,
+    EulerEVKDecoderAndSanitizer
 {
 
 

@@ -159,7 +159,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
         creationCode = type(GoldenGooseUnichainDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniV4PositionManager"));
-        deployer.deployContract("Golden Goose Unichain Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+        deployer.deployContract("Golden Goose Unichain Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
         
         vm.stopBroadcast();
     }
