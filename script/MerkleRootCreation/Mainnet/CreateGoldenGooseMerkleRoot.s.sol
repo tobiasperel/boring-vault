@@ -19,7 +19,7 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xef417FCE1883c6653E7dC6AF7c6F85CCDE84Aa09;
     address public managerAddress = 0x5F341B1cf8C5949d6bE144A725c22383a5D3880B;
     address public accountantAddress = 0xc873F2b7b3BA0a7faA2B56e210E3B965f2b618f5;
-    address public rawDataDecoderAndSanitizer = 0x1F4751458f3a7E2bB51FDa2caFF7CFBB58A4139a; 
+    address public rawDataDecoderAndSanitizer = 0x2764880D5FE328aBb22D6D75bA7De1b13aBCB40C; 
 
     function setUp() external {}
 
