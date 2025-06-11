@@ -47,8 +47,9 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         _addLayerZeroLeafs(leafs, getERC20(sourceChain, "WEETH"), getAddress(sourceChain, "WEETH"), layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault"));   
 
         // ========================== Scroll Native Bridge ==========================
-        ERC20[] memory tokens = new ERC20[](1); 
+        ERC20[] memory tokens = new ERC20[](2); 
         tokens[0] = getERC20(sourceChain, "WETH"); 
+        tokens[1] = getERC20(sourceChain, "WEETH"); //just in case
         _addScrollNativeBridgeLeafs(leafs, "mainnet", tokens);  
 
         // ========================== Verify ==========================
