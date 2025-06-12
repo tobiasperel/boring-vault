@@ -1480,21 +1480,24 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         ManageLeaf[] memory leafs,
         string memory destination,
         ERC20[] memory localTokens
+        bool includeNative,
     ) internal {
         if (keccak256(abi.encode(sourceChain)) == keccak256(abi.encode(mainnet))) {
             // Add leaf for bridging ETH.
-            unchecked {
-                leafIndex++;
+            if (includeNative) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "scrollMessenger"),
+                    true,
+                    "sendMessage(address,uint256,bytes,uint256)",
+                    new address[](1),
+                    string.concat("Bridge ETH from ", sourceChain, " to ", mainnet),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
             }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "scrollMessenger"),
-                true,
-                "sendMessage(address,uint256,bytes,uint256)",
-                new address[](1),
-                string.concat("Bridge ETH from ", sourceChain, " to ", mainnet),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
 
             // Add leafs for bridging ERC20s.
             for (uint256 i; i < localTokens.length; ++i) {
