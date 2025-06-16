@@ -37,7 +37,7 @@ contract CreateUltraUsdMerkleRootScript is Script, MerkleTreeHelper {
 
     LocalVars public vars = LocalVars({
         boringVault: 0xbc0f3B23930fff9f4894914bD745ABAbA9588265,
-        rawDataDecoderAndSanitizer: 0x8e02114E4D3B788577Cc25229BfC380cac479f26,
+        rawDataDecoderAndSanitizer: 0xd4067b594C6D48990BE42a559C8CfDddad4e8D6F,
         managerAddress: 0x4f81c27e750A453d6206C2d10548d6566F60886C,
         accountantAddress: 0x95fE19b324bE69250138FE8EE50356e9f6d17Cfe,
         drone: 0x20A0d13C4643AB962C6804BC6ba6Eea0505F11De,
