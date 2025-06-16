@@ -1415,7 +1415,7 @@ contract ChainValues {
         values[base]["USDC"] = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913.toBytes32();
         values[base]["USDT"] = 0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2.toBytes32();
         values[base]["WETH"] = 0x4200000000000000000000000000000000000006.toBytes32();
-        values[base]["WEETH"] = 0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A.toBytes32();
+        values[base]["WEETH"] = 0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A.toBytes32(); //also OFT
         values[base]["WSTETH"] = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452.toBytes32();
         values[base]["AERO"] = 0x940181a94A35A4569E4529A3CDfB74e38FD98631.toBytes32();
         values[base]["CBETH"] = 0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22.toBytes32();
@@ -1493,7 +1493,9 @@ contract ChainValues {
         // Instadapp Fluid
         values[base]["fWETH"] = 0x9272D6153133175175Bc276512B2336BE3931CE9.toBytes32();
         values[base]["fWSTETH"] = 0x896E39f0E9af61ECA9dD2938E14543506ef2c2b5.toBytes32();
-        values[base]["fWETH_fWSTETH_DEX"] = 0x2886a01a0645390872a9eb99dAe1283664b0c524.toBytes32();
+        
+        // Fluid Dex
+        values[base]["weETH_ETHDex_wstETH"] = 0xE6b5D1CdC4935295c84772C4700932b4BFC93274.toBytes32();
 
         // Pendle
         values[base]["pendleMarketFactory"] = 0x59968008a703dC13E6beaECed644bdCe4ee45d13.toBytes32();
@@ -2085,6 +2087,10 @@ contract ChainValues {
         values[sonicMainnet]["balancerV3_USDC_scUSD_boosted"] = 0x43026d483f42fB35efe03c20B251142D022783f2.toBytes32();
         values[sonicMainnet]["balancerV3_USDC_scUSD_boosted_gauge"] = 0x5D9e8B588F1D9e28ea1963681180d8b5938D26BA.toBytes32();
         values[sonicMainnet]["lbtcBridge"] = 0xA869817b48b25EeE986bdF4bE04062e6fd2C418B.toBytes32();
+
+        // CCTP USDC Bridge
+        values[sonicMainnet]["usdcTokenMessengerV2"] = 0x28b5a0e9C621a5BadaA536219b3a228C8168cf5d.toBytes32();
+        values[sonicMainnet]["usdcMessageTransmitterV2"] = 0x81D40F21F12A8F0E3252Bccb954D722d4c464B64.toBytes32();
     }
 
     function _addSepoliaValues() private {
