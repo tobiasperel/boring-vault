@@ -83,7 +83,7 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
             hooks
         );
 
-         // ========================== Euler ==========================
+        // ========================== Euler ==========================
         ERC4626[] memory depositVaults = new ERC4626[](1);
         depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerwstETHmarket"));
 
