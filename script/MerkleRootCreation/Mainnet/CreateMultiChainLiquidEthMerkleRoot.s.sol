@@ -328,7 +328,21 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[12] = getERC20(sourceChain, "RSETH");
             address kingKarakTeller = 0x929B44db23740E65dF3A81eA4aAB716af1b88474;
             _addTellerLeafs(leafs, kingKarakTeller, tellerAssets, false, true);
+
+
+            tellerAssets = new ERC20[](3);
+            tellerAssets[0] = getERC20(sourceChain, "STETH");
+            tellerAssets[1] = getERC20(sourceChain, "WSTETH");
+            tellerAssets[2] = getERC20(sourceChain, "WETH");
+            address liquidKatanaETHTeller = 0x739A1efFaDDB0b07ef1284598819232df4FD8d16;
+            _addTellerLeafs(leafs, liquidKatanaETHTeller, tellerAssets, true, true);
+
+            address liquidKatanaWithdrawQueue = 0x52E523B849c584F86bF460A3cF2962b118Ce2506; 
+            address liquidKatana = 0x69d210d3b60E939BFA6E87cCcC4fAb7e8F44C16B; 
+            _addWithdrawQueueLeafs(leafs, liquidKatanaWithdrawQueue, liquidKatana, tellerAssets);    
         }
+        // ========================== Yearn ==========================
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "yKatanaPredepositWETH")));  
 
         // ========================== Fluid Dex ==========================
         {
