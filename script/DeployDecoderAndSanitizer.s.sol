@@ -67,6 +67,7 @@ import {FullScrollBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizer
 import {ScrollVaultsDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/ScrollVaultsDecoderAndSanitizer.sol"; 
 import {FullRewardTokenUnwrappingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/FullRewardTokenUnwrappingDecoderAndSanitizer.sol"; 
 import {SonicLBTCvDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicLBTCvDecoderAndSanitizer.sol"; 
+import { SonicEthMainnetDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicEthMainnetDecoderAndSanitizer.sol";
 import {GoldenGooseUnichainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/GoldenGooseUnichainDecoderAndSanitizer.sol";
 
 import {RoycoUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDDecoderAndSanitizer.sol";
@@ -91,6 +92,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         
         vm.createSelectFork("base");
         setSourceChainName("base"); 
+
     }
 
     function run() external {
