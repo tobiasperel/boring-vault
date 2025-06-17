@@ -13171,6 +13171,42 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
+    // ========================================= Yearn V3 =========================================
+    /// @notice uses the spectra decoder for these functions 
+    function _addYearnLeafs(ManageLeaf[] memory leafs, ERC4626 vault) internal {
+        _addERC4626Leafs(leafs, vault); 
+        
+        ERC20 asset = ERC20(vault.asset()); 
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            address(vault),
+            false,
+            "redeem(uint256,address,address,uint256)",
+            new address[](2),
+            string.concat("Redeem ", vault.name(), " for ", asset.symbol(), " with slippage check"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            address(vault),
+            false,
+            "withdraw(uint256,address,address,uint256)",
+            new address[](2),
+            string.concat("Withdraw ", asset.symbol(), " from ", vault.name(), " with slippage check"),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+    }
+
     // ========================================= JSON FUNCTIONS =========================================
     // TODO this should pass in a bool or something to generate leafs indicating that we want leaf indexes printed.
     bool addLeafIndex = false;
