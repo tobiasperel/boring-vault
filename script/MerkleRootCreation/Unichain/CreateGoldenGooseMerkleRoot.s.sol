@@ -11,15 +11,15 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
 import "forge-std/Script.sol";
 
 /**
- *  source .env && forge script script/MerkleRootCreation/Unichain/CreateAlphaSTETHMerkleRoot.s.sol:CreateAlphaSTETHMerkleRoot --rpc-url $UNICHAIN_RPC_URL
+ *  source .env && forge script script/MerkleRootCreation/Unichain/CreateGoldenGooseMerkleRoot.s.sol --rpc-url $UNICHAIN_RPC_URL
  */
-contract CreateAlphaSTETHMerkleRoot is Script, MerkleTreeHelper {
+contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
-    address public boringVault = 0xeC797D184a8C6Cd1EF01faDC98B575e84B156C18;
-    address public managerAddress = 0xFF5795Cb8d83348B24E708EA23b1fA8Ce137E88a;
-    address public accountantAddress = 0x9636E393B898958d51C351bca896e7BF1736943a;
-    address public rawDataDecoderAndSanitizer = 0x93DC12E1BCF087CcD35daCF22Fe7cf1Cd2e7EdEA; 
+    address public boringVault = 0xef417FCE1883c6653E7dC6AF7c6F85CCDE84Aa09;
+    address public managerAddress = 0x5F341B1cf8C5949d6bE144A725c22383a5D3880B;
+    address public accountantAddress = 0xc873F2b7b3BA0a7faA2B56e210E3B965f2b618f5;
+    address public rawDataDecoderAndSanitizer = 0x465e08AEFFbD697Af5e279AE54Aa4b476a9294f7; 
 
     function setUp() external {}
 
@@ -37,7 +37,7 @@ contract CreateAlphaSTETHMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, unichain, "accountantAddress", accountantAddress);
         setAddress(false, unichain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        ManageLeaf[] memory leafs = new ManageLeaf[](64);
 
         // ========================== Native Wrapping ==========================
         _addNativeLeafs(leafs);
@@ -83,11 +83,26 @@ contract CreateAlphaSTETHMerkleRoot is Script, MerkleTreeHelper {
             hooks
         );
 
+        // ========================== Euler ==========================
+        ERC4626[] memory depositVaults = new ERC4626[](1);
+        depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerwstETHmarket"));
+
+        address[] memory subaccounts = new address[](1);
+        subaccounts[0] = getAddress(sourceChain, "boringVault");
+
+        _addEulerDepositLeafs(leafs, depositVaults, subaccounts);        
+
+        // ========================== Morpho ==========================
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "morphowstETHmarket"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "morphowstETHmarket"));
+
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "morphoSmokehouseWSTETH")));
+
         // ========================== Verify & Generate ==========================
 
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);
 
-        string memory filePath = "./leafs/Unichain/AlphaSTETH.json";
+        string memory filePath = "./leafs/Unichain/GoldenGooseStrategistLeafs.json";
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 

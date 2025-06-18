@@ -21,6 +21,7 @@ import {MorphoBlueDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Prot
 
 
 contract LiquidBtcDecoderAndSanitizer is
+    BaseDecoderAndSanitizer,
     UniswapV3DecoderAndSanitizer,
     ERC4626DecoderAndSanitizer,
     ConvexDecoderAndSanitizer,
