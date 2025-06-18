@@ -168,7 +168,6 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[4] = getERC20(sourceChain, "BTCN");
             
             _addTellerLeafs(leafs, getAddress(sourceChain, "sBTCNTeller"), tellerAssets, false, true);
-            //add withdraw queue
             _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "sBTCNWithdrawQueue"), getAddress(sourceChain, "sBTCN"), tellerAssets); 
         }
 
@@ -191,9 +190,9 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         {
             ERC20[] memory katanaLBTCvTellerAssets = new ERC20[](2);
             katanaLBTCvTellerAssets[0] = getERC20(sourceChain, "LBTC");
-            katanaLBTCvTellerAssets[1] = getERC20(sourceChain, "cbBTC");
-            _addTellerLeafs(leafs, getAddress(sourceChain, "tacLBTCvTeller"), tacLBTCvTellerAssets, false, true); //no native leaves, yes bulk actions
-            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "tacLBTCvWithdrawQueue"), getAddress(sourceChain, "tacLBTCv"), tacLBTCvTellerAssets);  
+            katanaLBTCvTellerAssets[1] = getERC20(sourceChain, "EBTC");
+            _addTellerLeafs(leafs, getAddress(sourceChain, "katanaLBTCTeller"), katanaLBTCvTellerAssets, false, true); //no native leaves, yes bulk actions
+            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "katanaLBTCWithdrawQueue"), getAddress(sourceChain, "katanaLBTC"), katanaLBTCvTellerAssets);  
         }
 
         // ========================== Pendle ==========================
