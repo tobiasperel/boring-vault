@@ -20,13 +20,14 @@ contract DeploySolver is Script, ContractNames, Test {
     
     Deployer deployer = Deployer(0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d);
 
-    address owner = 0xf8553c8552f906C19286F21711721E206EE4909E;
-    address auth = 0xED8C9A514eB81124e370015878ea1fB3fEF18158;
-    address queue = 0x84D988bA2f2838f6ccF61fDE77fe3EB70dFE284f;
+    address owner = 0x1cdF47387358A1733968df92f7cC14546D9E1047;
+    address auth = 0x9778D78495cBbfce0B1F6194526a8c3D4b9C3AAF;
+    address queue = 0xE32cEB767d187F1d3c81949657CABc50c655f40A;
+    bool excessToSolverNonSelfSolve = false;
 
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
-        vm.createSelectFork("mainnet");
+        vm.createSelectFork("unichain");
     }
 
 
@@ -37,7 +38,7 @@ contract DeploySolver is Script, ContractNames, Test {
 
         creationCode = type(BoringSolver).creationCode;
 
-        constructorArgs = abi.encode(owner, auth, queue);
-        deployer.deployContract("HyperUSD Boring Solver 0.1", creationCode, constructorArgs, 0);
+        constructorArgs = abi.encode(owner, auth, queue, excessToSolverNonSelfSolve);
+        deployer.deployContract("Golden Goose Boring Solver 1.1", creationCode, constructorArgs, 0);
     }
 }

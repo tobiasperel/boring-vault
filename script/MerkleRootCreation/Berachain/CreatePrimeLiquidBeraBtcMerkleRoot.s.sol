@@ -18,7 +18,7 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x46fcd35431f5B371224ACC2e2E91732867B1A77e; 
     address public managerAddress = 0x7280E05ccF01066C715aDc936f860BD65510f816;
     address public accountantAddress = 0x88ea516DCb9f79CAFA9D0d19909A4dbd7B6890c8;
-    address public rawDataDecoderAndSanitizer = 0xB5D5c20FebFcA336c1C1c1ef90e572ebef8c0971;
+    address public rawDataDecoderAndSanitizer = 0x05f1cB3a9309E82B744D28028DaB5A06e75166A9;
 
     function setUp() external {}
 
@@ -134,7 +134,16 @@ contract CreatePrimeLiquidBeraBtcMerkleRoot is Script, MerkleTreeHelper {
 
             _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "sNECT")));
             _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "vaultedsNECT")));
+
         }
+        // ========================== BeraBorrow Managed Vaults ==========================
+        address[] memory managedVaults = new address[](4);
+        managedVaults[0] = getAddress(sourceChain, "bbWBTCManagedVault");
+        managedVaults[1] = getAddress(sourceChain, "bbeBTCManagedVault");
+        managedVaults[2] = getAddress(sourceChain, "bbLBTCManagedVault");
+        managedVaults[3] = getAddress(sourceChain, "bbeBTC-WBTCManagedVault");
+        _addBeraborrowManagedVaultLeafs(leafs, managedVaults);
+
 
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](2);

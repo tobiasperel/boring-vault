@@ -26,14 +26,10 @@ import {FluidDexDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoc
 import {SyrupDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SyrupDecoderAndSanitizer.sol";
 import {SkyMoneyDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SkyMoneyDecoderAndSanitizer.sol";
 import {SpectraDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/SpectraDecoderAndSanitizer.sol";
-import {ConvexFXDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ConvexFxDecoderAndSanitizer.sol";
-
-
-
-
-
+import {ConvexFXDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ConvexFXDecoderAndSanitizer.sol";
 
 contract LiquidBtcDecoderAndSanitizer is
+    BaseDecoderAndSanitizer,
     UniswapV3DecoderAndSanitizer,
     ERC4626DecoderAndSanitizer,
     ConvexDecoderAndSanitizer,
