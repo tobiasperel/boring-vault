@@ -19,7 +19,7 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xef417FCE1883c6653E7dC6AF7c6F85CCDE84Aa09;
     address public managerAddress = 0x5F341B1cf8C5949d6bE144A725c22383a5D3880B;
     address public accountantAddress = 0xc873F2b7b3BA0a7faA2B56e210E3B965f2b618f5;
-    address public rawDataDecoderAndSanitizer = 0x93DC12E1BCF087CcD35daCF22Fe7cf1Cd2e7EdEA; 
+    address public rawDataDecoderAndSanitizer = 0x465e08AEFFbD697Af5e279AE54Aa4b476a9294f7; 
 
     function setUp() external {}
 
@@ -37,7 +37,7 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, unichain, "accountantAddress", accountantAddress);
         setAddress(false, unichain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        ManageLeaf[] memory leafs = new ManageLeaf[](64);
 
         // ========================== Native Wrapping ==========================
         _addNativeLeafs(leafs);
@@ -82,6 +82,21 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
             token1,
             hooks
         );
+
+        // ========================== Euler ==========================
+        ERC4626[] memory depositVaults = new ERC4626[](1);
+        depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerwstETHmarket"));
+
+        address[] memory subaccounts = new address[](1);
+        subaccounts[0] = getAddress(sourceChain, "boringVault");
+
+        _addEulerDepositLeafs(leafs, depositVaults, subaccounts);        
+
+        // ========================== Morpho ==========================
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "morphowstETHmarket"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "morphowstETHmarket"));
+
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "morphoSmokehouseWSTETH")));
 
         // ========================== Verify & Generate ==========================
 
