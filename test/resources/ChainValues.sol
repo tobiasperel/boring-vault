@@ -163,29 +163,30 @@ contract ChainValues {
         values[mainnet]["eBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32();
         values[mainnet]["liquidBeraBTCTeller"] = 0xe238e253b67f42ee3aF194BaF7Aba5E2eaddA1B8.toBytes32();
         values[mainnet]["sBTCNTeller"] = 0xeAd024098eE05e8e975043eCc6189b49CfBe35fd.toBytes32(); 
-        values[mainnet]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32(); 
         values[mainnet]["sonicLBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32();
         values[mainnet]["sonicBTCTeller"] = 0x258f532CB41393c505554228e66eaf580B0171b2.toBytes32(); 
         values[mainnet]["tacLBTCvTeller"] = 0xAe499dAa7350b78746681931c47394eB7cC4Cf7F.toBytes32(); 
-        values[mainnet]["tacLBTCvWithdrawQueue"] = 0xa6F5Aa413DdF0Ca1c57102Dbe0Badb2233798007.toBytes32(); 
-
-        // TAC BoringVaults
-        values[mainnet]["TurtleTACUSD"] = 0x699e04F98dE2Fc395a7dcBf36B48EC837A976490.toBytes32();
         values[mainnet]["TACTeller"] = 0xBbf9E8718D83CF67b568bfFd9d3034BfF02A0103.toBytes32();
-        values[mainnet]["TACOnChainQueue"] = 0x850EeD781C538849E8cc86a1a080327ECBeBff9c.toBytes32();
-
-        values[mainnet]["TurtleTACBTCTeller"] = 0x7C75cbb851D321B2Ec8034D58A9B5075e991E584.toBytes32();
-        values[mainnet]["TurtleTACBTC"] = 0x6Bf340dB729d82af1F6443A0Ea0d79647b1c3DDf.toBytes32();
-        values[mainnet]["TurtleTACBTCQueue"] = 0x9A214cDD8967d7616cfaf7b92A10B2116a0c39A7.toBytes32();
-
-        values[mainnet]["TurtleTACETH"] = 0x294eecec65A0142e84AEdfD8eB2FBEA8c9a9fbad.toBytes32();
-
         values[mainnet]["TACLBTCvTeller"] = 0xAe499dAa7350b78746681931c47394eB7cC4Cf7F.toBytes32();
-        values[mainnet]["TACLBTCv"] = 0xD86fC1CaA0a5B82cC16B16B70DFC59F6f034C348.toBytes32();
+        values[mainnet]["TurtleTACBTCTeller"] = 0x7C75cbb851D321B2Ec8034D58A9B5075e991E584.toBytes32();
+
+        // Withdraw Queues
+        values[mainnet]["sBTCNWithdrawQueue"] = 0xB316940529B85234ec7C4F48CD8Bef8d1BAe5F7f.toBytes32(); 
+        values[mainnet]["tacLBTCvWithdrawQueue"] = 0xa6F5Aa413DdF0Ca1c57102Dbe0Badb2233798007.toBytes32(); 
+        values[mainnet]["eBTCOnChainQueueFast"] = 0x686696A3e59eE16e8A8533d84B62cfA504827135.toBytes32(); 
+        values[mainnet]["TACOnChainQueue"] = 0x850EeD781C538849E8cc86a1a080327ECBeBff9c.toBytes32();
+        values[mainnet]["TurtleTACBTCQueue"] = 0x9A214cDD8967d7616cfaf7b92A10B2116a0c39A7.toBytes32();
         values[mainnet]["TACLBTCvQueue"] = 0xa6F5Aa413DdF0Ca1c57102Dbe0Badb2233798007.toBytes32();
+        values[mainnet]["sonicLBTCWithdrawQueue"] = 0xAea73B51380Fa5C0f76F0611c4346af4090ED2D7.toBytes32();
 
         // Boring Vaults 
         values[mainnet]["liquidMove"] = 0xca8711dAF13D852ED2121E4bE3894Dae366039E4.toBytes32();
+        values[mainnet]["sBTCN"] = 0x5E272ca4bD94e57Ec5C51D26703621Ccac1A7089.toBytes32();
+        values[mainnet]["TurtleTACUSD"] = 0x699e04F98dE2Fc395a7dcBf36B48EC837A976490.toBytes32();
+        values[mainnet]["TurtleTACETH"] = 0x294eecec65A0142e84AEdfD8eB2FBEA8c9a9fbad.toBytes32();
+        values[mainnet]["TACLBTCv"] = 0xD86fC1CaA0a5B82cC16B16B70DFC59F6f034C348.toBytes32();
+        values[mainnet]["TurtleTACBTC"] = 0x6Bf340dB729d82af1F6443A0Ea0d79647b1c3DDf.toBytes32();
+        values[mainnet]["sonicLBTC"] = 0x309f25d839A2fe225E80210e110C99150Db98AAF.toBytes32();
 
         // Decoders
         values[mainnet]["rewardTokenUnwrappingDecoder"] = 0x3fF425c112d4363a7e21934a5D1EE09b1D2F8c91.toBytes32(); 
