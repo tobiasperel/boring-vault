@@ -330,6 +330,17 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             _addTellerLeafs(leafs, kingKarakTeller, tellerAssets, false, true);
         }
 
+        {
+            ERC20[] memory tellerAssets = new ERC20[](5);
+            tellerAssets[0] = getERC20(sourceChain, "WETH");
+            tellerAssets[1] = getERC20(sourceChain, "EETH");
+            tellerAssets[2] = getERC20(sourceChain, "WEETH");
+            tellerAssets[3] = getERC20(sourceChain, "WSTETH");
+            tellerAssets[4] = getERC20(sourceChain, "STETH");
+            address liquidBeraETHTeller = 0xd445C65e4821dbD4ed0114eCDF6325c69faD7653;
+            _addTellerLeafs(leafs, liquidBeraETHTeller, tellerAssets, true, true);
+        }
+
         // ========================== Fluid Dex ==========================
         {
             ERC20[] memory supplyTokens = new ERC20[](2);
