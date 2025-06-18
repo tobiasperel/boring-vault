@@ -316,6 +316,7 @@ contract ChainValues {
         values[mainnet]["sfrxUSD"] = 0xcf62F905562626CfcDD2261162a51fd02Fc9c5b6.toBytes32(); 
         values[mainnet]["SYRUP"] = 0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66.toBytes32();
         values[mainnet]["KBTC"] = 0x73E0C0d45E048D25Fc26Fa3159b0aA04BfA4Db98.toBytes32();
+        values[mainnet]["BTCN"] = 0x386E7A3a0c0919c9d53c3b04FF67E73Ff9e45Fb6.toBytes32();
 
         // Rate providers
         values[mainnet]["WEETH_RATE_PROVIDER"] = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee.toBytes32();
@@ -1294,6 +1295,7 @@ contract ChainValues {
         values[mainnet]["evkewstUSR-1"] = 0x9f12d29c7CC72bb3d237E2D042A6D890421f9899.toBytes32();
         values[mainnet]["evkecbBTC-4"] = 0x29A9E5A004002Ff9E960bb8BB536E076F53cbDF1.toBytes32();
         values[mainnet]["evkeeBTC-1"] = 0xC605471aE09e0b7daA9e8813707d0DDbf9429Ad2.toBytes32();
+        values[mainnet]["eulerCBTC"] = 0x056f3a2E41d2778D3a0c0714439c53af2987718E.toBytes32();
         values[mainnet]["evkeRLUSD-1"] = 0xe1Ce9AF672f8854845E5474400B6ddC7AE458a10.toBytes32();
 
         //values[mainnet]["USR"] = 0x66a1E37c9b0eAddca17d3662D6c05F4DECf3e110.toBytes32();
@@ -1859,6 +1861,7 @@ contract ChainValues {
         values[corn]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
         values[corn]["dev0Address"] = 0x0463E60C7cE10e57911AB7bD1667eaa21de3e79b.toBytes32();
         values[corn]["dev1Address"] = 0xf8553c8552f906C19286F21711721E206EE4909E.toBytes32();
+        values[corn]["dev4Address"] = 0x1cdF47387358A1733968df92f7cC14546D9E1047.toBytes32();
 
         // Tokens
         values[corn]["WBTCN"] = 0xda5dDd7270381A7C2717aD10D1c0ecB19e3CDFb2.toBytes32();
@@ -1909,8 +1912,6 @@ contract ChainValues {
         values[corn]["WBTCN_LBTC_915"] = 0x2547ba491a7ff9e8cfcaa3e1c0da739f4fdc1be9fe4a37bfcdf570002153a0de;
         values[corn]["USDT0_IDLE_915"] = 0x1c6b87ae1b97071ef444eedcba9f5a92cfe974edbbcaa1946644fc7ab0e283af;
         values[corn]["WBTCN_USDT0_915"] = 0x9039bf8b5c3cd6f2d3f937e8a2e59ef6af0109a0d0f3499e7dbf75be0aef75ec;
-
-        // Morpho
         values[corn]["smokehouseBTCN"] = 0xa7Ba08CFc37e7CC67404d4996FFBB3E977490115.toBytes32();
     }
 
@@ -2205,6 +2206,7 @@ contract ChainValues {
         values[swell]["ethereumVaultConnector"] = 0x08739CBede6E28E387685ba20e6409bD16969Cde.toBytes32();
         values[swell]["eulerWETH"] = 0x49C077B74292aA8F589d39034Bf9C1Ed1825a608.toBytes32();
         values[swell]["eulerWEETH"] = 0x10D0D11A8B693F4E3e33d09BBab7D4aFc3C03ef3.toBytes32();
+        
 
         // Merkl
         values[swell]["merklDistributor"] = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae.toBytes32();
