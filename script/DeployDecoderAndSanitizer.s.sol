@@ -93,12 +93,17 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
 <<<<<<< HEAD
+        vm.createSelectFork("mainnet");
+        setSourceChainName("mainnet"); 
+=======
+<<<<<<< HEAD
         vm.createSelectFork("corn");
         setSourceChainName("corn"); 
 =======
         
         vm.createSelectFork("mainnet");
         setSourceChainName("mainnet"); 
+>>>>>>> dev/may-2025
 >>>>>>> dev/may-2025
 
     }
@@ -111,6 +116,40 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
         deployer.deployContract("Ether.Fi Liquid USD Decoder And Sanitizer V0.6", creationCode, constructorArgs, 0);
 
+<<<<<<< HEAD
+        //creationCode = type(LBTCvBNBDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "pancakeSwapV3NonFungiblePositionManager"), getAddress(sourceChain, "pancakeSwapV3MasterChefV3"), getAddress(sourceChain, "odosRouterV2"));
+        //deployer.deployContract("LBTCv BNB Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+
+        // creationCode = type(HybridBtcBobDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode();
+        // bobDeployer.deployContract("Hybrid BTC Decoder And Sanitizer V0.2", creationCode, constructorArgs, 0);
+        
+        // creationCode = type(RoyUSDCMainnetDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
+        // deployer.deployContract("Royco USDC Mainnet Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+
+        // creationCode = type(sBTCNDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
+        // deployer.deployContract("Staked BTCN Decoder And Sanitizer V0.3", creationCode, constructorArgs, 0);
+
+        //creationCode = type(sBTCNMaizenetDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
+        //deployer.deployContract("Staked BTCN Decoder And Sanitizer V0.4", creationCode, constructorArgs, 0);
+        
+        //creationCode = type(CamelotFullDecoderAndSanitizer).creationCode;
+        //constructorArgs = abi.encode(getAddress(sourceChain, "camelotNonFungiblePositionManager"));
+        //deployer.deployContract("Camelot Decoder And Sanitizer V0.0", creationCode, constructorArgs, 0);
+
+        // creationCode = type(AlphaSTETHDecoderAndSanitizer).creationCode;
+        // constructorArgs = abi.encode(address(0), getAddress(sourceChain, "uniV4PositionManager"), address(0), address(0));
+        // deployer.deployContract("Alpha STETH Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+        creationCode = type(LiquidBtcDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"), getAddress(sourceChain, "convexFXPoolRegistry"));
+        deployer.deployContract("Liquid BTC Decoder And Sanitizer V0.10", creationCode, constructorArgs, 0);
+        
+=======
+>>>>>>> dev/may-2025
         vm.stopBroadcast();
     }
 }

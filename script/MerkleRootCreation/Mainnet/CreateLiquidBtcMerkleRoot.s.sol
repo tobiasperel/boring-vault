@@ -18,7 +18,7 @@ contract CreateLiquidBtcMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0x5f46d540b6eD704C3c8789105F30E075AA900726;
     address public managerAddress = 0xaFa8c08bedB2eC1bbEb64A7fFa44c604e7cca68d;
     address public accountantAddress = 0xEa23aC6D7D11f6b181d6B98174D334478ADAe6b0;
-    address public rawDataDecoderAndSanitizer = 0xC0D08701123Dc96962F3CF76891686071958bFaf;
+    address public rawDataDecoderAndSanitizer = 0x74522D571f80FF8024b176d710cD963002aC4278;
     address public scrollBridgeDecoderAndSanitizer = 0xA66a6B289FB5559b7e4ebf598B8e0A97C776c200; 
 
     function setUp() external {}
