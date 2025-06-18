@@ -37,7 +37,7 @@ contract LevelIntegrationTest is Test, MerkleTreeHelper {
         setSourceChainName("mainnet");
         // Setup forked environment.
         string memory rpcKey = "MAINNET_RPC_URL";
-        uint256 blockNumber = 22632756;
+        uint256 blockNumber = 22682962;
 
         _startFork(rpcKey, blockNumber);
 
@@ -173,8 +173,8 @@ contract LevelIntegrationTest is Test, MerkleTreeHelper {
         targets[0] = getAddress(sourceChain, "USDC"); //approve levelMinter
         targets[1] = getAddress(sourceChain, "USDT"); //approve levelMinter
         targets[2] = getAddress(sourceChain, "lvlUSD"); //approve levelMinter
-        targets[3] = getAddress(sourceChain, "levelMinter"); //mintDefault (USDC)
-        targets[4] = getAddress(sourceChain, "levelMinter"); //mintDefault (USDT)
+        targets[3] = getAddress(sourceChain, "levelMinter"); //mint (USDC)
+        targets[4] = getAddress(sourceChain, "levelMinter"); //mint (USDT)
         targets[5] = getAddress(sourceChain, "levelMinter"); //initiateRedeem (USDC)
         targets[6] = getAddress(sourceChain, "levelMinter"); //initiateRedeem (USDT)
 
