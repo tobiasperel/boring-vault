@@ -77,7 +77,7 @@ import {RoycoUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoU
 import {RoycoUSDPlumeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDPlumeDecoderAndSanitizer.sol";
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 import {PrimeGoldenGooseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PrimeGoldenGooseDecoderAndSanitizer.sol";
-
+import {GoldenGooseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/GoldenGooseDecoderAndSanitizer.sol";
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 
@@ -101,10 +101,14 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
-        
-        creationCode = type(PrimeGoldenGooseDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Prime Golden Goose Decoder And Sanitizer v0.0", creationCode, constructorArgs, 0);
+
+        address uniswapV4PositionManager = getAddress(sourceChain, "uniV4PositionManager");
+        address uniswapV3NonFungiblePositionManager = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
+        address odosRouter = getAddress(sourceChain, "odosRouterV2");
+        address dvStETHVault = getAddress(sourceChain, "dvStETHVault");
+        creationCode = type(GoldenGooseDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(uniswapV4PositionManager, uniswapV3NonFungiblePositionManager, odosRouter, dvStETHVault);
+        deployer.deployContract("Golden Goose Decoder And Sanitizer v0.1", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
