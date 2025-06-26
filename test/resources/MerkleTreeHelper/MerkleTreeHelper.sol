@@ -4165,15 +4165,16 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 getAddress(sourceChain, "algebraV4Router"),
                 false,
                 "exactInput((bytes,address,uint256,uint256,uint256))",
-                new address[](3),
+                new address[](4),
                 string.concat(
                     "Swap ", ERC20(token0[i]).symbol(), " for ", ERC20(token1[i]).symbol(), " using AlgebraV4 router"
                 ),
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
             leafs[leafIndex].argumentAddresses[0] = token0[i];
-            leafs[leafIndex].argumentAddresses[1] = token1[i];
-            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+            leafs[leafIndex].argumentAddresses[1] = deployer; 
+            leafs[leafIndex].argumentAddresses[2] = token1[i];
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
             unchecked {
                 leafIndex++;
             }

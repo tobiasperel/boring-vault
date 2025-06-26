@@ -38,21 +38,19 @@ contract AlgebraV4DecoderAndSanitizer {
         }
     
         uint256 i = 0;
-        while (i + 40 < pathLength) {
-            // Extract tokenIn (20 bytes)
+        while (i + 60 <= pathLength) {
             address tokenIn;
+            address deployer;
+            address tokenOut;
+        
             assembly {
                 tokenIn := div(mload(add(add(path, 32), i)), 0x1000000000000000000000000)
-            }
-    
-            // Extract tokenOut (20 bytes, 40 bytes ahead)
-            address tokenOut;
-            assembly {
+                deployer := div(mload(add(add(path, 32), add(i, 20))), 0x1000000000000000000000000)
                 tokenOut := div(mload(add(add(path, 32), add(i, 40))), 0x1000000000000000000000000)
             }
-    
-            addressesFound = abi.encodePacked(addressesFound, tokenIn, tokenOut);
-            i += 40; // Move to next segment (next token + next deployer)
+        
+            addressesFound = abi.encodePacked(addressesFound, tokenIn, deployer, tokenOut);
+            i += 60; // move to next segment
         }
     
         // Append recipient
