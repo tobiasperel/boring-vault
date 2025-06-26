@@ -6241,18 +6241,18 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
 
                 if (address(assets[i]) != getAddress(sourceChain, "USDC")) {
                     revert("Contracts not supported for assets other than USDC"); 
-                    unchecked {
-                        leafIndex++;
-                    }
-                    leafs[leafIndex] = ManageLeaf(
-                        address(assets[i]),
-                        false,
-                        "unwrap(uint256,uint256)",
-                        new address[](1),
-                        string.concat("Unwrap ", assets[i].symbol(), " and bridge to Ethereum"),
-                        getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-                    );
-                    leafs[leafIndex].argumentAddresses[0] = address(0);
+                    //unchecked {
+                    //    leafIndex++;
+                    //}
+                    //leafs[leafIndex] = ManageLeaf(
+                    //    address(assets[i]),
+                    //    false,
+                    //    "unwrap(uint256,uint256)",
+                    //    new address[](1),
+                    //    string.concat("Unwrap ", assets[i].symbol(), " and bridge to Ethereum"),
+                    //    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                    //);
+                    //leafs[leafIndex].argumentAddresses[0] = address(0);
                 }
             }
         }
