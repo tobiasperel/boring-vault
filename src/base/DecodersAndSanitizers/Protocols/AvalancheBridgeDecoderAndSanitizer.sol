@@ -9,7 +9,7 @@ contract AvalancheBridgeDecoderAndSanitizer {
         addressesFound = abi.encodePacked(address(uint160(destinationDomain)), mintRecipient, burnToken); 
     }
     
-    function unwrap(uint256 /*amount*/, uint256 chainId) external pure virtual returns (bytes memory addressesFound) {
-        addressesFound = abi.encodePacked(address(uint160(chainId))); 
-    }
+    //function unwrap(uint256 /*amount*/, uint256 chainId) external pure virtual returns (bytes memory addressesFound) {
+    //    addressesFound = abi.encodePacked(address(uint160(chainId))); 
+    //}
 }

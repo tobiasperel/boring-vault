@@ -6159,8 +6159,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         leafs[leafIndex].argumentAddresses[2] = recipient1;
     }
 
-    // ========================================= Avalance C-Chain Bridge / Core Bridge =========================================
-    // @dev not that ERC20 is fine here as ETH is not supported and must be converted to WETH first
+    // ========================================= Avalanche C-Chain Bridge / Core Bridge =========================================
+    // @dev note that ERC20 is fine here as ETH is not supported and must be converted to WETH first
     function _addAvalancheBridgeLeafs(ManageLeaf[] memory leafs, ERC20[] memory assets) internal {
 
         if (keccak256(abi.encode(sourceChain)) == keccak256(abi.encode(mainnet))) {
@@ -6240,6 +6240,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 }
 
                 if (address(assets[i]) != getAddress(sourceChain, "USDC")) {
+                    revert("Contracts not supported for assets other than USDC"); 
                     unchecked {
                         leafIndex++;
                     }
