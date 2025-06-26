@@ -2517,6 +2517,9 @@ contract ChainValues {
         values[unichain]["morphoSteakhouseETH"] = 0x0993Ae24a988c6925d80aD61344a76B81aA0D34c.toBytes32();
         values[unichain]["morphoK3CapitalETHMaxi"] = 0xfA355999c12C63c465c591daf9C462e14ACf470b.toBytes32();
         values[unichain]["morphoGauntletWETH"] = 0x830898200F0E8Be8Dc1C9A836f4AB29ECEdf76eb.toBytes32();
+
+        // Euler
+        
     }
 
     function _addHyperEVMValues() internal {
