@@ -108,7 +108,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         address dvStETHVault = getAddress(sourceChain, "dvStETHVault");
         creationCode = type(GoldenGooseDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(uniswapV4PositionManager, uniswapV3NonFungiblePositionManager, odosRouter, dvStETHVault);
-        deployer.deployContract("Golden Goose Decoder And Sanitizer v0.1", creationCode, constructorArgs, 0);
+        deployer.deployContract("Golden Goose Decoder And Sanitizer v0.2", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
