@@ -97,10 +97,10 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Morpho ==========================
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_945"));
-        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WEETH_WETH_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_965"));
 
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_945"));
-        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WEETH_WETH_915"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_965"));
 
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseETH")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHPrime")));
