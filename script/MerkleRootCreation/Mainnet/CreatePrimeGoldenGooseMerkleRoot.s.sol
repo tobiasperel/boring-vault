@@ -19,7 +19,7 @@ contract CreatePrimeGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xEc0569121753e50979d3C6Aa093bb881e8E752C5;
     address public managerAddress = 0xDa61124f29fb788718eC868f5f0005c78904a41D;
     address public accountantAddress = 0xC2693B160d164f17f4D67Af811eEC28aBE01598a;
-    address public rawDataDecoderAndSanitizer = 0x228a60107c08cF13D95e948A993D8DDf6F2be27C;
+    address public rawDataDecoderAndSanitizer = 0x8EA825e335D1a296432D8D2f13594630139CA1B4;
 
     function setUp() external {
         // Ensure we're forking mainnet properly
@@ -114,6 +114,9 @@ contract CreatePrimeGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
             leafs, getAddress(sourceChain, "balancerV3_Surge_Fluid_wstETH-wETH_boosted"), true, getAddress(sourceChain, "balancerV3_Surge_Fluid_wstETH-wETH_boosted_gauge")
         );
 
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fwstETH"));
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fWETH"));
+
         // ========================== Balancer Flash Loans ==========================
         _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "WETH"));
         _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "WSTETH"));
@@ -124,14 +127,16 @@ contract CreatePrimeGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
         // Allow for swapping for fwstETH and fWETH
         // ========================== Odos ==========================
         {
-            address[] memory assets = new address[](3);
-            SwapKind[] memory kind = new SwapKind[](3);
+            address[] memory assets = new address[](4);
+            SwapKind[] memory kind = new SwapKind[](4);
             assets[0] = getAddress(sourceChain, "WETH");
             kind[0] = SwapKind.BuyAndSell;
             assets[1] = getAddress(sourceChain, "WSTETH");
             kind[1] = SwapKind.BuyAndSell;
             assets[2] = getAddress(sourceChain, "rEUL");
             kind[2] = SwapKind.Sell;
+            assets[3] = getAddress(sourceChain, "EUL");
+            kind[3] = SwapKind.Sell;
 
             _addOdosSwapLeafs(leafs, assets, kind);
 

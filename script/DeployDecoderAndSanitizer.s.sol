@@ -104,7 +104,7 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         
         creationCode = type(PrimeGoldenGooseDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Prime Golden Goose Decoder And Sanitizer v0.2", creationCode, constructorArgs, 0);
+        deployer.deployContract("Prime Golden Goose Decoder And Sanitizer v0.3", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
