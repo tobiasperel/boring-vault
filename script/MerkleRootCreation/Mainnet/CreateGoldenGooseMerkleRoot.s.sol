@@ -99,6 +99,9 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_945"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WEETH_WETH_915"));
 
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_945"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WEETH_WETH_915"));
+
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseETH")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHPrime")));
 
@@ -108,9 +111,8 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
             depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerPrimeWETH"));
             depositVaults[1] = ERC4626(getAddress(sourceChain, "evkWSTETH"));
 
-            address[] memory subaccounts = new address[](2);
+            address[] memory subaccounts = new address[](1);
             subaccounts[0] = address(boringVault);
-            subaccounts[1] = address(boringVault);
 
             _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
         }
