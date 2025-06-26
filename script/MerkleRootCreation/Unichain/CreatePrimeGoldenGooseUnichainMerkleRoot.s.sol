@@ -20,7 +20,7 @@ contract CreatePrimeGoldenGooseUnichainMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xEc0569121753e50979d3C6Aa093bb881e8E752C5;
     address public managerAddress = 0xDa61124f29fb788718eC868f5f0005c78904a41D;
     address public accountantAddress = 0xC2693B160d164f17f4D67Af811eEC28aBE01598a;
-    address public rawDataDecoderAndSanitizer = 0x7FE4786f25460F469113835fb64756B03dcb5C5b;
+    address public rawDataDecoderAndSanitizer = 0x4004568550F0Fe6caA2082a40Fc514F49FbA00dc;
 
     function setUp() external {
         // Setup is done in generateMerkleRoot to avoid double forking

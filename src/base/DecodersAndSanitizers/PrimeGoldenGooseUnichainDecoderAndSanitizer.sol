@@ -11,6 +11,7 @@ import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocol
 import {StandardBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/StandardBridgeDecoderAndSanitizer.sol";
 import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol";
+import {OneInchDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OneInchDecoderAndSanitizer.sol";
 
 contract PrimeGoldenGooseUnichainDecoderAndSanitizer is 
     BaseDecoderAndSanitizer,
@@ -22,7 +23,8 @@ contract PrimeGoldenGooseUnichainDecoderAndSanitizer is
     StandardBridgeDecoderAndSanitizer,
     TellerDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
-    OdosDecoderAndSanitizer
+    OdosDecoderAndSanitizer,
+    OneInchDecoderAndSanitizer
 {
     constructor(
         address _uniswapV4PositionManager,

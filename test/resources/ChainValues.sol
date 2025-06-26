@@ -2501,7 +2501,10 @@ contract ChainValues {
         values[unichain]["stargateNative"] = 0xe9aBA835f813ca05E50A6C0ce65D0D74390F7dE7.toBytes32();
 
         values[unichain]["odosRouterV2"] = 0x6409722F3a1C4486A3b1FE566cBDd5e9D946A1f3.toBytes32();
-        values[unichain]["odosExecutor"] = 0x0000000000000000000000000000000000000000.toBytes32();
+        values[unichain]["odosExecutor"] = 0xAA8C506Ce5e087c81ABb44Fc286106f4403FE0Ba.toBytes32();
+
+        values[unichain]["aggregationRouterV5"] = 0x111111125421cA6dc452d289314280a0f8842A65.toBytes32();
+        values[unichain]["oneInchExecutor"] = 0xE37e799D5077682FA0a244D46E5649F71457BD09.toBytes32();
 
         values[unichain]["eulerWETH"] = 0x1f3134C3f3f8AdD904B9635acBeFC0eA0D0E1ffC.toBytes32();
         values[unichain]["eulerwstETHmarket"] = 0x54ff502df96CD9B9585094EaCd86AAfCe902d06A.toBytes32();
