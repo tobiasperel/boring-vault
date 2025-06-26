@@ -1820,7 +1820,12 @@ contract ChainValues {
         values[scroll]["scrollGatewayRouter"] = 0x4C0926FF5252A435FD19e10ED15e5a249Ba19d79.toBytes32(); // withdrawERC20
         values[scroll]["scrollMessenger"] = 0x781e90f1c8Fc4611c9b7497C3B47F99Ef6969CbC.toBytes32(); // sendMessage
         values[scroll]["scrollCustomERC20Gateway"] = 0xaC78dff3A87b5b534e366A93E785a0ce8fA6Cc62.toBytes32(); // sendMessage
-
+        values[scroll]["scrollUSDCGateway"] =  0x33B60d5Dd260d453cAC3782b0bDC01ce84672142.toBytes32();
+        values[scroll]["scrollUSDTGateway"] =  0xE2b4795039517653c5Ae8C2A9BFdd783b48f447A.toBytes32();
+        values[scroll]["scrollDAIGateway"] = 0xaC78dff3A87b5b534e366A93E785a0ce8fA6Cc62.toBytes32();
+        values[scroll]["scrollWBTCGateway"] = 0xE2b4795039517653c5Ae8C2A9BFdd783b48f447A.toBytes32();
+        values[scroll]["scrollWETHGateway"] = 0x7003E7B7186f0E6601203b99F7B8DECBfA391cf9.toBytes32();
+        
         // Tellers
         values[scroll]["EBTCTeller"] = 0x6Ee3aaCcf9f2321E49063C4F8da775DdBd407268.toBytes32(); 
     }

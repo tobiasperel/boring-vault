@@ -47,7 +47,8 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         ERC20[] memory localTokens;
-        _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens);
+        address[] memory scrollGateways;
+        _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -85,7 +86,8 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         ERC20[] memory localTokens;
-        _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens);
+        address[] memory scrollGateways;
+        _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -125,7 +127,8 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         ERC20[] memory localTokens = new ERC20[](1);
         localTokens[0] = getERC20(sourceChain, "DAI");
-        _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens);
+        address[] memory scrollGateways = new address[](1);
+        _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -169,7 +172,9 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         ERC20[] memory localTokens = new ERC20[](1);
         localTokens[0] = getERC20(sourceChain, "DAI");
-        _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens);
+        address[] memory scrollGateways = new address[](1);
+        scrollGateways[0] = getAddress(scroll, "scrollDAIGateway");
+        _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
         _generateTestLeafs(leafs, manageTree);
@@ -209,7 +214,8 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
 
          ManageLeaf[] memory leafs = new ManageLeaf[](8);
          ERC20[] memory localTokens;
-         _addScrollNativeBridgeLeafs(leafs, "mainnet", localTokens);
+         address[] memory scrollGateways;
+         _addScrollNativeBridgeLeafs(leafs, "mainnet", localTokens, scrollGateways);
 
          bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -248,7 +254,8 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
          ManageLeaf[] memory leafs = new ManageLeaf[](8);
          ERC20[] memory localTokens = new ERC20[](1);
          localTokens[0] = getERC20(sourceChain, "USDC");
-         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens);
+         address[] memory scrollGateways = new address[](1);
+         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
 
          bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -294,7 +301,8 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
          ManageLeaf[] memory leafs = new ManageLeaf[](8);
          ERC20[] memory localTokens = new ERC20[](1);
          localTokens[0] = getERC20(sourceChain, "DAI");
-         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens);
+         address[] memory scrollGateways = new address[](1);
+         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
 
          bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -335,7 +343,8 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
          ManageLeaf[] memory leafs = new ManageLeaf[](8);
          ERC20[] memory localTokens = new ERC20[](1);
          localTokens[0] = getERC20(sourceChain, "USDT");
-         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens);
+         address[] memory scrollGateways = new address[](1);
+         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
 
          bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -376,7 +385,8 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
          ManageLeaf[] memory leafs = new ManageLeaf[](8);
          ERC20[] memory localTokens = new ERC20[](1);
          localTokens[0] = getERC20(sourceChain, "USDC");
-         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens);
+         address[] memory scrollGateways = new address[](1);
+         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
 
          bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -423,7 +433,8 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
          ManageLeaf[] memory leafs = new ManageLeaf[](8);
          ERC20[] memory localTokens = new ERC20[](1);
          localTokens[0] = getERC20(sourceChain, "WBTC");
-         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens);
+         address[] memory scrollGateways = new address[](1);
+         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
 
          bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -465,7 +476,8 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
          ManageLeaf[] memory leafs = new ManageLeaf[](8);
          ERC20[] memory localTokens = new ERC20[](1);
          localTokens[0] = getERC20(sourceChain, "WETH");
-         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens);
+         address[] memory scrollGateways = new address[](1);
+         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
 
          bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
