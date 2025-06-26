@@ -15,6 +15,8 @@ import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/
 import {OneInchDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OneInchDecoderAndSanitizer.sol";
 import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/NativeWrapperDecoderAndSanitizer.sol";
 import {CurveDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/CurveDecoderAndSanitizer.sol";
+import {MerklDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MerklDecoderAndSanitizer.sol";
+import {wSwellUnwrappingDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/wSwellUnwrappingDecoderAndSanitizer.sol";
 
 contract PrimeGoldenGooseDecoderAndSanitizer is 
     BaseDecoderAndSanitizer,
@@ -29,7 +31,9 @@ contract PrimeGoldenGooseDecoderAndSanitizer is
     LidoDecoderAndSanitizer,
     OdosDecoderAndSanitizer,
     OneInchDecoderAndSanitizer,
-    NativeWrapperDecoderAndSanitizer
+    NativeWrapperDecoderAndSanitizer,
+    MerklDecoderAndSanitizer,
+    wSwellUnwrappingDecoderAndSanitizer    
 {
     constructor(address _odosRouter)
         OdosDecoderAndSanitizer(_odosRouter)
