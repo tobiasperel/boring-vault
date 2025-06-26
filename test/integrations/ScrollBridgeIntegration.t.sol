@@ -14,7 +14,7 @@ import {
 } from "src/base/DecodersAndSanitizers/BridgingDecoderAndSanitizer.sol";
 import {DecoderCustomTypes} from "src/interfaces/DecoderCustomTypes.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
-import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
+import {MerkleTreeHelper, IScrollGateway} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
 
 import {Test, stdStorage, StdStorage, stdError, console} from "@forge-std/Test.sol";
 
@@ -182,7 +182,7 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
         ManageLeaf[] memory manageLeafs = new ManageLeaf[](1);
-        manageLeafs[0] = leafs[4];
+        manageLeafs[0] = leafs[3];
 
         bytes32[][] memory manageProofs = _getProofsUsingTree(manageLeafs, manageTree);
 
@@ -248,14 +248,14 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
          setAddress(false, sourceChain, "accountantAddress", rawDataDecoderAndSanitizer);
          setAddress(false, sourceChain, "managerAddress", rawDataDecoderAndSanitizer);
 
-         deal(getAddress(sourceChain, "USDC"), address(boringVault), 101e18);
+         deal(getAddress(sourceChain, "USDC"), address(boringVault), 101e6);
          deal(address(boringVault), 1e18);
 
          ManageLeaf[] memory leafs = new ManageLeaf[](8);
          ERC20[] memory localTokens = new ERC20[](1);
          localTokens[0] = getERC20(sourceChain, "USDC");
          address[] memory scrollGateways = new address[](1);
-         _addScrollNativeBridgeLeafs(leafs, "scroll", localTokens, scrollGateways);
+         _addScrollNativeBridgeLeafs(leafs, "mainnet", localTokens, scrollGateways);
 
          bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
@@ -273,11 +273,13 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
          targets[0] = getAddress(sourceChain, "USDC");
          targets[1] = getAddress(sourceChain, "scrollGatewayRouter");
 
+        address gateway = IScrollGateway(getAddress(sourceChain, "scrollGatewayRouter")).getERC20Gateway(address(localTokens[0])); 
+
          bytes[] memory targetData = new bytes[](2);
          targetData[0] =
-             abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "scrollGatewayRouter"), 100e18);
+             abi.encodeWithSignature("approve(address,uint256)", gateway, 100e6);
          targetData[1] = abi.encodeWithSignature(
-             "withdrawERC20(address,address,uint256,uint256)", getAddress(sourceChain, "USDC"), boringVault, 100e18, 0
+             "withdrawERC20(address,address,uint256,uint256)", getAddress(sourceChain, "USDC"), boringVault, 100e6, 0
          );
          uint256[] memory values = new uint256[](2);
          address[] memory decodersAndSanitizers = new address[](2);
@@ -308,7 +310,7 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
 
          manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
          ManageLeaf[] memory manageLeafs = new ManageLeaf[](1);
          manageLeafs[0] = leafs[2];
@@ -350,7 +352,7 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
 
          manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
          ManageLeaf[] memory manageLeafs = new ManageLeaf[](1);
          manageLeafs[0] = leafs[2];
@@ -392,7 +394,7 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
 
          manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
          ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
          manageLeafs[0] = leafs[1];
@@ -440,7 +442,7 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
 
          manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
          ManageLeaf[] memory manageLeafs = new ManageLeaf[](1);
          manageLeafs[0] = leafs[2];
@@ -483,7 +485,7 @@ contract ScrollBridgeIntegrationTest is Test, MerkleTreeHelper {
 
          manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
          ManageLeaf[] memory manageLeafs = new ManageLeaf[](2);
          manageLeafs[0] = leafs[1];
