@@ -18,6 +18,7 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
     address public managerAddress = 0x62b283d4FeFB2a120e1120dba9f83bE6CA41bCD7;
     address public accountantAddress = 0x04B8136820598A4e50bEe21b8b6a23fE25Df9Bd8;
     address public rawDataDecoderAndSanitizer = 0xf2842b0a7e26B5A40132DCeC8118a24851e05048;
+    address public liquidEthTeller = 0x9AA79C84b79816ab920bBcE20f8f74557B514734;
 
     function setUp() external {}
 
@@ -34,8 +35,15 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "managerAddress", managerAddress);
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        setAddress(false, mainnet, "liquidEthTeller", liquidEthTeller);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](128);
+
+        ERC20[] memory eEthAssets = new ERC20[](2);
+        eEthAssets[0] = getERC20(sourceChain, "EETH");
+        eEthAssets[1] = getERC20(sourceChain, "WEETH");
+
+        _addTellerLeafs(leafs, getAddress(sourceChain, "liquidEthTeller"), eEthAssets, false, true);
 
         // ========================== Swaps ==========================
         address[] memory assets = new address[](5);
