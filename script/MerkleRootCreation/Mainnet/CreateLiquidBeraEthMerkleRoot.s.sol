@@ -39,9 +39,10 @@ contract CreateLiquidBeraEthMerkleRootScript is Script, MerkleTreeHelper {
 
         ManageLeaf[] memory leafs = new ManageLeaf[](128);
 
-        ERC20[] memory eEthAssets = new ERC20[](2);
+        ERC20[] memory eEthAssets = new ERC20[](3);
         eEthAssets[0] = getERC20(sourceChain, "EETH");
         eEthAssets[1] = getERC20(sourceChain, "WEETH");
+        eEthAssets[2] = getERC20(sourceChain, "WETH");
 
         _addTellerLeafs(leafs, getAddress(sourceChain, "liquidEthTeller"), eEthAssets, false, true);
 
