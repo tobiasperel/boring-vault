@@ -76,12 +76,13 @@ import {LevelDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols
 import {RoycoUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDDecoderAndSanitizer.sol";
 import {RoycoUSDPlumeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDPlumeDecoderAndSanitizer.sol";
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
+import {PrimeGoldenGooseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PrimeGoldenGooseDecoderAndSanitizer.sol";
 
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 
 /**
- *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify --verifier-url 'https://api.routescan.io/v2/network/mainnet/evm/21000000/etherscan' --with-gas-price 50000
+ *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_API_KEY --verify --verifier-url 'https://api.routescan.io/v2/network/mainnet/evm/21000000/etherscan'
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
 
@@ -101,9 +102,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
         
-        creationCode = type(EtherFiLiquidUsdDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"), getAddress(sourceChain, "odosRouterV2"));
-        deployer.deployContract("Ether.Fi Liquid USD Decoder And Sanitizer V0.6", creationCode, constructorArgs, 0);
+        creationCode = type(PrimeGoldenGooseDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "odosRouterV2"));
+        deployer.deployContract("Prime Golden Goose Decoder And Sanitizer v0.3", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }

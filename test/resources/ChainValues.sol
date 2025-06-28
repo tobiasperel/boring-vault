@@ -452,6 +452,8 @@ contract ChainValues {
         values[mainnet]["balancerV3_WETH_WSTETH_boosted"] = 0xc4Ce391d82D164c166dF9c8336DDF84206b2F812.toBytes32();
         values[mainnet]["balancerV3_WSTETH_TETH_stablesurge"] = 0x9ED5175aeCB6653C1BDaa19793c16fd74fBeEB37.toBytes32();
         values[mainnet]["balancerV3_WETH_WSTETH_boosted_gauge"] = 0x4B891340b51889f438a03DC0e8aAAFB0Bc89e7A6.toBytes32();
+        values[mainnet]["balancerV3_Surge_Fluid_wstETH-wETH_boosted"] = 0x6b31a94029fd7840d780191B6D63Fa0D269bd883.toBytes32();
+        values[mainnet]["balancerV3_Surge_Fluid_wstETH-wETH_boosted_gauge"] = 0x1CCE9d493224A19FcB5f7fBade8478630141CB54.toBytes32();
       
 
         // Aura
@@ -807,6 +809,8 @@ contract ChainValues {
         values[mainnet]["sUSDePT_07_30_25_DAI_915"] = 0xb81eaed0df42ff6646c8daf4fe38afab93b13b6a89c9750d08e705223a45e2ef;
         values[mainnet]["sUSDePT_07_30_25_USDC_915"] = 0xbc552f0b14dd6f8e60b760a534ac1d8613d3539153b4d9675d697e048f2edc7e;
         values[mainnet]["WEETH_WETH_915"] = 0x37e7484d642d90f14451f1910ba4b7b8e4c3ccdd0ec28f8b2bdb35479e472ba7;
+        values[mainnet]["WSTETH_WETH_965"] = 0xb8fc70e82bc5bb53e773626fcc6a23f7eefa036918d7ef216ecfb1950a94a85e;
+        values[mainnet]["WSTETH_WETH_945"] = 0xd0e50cdac92fe2172043f5e0c36532c6369d24947e40968f34a5e8819ca9ec5d;
 
         // MetaMorpho
         values[mainnet]["usualBoostedUSDC"] = 0xd63070114470f685b75B74D60EEc7c1113d33a3D.toBytes32();
@@ -1084,6 +1088,7 @@ contract ChainValues {
         values[mainnet]["fWETH"] = 0x90551c1795392094FE6D29B758EcCD233cFAa260.toBytes32();
         values[mainnet]["fWSTETH"] = 0x2411802D8BEA09be0aF8fD8D08314a63e706b29C.toBytes32();
         values[mainnet]["fGHO"] = 0x6A29A46E21C730DcA1d8b23d637c101cec605C5B.toBytes32();
+        values[mainnet]["fwstETH"] = 0x2411802D8BEA09be0aF8fD8D08314a63e706b29C.toBytes32();
 
         // Fluid Rewards
         values[mainnet]["fluidMerkleDistributor"] = 0x7060FE0Dd3E31be01EFAc6B28C8D38018fD163B0.toBytes32();
@@ -1307,6 +1312,7 @@ contract ChainValues {
         values[mainnet]["eulerCBTC"] = 0x056f3a2E41d2778D3a0c0714439c53af2987718E.toBytes32();
         values[mainnet]["evkeRLUSD-1"] = 0xe1Ce9AF672f8854845E5474400B6ddC7AE458a10.toBytes32();
         values[mainnet]["evkesUSDS-4"] = 0x1cA03621265D9092dC0587e1b50aB529f744aacB.toBytes32();
+        values[mainnet]["evkWSTETH"] = 0xbC4B4AC47582c3E38Ce5940B80Da65401F4628f1.toBytes32();
 
         //values[mainnet]["USR"] = 0x66a1E37c9b0eAddca17d3662D6c05F4DECf3e110.toBytes32();
         //values[mainnet]["wstUSR"] = 0x1202F5C7b4B9E47a1A484E8B270be34dbbC75055.toBytes32();
