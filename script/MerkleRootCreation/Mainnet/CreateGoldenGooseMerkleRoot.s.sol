@@ -19,7 +19,7 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xef417FCE1883c6653E7dC6AF7c6F85CCDE84Aa09;
     address public managerAddress = 0x5F341B1cf8C5949d6bE144A725c22383a5D3880B;
     address public accountantAddress = 0xc873F2b7b3BA0a7faA2B56e210E3B965f2b618f5;
-    address public rawDataDecoderAndSanitizer = 0xCa82ADD835880df591913c42EE946E2c214d23c5; 
+    address public rawDataDecoderAndSanitizer = 0x6eBFeB1DECeE6Ef24fc7d9bd2360E87f75b29f0B; 
     address public primeGoldenGooseTeller = 0x4ecC202775678F7bCfF8350894e2F2E3167Cc3Df;
 
     function setUp() external {}
@@ -97,7 +97,10 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Morpho ==========================
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_945"));
-        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WEETH_WETH_915"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_965"));
+
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_945"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_965"));
 
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseETH")));
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHPrime")));
@@ -108,9 +111,8 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
             depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerPrimeWETH"));
             depositVaults[1] = ERC4626(getAddress(sourceChain, "evkWSTETH"));
 
-            address[] memory subaccounts = new address[](2);
+            address[] memory subaccounts = new address[](1);
             subaccounts[0] = address(boringVault);
-            subaccounts[1] = address(boringVault);
 
             _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
         }
@@ -157,18 +159,15 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
         }
         // =========================== Odos ==========================
         {
-            address[] memory assets = new address[](5);
-            SwapKind[] memory kind = new SwapKind[](5);
+            address[] memory assets = new address[](3);
+            SwapKind[] memory kind = new SwapKind[](3);
             assets[0] = getAddress(sourceChain, "WETH");
             kind[0] = SwapKind.BuyAndSell;
             assets[1] = getAddress(sourceChain, "WSTETH");
             kind[1] = SwapKind.BuyAndSell;
             assets[2] = getAddress(sourceChain, "UNI");
             kind[2] = SwapKind.Sell;
-            assets[3] = getAddress(sourceChain, "fwstETH");
-            kind[3] = SwapKind.BuyAndSell;
-            assets[4] = getAddress(sourceChain, "fWETH");
-            kind[4] = SwapKind.BuyAndSell;
+
 
             _addOdosSwapLeafs(leafs, assets, kind);
 
@@ -180,6 +179,12 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
         _addBalancerV3Leafs(
             leafs, getAddress(sourceChain, "balancerV3_Surge_Fluid_wstETH-wETH_boosted"), true, getAddress(sourceChain, "balancerV3_Surge_Fluid_wstETH-wETH_boosted_gauge")
         );
+        _addBalancerV3Leafs(
+            leafs, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted"), true, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted_gauge")
+        );
+
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fWETH"));
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fWSTETH"));
 
         // ========================== Balancer Flash Loans ==========================
         _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "WETH"));

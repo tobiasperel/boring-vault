@@ -83,7 +83,7 @@ import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 
 /**
- *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --rpc-url $UNICHAIN_RPC_URL --with-gas-price 50000
+ *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_API_KEY --verify --verifier-url 'https://api.routescan.io/v2/network/mainnet/evm/21000000/etherscan'
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  * @dev For Unichain verification, use appropriate block explorer when available
  */
@@ -107,9 +107,11 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
         address uniswapV4PositionManager = getAddress(sourceChain, "uniV4PositionManager");
         address odosRouter = getAddress(sourceChain, "odosRouterV2");
-        creationCode = type(PrimeGoldenGooseUnichainDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(uniswapV4PositionManager, odosRouter);
-        deployer.deployContract("Prime Golden Goose Decoder And Sanitizer v0.2", creationCode, constructorArgs, 0);
+
+        address dvStETHVault = getAddress(sourceChain, "dvStETHVault");
+        creationCode = type(GoldenGooseDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(uniswapV4PositionManager, uniswapV3NonFungiblePositionManager, odosRouter, dvStETHVault);
+        deployer.deployContract("Golden Goose Decoder And Sanitizer v0.2", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
