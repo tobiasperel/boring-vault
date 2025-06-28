@@ -82,7 +82,7 @@ import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 
 /**
- *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify --verifier-url 'https://api.routescan.io/v2/network/mainnet/evm/21000000/etherscan' --with-gas-price 50000
+ *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_API_KEY --verify --verifier-url 'https://api.routescan.io/v2/network/mainnet/evm/21000000/etherscan'
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
 
