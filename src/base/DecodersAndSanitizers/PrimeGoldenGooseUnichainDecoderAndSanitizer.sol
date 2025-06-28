@@ -9,6 +9,7 @@ import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoco
 import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol";
 import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
 import {StandardBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/StandardBridgeDecoderAndSanitizer.sol";
+import {LidoStandardBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/LidoStandardBridgeDecoderAndSanitizer.sol";
 import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
 import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol";
 import {OneInchDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OneInchDecoderAndSanitizer.sol";
@@ -21,6 +22,7 @@ contract PrimeGoldenGooseUnichainDecoderAndSanitizer is
     ERC4626DecoderAndSanitizer,
     EulerEVKDecoderAndSanitizer,
     StandardBridgeDecoderAndSanitizer,
+    LidoStandardBridgeDecoderAndSanitizer,
     TellerDecoderAndSanitizer,
     OFTDecoderAndSanitizer,
     OdosDecoderAndSanitizer,
@@ -34,19 +36,26 @@ contract PrimeGoldenGooseUnichainDecoderAndSanitizer is
         OdosDecoderAndSanitizer(_odosRouter)
     {}
 
-    //============================== HANDLE FUNCTION COLLISIONS ===============================
-    
-    /**
-     * @notice TellerDecoderAndSanitizer and ERC4626DecoderAndSanitizer both specify a deposit function
-     * ERC4626: deposit(uint256,address)
-     * Teller: deposit(address,uint256,uint256)
-     * These have different signatures so no conflict exists
-     */
+    function proveWithdrawalTransaction(
+        DecoderCustomTypes.WithdrawalTransaction calldata _tx,
+        uint256, /*_l2OutputIndex*/
+        DecoderCustomTypes.OutputRootProof calldata, /*_outputRootProof*/
+        bytes[] calldata /*_withdrawalProof*/
+    )
+        external
+        pure
+        override(StandardBridgeDecoderAndSanitizer, LidoStandardBridgeDecoderAndSanitizer)
+        returns (bytes memory sensitiveArguments)
+    {
+        sensitiveArguments = abi.encodePacked(_tx.sender, _tx.target);
+    }
 
-    /**
-     * @notice ERC4626DecoderAndSanitizer specifies withdraw(uint256,address,address)
-     * MorphoBlueDecoderAndSanitizer specifies withdraw(MarketParams,uint256,uint256,address,address)
-     * NativeWrapperDecoderAndSanitizer specifies withdraw(uint256)
-     * These have different signatures so no conflict exists
-     */
+    function finalizeWithdrawalTransaction(DecoderCustomTypes.WithdrawalTransaction calldata _tx)
+        external
+        pure
+        override(StandardBridgeDecoderAndSanitizer, LidoStandardBridgeDecoderAndSanitizer)
+        returns (bytes memory sensitiveArguments)
+    {
+        sensitiveArguments = abi.encodePacked(_tx.sender, _tx.target);
+    }
 }

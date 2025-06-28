@@ -23,6 +23,7 @@ import {LidoDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/
 import {DvStETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/DvStETHDecoderAndSanitizer.sol";
 import {CurveDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/CurveDecoderAndSanitizer.sol";
 import {Permit2DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/Permit2DecoderAndSanitizer.sol";
+import {FluidFTokenDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/FluidFTokenDecoderAndSanitizer.sol";
 
 contract GoldenGooseDecoderAndSanitizer is 
     BaseDecoderAndSanitizer,
@@ -43,7 +44,8 @@ contract GoldenGooseDecoderAndSanitizer is
     BalancerV2DecoderAndSanitizer,
     FluidDexDecoderAndSanitizer,
     LidoDecoderAndSanitizer,
-    DvStETHDecoderAndSanitizer
+    DvStETHDecoderAndSanitizer,
+    FluidFTokenDecoderAndSanitizer
 {
     constructor(
         address _uniswapV4PositionManager,
