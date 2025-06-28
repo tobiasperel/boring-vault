@@ -76,6 +76,7 @@ import {LevelDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols
 import {RoycoUSDDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDDecoderAndSanitizer.sol";
 import {RoycoUSDPlumeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/RoycoUSDPlumeDecoderAndSanitizer.sol";
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
+import {PrimeGoldenGooseUnichainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PrimeGoldenGooseUnichainDecoderAndSanitizer.sol";
 import {PrimeGoldenGooseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PrimeGoldenGooseDecoderAndSanitizer.sol";
 import {GoldenGooseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/GoldenGooseDecoderAndSanitizer.sol";
 import "forge-std/Script.sol";
@@ -84,6 +85,7 @@ import "forge-std/StdJson.sol";
 /**
  *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_API_KEY --verify --verifier-url 'https://api.routescan.io/v2/network/mainnet/evm/21000000/etherscan'
  * @dev Optionally can change `--with-gas-price` to something more reasonable
+ * @dev For Unichain verification, use appropriate block explorer when available
  */
 
 contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddresses, MerkleTreeHelper {
@@ -94,8 +96,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
     function setUp() external {
         privateKey = vm.envUint("BORING_DEVELOPER");
         
-        vm.createSelectFork("mainnet");
-        setSourceChainName("mainnet"); 
+        // Use the RPC URL directly instead of alias
+        vm.createSelectFork(vm.envString("UNICHAIN_RPC_URL"));
+        setSourceChainName("unichain"); 
     }
 
     function run() external {
@@ -103,8 +106,8 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         vm.startBroadcast(privateKey);
 
         address uniswapV4PositionManager = getAddress(sourceChain, "uniV4PositionManager");
-        address uniswapV3NonFungiblePositionManager = getAddress(sourceChain, "uniswapV3NonFungiblePositionManager");
         address odosRouter = getAddress(sourceChain, "odosRouterV2");
+
         address dvStETHVault = getAddress(sourceChain, "dvStETHVault");
         creationCode = type(GoldenGooseDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(uniswapV4PositionManager, uniswapV3NonFungiblePositionManager, odosRouter, dvStETHVault);
