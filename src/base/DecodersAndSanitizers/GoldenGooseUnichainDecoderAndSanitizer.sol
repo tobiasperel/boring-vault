@@ -8,6 +8,12 @@ import {NativeWrapperDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/P
 import {LidoStandardBridgeDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/LidoStandardBridgeDecoderAndSanitizer.sol";
 import {MorphoBlueDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/MorphoBlueDecoderAndSanitizer.sol";
 import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/ERC4626DecoderAndSanitizer.sol";
+import {TellerDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/TellerDecoderAndSanitizer.sol";
+import {OFTDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OFTDecoderAndSanitizer.sol";
+import {DvStETHDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/DvStETHDecoderAndSanitizer.sol";
+import {OdosDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OdosDecoderAndSanitizer.sol";
+import {OneInchDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/OneInchDecoderAndSanitizer.sol";
+import {EulerEVKDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/EulerEVKDecoderAndSanitizer.sol";
 
 
 contract GoldenGooseUnichainDecoderAndSanitizer is 
@@ -17,12 +23,20 @@ contract GoldenGooseUnichainDecoderAndSanitizer is
     NativeWrapperDecoderAndSanitizer,
     LidoStandardBridgeDecoderAndSanitizer,
     MorphoBlueDecoderAndSanitizer,
-    ERC4626DecoderAndSanitizer
+    ERC4626DecoderAndSanitizer,
+    TellerDecoderAndSanitizer,
+    OFTDecoderAndSanitizer,
+    OdosDecoderAndSanitizer,
+    OneInchDecoderAndSanitizer,
+    DvStETHDecoderAndSanitizer,
+    EulerEVKDecoderAndSanitizer
 {
 
 
-    constructor(address _uniswapV4PositionManager)
+    constructor(address _uniswapV4PositionManager, address _odosRouter, address _dvStETHVault)
         UniswapV4DecoderAndSanitizer(_uniswapV4PositionManager)
+        OdosDecoderAndSanitizer(_odosRouter)
+        DvStETHDecoderAndSanitizer(_dvStETHVault)
     {}
 
     function finalizeWithdrawalTransaction(DecoderCustomTypes.WithdrawalTransaction calldata _tx)

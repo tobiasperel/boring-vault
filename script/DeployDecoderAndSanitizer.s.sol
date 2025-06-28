@@ -107,6 +107,9 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
 
         address uniswapV4PositionManager = getAddress(sourceChain, "uniV4PositionManager");
         address odosRouter = getAddress(sourceChain, "odosRouterV2");
+        address dvStETHVault = getAddress(sourceChain, "ethereumVaultConnector");
+        creationCode = type(GoldenGooseUnichainDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(uniswapV4PositionManager, odosRouter, dvStETHVault);
 
         address dvStETHVault = getAddress(sourceChain, "dvStETHVault");
         creationCode = type(GoldenGooseDecoderAndSanitizer).creationCode;
