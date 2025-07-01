@@ -19,6 +19,7 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
     address public rawDataDecoderAndSanitizer = 0x72B0dB3c5b133C6D060AB58134654287fA9f05BF;
     address public managerAddress = 0x227975088C28DBBb4b421c6d96781a53578f19a8;
     address public accountantAddress = 0x0d05D94a5F1E76C18fbeB7A13d17C8a314088198;
+    address public liquidBeraEthTeller = 0xd445C65e4821dbD4ed0114eCDF6325c69faD7653;
 
     //one offs
     address public pancakeSwapDataDecoderAndSanitizer = 0x4dE66AA174b99481dAAe12F2Cdd5D76Dc14Eb3BC;
@@ -42,8 +43,18 @@ contract CreateLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         setAddress(false, mainnet, "managerAddress", managerAddress);
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        setAddress(false, mainnet, "liquidBeraEthTeller", liquidBeraEthTeller);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](1024);
+
+        ERC20[] memory eEthAssets = new ERC20[](5);
+        eEthAssets[0] = getERC20(sourceChain, "EETH");
+        eEthAssets[1] = getERC20(sourceChain, "WEETH");
+        eEthAssets[2] = getERC20(sourceChain, "WETH");
+        eEthAssets[3] = getERC20(sourceChain, "STETH");
+        eEthAssets[4] = getERC20(sourceChain, "WSTETH");
+
+        _addTellerLeafs(leafs, getAddress(sourceChain, "liquidBeraEthTeller"), eEthAssets, false, true);
 
         // ========================== Aave V3 ==========================
         ERC20[] memory supplyAssets = new ERC20[](4);
