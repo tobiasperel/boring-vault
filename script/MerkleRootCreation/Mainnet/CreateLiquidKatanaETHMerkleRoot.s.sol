@@ -39,14 +39,16 @@ contract CreateLiquidKatanaETHMerkleRoot is Script, MerkleTreeHelper {
         ManageLeaf[] memory leafs = new ManageLeaf[](128);
 
         // ========================== 1inch ==========================
-        address[] memory assets = new address[](3);
-        SwapKind[] memory kind = new SwapKind[](3);
+        address[] memory assets = new address[](4);
+        SwapKind[] memory kind = new SwapKind[](4);
         assets[0] = getAddress(sourceChain, "WETH");
         kind[0] = SwapKind.BuyAndSell;
         assets[1] = getAddress(sourceChain, "WEETH");
         kind[1] = SwapKind.BuyAndSell;
         assets[2] = getAddress(sourceChain, "EETH");
         kind[2] = SwapKind.BuyAndSell;
+        assets[3] = getAddress(sourceChain, "WSTETH");
+        kind[3] = SwapKind.BuyAndSell;
         _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
         _addOdosSwapLeafs(leafs, assets, kind);
 
