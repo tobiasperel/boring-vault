@@ -36,7 +36,7 @@ contract CreateLiquidKatanaETHMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, katana, "accountantAddress", accountantAddress);
         setAddress(false, katana, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](16);
+        ManageLeaf[] memory leafs = new ManageLeaf[](32);
 
 
         // ========================== NativeWrapper ==========================
@@ -64,7 +64,7 @@ contract CreateLiquidKatanaETHMerkleRoot is Script, MerkleTreeHelper {
         // ========================== Fee Claiming ==========================
         ERC20[] memory feeAssets = new ERC20[](2);
         feeAssets[0] = getERC20(sourceChain, "WETH");
-        feeAssets[0] = getERC20(sourceChain, "WEETH");
+        feeAssets[1] = getERC20(sourceChain, "WEETH");
         _addLeafsForFeeClaiming(leafs, getAddress(sourceChain, "accountantAddress"), feeAssets, false);
 
 
