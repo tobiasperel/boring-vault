@@ -37,6 +37,7 @@ contract ChainValues {
     string public constant tacTestnet = "tacTestnet";
     string public constant flare = "flare";
     string public constant plume = "plume";
+    string public constant katana = "katana";
 
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
@@ -63,6 +64,7 @@ contract ChainValues {
     uint32 public constant hyperlaneEclipseEndpointId = 1408864445;
     uint32 public constant HyperEVMEndpointId = 30367;
     uint32 public constant layerZeroPlumeEndpointId = 30370;
+    uint32 public constant layerZeroKatanaEndpointId = 30375;
     error ChainValues__ZeroAddress(string chainName, string valueName);
     error ChainValues__ZeroBytes32(string chainName, string valueName);
     error ChainValues__ValueAlreadySet(string chainName, string valueName);
@@ -121,6 +123,7 @@ contract ChainValues {
         _addHyperEVMValues();
         _addFlareValues();
         _addInkValues();
+        _addKatanaValues();
         // Add testnet values
         _addHoleskyValues();
         _addSepoliaValues();
@@ -2641,5 +2644,29 @@ contract ChainValues {
 
         //OFTs
         values[plume]["stargateUSDC"] = 0x9909fa99b7F7ee7F1c0CBf133f411D43083631E6.toBytes32();
+    }
+
+    function _addKatanaValues() private {
+        values[katana]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[katana]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[katana]["dev5Address"] = 0x1cdF47387358A1733968df92f7cC14546D9E1047.toBytes32();
+
+        
+        // ERC20s
+        values[katana]["ETH"] = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE.toBytes32();
+        values[katana]["WETH"] = 0xEE7D8BCFb72bC1880D0Cf19822eB0A2e6577aB62.toBytes32(); // WETH == vbETH
+        values[katana]["vbETH"] = 0xEE7D8BCFb72bC1880D0Cf19822eB0A2e6577aB62.toBytes32();
+        values[katana]["WEETH"] = 0x9893989433e7a383Cb313953e4c2365107dc19a7.toBytes32();
+        values[katana]["ZRO"] = address(1).toBytes32(); // no ZRO on Katana
+        values[katana]["LBTC"] = 0xecAc9C5F704e954931349Da37F60E39f515c11c1.toBytes32();
+
+        // Balancer
+        values[katana]["balancerVault"] = address(1).toBytes32();
+        values[katana]["vault"] = address(1).toBytes32();
+
+
+        // LayerZero
+        values[katana]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();
+
     }
 }
