@@ -12678,7 +12678,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             false,
             "approve(address,uint256)",
             new address[](1),
-            string.concat("Approve zkEVM Comtatible Bridge to spend", ERC20(token).symbol()),
+            string.concat("Approve zkEVM Compatible Bridge to spend", ERC20(token).symbol()),
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
         leafs[leafIndex].argumentAddresses[0] = bridge;

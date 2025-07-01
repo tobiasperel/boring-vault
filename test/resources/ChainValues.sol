@@ -44,6 +44,7 @@ contract ChainValues {
     uint64 public constant ccipMainnetChainSelector = 5009297550715157269;
     uint64 public constant ccipBaseChainSelector = 15971525489660198786;
     uint64 public constant ccipBscChainSelector = 11344663589394136015;
+    uint64 public constant ccipKatanaChainSelector = 2459028469735686113;
     uint32 public constant layerZeroBaseEndpointId = 30184;
     uint32 public constant layerZeroMainnetEndpointId = 30101;
     uint32 public constant layerZeroOptimismEndpointId = 30111;
@@ -1424,6 +1425,9 @@ contract ChainValues {
         // Yearn
         values[mainnet]["yKatanaPredepositWETH"] = 0xcc6a16Be713f6a714f68b0E1f4914fD3db15fBeF.toBytes32();
 
+        // Agglayer Katana
+        values[mainnet]["agglayerBridgeKatana"] = 0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe.toBytes32();
+
     }
 
     function _addBaseValues() private {
@@ -2664,6 +2668,11 @@ contract ChainValues {
         values[katana]["balancerVault"] = address(1).toBytes32();
         values[katana]["vault"] = address(1).toBytes32();
 
+        // CCIP
+        values[katana]["ccipRouter"] = 0x7c19b79D2a054114Ab36ad758A36e92376e267DA.toBytes32();
+
+        // Agglayer
+        values[katana]["agglayerBridgeKatana"] = 0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe.toBytes32();
 
         // LayerZero
         values[katana]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();

@@ -79,6 +79,7 @@ import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 import {PrimeGoldenGooseUnichainDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PrimeGoldenGooseUnichainDecoderAndSanitizer.sol";
 import {PrimeGoldenGooseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/PrimeGoldenGooseDecoderAndSanitizer.sol";
 import {GoldenGooseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/GoldenGooseDecoderAndSanitizer.sol";
+import {KatanaDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/KatanaDecoderAndSanitizer.sol";
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 
@@ -97,24 +98,19 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         privateKey = vm.envUint("BORING_DEVELOPER");
         
         // Use the RPC URL directly instead of alias
-        vm.createSelectFork(vm.envString("UNICHAIN_RPC_URL"));
-        setSourceChainName("unichain"); 
+        vm.createSelectFork(vm.envString("KATANA_RPC_URL"));
+        setSourceChainName("katana"); 
     }
 
     function run() external {
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
 
-        address uniswapV4PositionManager = getAddress(sourceChain, "uniV4PositionManager");
-        address odosRouter = getAddress(sourceChain, "odosRouterV2");
-        address dvStETHVault = getAddress(sourceChain, "ethereumVaultConnector");
-        creationCode = type(GoldenGooseUnichainDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(uniswapV4PositionManager, odosRouter, dvStETHVault);
+        address odosRouter = address(1);
+        creationCode = type(KatanaDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(odosRouter);
 
-        address dvStETHVault = getAddress(sourceChain, "dvStETHVault");
-        creationCode = type(GoldenGooseDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(uniswapV4PositionManager, uniswapV3NonFungiblePositionManager, odosRouter, dvStETHVault);
-        deployer.deployContract("Golden Goose Decoder And Sanitizer v0.2", creationCode, constructorArgs, 0);
+        deployer.deployContract("Katana Decoder And Sanitizer v0.0", creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }
