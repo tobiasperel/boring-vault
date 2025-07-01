@@ -36,14 +36,11 @@ contract CreateLiquidKatanaETHMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, katana, "accountantAddress", accountantAddress);
         setAddress(false, katana, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](32);
+        ManageLeaf[] memory leafs = new ManageLeaf[](16);
 
 
         // ========================== NativeWrapper ==========================
         _addNativeLeafs(leafs);
-
-        // ========================== vbVault ==========================
-        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "vbETH")));
 
         // ========================== Agglayer ==========================
         _addAgglayerTokenLeafs(
