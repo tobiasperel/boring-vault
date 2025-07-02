@@ -45,6 +45,7 @@ contract ChainValues {
     uint64 public constant ccipBobChainSelector = 3849287863852499584;
     uint64 public constant ccipBaseChainSelector = 15971525489660198786;
     uint64 public constant ccipBscChainSelector = 11344663589394136015;
+    uint64 public constant ccipKatanaChainSelector = 2459028469735686113;
     uint32 public constant layerZeroBaseEndpointId = 30184;
     uint32 public constant layerZeroMainnetEndpointId = 30101;
     uint32 public constant layerZeroOptimismEndpointId = 30111;
@@ -330,6 +331,7 @@ contract ChainValues {
         values[mainnet]["KBTC"] = 0x73E0C0d45E048D25Fc26Fa3159b0aA04BfA4Db98.toBytes32();
         values[mainnet]["BTCN"] = 0x386E7A3a0c0919c9d53c3b04FF67E73Ff9e45Fb6.toBytes32();
         values[mainnet]["scrvUSD"] = 0x0655977FEb2f289A4aB78af67BAB0d17aAb84367.toBytes32();
+        values[mainnet]["vbETH"] = 0x2DC70fb75b88d2eB4715bc06E1595E6D97c34DFF.toBytes32();
 
 
         // Rate providers
@@ -1428,6 +1430,9 @@ contract ChainValues {
         // Avalanche Bridge
         values[mainnet]["usdcTokenRouter"] = 0xD835dbD135AD8a27214ecdEE79E7a41337865648.toBytes32();
         values[mainnet]["avalancheBridge"] = 0x8EB8a3b98659Cce290402893d0123abb75E3ab28.toBytes32();
+
+        // Agglayer Katana
+        values[mainnet]["agglayerBridgeKatana"] = 0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe.toBytes32();
 
     }
 
@@ -2696,6 +2701,11 @@ contract ChainValues {
         values[katana]["balancerVault"] = address(1).toBytes32();
         values[katana]["vault"] = address(1).toBytes32();
 
+        // CCIP
+        values[katana]["ccipRouter"] = 0x7c19b79D2a054114Ab36ad758A36e92376e267DA.toBytes32();
+
+        // Agglayer
+        values[katana]["agglayerBridgeKatana"] = 0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe.toBytes32();
 
         // LayerZero
         values[katana]["LayerZeroEndPoint"] = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B.toBytes32();

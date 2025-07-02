@@ -3,7 +3,7 @@
 # This overrides the `auto_detect_solc` value
 solc_version = '0.8.21'
 auto_detect_solc = false 
-evm_version = 'shanghai'
+evm_version = 'cancun'
 optimizer = true
 optimizer_runs = 200 
 fs_permissions = [{ access = "read-write", path = "./" }]
@@ -51,7 +51,7 @@ katana = "${KATANA_RPC_URL}"
 #bob = { key = "${BOBSCAN_KEY}", chain = 60808, url = "https://explorer.gobob.xyz/api?"}
 #corn = { key = "${CORNSCAN_KEY}", chain = 21000000, url = "https://api.routescan.io/v2/network/mainnet/evm/21000000/etherscan" }
 #arbitrum = { key = "${ARBISCAN_KEY}" }
-#mainnet = { key = "${ETHERSCAN_KEY}" }
+mainnet = { key = "${ETHERSCAN_KEY}" }
 #polygon = { key = "${POLYGONSCAN_KEY}" }
 #bsc = { key = "${BSCSCAN_KEY}" }
 #avalanche = { key = "${SNOWTRACE_KEY}" }

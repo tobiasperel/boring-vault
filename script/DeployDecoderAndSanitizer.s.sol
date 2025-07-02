@@ -87,6 +87,7 @@ import {PrimeGoldenGooseUnichainDecoderAndSanitizer} from
 import {PrimeGoldenGooseDecoderAndSanitizer} from
     "src/base/DecodersAndSanitizers/PrimeGoldenGooseDecoderAndSanitizer.sol";
 import {GoldenGooseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/GoldenGooseDecoderAndSanitizer.sol";
+import {KatanaDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/KatanaDecoderAndSanitizer.sol";
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
 
@@ -104,14 +105,21 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         privateKey = vm.envUint("BORING_DEVELOPER");
 
         // Use the RPC URL directly instead of alias
-        vm.createSelectFork(vm.envString("MAINNET_RPC_URL"));
-        setSourceChainName("mainnet");
+        vm.createSelectFork(vm.envString("KATANA_RPC_URL"));
+        setSourceChainName("katana"); 
+
     }
 
     function run() external {
         bytes memory creationCode;
         bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
+
+        address odosRouter = address(1);
+        creationCode = type(KatanaDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(odosRouter);
+
+        deployer.deployContract("Katana Decoder And Sanitizer v0.0", creationCode, constructorArgs, 0);
 
         creationCode = type(HybridBtcDecoderAndSanitizer).creationCode;
         constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
