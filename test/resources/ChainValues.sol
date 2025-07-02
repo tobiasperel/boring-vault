@@ -42,6 +42,7 @@ contract ChainValues {
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
     uint64 public constant ccipMainnetChainSelector = 5009297550715157269;
+    uint64 public constant ccipBobChainSelector = 3849287863852499584;
     uint64 public constant ccipBaseChainSelector = 15971525489660198786;
     uint64 public constant ccipBscChainSelector = 11344663589394136015;
     uint32 public constant layerZeroBaseEndpointId = 30184;
@@ -293,7 +294,8 @@ contract ChainValues {
         values[mainnet]["scBTC"] = 0xBb30e76d9Bb2CC9631F7fC5Eb8e87B5Aff32bFbd.toBytes32();
         values[mainnet]["beraSTONE"] = 0x97Ad75064b20fb2B2447feD4fa953bF7F007a706.toBytes32(); 
         values[mainnet]["solvBTC"] = 0x7A56E1C57C7475CCf742a1832B028F0456652F97.toBytes32(); 
-        values[mainnet]["solvBTC.BBN"] = 0xd9D920AA40f578ab794426F5C90F6C731D159DEf.toBytes32(); 
+        values[mainnet]["solvBTC.BBN"] = 0xd9D920AA40f578ab794426F5C90F6C731D159DEf.toBytes32();
+        values[mainnet]["xsolvBTC"] = 0xd9D920AA40f578ab794426F5C90F6C731D159DEf.toBytes32(); 
         values[mainnet]["STONE"] = 0x7122985656e38BDC0302Db86685bb972b145bD3C.toBytes32(); 
         values[mainnet]["SWBTC"] = 0x8DB2350D78aBc13f5673A411D4700BCF87864dDE.toBytes32(); 
         values[mainnet]["enzoBTC"] = 0x6A9A65B84843F5fD4aC9a0471C4fc11AFfFBce4a.toBytes32(); 
@@ -2450,6 +2452,9 @@ contract ChainValues {
         // Euler
         values[bob]["ethereumVaultConnector"] = 0x59f0FeEc4fA474Ad4ffC357cC8d8595B68abE47d.toBytes32();
         values[bob]["eulerWBTC"] = 0x11DA346d3Fdb62641BDbfebfd54b81CAA871aEf6.toBytes32();
+
+        // Uniswap V3
+        values[bob]["uniswapV3NonFungiblePositionManager"] = 0x743E03cceB4af2efA3CC76838f6E8B50B63F184c.toBytes32();
     }
 
     function _addDeriveValues() private {

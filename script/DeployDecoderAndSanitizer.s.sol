@@ -105,6 +105,10 @@ contract DeployDecoderAndSanitizerScript is Script, ContractNames, MainnetAddres
         bytes memory creationCode; bytes memory constructorArgs;
         vm.startBroadcast(privateKey);
 
+        creationCode = type(HybridBtcDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"));
+        deployer.deployContract("Hybrid BTC Decoder And Sanitizer V0.1", creationCode, constructorArgs, 0);
+
         address uniswapV4PositionManager = getAddress(sourceChain, "uniV4PositionManager");
         address odosRouter = getAddress(sourceChain, "odosRouterV2");
         address dvStETHVault = getAddress(sourceChain, "ethereumVaultConnector");
