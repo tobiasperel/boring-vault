@@ -718,8 +718,6 @@ contract ChainValues {
         values[mainnet]["uniswapV3NonFungiblePositionManager"] = 0xC36442b4a4522E871399CD717aBDD847Ab11FE88.toBytes32();
 
         // Uniswap V4
-        values[mainnet]["uniV4PoolManager"] = 0xbD216513d74C8cf14cf4747E6AaA6420FF64ee9e.toBytes32();
-        values[mainnet]["uniV4PositionManager"] = 0x000000000004444c5dc75cB358380D2e3dE08A90.toBytes32();
         values[mainnet]["uniV4UniversalRouter"] = 0x66a9893cC07D91D95644AEDD05D03f95e1dBA8Af.toBytes32();
 
         // Redstone
