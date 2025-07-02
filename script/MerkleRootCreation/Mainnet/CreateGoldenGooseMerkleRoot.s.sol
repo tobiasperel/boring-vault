@@ -19,7 +19,8 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xef417FCE1883c6653E7dC6AF7c6F85CCDE84Aa09;
     address public managerAddress = 0x5F341B1cf8C5949d6bE144A725c22383a5D3880B;
     address public accountantAddress = 0xc873F2b7b3BA0a7faA2B56e210E3B965f2b618f5;
-    address public rawDataDecoderAndSanitizer = 0x2764880D5FE328aBb22D6D75bA7De1b13aBCB40C; 
+    address public rawDataDecoderAndSanitizer = 0x6eBFeB1DECeE6Ef24fc7d9bd2360E87f75b29f0B; 
+    address public primeGoldenGooseTeller = 0x4ecC202775678F7bCfF8350894e2F2E3167Cc3Df;
 
     function setUp() external {}
 
@@ -31,22 +32,35 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
     }
 
     function generateMerkleRoot() public {
+        // Force mainnet fork
+        vm.createSelectFork(vm.envString("MAINNET_RPC_URL"));
+        
         setSourceChainName(mainnet);
         setAddress(false, mainnet, "boringVault", boringVault);
         setAddress(false, mainnet, "managerAddress", managerAddress);
         setAddress(false, mainnet, "accountantAddress", accountantAddress);
         setAddress(false, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        setAddress(false, mainnet, "primeGoldenGooseTeller", primeGoldenGooseTeller);
 
         ManageLeaf[] memory leafs = new ManageLeaf[](256);
+
+        // ========================== Teller ==========================
+        // Enable bulkDeposit and bulkWithdraw on Prime Golden Goose vault
+        ERC20[] memory tellerAssets = new ERC20[](2);
+        tellerAssets[0] = getERC20(sourceChain, "WETH");
+        tellerAssets[1] = getERC20(sourceChain, "WSTETH");
+        _addTellerLeafs(leafs, getAddress(sourceChain, "primeGoldenGooseTeller"), tellerAssets, false, true);
 
         // ========================== Native Wrapping ==========================
         _addNativeLeafs(leafs);
 
         // ========================== Standard Bridge ==========================
-        ERC20[] memory localTokens = new ERC20[](1);
-        ERC20[] memory remoteTokens = new ERC20[](1);
+        ERC20[] memory localTokens = new ERC20[](2);
+        ERC20[] memory remoteTokens = new ERC20[](2);
         localTokens[0] = getERC20(sourceChain, "WETH");
         remoteTokens[0] = getERC20(unichain, "WETH");
+        localTokens[1] = getERC20(sourceChain, "WSTETH");
+        remoteTokens[1] = getERC20(unichain, "WSTETH");
 
         _addStandardBridgeLeafs(
             leafs,
@@ -68,6 +82,9 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
             getAddress(sourceChain, "unichainPortal")
         );
 
+        // ========================== Layer Zero ==========================
+        _addLayerZeroLeafNative(leafs, getAddress(sourceChain, "stargateNative"), layerZeroUnichainEndpointId, getBytes32(sourceChain, "boringVault"));
+
         // ========================== Merkl ==========================
         ERC20[] memory tokensToClaim = new ERC20[](1);
         tokensToClaim[0] = getERC20(sourceChain, "UNI");
@@ -77,6 +94,28 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
             getAddress(sourceChain, "dev1Address"),
             tokensToClaim
         );
+
+        // ========================== Morpho ==========================
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_945"));
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_965"));
+
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_945"));
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WSTETH_WETH_965"));
+
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "steakhouseETH")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHPrime")));
+
+        // ========================== Euler ==========================
+        {
+            ERC4626[] memory depositVaults = new ERC4626[](2);
+            depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerPrimeWETH"));
+            depositVaults[1] = ERC4626(getAddress(sourceChain, "evkWSTETH"));
+
+            address[] memory subaccounts = new address[](1);
+            subaccounts[0] = address(boringVault);
+
+            _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+        }
 
         // ========================== Uniswap V4 ==========================
         {
@@ -129,6 +168,7 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
             assets[2] = getAddress(sourceChain, "UNI");
             kind[2] = SwapKind.Sell;
 
+
             _addOdosSwapLeafs(leafs, assets, kind);
 
         // =========================== 1Inch ==========================
@@ -137,8 +177,18 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Balancer ==========================
         _addBalancerV3Leafs(
+            leafs, getAddress(sourceChain, "balancerV3_Surge_Fluid_wstETH-wETH_boosted"), true, getAddress(sourceChain, "balancerV3_Surge_Fluid_wstETH-wETH_boosted_gauge")
+        );
+        _addBalancerV3Leafs(
             leafs, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted"), true, getAddress(sourceChain, "balancerV3_WETH_WSTETH_boosted_gauge")
         );
+
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fWETH"));
+        _addFluidFTokenLeafs(leafs, getAddress(sourceChain, "fWSTETH"));
+
+        // ========================== Balancer Flash Loans ==========================
+        _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "WETH"));
+        _addBalancerFlashloanLeafs(leafs, getAddress(sourceChain, "WSTETH"));
 
         // =========================== Fluid Dex ==========================
         {
