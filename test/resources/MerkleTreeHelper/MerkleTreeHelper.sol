@@ -1479,7 +1479,8 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
     function _addScrollNativeBridgeLeafs(
         ManageLeaf[] memory leafs,
         string memory destination,
-        ERC20[] memory localTokens
+        ERC20[] memory localTokens,
+        address[] memory scrollGateways
     ) internal {
         if (keccak256(abi.encode(sourceChain)) == keccak256(abi.encode(mainnet))) {
             // Add leaf for bridging ETH.
@@ -1496,7 +1497,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
 
-            // Add leafs for bridging ERC20s.
+            // Add leafs for bridging and claiming ERC20s.
             for (uint256 i; i < localTokens.length; ++i) {
                 unchecked {
                     leafIndex++;
@@ -1524,6 +1525,22 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
                 );
                 leafs[leafIndex].argumentAddresses[0] = address(localTokens[i]);
                 leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+                address mainnetGateway = IScrollGateway(getAddress(sourceChain, "scrollGatewayRouter")).getERC20Gateway(address(localTokens[i]));
+                // Add leaf for ERC20 claiming.
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    getAddress(sourceChain, "scrollMessenger"),
+                    false,
+                    "relayMessageWithProof(address,address,uint256,uint256,bytes,(uint256,bytes))",
+                    new address[](2),
+                    string.concat("Claim ", localTokens[i].symbol(), " from ", destination, " to ", sourceChain),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = scrollGateways[i];
+                leafs[leafIndex].argumentAddresses[1] = mainnetGateway;
             }
 
             // Add leaf for claiming ETH.
@@ -1540,21 +1557,6 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
             leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
-
-            // Add leaf for ERC20 claiming.
-            unchecked {
-                leafIndex++;
-            }
-            leafs[leafIndex] = ManageLeaf(
-                getAddress(sourceChain, "scrollMessenger"),
-                false,
-                "relayMessageWithProof(address,address,uint256,uint256,bytes,(uint256,bytes))",
-                new address[](2),
-                string.concat("Claim ERC20s from ", destination, " to ", sourceChain),
-                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
-            );
-            leafs[leafIndex].argumentAddresses[0] = getAddress(destination, "scrollCustomERC20Gateway");
-            leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "scrollCustomERC20Gateway");
         } else if (keccak256(abi.encode(sourceChain)) == keccak256(abi.encode(scroll))) {
             // Add leafs for withdrawing ETH.
             unchecked {
