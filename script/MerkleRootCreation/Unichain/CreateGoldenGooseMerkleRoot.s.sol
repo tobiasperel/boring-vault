@@ -19,7 +19,8 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xef417FCE1883c6653E7dC6AF7c6F85CCDE84Aa09;
     address public managerAddress = 0x5F341B1cf8C5949d6bE144A725c22383a5D3880B;
     address public accountantAddress = 0xc873F2b7b3BA0a7faA2B56e210E3B965f2b618f5;
-    address public rawDataDecoderAndSanitizer = 0x465e08AEFFbD697Af5e279AE54Aa4b476a9294f7; 
+    address public rawDataDecoderAndSanitizer = 0x6eBFeB1DECeE6Ef24fc7d9bd2360E87f75b29f0B; 
+    address public primeGoldenGooseTeller = 0x4ecC202775678F7bCfF8350894e2F2E3167Cc3Df;
 
     function setUp() external {}
 
@@ -27,6 +28,8 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
      * @notice Uncomment which script you want to run.
      */
     function run() external {
+        vm.createSelectFork(vm.envString("UNICHAIN_RPC_URL"));
+        setSourceChainName("unichain"); 
         generateMerkleRoot();
     }
 
@@ -36,8 +39,16 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
         setAddress(false, unichain, "managerAddress", managerAddress);
         setAddress(false, unichain, "accountantAddress", accountantAddress);
         setAddress(false, unichain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
+        setAddress(false, unichain, "primeGoldenGooseTeller", primeGoldenGooseTeller);
 
-        ManageLeaf[] memory leafs = new ManageLeaf[](64);
+        ManageLeaf[] memory leafs = new ManageLeaf[](128);
+
+         // ========================== Teller ==========================
+        // Enable bulkDeposit and bulkWithdraw on Prime Golden Goose vault
+        ERC20[] memory tellerAssets = new ERC20[](2);
+        tellerAssets[0] = getERC20(sourceChain, "WETH");
+        tellerAssets[1] = getERC20(sourceChain, "WSTETH");
+        _addTellerLeafs(leafs, getAddress(sourceChain, "primeGoldenGooseTeller"), tellerAssets, false, true);
 
         // ========================== Native Wrapping ==========================
         _addNativeLeafs(leafs);
@@ -67,6 +78,9 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
             address(0)
         );
 
+        // ========================== Layer Zero ==========================
+        _addLayerZeroLeafNative(leafs, getAddress(sourceChain, "stargateNative"), layerZeroMainnetEndpointId, getBytes32(sourceChain, "boringVault"));
+
         // ========================== Uniswap V4 ==========================
         address[] memory hooks = new address[](1);
         address[] memory token0 = new address[](1);
@@ -81,22 +95,45 @@ contract CreateGoldenGooseMerkleRoot is Script, MerkleTreeHelper {
             token0,
             token1,
             hooks
-        );
+        ); 
+        
+         // =========================== Odos ==========================
+        {
+            address[] memory assets = new address[](2);
+            SwapKind[] memory kind = new SwapKind[](2);
+            assets[0] = getAddress(sourceChain, "WETH");
+            kind[0] = SwapKind.BuyAndSell;
+            assets[1] = getAddress(sourceChain, "WSTETH");
+            kind[1] = SwapKind.BuyAndSell;
 
-        // ========================== Euler ==========================
-        ERC4626[] memory depositVaults = new ERC4626[](1);
-        depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerwstETHmarket"));
 
-        address[] memory subaccounts = new address[](1);
-        subaccounts[0] = getAddress(sourceChain, "boringVault");
+            _addOdosSwapLeafs(leafs, assets, kind);
 
-        _addEulerDepositLeafs(leafs, depositVaults, subaccounts);        
+        // =========================== 1Inch ==========================
+            _addLeafsFor1InchGeneralSwapping(leafs, assets, kind);
+        }
 
         // ========================== Morpho ==========================
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "morphowstETHmarket"));
         _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "morphowstETHmarket"));
 
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "morphoSmokehouseWSTETH")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "morphoSteakhouseETH")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "morphoK3CapitalETHMaxi")));
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "morphoGauntletWETH")));
+
+        // ========================== Euler ==========================
+        {
+            ERC4626[] memory depositVaults = new ERC4626[](2);
+            depositVaults[0] = ERC4626(getAddress(sourceChain, "eulerWETH"));
+            depositVaults[1] = ERC4626(getAddress(sourceChain, "eulerwstETHmarket"));
+
+            address[] memory subaccounts = new address[](2);
+            subaccounts[0] = address(boringVault);
+            subaccounts[1] = address(boringVault);
+
+            _addEulerDepositLeafs(leafs, depositVaults, subaccounts);
+        }
 
         // ========================== Verify & Generate ==========================
 

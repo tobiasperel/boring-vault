@@ -168,6 +168,7 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[4] = getERC20(sourceChain, "BTCN");
             
             _addTellerLeafs(leafs, getAddress(sourceChain, "sBTCNTeller"), tellerAssets, false, true);
+            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "sBTCNWithdrawQueue"), getAddress(sourceChain, "sBTCN"), tellerAssets); 
         }
 
         {
@@ -175,6 +176,7 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             sonicBTCTellerAssets[0] = getERC20(sourceChain, "LBTC");
             sonicBTCTellerAssets[1] = getERC20(sourceChain, "EBTC");
             _addTellerLeafs(leafs, getAddress(sourceChain, "sonicLBTCTeller"), sonicBTCTellerAssets, false, true);
+            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "sonicLBTCWithdrawQueue"), getAddress(sourceChain, "sonicLBTC"), sonicBTCTellerAssets); 
         }
 
         {
@@ -183,6 +185,14 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
             tacLBTCvTellerAssets[1] = getERC20(sourceChain, "cbBTC");
             _addTellerLeafs(leafs, getAddress(sourceChain, "tacLBTCvTeller"), tacLBTCvTellerAssets, false, true); //no native leaves, yes bulk actions
             _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "tacLBTCvWithdrawQueue"), getAddress(sourceChain, "tacLBTCv"), tacLBTCvTellerAssets);  
+        }
+
+        {
+            ERC20[] memory katanaLBTCvTellerAssets = new ERC20[](2);
+            katanaLBTCvTellerAssets[0] = getERC20(sourceChain, "LBTC");
+            katanaLBTCvTellerAssets[1] = getERC20(sourceChain, "EBTC");
+            _addTellerLeafs(leafs, getAddress(sourceChain, "katanaLBTCTeller"), katanaLBTCvTellerAssets, false, true); //no native leaves, yes bulk actions
+            _addWithdrawQueueLeafs(leafs, getAddress(sourceChain, "katanaLBTCWithdrawQueue"), getAddress(sourceChain, "katanaLBTC"), katanaLBTCvTellerAssets);  
         }
 
         // ========================== Pendle ==========================
@@ -197,6 +207,7 @@ contract CreateLombardMerkleRootScript is Script, MerkleTreeHelper {
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_market_06_25_25"), true); 
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_market_06_25_25"), true); 
         _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_eBTC_market_06_25_25"), true); 
+        _addPendleMarketLeafs(leafs, getAddress(sourceChain, "pendle_LBTC_market_12_17_25"), true); 
 
         // ========================== MorphoBlue ==========================
         _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "LBTC_WBTC_945"));
