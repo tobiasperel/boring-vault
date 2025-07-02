@@ -1652,6 +1652,11 @@ contract ChainValues {
         values[arbitrum]["camelotRouterV3"] = 0x1F721E2E82F6676FCE4eA07A5958cF098D339e18.toBytes32();
         values[arbitrum]["camelotNonFungiblePositionManager"] = 0x00c7f3082833e796A5b3e4Bd59f6642FF44DCD15.toBytes32();
 
+
+        // AlgebraV4 / CamelotV4
+        values[arbitrum]["algebraV4Router"] = 0xa555826C9a26E13238F657dB06E0A02431839Ef5.toBytes32();
+        values[arbitrum]["algebraNonFungiblePositionManager"] = 0x368435A76B1a855D054D3CDf4c20f5E0B2bABBC8.toBytes32();
+
         // Compound V3
         values[arbitrum]["cWETHV3"] = 0x6f7D514bbD4aFf3BcD1140B7344b32f063dEe486.toBytes32();
         values[arbitrum]["cometRewards"] = 0x88730d254A2f7e6AC8388c3198aFd694bA9f7fae.toBytes32();

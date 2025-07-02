@@ -4024,6 +4024,216 @@ contract MerkleTreeHelper is CommonBase, ChainValues, Test {
         );
     }
 
+    // ========================================= Algebra V4 / Camelot V4 =========================================
+    
+    function _addAlgebraV4Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1, address deployer) internal {
+        require(token0.length == token1.length, "Token arrays must be of equal length");
+        for (uint256 i; i < token0.length; ++i) {
+            (token0[i], token1[i]) = token0[i] < token1[i] ? (token0[i], token1[i]) : (token1[i], token0[i]);
+            // Approvals
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "algebraNonFungiblePositionManager"
+                )]
+            ) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    token0[i],
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve AlgebraV4 NonFungible Position Manager to spend ", ERC20(token0[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "algebraNonFungiblePositionManager");
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "algebraNonFungiblePositionManager"
+                )] = true;
+            }
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "algebraNonFungiblePositionManager"
+                )]
+            ) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    token1[i],
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve AlgebraV4 NonFungible Position Manager to spend ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "algebraNonFungiblePositionManager");
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "algebraNonFungiblePositionManager"
+                )] = true;
+            }
+
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "algebraV4Router"
+                )]
+            ) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    token0[i],
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve AlgebraV4 Router to spend ", ERC20(token0[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "algebraV4Router");
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token0[i]][getAddress(
+                    sourceChain, "algebraV4Router"
+                )] = true;
+            }
+            if (
+                !ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "algebraV4Router"
+                )]
+            ) {
+                unchecked {
+                    leafIndex++;
+                }
+                leafs[leafIndex] = ManageLeaf(
+                    token1[i],
+                    false,
+                    "approve(address,uint256)",
+                    new address[](1),
+                    string.concat("Approve AlgebraV4 Router to spend ", ERC20(token1[i]).symbol()),
+                    getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+                );
+                leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "algebraV4Router");
+                ownerToTokenToSpenderToApprovalInTree[getAddress(sourceChain, "boringVault")][token1[i]][getAddress(
+                    sourceChain, "algebraV4Router"
+                )] = true;
+            }
+
+            // Minting
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "algebraNonFungiblePositionManager"),
+                false,
+                "mint((address,address,address,int24,int24,uint256,uint256,uint256,uint256,address,uint256))",
+                new address[](4),
+                string.concat("Mint AlgebraV4 ", ERC20(token0[i]).symbol(), " ", ERC20(token1[i]).symbol(), " position"),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = token0[i];
+            leafs[leafIndex].argumentAddresses[1] = token1[i];
+            leafs[leafIndex].argumentAddresses[2] = deployer;
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+            // Increase liquidity
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "algebraNonFungiblePositionManager"),
+                false,
+                "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))",
+                new address[](5),
+                string.concat(
+                    "Add liquidity to AlgebraV4 ",
+                    ERC20(token0[i]).symbol(),
+                    " ",
+                    ERC20(token1[i]).symbol(),
+                    " position"
+                ),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = address(0);
+            leafs[leafIndex].argumentAddresses[1] = token0[i];
+            leafs[leafIndex].argumentAddresses[2] = token1[i];
+            leafs[leafIndex].argumentAddresses[3] = deployer; 
+            leafs[leafIndex].argumentAddresses[4] = getAddress(sourceChain, "boringVault");
+
+            // Swapping to move tick in pool.
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "algebraV4Router"),
+                false,
+                "exactInput((bytes,address,uint256,uint256,uint256))",
+                new address[](4),
+                string.concat(
+                    "Swap ", ERC20(token0[i]).symbol(), " for ", ERC20(token1[i]).symbol(), " using AlgebraV4 router"
+                ),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = token0[i];
+            leafs[leafIndex].argumentAddresses[1] = deployer; 
+            leafs[leafIndex].argumentAddresses[2] = token1[i];
+            leafs[leafIndex].argumentAddresses[3] = getAddress(sourceChain, "boringVault");
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                getAddress(sourceChain, "algebraV4Router"),
+                false,
+                "exactInput((bytes,address,uint256,uint256,uint256))",
+                new address[](3),
+                string.concat(
+                    "Swap ", ERC20(token1[i]).symbol(), " for ", ERC20(token0[i]).symbol(), " using AlgebraV4 router"
+                ),
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = token1[i];
+            leafs[leafIndex].argumentAddresses[1] = token0[i];
+            leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault");
+        }
+        // Decrease liquidity
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "algebraNonFungiblePositionManager"),
+            false,
+            "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256))",
+            new address[](1),
+            "Remove liquidity from AlgebraV4 position",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "algebraNonFungiblePositionManager"),
+            false,
+            "collect((uint256,address,uint128,uint128))",
+            new address[](2),
+            "Collect fees from AlgebraV4 position",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+        // burn
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            getAddress(sourceChain, "algebraNonFungiblePositionManager"),
+            false,
+            "burn(uint256)",
+            new address[](0),
+            "Burn AlgebraV4 position",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+    }
+
     // ========================================= Balancer V2 Flashloans =========================================
 
     function _addBalancerFlashloanLeafs(ManageLeaf[] memory leafs, address tokenToFlashloan) internal {
