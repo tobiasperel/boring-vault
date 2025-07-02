@@ -390,7 +390,7 @@ contract DecoderCustomTypes {
         bytes merkleProof;
     }
 
-    // ========================================= Camelot V3 =========================================
+    // ========================================= Camelot V3 / Algebra V3  =========================================
 
     struct CamelotMintParams {
         address token0;
@@ -404,6 +404,23 @@ contract DecoderCustomTypes {
         address recipient;
         uint256 deadline;
     }
+
+    // ========================================= Algebra V4 =========================================
+    
+    struct AlgebraMintParams {
+        address token0;
+        address token1;
+        address deployer;
+        int24 tickLower;
+        int24 tickUpper;
+        uint256 amount0Desired;
+        uint256 amount1Desired;
+        uint256 amount0Min;
+        uint256 amount1Min;
+        address recipient;
+        uint256 deadline;
+    }
+
     // ========================================= Velodrome V3 =========================================
 
     struct VelodromeMintParams {
@@ -545,6 +562,13 @@ contract DecoderCustomTypes {
         uint256 lvlusd_amount;
     }    
 
+    struct LevelOrderV2 {
+        address beneficiary;
+        address collateral_asset;
+        uint256 collateral_amount;
+        uint256 min_lvlusd_amount;
+    }
+
     struct Route {
         address[] addresses;
         uint256[] ratios;
@@ -645,6 +669,19 @@ contract DecoderCustomTypes {
         uint256 minAssetsWithdrawn;
         uint256 collIndex;
         bool unwrap;
+    }
+
+    struct AddCollParams {
+        address upperHint;
+        address lowerHint;
+        uint256 minSharesOut;
+        uint256 minCollVaultShares;
+    }
+
+    struct ExternalRebalanceParams {
+        address swapper;
+        bytes payload;
+        uint256 minRebalanceOut;
     }
 }
 

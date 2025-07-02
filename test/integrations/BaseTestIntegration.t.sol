@@ -54,6 +54,7 @@ contract BaseTestIntegration is Test, MerkleTreeHelper {
         nameToRPC["bsc"] = "BNB_RPC_URL"; 
         nameToRPC["swell"] = "SWELL_CHAIN_RPC_URL"; 
         nameToRPC["derive"] = "DERIVE_RPC_URL"; 
+        nameToRPC["avalanche"] = "AVALANCHE_RPC_URL"; 
     }
     
     function _setupChain(string memory chain, uint256 blockNumber) internal {
@@ -61,8 +62,9 @@ contract BaseTestIntegration is Test, MerkleTreeHelper {
         setSourceChainName(chain);
         // Setup forked environment.
         string memory rpcKey = nameToRPC[chain]; 
-
         _startFork(rpcKey, blockNumber);
+
+        console.log(chain); 
 
         boringVault = new BoringVault(address(this), "Boring Vault", "BV", 18);
 
@@ -70,8 +72,7 @@ contract BaseTestIntegration is Test, MerkleTreeHelper {
             new ManagerWithMerkleVerification(address(this), address(boringVault), getAddress(sourceChain, "vault"));
 
         rawDataDecoderAndSanitizer = address(
-            new EtherFiLiquidDecoderAndSanitizer(getAddress(sourceChain, "uniswapV3NonFungiblePositionManager"))
-        );
+            new EtherFiLiquidDecoderAndSanitizer(address(0)));
 
         setAddress(false, sourceChain, "boringVault", address(boringVault));
         setAddress(false, sourceChain, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);

@@ -35,7 +35,7 @@ contract DeployDrone is Script, ContractNames, Test {
 
         creationCode = type(BoringDrone).creationCode;
         constructorArgs = abi.encode(boringVault, 0);
-        deployer.deployContract("liquidUSD Boring Drone 0", creationCode, constructorArgs, 0);
+        deployer.deployContract("liquidUSD Boring Drone 1", creationCode, constructorArgs, 0);
     }
 
 }

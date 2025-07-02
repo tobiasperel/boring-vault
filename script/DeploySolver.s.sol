@@ -17,18 +17,18 @@ import "forge-std/Test.sol";
  */
 contract DeploySolver is Script, ContractNames, Test {
     uint256 public privateKey;
-    
-    Deployer deployer = Deployer(0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d);
 
-    address owner = 0xf8553c8552f906C19286F21711721E206EE4909E;
-    address auth = 0xED8C9A514eB81124e370015878ea1fB3fEF18158;
-    address queue = 0x84D988bA2f2838f6ccF61fDE77fe3EB70dFE284f;
+    Deployer deployer = Deployer(0x00bF0B30655a43Af93c1b371Be021Bd4567c51d5);
+
+    address owner = 0x0000000000000000000000000000000000000000;
+    address auth = 0x2B9A752B7407D37A16A089c2A28d39d08EdB108D;
+    address queue = 0x6F226E8a684e8d8b70C938BE2aB3087fFeAFd8EA;
+    bool excessToSolverNonSelfSolve = true;
 
     function setUp() external {
-        privateKey = vm.envUint("BORING_DEVELOPER");
+        privateKey = vm.envUint("PLASMA_DEPLOYER_KEY");
         vm.createSelectFork("mainnet");
     }
-
 
     function run() external {
         bytes memory constructorArgs;
@@ -37,7 +37,7 @@ contract DeploySolver is Script, ContractNames, Test {
 
         creationCode = type(BoringSolver).creationCode;
 
-        constructorArgs = abi.encode(owner, auth, queue);
-        deployer.deployContract("HyperUSD Boring Solver 0.1", creationCode, constructorArgs, 0);
+        constructorArgs = abi.encode(owner, auth, queue, excessToSolverNonSelfSolve);
+        deployer.deployContract("Plasma USD Vault Boring Solver V0.2", creationCode, constructorArgs, 0);
     }
 }

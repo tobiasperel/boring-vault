@@ -6,6 +6,7 @@ import {Strings} from "lib/openzeppelin-contracts/contracts/utils/Strings.sol";
 import {ERC4626} from "@solmate/tokens/ERC4626.sol";
 import {ManagerWithMerkleVerification} from "src/base/Roles/ManagerWithMerkleVerification.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
+import {SonicVaultDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/SonicVaultDecoderAndSanitizer.sol";
 import "forge-std/Script.sol";
 
 /**
@@ -17,9 +18,7 @@ contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
     address public boringVault = 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE;
     address public managerAddress = 0x76fda7A02B616070D3eC5902Fa3C5683AC3cB8B6;
     address public accountantAddress = 0xA76E0F54918E39A63904b51F688513043242a0BE;
-    address public rawDataDecoderAndSanitizer = 0xf99Ee09014D2f1B5FEFC3874a186fc9C5aB180c1; 
-
-    function setUp() external {}
+    address public rawDataDecoderAndSanitizer = 0x0B0175c243157F62D308a15fDB43C5bDFb926153; 
 
     /**
      * @notice Uncomment which script you want to run.
@@ -77,6 +76,9 @@ contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         }
 
+        // ========================== Silo Vault ==========================
+        _addSiloVaultLeafs(leafs, getAddress(sourceChain, "silo_USDC_vault"));
+
          // ========================== Odos ==========================
          address[] memory tokens = new address[](5);
          SwapKind[] memory kind = new SwapKind[](5);
@@ -105,6 +107,9 @@ contract CreateSonicUSDMerkleRoot is Script, MerkleTreeHelper {
 
         // ========================== Native Wrapping ==========================
         _addNativeLeafs(leafs, getAddress(sourceChain, "wS")); //to pay for bridge fees
+
+        // ========================== CCTP ==========================
+        _addCCTPBridgeLeafs(leafs, uint32(0));
 
          // ========================== Verify ==========================
         _verifyDecoderImplementsLeafsFunctionSelectors(leafs);

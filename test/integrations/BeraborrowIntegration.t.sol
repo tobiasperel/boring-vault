@@ -10,7 +10,13 @@ import {ERC4626DecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protoco
 contract FullBeraborrowDecoderAndSanitizer is BeraborrowDecoderAndSanitizer {}
         
 
-contract BeraborrowIntegrationTes is BaseTestIntegration {
+contract BeraborrowIntegrationTest is BaseTestIntegration {
+
+    struct ExecuteWithdrawalParams {
+        uint256 epoch;
+        address upperHint;
+        address lowerHint;
+    }
 
     function _setUpBerachain() internal {
         super.setUp(); 
@@ -21,12 +27,20 @@ contract BeraborrowIntegrationTes is BaseTestIntegration {
         _overrideDecoder(beraborrowDecoder); 
     }
 
+    function _setUpBerachainLater() internal {
+        super.setUp(); 
+        _setupChain("berachain", 5393637); 
+            
+        address beraborrowDecoder = address(new FullBeraborrowDecoderAndSanitizer()); 
+
+        _overrideDecoder(beraborrowDecoder); 
+    }
+
 
     function testBeraborrowIntegration() external {
         _setUpBerachain();  
-        
 
-        deal(getAddress(sourceChain, "WETH"), address(boringVault), 100e18); 
+        deal(getAddress(sourceChain, "WETH"), address(boringVault), 100e18);
         
         ManageLeaf[] memory leafs = new ManageLeaf[](8);
         
@@ -40,12 +54,11 @@ contract BeraborrowIntegrationTes is BaseTestIntegration {
         address[] memory denManagers = new address[](1);   
         denManagers[0] = getAddress(sourceChain, "WETHDenManager");   
 
-        _addBeraborrowLeafs(leafs, collateralVaults, denManagers, false); 
-
+        _addBeraborrowLeafs(leafs, collateralVaults, denManagers, false);
 
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
 
-        _generateTestLeafs(leafs, manageTree);
+        //_generateTestLeafs(leafs, manageTree);
 
         manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
 
@@ -160,4 +173,174 @@ contract BeraborrowIntegrationTes is BaseTestIntegration {
         _submitManagerCall(manageProofs, tx_); 
 
     }
+
+    function testBeraborrowManagedVaultIntegration() external {
+        _setUpBerachainLater();  
+        
+        deal(getAddress(sourceChain, "WBTC"), address(boringVault), 10e8);
+        
+        ManageLeaf[] memory leafs = new ManageLeaf[](4);
+
+        address[] memory managedVaults = new address[](1);
+        managedVaults[0] = getAddress(sourceChain, "bbWBTCManagedVault");
+        _addBeraborrowManagedVaultLeafs(leafs, managedVaults);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //_generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+
+        Tx memory tx_ = _getTxArrays(4); //approve collat, approve nectar, open, close
+
+        tx_.manageLeafs[0] = leafs[0];  //approve
+        tx_.manageLeafs[1] = leafs[1];  //deposit
+        tx_.manageLeafs[2] = leafs[2];  //redeemIntent
+        tx_.manageLeafs[3] = leafs[3];  //cancelWithdrawalIntent
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+
+        tx_.targets[0] = getAddress(sourceChain, "WBTC"); //approve 
+        tx_.targets[1] = getAddress(sourceChain, "bbWBTCManagedVault"); //deposit 
+        tx_.targets[2] = getAddress(sourceChain, "bbWBTCManagedVault"); //redeemIntent
+        tx_.targets[3] = getAddress(sourceChain, "bbWBTCManagedVault"); //cancelWithdrawalIntent
+
+
+        DecoderCustomTypes.AddCollParams memory addCollParams = DecoderCustomTypes.AddCollParams(
+            address(0),
+            address(0),
+            0,
+            0
+        );
+
+
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "bbWBTCManagedVault"), type(uint256).max
+        );
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "deposit(uint256,address,(address,address,uint256,uint256))", 10e8, address(boringVault), addCollParams
+        );
+        tx_.targetData[2] = abi.encodeWithSignature(
+            "redeemIntent(uint256,address,address)", 10e8, address(boringVault), address(boringVault)
+        );
+        tx_.targetData[3] = abi.encodeWithSignature(
+            "cancelWithdrawalIntent(uint256,uint256,address)", 1941935, 10e8, address(boringVault)
+        );
+
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[3] = rawDataDecoderAndSanitizer;
+
+        _submitManagerCall(manageProofs, tx_); 
+
+    }
+
+    function testBeraborrowManagedVaultIntegrationWithdrawFromEpoch() external {
+        _setUpBerachainLater();  
+        
+        deal(getAddress(sourceChain, "WBTC"), address(boringVault), 10e8);
+        
+        ManageLeaf[] memory leafs = new ManageLeaf[](8);
+
+        address[] memory managedVaults = new address[](1);
+        managedVaults[0] = getAddress(sourceChain, "bbWBTCManagedVault");
+        _addBeraborrowManagedVaultLeafs(leafs, managedVaults);
+
+        bytes32[][] memory manageTree = _generateMerkleTree(leafs);
+
+        //_generateTestLeafs(leafs, manageTree);
+
+        manager.setManageRoot(address(this), manageTree[manageTree.length - 1][0]);
+
+
+        Tx memory tx_ = _getTxArrays(3); //approve collat, approve nectar, open, close
+
+        tx_.manageLeafs[0] = leafs[0];  //approve
+        tx_.manageLeafs[1] = leafs[1];  //deposit
+        tx_.manageLeafs[2] = leafs[2];  //redeemIntent
+
+        bytes32[][] memory manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+
+        tx_.targets[0] = getAddress(sourceChain, "WBTC"); //approve 
+        tx_.targets[1] = getAddress(sourceChain, "bbWBTCManagedVault"); //deposit 
+        tx_.targets[2] = getAddress(sourceChain, "bbWBTCManagedVault"); //redeemIntent
+
+
+        DecoderCustomTypes.AddCollParams memory addCollParams = DecoderCustomTypes.AddCollParams(
+            address(0),
+            address(0),
+            0,
+            0
+        );
+
+
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "approve(address,uint256)", getAddress(sourceChain, "bbWBTCManagedVault"), type(uint256).max
+        );
+        tx_.targetData[1] = abi.encodeWithSignature(
+            "deposit(uint256,address,(address,address,uint256,uint256))", 10e8, address(boringVault), addCollParams
+        );
+        tx_.targetData[2] = abi.encodeWithSignature(
+            "redeemIntent(uint256,address,address)", 10e8, address(boringVault), address(boringVault)
+        );
+
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[1] = rawDataDecoderAndSanitizer;
+        tx_.decodersAndSanitizers[2] = rawDataDecoderAndSanitizer;
+
+        _submitManagerCall(manageProofs, tx_); 
+        
+        skip(2 days); 
+
+        //IBeraBorrow.ExecuteWithdrawalParams memory p = IBeraBorrow.ExecuteWithdrawalParams(
+        //    1942223,
+        //    address(0),
+        //    address(0)
+        //); 
+
+        //vm.prank(0xCE7d3fd53C0510325B3CEbB96298522e6c538753); 
+        //IBeraBorrow(getAddress(sourceChain, "bbWBTCManagedVault")).executeWithdrawalEpoch(p); 
+
+        tx_ = _getTxArrays(1); //approve collat, approve nectar, open, close
+
+        tx_.manageLeafs[0] = leafs[4];  //redeemFromEpoch
+
+        manageProofs = _getProofsUsingTree(tx_.manageLeafs, manageTree);
+
+        tx_.targets[0] = getAddress(sourceChain, "bbWBTCManagedVault"); //deposit 
+
+        DecoderCustomTypes.ExternalRebalanceParams memory params = DecoderCustomTypes.ExternalRebalanceParams(
+            getAddress(sourceChain, "collVaultUnwrapper"),  
+            "",
+            0
+        ); 
+
+        tx_.targetData[0] = abi.encodeWithSignature(
+            "withdrawFromEpoch(uint256,address,(address,bytes,uint256))",
+            10e8,
+            address(boringVault), 
+            params   
+        );
+
+        tx_.decodersAndSanitizers[0] = rawDataDecoderAndSanitizer;
+        
+        vm.expectRevert(); //custom error 0x746fe1ff (NotReported()) due to vault needing to be removed by admins 
+        _submitManagerCall(manageProofs, tx_); 
+        
+    }
+}
+
+interface IBeraBorrow{
+    
+    struct ExecuteWithdrawalParams {
+        uint256 epoch;
+        address upperHint;
+        address lowerHint;
+    }
+
+    function executeWithdrawalEpoch(ExecuteWithdrawalParams calldata params) external; 
 }

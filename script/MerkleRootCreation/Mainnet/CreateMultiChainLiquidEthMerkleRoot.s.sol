@@ -15,10 +15,11 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
     using FixedPointMathLib for uint256;
 
     address public boringVault = 0xf0bb20865277aBd641a307eCe5Ee04E79073416C;
-    address public rawDataDecoderAndSanitizer = 0x2b38cF84736E4C7C47Eaa3a2d443881F807337e0;
+    address public rawDataDecoderAndSanitizer = 0x95C7D09e431D37B90ACEE59340a8aD2b7542b3F1;
     address public managerAddress = 0x227975088C28DBBb4b421c6d96781a53578f19a8;
     address public accountantAddress = 0x0d05D94a5F1E76C18fbeB7A13d17C8a314088198;
     address public pancakeSwapDataDecoderAndSanitizer = 0xfdC73Fc6B60e4959b71969165876213918A443Cd;
+    address public scrollBridgeDecoderAndSanitizer = 0xA66a6B289FB5559b7e4ebf598B8e0A97C776c200; 
     address public itbDecoderAndSanitizer = 0xEEb53299Cb894968109dfa420D69f0C97c835211;
     address public itbAaveDecoderAndSanitizer = 0x7fA5dbDB1A76d2990Ea0f3c74e520E3fcE94748B;
     address public itbReserveProtocolPositionManager = 0x778aC5d0EE062502fADaa2d300a51dE0869f7995;
@@ -96,6 +97,9 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
          * weETH/wETH  86.00 LLTV market 0x698fe98247a40c5771537b5786b2f3f9d78eb487b4ce4d75533cd0e94d88a115
          */
         _addMorphoBlueSupplyLeafs(leafs, 0x698fe98247a40c5771537b5786b2f3f9d78eb487b4ce4d75533cd0e94d88a115);
+        _addMorphoBlueSupplyLeafs(leafs, getBytes32(sourceChain, "WEETH_WETH_915"));
+
+        _addMorphoBlueCollateralLeafs(leafs, getBytes32(sourceChain, "WEETH_WETH_915"));
 
         // ========================== Meta Morpho ==========================
         _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "gauntletWETHPrime")));
@@ -324,7 +328,34 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
             tellerAssets[12] = getERC20(sourceChain, "RSETH");
             address kingKarakTeller = 0x929B44db23740E65dF3A81eA4aAB716af1b88474;
             _addTellerLeafs(leafs, kingKarakTeller, tellerAssets, false, true);
+
+            tellerAssets = new ERC20[](5);
+            tellerAssets[0] = getERC20(sourceChain, "STETH");
+            tellerAssets[1] = getERC20(sourceChain, "WSTETH");
+            tellerAssets[2] = getERC20(sourceChain, "WETH");
+            tellerAssets[3] = getERC20(sourceChain, "WEETH");
+            tellerAssets[4] = getERC20(sourceChain, "EETH");
+            address liquidKatanaETHTeller = 0x739A1efFaDDB0b07ef1284598819232df4FD8d16;
+            _addTellerLeafs(leafs, liquidKatanaETHTeller, tellerAssets, true, true);
+
+            address liquidKatanaWithdrawQueue = 0x52E523B849c584F86bF460A3cF2962b118Ce2506; 
+            address liquidKatana = 0x69d210d3b60E939BFA6E87cCcC4fAb7e8F44C16B; 
+            _addWithdrawQueueLeafs(leafs, liquidKatanaWithdrawQueue, liquidKatana, tellerAssets);    
         }
+
+        {
+            ERC20[] memory tellerAssets = new ERC20[](5);
+            tellerAssets[0] = getERC20(sourceChain, "WETH");
+            tellerAssets[1] = getERC20(sourceChain, "EETH");
+            tellerAssets[2] = getERC20(sourceChain, "WEETH");
+            tellerAssets[3] = getERC20(sourceChain, "WSTETH");
+            tellerAssets[4] = getERC20(sourceChain, "STETH");
+            address liquidBeraETHTeller = 0xd445C65e4821dbD4ed0114eCDF6325c69faD7653;
+            _addTellerLeafs(leafs, liquidBeraETHTeller, tellerAssets, true, true);
+        }
+
+        // ========================== Yearn ==========================
+        _addERC4626Leafs(leafs, ERC4626(getAddress(sourceChain, "yKatanaPredepositWETH")));  
 
         // ========================== Fluid Dex ==========================
         {
@@ -511,35 +542,61 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
 
         // ========================== LayerZero ==========================
         {
-            _addLayerZeroLeafsOldDecoder(
+            _addLayerZeroLeafs(
                 leafs,
                 getERC20(sourceChain, "WEETH"),
                 getAddress(sourceChain, "EtherFiOFTAdapter"),
-                layerZeroOptimismEndpointId
-            );
-            _addLayerZeroLeafsOldDecoder(
-                leafs,
-                getERC20(sourceChain, "WEETH"),
-                getAddress(sourceChain, "EtherFiOFTAdapter"),
-                layerZeroBaseEndpointId
+                layerZeroOptimismEndpointId,
+                getBytes32(sourceChain, "boringVault")
             );
 
-            _addLayerZeroLeafsOldDecoder(
+            _addLayerZeroLeafs(
                 leafs,
                 getERC20(sourceChain, "WEETH"),
                 getAddress(sourceChain, "EtherFiOFTAdapter"),
-                layerZeroSwellEndpointId
+                layerZeroBaseEndpointId,
+                getBytes32(sourceChain, "boringVault")
             );
 
-            _addLayerZeroLeafsOldDecoder(
+            _addLayerZeroLeafs(
                 leafs,
                 getERC20(sourceChain, "WEETH"),
                 getAddress(sourceChain, "EtherFiOFTAdapter"),
-                layerZeroUnichainEndpointId
+                layerZeroSwellEndpointId,
+                getBytes32(sourceChain, "boringVault")
+            );
+
+            _addLayerZeroLeafs(
+                leafs,
+                getERC20(sourceChain, "WEETH"),
+                getAddress(sourceChain, "EtherFiOFTAdapter"),
+                layerZeroUnichainEndpointId,
+                getBytes32(sourceChain, "boringVault")
+            );
+
+            _addLayerZeroLeafs(
+                leafs,
+                getERC20(sourceChain, "WEETH"),
+                getAddress(sourceChain, "EtherFiOFTAdapter"),
+                layerZeroScrollEndpointId,
+                getBytes32(sourceChain, "boringVault")
+            );
+
+            _addLayerZeroLeafNative(
+                leafs,
+                getAddress(sourceChain, "stargateNative"),
+                layerZeroScrollEndpointId,
+                getBytes32(sourceChain, "boringVault")
             );
         }
+        // ========================== Scroll Bridge ==========================
+        setAddress(true, mainnet, "rawDataDecoderAndSanitizer", scrollBridgeDecoderAndSanitizer);
+        ERC20[] memory tokens = new ERC20[](1); 
+        tokens[0] = getERC20(sourceChain, "WETH"); 
+        _addScrollNativeBridgeLeafs(leafs, "scroll", tokens);  
 
         // ========================== Merkl ==========================
+        setAddress(true, mainnet, "rawDataDecoderAndSanitizer", rawDataDecoderAndSanitizer);
         {
             ERC20[] memory tokensToClaim = new ERC20[](1);
             tokensToClaim[0] = getERC20(sourceChain, "UNI");
@@ -672,22 +729,20 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
                 itbPositionManager,
                 false,
                 "withdraw(address,uint256)",
-                new address[](1),
+                new address[](0),
                 string.concat("Withdraw ", tokensUsed[i].symbol(), " from the ", itbContractName, " contract"),
                 itbDecoderAndSanitizer
             );
-            leafs[leafIndex].argumentAddresses[0] = address(tokensUsed[i]);
             // WithdrawAll
             leafIndex++;
             leafs[leafIndex] = ManageLeaf(
                 itbPositionManager,
                 false,
                 "withdrawAll(address)",
-                new address[](1),
+                new address[](0),
                 string.concat("Withdraw all ", tokensUsed[i].symbol(), " from the ", itbContractName, " contract"),
                 itbDecoderAndSanitizer
             );
-            leafs[leafIndex].argumentAddresses[0] = address(tokensUsed[i]);
         }
     }
 
