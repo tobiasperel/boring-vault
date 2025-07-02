@@ -123,6 +123,8 @@ contract ChainValues {
         _addHyperEVMValues();
         _addFlareValues();
         _addInkValues();
+        _addAvalancheValues(); 
+        _addPlumeValues();
         _addKatanaValues();
         // Add testnet values
         _addHoleskyValues();
@@ -132,7 +134,6 @@ contract ChainValues {
         _addBerachainTestnetValues();
         _addBartioValues();
         _addTACTestnetValues();
-        _addPlumeValues();
     }
 
     function _addMainnetValues() private {
@@ -1423,6 +1424,10 @@ contract ChainValues {
 
         // Yearn
         values[mainnet]["yKatanaPredepositWETH"] = 0xcc6a16Be713f6a714f68b0E1f4914fD3db15fBeF.toBytes32();
+        
+        // Avalanche Bridge
+        values[mainnet]["usdcTokenRouter"] = 0xD835dbD135AD8a27214ecdEE79E7a41337865648.toBytes32();
+        values[mainnet]["avalancheBridge"] = 0x8EB8a3b98659Cce290402893d0123abb75E3ab28.toBytes32();
 
     }
 
@@ -2649,6 +2654,20 @@ contract ChainValues {
 
         //OFTs
         values[plume]["stargateUSDC"] = 0x9909fa99b7F7ee7F1c0CBf133f411D43083631E6.toBytes32();
+    }
+
+    function _addAvalancheValues() private {
+        values[avalanche]["deployerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[avalanche]["txBundlerAddress"] = 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d.toBytes32();
+        values[avalanche]["vault"] = address(1).toBytes32();
+
+        // ERC20s
+        values[avalanche]["USDC"] = 0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E.toBytes32();
+        values[avalanche]["USDC.e"] = 0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664.toBytes32(); 
+        values[avalanche]["WETH"] = 0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB.toBytes32();
+
+        // Avalanche Bridge
+        values[avalanche]["usdcTokenRouter"] = 0xD835dbD135AD8a27214ecdEE79E7a41337865648.toBytes32();
     }
 
     function _addKatanaValues() private {
