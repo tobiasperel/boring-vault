@@ -39,6 +39,8 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
     event ConfigUpdated(LoopingConfig oldConfig, LoopingConfig newConfig);
     event EmergencyExit(uint256 stakedWithdrawn, uint256 debtRepaid);
     event YieldHarvested(uint256 stakingRewards, uint256 netYield);
+    event Deposit(address indexed user, uint256 amount, uint256 shares);
+    event Withdraw(address indexed user, uint256 shares, uint256 amount);
     
     //============================== ERRORS ===============================
 
@@ -48,6 +50,7 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
     error VedaLoopingStrategy__InsufficientCollateral();
     error VedaLoopingStrategy__SlippageTooHigh();
     error VedaLoopingStrategy__MaxIterationsReached();
+    error VedaLoopingStrategy__ExchangeRateUnavailable();
 
     //============================== IMMUTABLES ===============================
 
@@ -89,11 +92,6 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
     LoopingConfig public config;
 
     /**
-     * @notice Total assets under management
-     */
-    uint256 public totalAssets;
-
-    /**
      * @notice Last harvest timestamp
      */
     uint256 public lastHarvest;
@@ -107,6 +105,16 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
      * @notice Performance fee percentage (in basis points)
      */
     uint256 public performanceFee = 1000; // 10%
+
+    /**
+     * @notice User shares mapping - each user's shares represent their original deposit amount
+     */
+    mapping(address => uint256) public userShares;
+
+    /**
+     * @notice User deposit timestamp mapping - tracks when each user deposited
+     */
+    mapping(address => uint256) public userDepositTime;
 
     //============================== CONSTRUCTOR ===============================
 
@@ -182,10 +190,14 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
      * @param amount Amount of HYPE to deposit
      * @param minStakedOut Minimum stHYPE expected from looping
      */
-    function deposit(uint256 amount, uint256 minStakedOut) external nonReentrant requiresAuth {
+    function deposit(uint256 amount, uint256 minStakedOut) external nonReentrant returns (uint256 shares) {
         if (!config.loopingEnabled) revert VedaLoopingStrategy__LoopingDisabled();
+        require(amount > 0, "Amount must be greater than 0");
         
         hypeToken.safeTransferFrom(msg.sender, address(this), amount);
+        
+        // Calculate shares before executing loop (1:1 with deposited amount)
+        shares = amount;
         
         uint256 stakedBefore = stHypeToken.balanceOf(address(this));
         _executeLoop(amount);
@@ -194,28 +206,59 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
         uint256 stakedReceived = stakedAfter - stakedBefore;
         if (stakedReceived < minStakedOut) revert VedaLoopingStrategy__SlippageTooHigh();
         
-        totalAssets += amount;
+        // Update user shares and deposit time
+        userShares[msg.sender] += shares;
+        userDepositTime[msg.sender] = block.timestamp;
+        
+        emit Deposit(msg.sender, amount, shares);
     }
 
     /**
      * @notice Withdraw HYPE by unwinding positions
      * @param shares Amount of shares to withdraw
-     * @param minAmountOut Minimum HYPE expected
+     * @param minAmountOut Minimum HYPE expected (for slippage protection)
      */
-    function withdraw(uint256 shares, uint256 minAmountOut) external nonReentrant requiresAuth returns (uint256) {
-        uint256 totalShares = totalAssets; // Simplified share calculation
-        uint256 assetsToWithdraw = shares.mulDivDown(totalAssets, totalShares);
+    function withdraw(uint256 shares, uint256 minAmountOut) external nonReentrant returns (uint256) {
+        require(shares > 0, "Shares must be greater than 0");
+        
+        // CRITICAL: Check user has enough shares BEFORE any operations to prevent underflow
+        uint256 userCurrentShares = userShares[msg.sender];
+        require(userCurrentShares >= shares, "Insufficient user shares");
+        require(userCurrentShares > 0, "User has no shares");
+        
+        // In our simple system: shares = HYPE amount (1:1)
+        uint256 hypeAmount = shares;
+        
+        // CRITICAL: Verify user has actual funds - check if user's HYPE amount is available
+        // Each user's shares represent their claim on the underlying HYPE
+        PositionInfo memory position = getPositionInfo();
+        require(position.netValue > 0, "Strategy has no net value");
+        require(hypeAmount <= position.netValue, "Insufficient strategy liquidity");
+        
+        // Additional check: verify this specific user can withdraw their amount
+        // This prevents users from withdrawing more than their fair share
+        uint256 userHypeBalance = _calculateUserActualBalance(msg.sender);
+        require(hypeAmount <= userHypeBalance, "User cannot withdraw more than their balance");
         
         uint256 hypeBefore = hypeToken.balanceOf(address(this));
-        _partialUnwind(assetsToWithdraw);
+        
+        // Partially unwind the position to get the requested HYPE amount
+        _partialUnwind(hypeAmount);
+        
         uint256 hypeAfter = hypeToken.balanceOf(address(this));
         
-        uint256 hypeWithdrawn = hypeAfter - hypeBefore;
+        // Safe calculation to prevent underflow
+        uint256 hypeWithdrawn = hypeAfter > hypeBefore ? hypeAfter - hypeBefore : 0;
         if (hypeWithdrawn < minAmountOut) revert VedaLoopingStrategy__SlippageTooHigh();
         
-        hypeToken.safeTransfer(msg.sender, hypeWithdrawn);
-        totalAssets -= assetsToWithdraw;
+        // Update user shares ONLY after successful withdrawal (process inverse of deposit)
+        userShares[msg.sender] = userCurrentShares - shares;
         
+        if (hypeWithdrawn > 0) {
+            hypeToken.safeTransfer(msg.sender, hypeWithdrawn);
+        }
+        
+        emit Withdraw(msg.sender, shares, hypeWithdrawn);
         return hypeWithdrawn;
     }
 
@@ -272,6 +315,32 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
         }
         
         emit Rebalanced(oldLTV, targetLTV, isIncrease);
+    }
+
+    //============================== SHARE CALCULATION FUNCTIONS ===============================
+
+    /**
+     * @notice Calculate user's current balance (simple 1:1 with shares)
+     * @param user User address
+     * @return Current balance (same as shares)
+     */
+    function _calculateUserBalance(address user) internal view returns (uint256) {
+        // Simple: user's balance = their shares (1:1 with original deposit)
+        return userShares[user];
+    }
+
+    /**
+     * @notice Calculate user's actual withdrawable balance based on strategy performance
+     * @param user User address
+     * @return Actual HYPE amount the user can withdraw
+     */
+    function _calculateUserActualBalance(address user) internal view returns (uint256) {
+        uint256 userShares_ = userShares[user];
+        if (userShares_ == 0) return 0;
+        
+        // In our simple 1:1 system, user can withdraw their exact share amount
+        // This represents their original deposit in HYPE terms
+        return userShares_;
     }
 
     //============================== INTERNAL FUNCTIONS ===============================
@@ -395,12 +464,22 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
         
         uint256 withdrawRatio = targetWithdraw.mulDivDown(PRECISION, position.netValue);
         uint256 debtToRepay = position.borrowedAmount.mulDivDown(withdrawRatio, PRECISION);
-        uint256 collateralToWithdraw = position.stakedAmount.mulDivDown(withdrawRatio, PRECISION);
         
+        // Calculate how much collateral to withdraw from lending pool (not from staking!)
+        uint256 collateralInLendingPool = _getCollateralInLendingPool();
+        uint256 collateralToWithdraw = collateralInLendingPool.mulDivDown(withdrawRatio, PRECISION);
+        
+        // First repay the proportional debt
         if (debtToRepay > 0) {
             _repayDebt(debtToRepay);
         }
         
+        // Then withdraw the collateral from lending pool
+        if (collateralToWithdraw > 0) {
+            _withdrawCollateral(collateralToWithdraw);
+        }
+        
+        // Finally, unstake the withdrawn collateral to get HYPE tokens
         if (collateralToWithdraw > 0) {
             _unstake(collateralToWithdraw);
         }
@@ -504,6 +583,39 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
         require(success, "Additional borrowing failed");
     }
 
+    /**
+     * @notice Withdraw collateral from lending pool
+     * @param amount Amount to withdraw
+     */
+    function _withdrawCollateral(uint256 amount) internal {
+        if (amount == 0) return;
+        
+        (bool success,) = lendingPool.call(
+            abi.encodeWithSignature("withdraw(address,uint256)", address(stHypeToken), amount)
+        );
+        require(success, "Collateral withdrawal failed");
+    }
+
+    //============================== USER VIEW FUNCTIONS ===============================
+
+    /**
+     * @notice Get user's balance in HYPE tokens
+     * @param user User address
+     * @return balance Amount of HYPE tokens the user owns
+     */
+    function balanceOf(address user) external view returns (uint256 balance) {
+        return userShares[user]; // 1:1 with original deposit
+    }
+
+    /**
+     * @notice Get user's share balance
+     * @param user User address
+     * @return shares Number of shares the user owns
+     */
+    function sharesOf(address user) external view returns (uint256 shares) {
+        return userShares[user];
+    }
+
     //============================== VIEW FUNCTIONS ===============================
 
     /**
@@ -511,8 +623,19 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
      * @return position Current position details
      */
     function getPositionInfo() public view returns (PositionInfo memory position) {
-        position.stakedAmount = stHypeToken.balanceOf(address(this));
+        // Get stHYPE that we hold directly
+        uint256 directStHype = stHypeToken.balanceOf(address(this));
+        
+        // Get stHYPE that we have as collateral in lending pool
+        uint256 collateralStHype = _getCollateralInLendingPool();
+        
+        // Total staked amount includes both direct and collateral
+        position.stakedAmount = directStHype + collateralStHype;
+        
+        // Calculate total collateral value (all our stHYPE)
         position.collateralValue = _getCollateralValue(position.stakedAmount);
+        
+        // Get borrowed amount
         position.borrowedAmount = _getBorrowedAmount();
         
         if (position.collateralValue > 0) {
@@ -533,17 +656,15 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
     function _getCollateralValue(uint256 stHypeAmount) internal view returns (uint256 value) {
         if (stHypeAmount == 0) return 0;
         
-        // Get exchange rate from staking contract
+        // Get asset value using ERC4626 convertToAssets function
         (bool success, bytes memory data) = stakingContract.staticcall(
-            abi.encodeWithSignature("getExchangeRate()")
+            abi.encodeWithSignature("convertToAssets(uint256)", stHypeAmount)
         );
         
         if (success && data.length >= 32) {
-            uint256 exchangeRate = abi.decode(data, (uint256));
-            value = stHypeAmount.mulDivDown(exchangeRate, PRECISION);
+            value = abi.decode(data, (uint256));
         } else {
-            // Fallback to 1:1 ratio if exchange rate unavailable
-            value = stHypeAmount;
+            revert VedaLoopingStrategy__ExchangeRateUnavailable();
         }
     }
 
@@ -559,6 +680,22 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
         if (success && data.length >= 32) {
             borrowed = abi.decode(data, (uint256));
         }
+    }
+
+    /**
+     * @notice Get amount of stHYPE we have as collateral in the lending pool
+     * @return collateralAmount Amount of stHYPE in lending pool as collateral
+     */
+    function _getCollateralInLendingPool() internal view returns (uint256 collateralAmount) {
+        // Try to get our collateral balance from the lending pool
+        (bool success, bytes memory data) = lendingPool.staticcall(
+            abi.encodeWithSignature("getCollateralBalance(address,address)", address(this), address(stHypeToken))
+        );
+        
+        if (success && data.length >= 32) {
+            collateralAmount = abi.decode(data, (uint256));
+        }
+        // If the call fails, return 0 (fallback behavior)
     }
 
     /**
@@ -600,23 +737,6 @@ contract VedaLoopingStrategy is Auth, ReentrancyGuard {
                 position.currentLTV < targetLTV - threshold;
     }
 
-    /**
-     * @notice Get expected APY from current strategy
-     * @return apy Expected annual percentage yield
-     */
-    function getExpectedAPY() external view returns (uint256 apy) {
-        // This would integrate with external oracles or historical data
-        // Simplified calculation for demonstration
-        uint256 stakingAPY = 500; // 5% base staking APY
-        PositionInfo memory position = getPositionInfo();
-        
-        if (position.netValue > 0) {
-            uint256 leverage = position.totalValue.mulDivDown(PRECISION, position.netValue);
-            apy = stakingAPY.mulDivDown(leverage, PRECISION);
-        } else {
-            apy = stakingAPY;
-        }
-    }
 
     //============================== FEE COLLECTION ===============================
 
