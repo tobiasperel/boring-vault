@@ -1,0 +1,163 @@
+{
+  "metadata": {
+    "AccountantAddress": "0x0000000000000000000000000000000000000000",
+    "BoringVaultAddress": "0x0000000000000000000000000000000000000000",
+    "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+    "DigestComposition": [
+      "Bytes20(DECODER_AND_SANITIZER_ADDRESS)",
+      "Bytes20(TARGET_ADDRESS)",
+      "Bytes1(CAN_SEND_VALUE)",
+      "Bytes4(TARGET_FUNCTION_SELECTOR)",
+      "Bytes{N*20}(ADDRESS_ARGUMENT_0,...,ADDRESS_ARGUMENT_N)"
+    ],
+    "LeafCount": 20,
+    "ManageRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "ManagerAddress": "0x0000000000000000000000000000000000000000",
+    "TreeCapacity": 32
+  },
+  "leafs": [
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Approve HYPE Staking Contract to spend HYPE",
+      "FunctionSelector": "0x095ea7b3",
+      "FunctionSignature": "approve(address,uint256)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x0000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Stake HYPE tokens to receive stHYPE",
+      "FunctionSelector": "0xa694fc3a",
+      "FunctionSignature": "stake(uint256,address)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x0000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Unstake stHYPE tokens to receive HYPE",
+      "FunctionSelector": "0x2e17de78",
+      "FunctionSignature": "unstake(uint256,address)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x0000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Claim staking rewards",
+      "FunctionSelector": "0x372500ab",
+      "FunctionSignature": "claimRewards(address)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x0000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Approve Felix Lending Pool to spend stHYPE",
+      "FunctionSelector": "0x095ea7b3",
+      "FunctionSignature": "approve(address,uint256)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x0000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000", "0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Supply stHYPE as collateral to Felix",
+      "FunctionSelector": "0x617ba037",
+      "FunctionSignature": "supply(address,uint256,address,uint16)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000", "0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Borrow HYPE from Felix using stHYPE collateral",
+      "FunctionSelector": "0xa415bcad",
+      "FunctionSignature": "borrow(address,uint256,uint256,uint16,address)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000", "0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Repay HYPE debt to Felix",
+      "FunctionSelector": "0x573ade81",
+      "FunctionSignature": "repay(address,uint256,uint256,address)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000", "0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Withdraw stHYPE collateral from Felix",
+      "FunctionSelector": "0x69328dec",
+      "FunctionSignature": "withdraw(address,uint256,address)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Set stHYPE as collateral in Felix",
+      "FunctionSelector": "0x5a3b74b9",
+      "FunctionSignature": "setUserUseReserveAsCollateral(address,bool)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x0000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Approve Uniswap V3 to spend HYPE",
+      "FunctionSelector": "0x095ea7b3",
+      "FunctionSignature": "approve(address,uint256)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x0000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Transfer HYPE tokens",
+      "FunctionSelector": "0xa9059cbb",
+      "FunctionSignature": "transfer(address,uint256)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x0000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "AddressArguments": ["0x0000000000000000000000000000000000000000"],
+      "CanSendValue": false,
+      "DecoderAndSanitizerAddress": "0x0000000000000000000000000000000000000000",
+      "Description": "Transfer stHYPE tokens",
+      "FunctionSelector": "0xa9059cbb",
+      "FunctionSignature": "transfer(address,uint256)",
+      "LeafDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "PackedArgumentAddresses": "0x0000000000000000000000000000000000000000",
+      "TargetAddress": "0x0000000000000000000000000000000000000000"
+    }
+  ]
+}
