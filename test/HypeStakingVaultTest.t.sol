@@ -1,7 +1,21 @@
     // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import {Test} from "forge-std/Test.sol";
+/**
+ * @title HypeStakingVaultTest
+ * @notice Comprehensive test suite for HYPE Staking Vault implementation
+ * 
+ * Tests cover:
+ * - Vault deployment and configuration
+ * - BoringVault integration with manager and decoder
+ * - Strategy execution: loop creation, harvesting, rebalancing
+ * - Access control and security features
+ * - Emergency exit functionality
+ * 
+ * Run tests: forge test --match-contract HypeStakingVaultTest
+ */
+
+import {Test, console} from "forge-std/Test.sol";
 import {BoringVault} from "src/base/BoringVault.sol";
 import {ManagerWithMerkleVerification} from "src/base/Roles/ManagerWithMerkleVerification.sol";
 import {TellerWithMultiAssetSupport} from "src/base/Roles/TellerWithMultiAssetSupport.sol";
